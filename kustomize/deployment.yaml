@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rog-deployment
+  labels:
+    app: rog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rog
+  template:
+    metadata:
+      labels:
+        app: rog
+    spec:
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: rog-storage
+          emptyDir: {}
+      initContainers:
+        - name: collectstatic
+          image: rog
+          volumeMounts:
+            - name: rog-storage
+              mountPath: /storage
+          command:
+            - python
+            - manage.py
+            - collectstatic
+            - --no-input
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: rog.settings.production
+          envFrom:
+            - secretRef:
+                name: rog-credentials
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 500m
+        - name: migrate
+          image: rog
+          command:
+            - python
+            - manage.py
+            - migrate
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: rog.settings.production
+          envFrom:
+            - secretRef:
+                name: rog-credentials
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 500m
+      containers:
+        - name: rog
+          image: rog
+          volumeMounts:
+            - name: rog-storage
+              mountPath: /storage
+          command:
+            - gunicorn
+            - rog.wsgi:application
+            - -b
+            - 0.0.0.0:8000
+            - --log-level
+            - DEBUG
+          ports:
+            - containerPort: 8000
+          envFrom:
+              - secretRef:
+                  name: rog-credentials
+          env:
+            - name: DJANGO_SETTINGS_MODULE
+              value: rog.settings.production
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 1000m
+            limits:
+              memory: 1Gi
+              cpu: 1000m
+        - name: rog-storage-nginx
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          image: nginx:alpine
+          volumeMounts:
+            - name: rog-storage
+              mountPath: /usr/share/nginx/html
+          resources:
+            requests:
+              memory: 500Mi
+              cpu: 300m
+            limits:
+              memory: 500Mi
+              cpu: 300m
