@@ -29,9 +29,11 @@ jobs:
           tags: |
             rg.fr-par.scw.cloud/djnd/rog:${{ github.sha }}
             rg.fr-par.scw.cloud/djnd/rog:latest
+
       - name: Update image versions in kustomize/kustomization.yaml
         run: |
           sed -i "s/newTag: .*\+/newTag\: '${{ github.sha }}'/" kustomize/kustomization.yaml
+
       - name: Commit and push new image versions
         uses: EndBug/add-and-commit@v9
         with:

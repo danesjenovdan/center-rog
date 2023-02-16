@@ -13,7 +13,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rog-storage-nginx
+  name: rog-nginx
 spec:
   selector:
     app: rog
