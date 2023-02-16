@@ -1,0 +1,31 @@
+# garbage
+**/.DS_Store
+*.log
+README.md
+
+# docker
+**/.dockerignore
+**/Dockerfile
+**/docker-compose.yaml
+kustomize/
+
+# git
+**/.git
+**/.gitignore
+**/.gitmodules
+
+# dev only stuff
+**/.idea
+**/.vscode
+**/node_modules/
+
+# django
+/hudapobuda/media/
+/hudapobuda/static/
+*.sqlite3
+**/settings/local.py
+
+# python
+**/__pycache__
+*.pyc
+*.swp

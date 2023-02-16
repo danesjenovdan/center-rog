@@ -1,0 +1,18 @@
+# garbage
+.DS_Store
+*.log
+README.md
+
+# docker
+.dockerignore
+Dockerfile
+
+# git
+.git
+.gitignore
+.gitmodules
+
+# dev only stuff
+.idea
+.vscode
+node_modules/
