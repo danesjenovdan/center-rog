@@ -12,7 +12,7 @@ spec:
   tls:
     - hosts:
         - rog.lb.djnd.si
-      secretName: rog-tls
+      secretName: rog-wagtail-tls
   rules:
     - host: rog.lb.djnd.si
       http:
