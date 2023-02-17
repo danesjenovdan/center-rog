@@ -41,7 +41,7 @@ spec:
   tls:
     - hosts:
         - files.rog.lb.djnd.si
-      secretName: rog-tls
+      secretName: rog-nginx-tls
   rules:
     - host: files.rog.lb.djnd.si
       http:
