@@ -1,3 +1,5 @@
+/* <link rel="stylesheet" href="{% static 'css/welcome_page.css' %}"> */
+
 html {
     box-sizing: border-box;
 }
