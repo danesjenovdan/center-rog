@@ -162,6 +162,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 LOGIN_REDIRECT_URL = "/profil/"
 LOGIN_URL = "/prijava/"
+LOGOUT_REDIRECT_URL = "/odjava/"
 
 # Wagtail settings
 

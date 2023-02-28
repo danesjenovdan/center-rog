@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -12,12 +13,45 @@ from home.forms import RegisterForm
 
 
 @method_decorator(login_required, name='dispatch')
-class ProfileView(TemplateView):
+class MyProfileView(TemplateView):
     template_name = "registration/profile.html"
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+        return render(request, self.template_name, {'user': current_user})
+    
+
+class UserProfileView(TemplateView):
+    template_name = "registration/user_profile.html"
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            return render(request, self.template_name, {'user': user})
+        except:
+            return HttpResponseNotFound("User not found.")
+    
+
+@method_decorator(login_required, name='dispatch')
+class EditProfileView(TemplateView):
+    template_name = "registration/edit_profile.html"
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+        return render(request, self.template_name, {'user': current_user})
+    
+
+@method_decorator(login_required, name='dispatch')
+class SearchProfileView(TemplateView):
+    template_name = "registration/search_profile.html"
+
+    def get(self, request, *args, **kwargs):
+        users = User.objects.all() # TODO: spremeni to v filtrirane UserProfile objekte, ko extendaš Userja
+        return render(request, self.template_name, {'users': users})
 
 
 class ThankYouForRegistrationView(TemplateView):
-    template_name = "registration/hvala.html"
+    template_name = "registration/thankyou.html"
 
 
 class RegistrationView(View):

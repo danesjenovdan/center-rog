@@ -10,7 +10,7 @@ from search import views as search_views
 
 from django.contrib.auth import views as auth_views
 
-from home.views import ProfileView, RegistrationView, ThankYouForRegistrationView
+from home.views import MyProfileView, EditProfileView, SearchProfileView, UserProfileView, RegistrationView, ThankYouForRegistrationView
 
 
 urlpatterns = [
@@ -36,10 +36,14 @@ urlpatterns = urlpatterns + [
     # TODO: tukaj dodam recimo login
     # path("prijava/", LoginView.as_view()),
     path('prijava/', auth_views.LoginView.as_view(), name='login'),
+    path('odjava/', auth_views.LogoutView.as_view(), name='logout'),
+
     path('registracija/', RegistrationView.as_view(), name='registration'),
     path('hvala/', ThankYouForRegistrationView.as_view(), name='registration-successful'),
-    path('odjava/', auth_views.LogoutView.as_view(), name='logout'),
-    path('profil/', ProfileView.as_view(), name='profile'),
+    path('profil/uredi/', EditProfileView.as_view(), name='profile-edit'),
+    path('profil/isci/', SearchProfileView.as_view(), name='profile-search'),
+    path('profil/<int:id>/', UserProfileView.as_view(), name='profile-user'),
+    path('profil/', MyProfileView.as_view(), name='profile-my'),
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
