@@ -8,6 +8,11 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
 
+from django.contrib.auth import views as auth_views
+
+from home.views import ProfileView, RegistrationView, ThankYouForRegistrationView
+
+
 urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
@@ -28,6 +33,13 @@ urlpatterns = urlpatterns + [
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
+    # TODO: tukaj dodam recimo login
+    # path("prijava/", LoginView.as_view()),
+    path('prijava/', auth_views.LoginView.as_view(), name='login'),
+    path('registracija/', RegistrationView.as_view(), name='registration'),
+    path('hvala/', ThankYouForRegistrationView.as_view(), name='registration-successful'),
+    path('odjava/', auth_views.LogoutView.as_view(), name='logout'),
+    path('profil/', ProfileView.as_view(), name='profile'),
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
