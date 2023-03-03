@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -9,8 +9,8 @@
 
 {% block page_body %}
 
-<div>
-    main
-</div>
+{% for block in page.body %}
+    {% include_block block %}
+{% endfor %}
 
 {% endblock page_body %}

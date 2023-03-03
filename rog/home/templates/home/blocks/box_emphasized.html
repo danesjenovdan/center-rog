@@ -1,0 +1,17 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+<div class="box-emphasized row my-lg-4 justify-content-center">
+    <div class="col-12 col-lg-6">
+        <div class="box">
+            <h1>{{ value.title }}</h1>
+            <p>{{ value.text }}</p>
+            <div class="d-flex">
+                {% for button in value.buttons %}
+                    <a href="{% pageurl button.value.page %}" class="btn btn-secondary">
+                        {{ button.value.text }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
