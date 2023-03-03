@@ -1,0 +1,18 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block body_class %}template-news-list-page{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<h1>Arhiv novic</h1>
+
+{% for page in self.get_children.specific %}
+    <a href="{{ page.url }}">{{ page.title }}</a>
+{% endfor %}
+
+{% endblock page_body %}

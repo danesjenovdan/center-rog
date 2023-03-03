@@ -1,55 +1,55 @@
-// Set Bootstrap variables here.
-// This file is included before Bootstrap is compiled.
+// // Set Bootstrap variables here.
+// // This file is included before Bootstrap is compiled.
 
-$green: #a6d07d;
-$blue: #abafd6;
-$yellow: #fff7b0;
-$pink: #f4b7d1;
-$light: #fffdef;
-$primary: $green;
+// $green: #a6d07d;
+// $blue: #abafd6;
+// $yellow: #fff7b0;
+// $pink: #f4b7d1;
+// $light: #fffdef;
+// $primary: $green;
 
-$body-color: #000;
-$font-family-sans-serif: 'Comfortaa', sans-serif;
-$headings-font-family: 'Okolaks WebFont', serif;
-$headings-font-weight: 700;
-$body-bg: $light;
+// $body-color: #000;
+// $font-family-sans-serif: 'Comfortaa', sans-serif;
+// $headings-font-family: 'Okolaks WebFont', serif;
+// $headings-font-weight: 700;
+// $body-bg: $light;
 
-$border-radius: 0;
-$btn-border-width: 2px;
+// $border-radius: 0;
+// $btn-border-width: 2px;
 
-$input-border-color: #000;
-$input-border-width: 2px;
-$input-bg: transparent;
-$input-focus-border-color: $blue;
-$input-focus-box-shadow: 0 0 0 .25rem rgba($input-focus-border-color, .25);
-$input-font-size: 1.25rem;
-$input-padding-y: 0.5rem;
-$input-padding-x: 1rem;
+// $input-border-color: #000;
+// $input-border-width: 2px;
+// $input-bg: transparent;
+// $input-focus-border-color: $blue;
+// $input-focus-box-shadow: 0 0 0 .25rem rgba($input-focus-border-color, .25);
+// $input-font-size: 1.25rem;
+// $input-padding-y: 0.5rem;
+// $input-padding-x: 1rem;
 
-$form-check-input-width: 2rem;
-$form-check-min-height: $form-check-input-width;
-$form-check-padding-start: $form-check-input-width + 0.75rem;
-$form-check-margin-bottom: .25rem;
+// $form-check-input-width: 2rem;
+// $form-check-min-height: $form-check-input-width;
+// $form-check-padding-start: $form-check-input-width + 0.75rem;
+// $form-check-margin-bottom: .25rem;
 
-$form-check-input-border: $input-border-width solid $input-border-color;
-$form-check-input-border-radius: 0;
-$form-check-input-focus-border: $input-focus-border-color;
-$form-check-input-focus-box-shadow: $input-focus-box-shadow;
+// $form-check-input-border: $input-border-width solid $input-border-color;
+// $form-check-input-border-radius: 0;
+// $form-check-input-focus-border: $input-focus-border-color;
+// $form-check-input-focus-box-shadow: $input-focus-box-shadow;
 
-$form-check-input-checked-color: $green;
-$form-check-input-checked-bg-color: $input-bg;
-$form-check-input-checked-border-color: $input-border-color;
+// $form-check-input-checked-color: $green;
+// $form-check-input-checked-bg-color: $input-bg;
+// $form-check-input-checked-border-color: $input-border-color;
 
-$link-color: #000;
-$link-hover-color: #000;
+// $link-color: #000;
+// $link-hover-color: #000;
 
-$table-border-width: 2px;
-$table-border-color: #000;
+// $table-border-width: 2px;
+// $table-border-color: #000;
 
-$grid-gutter-width: 2rem;
+// $grid-gutter-width: 2rem;
 
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/mixins";
+// @import "bootstrap/scss/functions";
+// @import "bootstrap/scss/variables";
+// @import "bootstrap/scss/mixins";
 
-$form-validation-states: map-remove($form-validation-states, "valid");
+// $form-validation-states: map-remove($form-validation-states, "valid");

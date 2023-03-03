@@ -1,0 +1,97 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Moj profil{% endblock %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container">
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h1>{{ user.username }}</h1>
+
+            <a href="/profil/isci" class="btn btn-primary">Poišči druge uporabnike</a>
+            <a href="/profil/uredi" class="btn btn-primary">Uredi profil</a>
+        
+        </div>
+
+    </div>
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h4>Rezerviraj termin za uporabo orodja</h4>
+
+            <div>iframe...</div>
+
+        </div>
+
+    </div>
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h4>Sredstva</h4>
+
+            <div>Število točk:</div>
+
+            <button class="btn btn-primary">dodaj sredstva</button>
+
+            <button class="btn btn-primary">pretekla poraba</button>
+
+        </div>
+
+    </div>
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h4>Članarina</h4>
+
+            <div>Velja do:</div>
+
+            <button class="btn btn-primary">podaljšaj</button>
+
+        </div>
+
+    </div>
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h4>Vaši prihajajoči dogodki</h4>
+
+            <div>API EMBED IFRAME STH ???</div>
+
+        </div>
+
+    </div>
+
+    <div class="row my-4">
+
+        <div class="col">
+
+            <h4>Nabor opravljenih usposabljanj</h4>
+
+            <div>API EMBED IFRAME STH ???</div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock page_body %}

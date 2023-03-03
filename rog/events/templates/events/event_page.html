@@ -1,0 +1,26 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block body_class %}template-event-list-page{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<h1>
+    {{ self.title }}
+</h1>
+
+<div>
+<span>{{ self.start_time }} - {{ self.end_time }}
+</div>
+
+<p>
+    {{ self.long_description }}
+</p>
+
+<button class="btn btn-primary">PRIJAVA</button>
+
+{% endblock page_body %}

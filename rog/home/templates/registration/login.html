@@ -1,0 +1,63 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Prijava{% endblock %}
+
+{% block body_class %}template-login{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container my-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-6 col-xl-4">
+
+            {% if form.errors %}
+                <p>Uporabniško ime in geslo se ne ujemata. Prosimo, poskusite ponovno.</p>
+            {% endif %}
+
+            {% if next %}
+                {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+                {% else %}
+                <p>Please login to see this page.</p>
+                {% endif %}
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}" autocomplete="off">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">{{ form.username.label_tag }}</label>
+                    {% comment %} <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"> {% endcomment %}
+                    <input type="text" name="username" autofocus="" autocapitalize="none" maxlength="150" required="" id="id_username" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">{{ form.password.label_tag }}</label>
+                    <input type="password" name="password" autocomplete="current-password" required="" id="id_password" class="form-control">
+                </div>
+
+                <input type="submit" value="PRIJAVA" class="btn btn-primary">
+                
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+
+            Še nimate profila? <a href="/registracija/">Registracija</a>
+
+            {# Assumes you set up the password_reset view in your URLconf #}
+            {% comment %} <p><a href="{% url 'password_reset' %}">Lost password?</a></p> {% endcomment %}
+        
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock page_body %}
