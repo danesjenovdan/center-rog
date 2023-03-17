@@ -26,6 +26,9 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 INSTALLED_APPS = [
     "home",
     "search",
+    "users",
+    "events",
+    "news",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
@@ -46,9 +49,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    "events",
-    "news",
 ]
 
 MIDDLEWARE = [
@@ -132,6 +132,13 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# User
+AUTH_USER_MODEL = 'users.User'
+WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
+WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
+WAGTAIL_USER_CUSTOM_FIELDS = ['prima_id']
 
 
 # Static files (CSS, JavaScript, Images)
