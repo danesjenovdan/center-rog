@@ -134,7 +134,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# User
+# User settings
 AUTH_USER_MODEL = 'users.User'
 WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
@@ -188,3 +188,8 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
 WAGTAIL_ALLOW_UNICODE_SLUGS = False
+
+# Prima settings
+PRIMA_USERNAME = os.getenv('PRIMA_USERNAME', 'example')
+PRIMA_PASSWORD = os.getenv('PRIMA_PASSWORD', 'example')
+PRIMA_URL = "https://centerrog.primacloud.si/bin/sysfcgi.fx"
