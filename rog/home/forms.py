@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from django.contrib.auth.models import User
+from users.models import User
 
 
 class RegisterForm(forms.ModelForm):
@@ -19,6 +19,7 @@ class RegisterForm(forms.ModelForm):
             "first_name",
             "last_name",
             "email",
+            "phone",
             "password",
             # 'newsletter_permission'
         ]
