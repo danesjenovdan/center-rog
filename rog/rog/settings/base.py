@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     "users",
     "events",
     "news",
+    "wagtail_localize",
+    "wagtail_localize.locales",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
@@ -59,6 +61,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -123,15 +126,22 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "sl-SI"
+LANGUAGE_CODE = "sl"
 
 TIME_ZONE = "Europe/Ljubljana"
 
 USE_I18N = True
+WAGTAIL_I18N_ENABLED = True
 
 USE_L10N = True
 
 USE_TZ = True
+
+# possible values of the language_code field
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
+    ('en', "English"),
+    ('sl', "Slovenian"),
+]
 
 
 # User settings

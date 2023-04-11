@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags %}
+{% load static i18n wagtailcore_tags %}
 {% wagtail_site as current_site %}
 
 <header>
@@ -31,7 +31,7 @@
           {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="/profil">Moj profil</a>
-            </li>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="/odjava">Odjava</a>
           </li>
@@ -40,7 +40,15 @@
             <a class="nav-link" href="/prijava">Prijava</a>
           </li>
           {% endif %}
+          <li>
+            {% for translation in page.get_translations.live %}
+                {% get_language_info for translation.locale.language_code as lang %}
+                <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ language_code }}">
+                    {{ lang.name_local }}
+                </a>
+            {% endfor %}
           </li>
+
         </ul>
       </div>
     </div>
