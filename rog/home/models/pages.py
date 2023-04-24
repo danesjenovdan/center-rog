@@ -20,7 +20,35 @@ class HomePage(Page):
     ]
 
 
-class ObjectListPage(Page):
+class BasePage(Page):
+    COLOR_SCHEMES = [
+        ("brown", "Rjava"),
+        ("light-gray", "Svetlo siva"),
+        ("dark-gray", "Temno siva"),
+        ("light-blue", "Svetlo modra"),
+        ("dark-blue", "Temno modra"),
+        ("light-green", "Svetlo zelena"),
+        ("dark-green", "Temno zelena"),
+        ("purple", "Vijolična"),
+        ("red", "Rdeča"),
+        ("orange", "Oranžna"),
+        ("pink", "Roza"),
+        ("yellow", "Rumena"),
+        ("white", "Bela"),
+    ]
+    
+    color_scheme = models.CharField(
+        max_length=20,
+        choices=COLOR_SCHEMES,
+        default="white",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('color_scheme'),
+    ]
+
+
+class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True)
 
     content_panels = Page.content_panels + [
@@ -28,7 +56,7 @@ class ObjectListPage(Page):
     ]
 
 
-class ObjectProfilePage(Page):
+class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True)
 
 

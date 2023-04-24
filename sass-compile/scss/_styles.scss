@@ -7,3 +7,244 @@
         padding: 20px;
     }
 }
+
+
+/* GENERAL */
+
+.primary-button,
+.secondary-button {
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 118%;
+}
+
+.secondary-button {
+    color: inherit;
+    background-color: transparent;   
+}
+
+// .button-small,
+// .button-medium,
+// .button-large {
+//     display: flex;
+//     align-items: center;
+// }
+
+.button-small {
+    height: 30px;
+    font-size: $xxs-font-size;
+    padding: 7.5px 10px;
+}
+
+.button-medium {
+    height: 40px;
+    font-size: $xs-font-size;
+    padding: 10px 20px;
+}
+
+.button-large {
+    height: 70px;
+    font-size: $sm-font-size;
+    padding: 22.5px 35px;
+}
+
+
+/* COLOR SCHEMES */
+
+.color-scheme-brown {
+    background-color: $cs-brown;
+    color: $cs-pink;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-brown;
+    }
+}
+
+.color-scheme-light-blue {
+    background-color: $cs-light-blue;
+    color: $cs-yellow;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-yellow;
+    }
+}
+
+.color-scheme-dark-gray {
+    background-color: $cs-dark-gray;
+    color: $cs-light-gray;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-light-gray;
+    }
+}
+
+.color-scheme-purple {
+    background-color: $cs-purple;
+    color: $cs-light-green;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-light-green;
+    }
+}
+
+.color-scheme-red {
+    background-color: $cs-red;
+    color: $cs-yellow;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-yellow;
+    }
+}
+
+.color-scheme-orange {
+    background-color: $cs-orange;
+    color: $cs-white;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-white;
+    }
+}
+
+.color-scheme-dark-blue {
+    background-color: $cs-dark-blue;
+    color: $cs-light-green;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-light-green;
+    }
+}
+
+.color-scheme-light-green {
+    background-color: $cs-light-green;
+    color: $cs-dark-blue;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-dark-blue;
+    }
+}
+
+.color-scheme-dark-green {
+    background-color: $cs-dark-green;
+    color: $cs-yellow;
+
+    .primary-button {
+        background-color: $cs-yellow;
+        border-color: $cs-yellow;
+        color: $cs-dark-gray;
+    }
+
+    .secondary-button {
+        border-color: $cs-yellow;
+    }
+}
+
+.color-scheme-pink {
+    background-color: $cs-pink;
+    color: $cs-brown;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-brown;
+    }
+}
+
+.color-scheme-light-gray {
+    background-color: $cs-light-gray;
+    color: $cs-dark-gray;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-dark-gray;
+    }
+}
+
+.color-scheme-yellow {
+    background-color: $cs-yellow;
+    color: $cs-dark-green;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-dark-green;
+    }
+}
+
+.color-scheme-white {
+    background-color: $cs-white;
+    color: $cs-dark-gray;
+
+    .primary-button {
+        background-color: $cs-light-blue;
+        border-color: $cs-light-blue;
+        color: $cs-white;
+    }
+
+    .secondary-button {
+        border-color: $cs-dark-gray;
+    }
+}
