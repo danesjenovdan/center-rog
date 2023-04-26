@@ -21,6 +21,18 @@ class HomePage(Page):
         FieldPanel('body'),
     ]
 
+    subpage_types = [
+        'home.StudioListPage',
+        'home.MarketStoreListPage',
+        'home.ResidenceListPage',
+        'home.LabListPage',
+        'home.ContentPage',
+        'events.EventListPage',
+        'events.EventListArchivePage',
+        'news.NewsListPage',
+        'news.NewsListArchivePage'
+    ]
+
 
 class BasePage(Page):
     COLOR_SCHEMES = [
@@ -56,27 +68,38 @@ class ObjectListPage(BasePage):
         FieldPanel('intro_text'),
     ]
 
+    class Meta:
+        abstract = True
+
 
 class StudioListPage(ObjectListPage):
-    pass
+    subpage_types = [
+        'home.StudioPage',
+    ]
 
 StudioListPage._meta.get_field('color_scheme').default = 'yellow'
 
 
 class MarketStoreListPage(ObjectListPage):
-    pass
+    subpage_types = [
+        'home.MarketStorePage',
+    ]
 
 MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
 
 
 class ResidenceListPage(ObjectListPage):
-    pass
+    subpage_types = [
+        'home.ResidencePage',
+    ]
 
 ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
 
 
 class LabListPage(ObjectListPage):
-    pass
+    subpage_types = [
+        'home.LabPage',
+    ]
 
 LabListPage._meta.get_field('color_scheme').default = 'light-green'
 
@@ -98,7 +121,7 @@ class ObjectProfilePage(BasePage):
             ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
         ], label=_('Dan in ura')))
     ], blank=True, null=True, use_json_field=False)
-
+    
     content_panels = Page.content_panels + [
         FieldPanel('description'),
         MultiFieldPanel(
@@ -115,23 +138,42 @@ class ObjectProfilePage(BasePage):
         FieldPanel('working_hours'),
     ]
 
+    subpage_types = []
+
+    class Meta:
+        abstract = True
+
 
 class StudioPage(ObjectProfilePage):
-    pass
+    parent_page_types = [
+        'home.StudioListPage'
+    ]
 
 StudioPage._meta.get_field('color_scheme').default = 'yellow'
 
 
 class ResidencePage(ObjectProfilePage):
-    pass
+    parent_page_types = [
+        'home.ResidenceListPage'
+    ]
 
 ResidencePage._meta.get_field('color_scheme').default = 'dark-gray'
 
 
 class MarketStorePage(ObjectProfilePage):
-    pass
+    parent_page_types = [
+        'home.MarketStoreListPage'
+    ]
 
 MarketStorePage._meta.get_field('color_scheme').default = 'brown'
+
+
+class LabPage(ObjectProfilePage):
+    parent_page_types = [
+        'home.LabListPage'
+    ]
+
+LabPage._meta.get_field('color_scheme').default = 'light-green'
 
 
 class LibraryPage(ObjectProfilePage):
@@ -139,15 +181,9 @@ class LibraryPage(ObjectProfilePage):
 
 LibraryPage._meta.get_field('color_scheme').default = 'pink'
 
-
-class LabPage(ObjectProfilePage):
-    pass
-
-LabPage._meta.get_field('color_scheme').default = 'light-green'
-
-
 class ContentPage(Page):
     pass
+    # subpage_types = []
     # content_panels = Page.content_panels + [
     #     FieldPanel('color_scheme'),
     # ]
