@@ -1,2 +1,2 @@
-from .pages import HomePage
+from .pages import HomePage, BasePage
 from .settings import MetaSettings
