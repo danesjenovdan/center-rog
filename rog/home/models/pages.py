@@ -57,6 +57,30 @@ class ObjectListPage(BasePage):
     ]
 
 
+class StudioListPage(ObjectListPage):
+    pass
+
+StudioListPage._meta.get_field('color_scheme').default = 'yellow'
+
+
+class MarketStoreListPage(ObjectListPage):
+    pass
+
+MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
+
+
+class ResidenceListPage(ObjectListPage):
+    pass
+
+ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
+
+
+class LabListPage(ObjectListPage):
+    pass
+
+LabListPage._meta.get_field('color_scheme').default = 'light-green'
+
+
 class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True)
     # contact information
@@ -114,6 +138,12 @@ class LibraryPage(ObjectProfilePage):
     pass
 
 LibraryPage._meta.get_field('color_scheme').default = 'pink'
+
+
+class LabPage(ObjectProfilePage):
+    pass
+
+LabPage._meta.get_field('color_scheme').default = 'light-green'
 
 
 class ContentPage(Page):
