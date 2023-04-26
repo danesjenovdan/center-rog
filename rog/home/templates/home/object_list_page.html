@@ -9,8 +9,38 @@
 
 {% block page_body %}
 
-<h1>{{self.title}}</h1>
+<div class="container">
+    
+    {% block list_page_header %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">{{ self.title }}</h1>
+        </div>
+    </div>
+    {% endblock list_page_header %}
 
-<p>{{self.intro_text}}</p>
+    {% block list_page_body %}
+
+        {% block list_page_intro %}
+        <div class="row">
+            
+            <div class="col-12">
+                {% block list_page_desc %}
+                <p class="text-center">{{ page.intro_text }}</p>
+                {% endblock list_page_desc %}
+            </div>
+            
+        </div>
+        {% endblock list_page_intro %}
+
+        {% block list_page_list %}
+        {% endblock list_page_list %}
+
+    {% endblock list_page_body %}
+
+    {% block list_page_see_more %}
+    {% endblock list_page_see_more %}
+
+</div>
 
 {% endblock page_body %}
