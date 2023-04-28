@@ -1,19 +1,22 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 from wagtail import blocks
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
+from wagtail.images.blocks import ImageChooserBlock
 
-from .blocks import (SectionBlock)
+
+from .blocks import (ModuleBlock)
 
 
 class HomePage(Page):
     body = StreamField(
-        [('section', SectionBlock())],
+        ModuleBlock(),
         verbose_name="Telo",
-        default='',
+        null=True,
         use_json_field=False
     )
 
@@ -35,25 +38,9 @@ class HomePage(Page):
 
 
 class BasePage(Page):
-    COLOR_SCHEMES = [
-        ("brown", "Rjava"),
-        ("light-gray", "Svetlo siva"),
-        ("dark-gray", "Temno siva"),
-        ("light-blue", "Svetlo modra"),
-        ("dark-blue", "Temno modra"),
-        ("light-green", "Svetlo zelena"),
-        ("dark-green", "Temno zelena"),
-        ("purple", "Vijolična"),
-        ("red", "Rdeča"),
-        ("orange", "Oranžna"),
-        ("pink", "Roza"),
-        ("yellow", "Rumena"),
-        ("white", "Bela"),
-    ]
-    
     color_scheme = models.CharField(
         max_length=20,
-        choices=COLOR_SCHEMES,
+        choices=settings.COLOR_SCHEMES,
         default="white",
     )
 
@@ -121,6 +108,13 @@ class ObjectProfilePage(BasePage):
             ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
         ], label=_('Dan in ura')))
     ], blank=True, null=True, use_json_field=False)
+    # gallery
+    # gallery = StreamField(
+    #     blocks.ListBlock(ImageChooserBlock()),
+    #     blank=True,
+    #     null=True,
+    #     use_json_field=False
+    # )
     
     content_panels = Page.content_panels + [
         FieldPanel('description'),
@@ -181,10 +175,9 @@ class LibraryPage(ObjectProfilePage):
 
 LibraryPage._meta.get_field('color_scheme').default = 'pink'
 
-class ContentPage(Page):
-    pass
-    # subpage_types = []
-    # content_panels = Page.content_panels + [
-    #     FieldPanel('color_scheme'),
-    # ]
+class ContentPage(BasePage):
+    subpage_types = []
+    content_panels = Page.content_panels + [
+        FieldPanel('color_scheme'),
+    ]
     

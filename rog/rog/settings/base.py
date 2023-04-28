@@ -203,3 +203,20 @@ WAGTAIL_ALLOW_UNICODE_SLUGS = False
 PRIMA_USERNAME = os.getenv('PRIMA_USERNAME', 'example')
 PRIMA_PASSWORD = os.getenv('PRIMA_PASSWORD', 'example')
 PRIMA_URL = "https://centerrog.primacloud.si/bin/sysfcgi.fx"
+
+# Custom
+COLOR_SCHEMES = [
+    ("brown", "Rjava"),
+    ("light-gray", "Svetlo siva"),
+    ("dark-gray", "Temno siva"),
+    ("light-blue", "Svetlo modra"),
+    ("dark-blue", "Temno modra"),
+    ("light-green", "Svetlo zelena"),
+    ("dark-green", "Temno zelena"),
+    ("purple", "Vijolična"),
+    ("red", "Rdeča"),
+    ("orange", "Oranžna"),
+    ("pink", "Roza"),
+    ("yellow", "Rumena"),
+    ("white", "Bela"),
+]

@@ -1,7 +1,7 @@
 {% load wagtailcore_tags %}
 
 {% for block in value.body %}
-    <section class="container my-5">
+    <section class="{% if block.value.color_scheme %}color-scheme-{{ block.value.color_scheme }}{% endif %}">
         {% include_block block %}
     </section>
 {% endfor %}

@@ -1,6 +1,19 @@
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
+from django.conf import settings
+
+
+
+class ColoredStructBlock(blocks.StructBlock):
+    color = blocks.ChoiceBlock(
+        choices=settings.COLOR_SCHEMES,
+        label='Barva',
+    )
+
+    class Meta:
+        abstract = True
+
 
 class ButtonsBlock(blocks.StreamBlock):
     button = blocks.StructBlock(
@@ -39,7 +52,7 @@ class NewsBlock(blocks.StreamBlock):
         icon = 'snippet'
     
 
-class ContentBlock(blocks.StreamBlock):
+class ModuleBlock(blocks.StreamBlock):
     box_emphasized = blocks.StructBlock(
         [
             ('title', blocks.CharBlock(label="Naslov")),
@@ -50,7 +63,7 @@ class ContentBlock(blocks.StreamBlock):
         template='home/blocks/box_emphasized.html',
         icon='title',
     )
-    news_section = blocks.StructBlock(
+    news_section = ColoredStructBlock(
         [
             ('title', blocks.CharBlock(label="Naslov")),
             ('news', NewsBlock(label="Novice")),
@@ -61,31 +74,5 @@ class ContentBlock(blocks.StreamBlock):
     )
     image_embed = ImageChooserBlock(label="Slika", template='home/blocks/image_embed.html')
 
-
-# class ColorSectionBlock(blocks.StructBlock):
-#     color = blocks.ChoiceBlock(
-#         choices=[
-#             ('white', 'Bela'),
-#             ('yellow', 'Rumena'),
-#             ('purple', 'Vijolična'),
-#             ('gradient_green_yellow', 'Zeleno-rumena'),
-#             ('gradient_purple_green', 'Vijolično-zelena'),
-#         ],
-#         label='Barva',
-#     )
-#     body = ContentBlock(required=False)
-
-#     class Meta:
-#         label = 'Vsebinski odsek z barvo'
-#         template = 'home/blocks/color_section.html'
-#         icon = 'snippet'
-
-
-class SectionBlock(blocks.StructBlock):
-    # color_section = ColorSectionBlock()
-    body = ContentBlock(required=False, label="Vsebina")
-
     class Meta:
-        label = 'Vsebinski odsek'
-        template = 'home/blocks/section.html'
-        icon = 'snippet'
+        label = 'Modul'
