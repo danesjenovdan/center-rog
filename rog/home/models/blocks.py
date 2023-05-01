@@ -3,6 +3,8 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from django.conf import settings
 
+from news.models import NewsPage
+from events.models import EventPage
 
 
 class ColoredStructBlock(blocks.StructBlock):
@@ -44,6 +46,23 @@ class ButtonsBlock(blocks.StreamBlock):
         icon = 'snippet'
 
 
+class BulletinBoardBlock(blocks.StructBlock):
+    title = blocks.TextBlock(label='Naslov')
+    notice = blocks.TextBlock(label='Obvestilo')
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        # exposed event
+        context['event'] = EventPage.objects.all().first()
+        # exposed news
+        context['news'] = NewsPage.objects.all().first()
+        return context
+
+    class Meta:
+        label = 'Oglasna deska'
+        template = 'home/blocks/module_bulletin_board.html'
+
+
 class NewsBlock(blocks.StreamBlock):
     news_page = blocks.PageChooserBlock(required=False, label="Stran", page_type="news.NewsPage")
 
@@ -53,6 +72,7 @@ class NewsBlock(blocks.StreamBlock):
     
 
 class ModuleBlock(blocks.StreamBlock):
+    bulletin_board = BulletinBoardBlock()
     box_emphasized = blocks.StructBlock(
         [
             ('title', blocks.CharBlock(label="Naslov")),

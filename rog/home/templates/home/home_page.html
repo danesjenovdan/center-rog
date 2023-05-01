@@ -10,9 +10,7 @@
 {% block page_body %}
 
 {% for block in page.body %}
-<section class="{% if block.value.color %}color-scheme-{{ block.value.color }}{% endif %}">
     {% include_block block %}
-</section>
 {% endfor %}
 
 {% endblock page_body %}
