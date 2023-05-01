@@ -1,0 +1,13 @@
+{% load wagtailimages_tags %}
+
+<div class="card news-card {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
+  <div class="card-body">
+    <h6 class="card-subtitle">{{ event.category.name }}</h6>
+    <h6 class="card-subtitle mb-2">{{ event.start_time }}</h6>
+    <h5 class="card-title">{{ event.title }}</h5>
+    <!-- <p class="card-text">
+      {{ event.short_description }}
+    </p> -->
+  </div>
+  {% image event.thumbnail width-200 class="img-fluid card-img-top" alt="..." %}
+</div>
