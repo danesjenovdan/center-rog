@@ -24,8 +24,10 @@ class EventCategory(models.Model):
 class EventPage(BasePage):
     short_description = models.TextField(blank=True)
     long_description = models.TextField(blank=True)
-    thumbnail = models.ForeignKey('wagtailimages.Image', null=True, on_delete=models.SET_NULL, related_name='+')
-    category = models.ForeignKey(EventCategory, null=True, on_delete=models.SET_NULL)
+    thumbnail = models.ForeignKey(
+        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    category = models.ForeignKey(
+        EventCategory, null=True, blank=True, on_delete=models.SET_NULL)
     start_time = models.TimeField()
     end_time = models.TimeField()
 
@@ -56,4 +58,3 @@ class EventListArchivePage(BasePage):
 EventPage._meta.get_field('color_scheme').default = 'light-gray'
 EventListPage._meta.get_field('color_scheme').default = 'light-gray'
 EventListArchivePage._meta.get_field('color_scheme').default = 'light-gray'
-
