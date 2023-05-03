@@ -10,7 +10,7 @@ from home.models import BasePage
 
 
 class NewsCategory(models.Model):
-    category_name = models.TextField()
+    name = models.TextField()
     color_scheme = models.CharField(
         max_length=20,
         choices=settings.COLOR_SCHEMES,
@@ -25,9 +25,12 @@ class NewsCategory(models.Model):
 
 class NewsPage(BasePage):
     short_description = models.TextField(blank=True)
-    thumbnail = models.ForeignKey('wagtailimages.Image', null=True, on_delete=models.SET_NULL, related_name='+')
-    category = models.ForeignKey(NewsCategory, null=True, on_delete=models.SET_NULL)
-    hero_image = models.ForeignKey('wagtailimages.Image', null=True, on_delete=models.SET_NULL, related_name='+')
+    thumbnail = models.ForeignKey(
+        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+    category = models.ForeignKey(
+        NewsCategory, null=True, on_delete=models.SET_NULL)
+    hero_image = models.ForeignKey(
+        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     body = RichTextField(blank=True, null=True)
     gallery = StreamField([
         ('image', ImageChooserBlock())

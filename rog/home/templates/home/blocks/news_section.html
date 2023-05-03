@@ -6,7 +6,7 @@
             <div class="col">
                 <h1>{{ value.title }}</h1>
                 <div class="row">
-                {% for news_page in value.news %}
+                {% for news_page in value.exposed_news %}
                     <div class="col-4">
                         {% include "news/includes/card.html" with news=news_page.value %}
                     </div>
