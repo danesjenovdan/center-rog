@@ -122,12 +122,22 @@ class WhiteListBlock(blocks.StructBlock):
         template = "home/blocks/white_list_section.html",
 
 
+class GalleryBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    gallery = blocks.ListBlock(ImageChooserBlock())
+
+    class Meta:
+        label = _("Galerija")
+        template = "home/blocks/gallery_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
     news_section = NewsBlock()
     events_section = EventsBlock()
     white_list = WhiteListBlock()
+    gallery = GalleryBlock()
     image_embed = ImageChooserBlock(
         label=_("Slika"), template="home/blocks/image_embed.html"
     )
