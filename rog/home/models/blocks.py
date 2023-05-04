@@ -201,6 +201,14 @@ class ResidentsBlock(blocks.StructBlock):
         template = "home/blocks/residents_section.html",
 
 
+class NewsletterBlock(blocks.StructBlock):
+    background_image = ImageChooserBlock(label = _("Slika za ozadje"))
+
+    class Meta:
+        label = _("Novičnik")
+        template = "home/blocks/newsletter_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
@@ -213,6 +221,7 @@ class ModuleBlock(blocks.StreamBlock):
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
     residents_section = ResidentsBlock()
+    newsletter_section = NewsletterBlock()
 
     class Meta:
         label = _("Modul")
