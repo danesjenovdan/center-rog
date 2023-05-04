@@ -4,7 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from .pages import LabPage, StudioPage
+from .pages import LabPage, StudioPage, MarketStorePage
 from news.models import NewsPage
 from events.models import EventPage
 
@@ -95,7 +95,7 @@ def get_labs():
 class LabsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    labs = blocks.MultipleChoiceBlock(label=_("Izpostavljeni laboratoriji"), choices=get_labs, required=True)
+    labs = blocks.MultipleChoiceBlock(label=_("Izpostavljeni laboratoriji"), choices=get_labs)
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -137,7 +137,7 @@ def get_studios():
 class StudiosBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    studios = blocks.MultipleChoiceBlock(label=_("Izpostavljeni studii"), choices=get_studios, required=True)
+    studios = blocks.MultipleChoiceBlock(label=_("Izpostavljeni studii"), choices=get_studios)
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -149,6 +149,30 @@ class StudiosBlock(blocks.StructBlock):
         template = "home/blocks/studios_section.html",
 
 
+def get_markets():
+    return [(market.id, market.title) for market in MarketStorePage.objects.all()]
+
+class MarketplaceBlock(blocks.StructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
+    markets = blocks.MultipleChoiceBlock(label=_("Trgovine"), choices=get_markets)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["markets"] = MarketStorePage.objects.filter(id__in=value["markets"])
+        return context
+
+    class Meta:
+        label = _("Tržnica")
+        template = "home/blocks/marketplace_section.html",
+
+
+class FullWidthImageBlock(ImageChooserBlock):
+    class Meta:
+        label = _("Slika")
+        template = "home/blocks/image_embed.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
@@ -157,9 +181,8 @@ class ModuleBlock(blocks.StreamBlock):
     white_list = WhiteListBlock()
     gallery = GalleryBlock()
     studios = StudiosBlock()
-    image_embed = ImageChooserBlock(
-        label=_("Slika"), template="home/blocks/image_embed.html"
-    )
+    marketplace = MarketplaceBlock()
+    image_embed = FullWidthImageBlock()
 
     class Meta:
         label = _("Modul")
