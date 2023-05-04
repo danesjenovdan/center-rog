@@ -4,7 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from .pages import LabPage
+from .pages import LabPage, StudioPage
 from news.models import NewsPage
 from events.models import EventPage
 
@@ -131,6 +131,24 @@ class GalleryBlock(ColoredStructBlock):
         template = "home/blocks/gallery_section.html",
 
 
+def get_studios():
+    return [(studio.id, studio.title) for studio in StudioPage.objects.all()]
+
+class StudiosBlock(blocks.StructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
+    studios = blocks.MultipleChoiceBlock(label=_("Izpostavljeni studii"), choices=get_studios, required=True)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context['studios'] = StudioPage.objects.filter(id__in=value["studios"])
+        return context
+
+    class Meta:
+        label = _("Studii")
+        template = "home/blocks/studios_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
@@ -138,6 +156,7 @@ class ModuleBlock(blocks.StreamBlock):
     events_section = EventsBlock()
     white_list = WhiteListBlock()
     gallery = GalleryBlock()
+    studios = StudiosBlock()
     image_embed = ImageChooserBlock(
         label=_("Slika"), template="home/blocks/image_embed.html"
     )

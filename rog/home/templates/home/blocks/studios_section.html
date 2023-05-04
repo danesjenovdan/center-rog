@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+
+<section class="color-scheme-yellow">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>{{ value.title }}</h1>
+                <p>{{ value.intro_text }}</p>
+                <div class="row">
+                {% for studio in studios %}
+                    <div class="col-4">
+                        {{ studio }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
