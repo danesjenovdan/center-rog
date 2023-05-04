@@ -173,6 +173,16 @@ class FullWidthImageBlock(ImageChooserBlock):
         template = "home/blocks/image_embed.html",
 
 
+class ColoredTextBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov"), required=False)
+    text = blocks.TextBlock(label=_("Besedilo"))
+    image = ImageChooserBlock(label=_("Slika"), required=False)
+
+    class Meta:
+        label = _("Barvno besedilo (s sliko)")
+        template = "home/blocks/colored_text_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
@@ -183,6 +193,7 @@ class ModuleBlock(blocks.StreamBlock):
     studios = StudiosBlock()
     marketplace = MarketplaceBlock()
     image_embed = FullWidthImageBlock()
+    colored_text = ColoredTextBlock()
 
     class Meta:
         label = _("Modul")
