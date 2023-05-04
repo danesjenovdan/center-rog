@@ -107,11 +107,27 @@ class LabsBlock(blocks.StructBlock):
         template = "home/blocks/labs_section.html",
 
 
+class WhiteListBlock(blocks.StructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
+    links = blocks.StreamBlock([
+        ("link", blocks.StructBlock([
+            ("url", blocks.URLBlock(label=_("URL"))),
+            ("text", blocks.TextBlock(label=_("Ime povezave"))),
+        ], label=_("Povezava")))
+    ], label=_("Seznam povezav"))
+
+    class Meta:
+        label = _("Seznam povezav")
+        template = "home/blocks/white_list_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
     news_section = NewsBlock()
     events_section = EventsBlock()
+    white_list = WhiteListBlock()
     image_embed = ImageChooserBlock(
         label=_("Slika"), template="home/blocks/image_embed.html"
     )
