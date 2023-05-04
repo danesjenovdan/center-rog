@@ -4,6 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
+from .pages import LabPage
 from news.models import NewsPage
 from events.models import EventPage
 
@@ -65,7 +66,7 @@ class BulletinBoardBlock(blocks.StructBlock):
 
 
 class NewsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov modula"))
+    title = blocks.CharBlock(label=_("Naslov"))
     exposed_news = blocks.StreamBlock([
         ("news_page", blocks.PageChooserBlock(
             label=_("Novica"), page_type="news.NewsPage"))
@@ -77,7 +78,7 @@ class NewsBlock(blocks.StructBlock):
 
 
 class EventsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov modula"))
+    title = blocks.CharBlock(label=_("Naslov"))
     exposed_events = blocks.StreamBlock([
         ("event", blocks.PageChooserBlock(
             label=_("Dogodek"), page_type="events.EventPage"))
@@ -88,8 +89,27 @@ class EventsBlock(blocks.StructBlock):
         template = "home/blocks/events_section.html",
 
 
+def get_labs():
+    return [(lab.id, lab.title) for lab in LabPage.objects.all()]
+
+class LabsBlock(blocks.StructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
+    labs = blocks.MultipleChoiceBlock(label=_("Izpostavljeni laboratoriji"), choices=get_labs, required=True)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context['labs'] = LabPage.objects.filter(id__in=value["labs"])
+        return context
+
+    class Meta:
+        label = _("Laboratoriji")
+        template = "home/blocks/labs_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
+    labs_section = LabsBlock()
     news_section = NewsBlock()
     events_section = EventsBlock()
     image_embed = ImageChooserBlock(

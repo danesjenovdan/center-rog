@@ -1,3 +1,4 @@
-from .abstract_pages import BasePage, ObjectListPage, ObjectProfilePage
-from .pages import HomePage, StudioListPage, MarketStoreListPage, ResidenceListPage, LabListPage, StudioPage, ResidencePage, MarketStorePage, LabPage, LibraryPage, ContentPage
+from .base_pages import BasePage, ObjectListPage, ObjectProfilePage
+from .pages import StudioListPage, MarketStoreListPage, ResidenceListPage, LabListPage, StudioPage, ResidencePage, MarketStorePage, LabPage, LibraryPage
+from .module_pages import HomePage, ContentPage
 from .settings import MetaSettings

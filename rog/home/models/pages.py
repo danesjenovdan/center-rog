@@ -8,41 +8,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 
-
-from .blocks import (ModuleBlock)
-from .abstract_pages import BasePage, ObjectProfilePage, ObjectListPage
-
-
-
-class HomePage(Page):
-    body = StreamField(
-        ModuleBlock(),
-        verbose_name="Telo",
-        null=True,
-        use_json_field=False
-    )
-
-    content_panels = Page.content_panels + [
-        FieldPanel('body'),
-    ]
-
-    subpage_types = [
-        'home.StudioListPage',
-        'home.MarketStoreListPage',
-        'home.ResidenceListPage',
-        'home.LabListPage',
-        'home.ContentPage',
-        'events.EventListPage',
-        'events.EventListArchivePage',
-        'news.NewsListPage',
-        'news.NewsListArchivePage'
-    ]
-
-    # def get_context(self, request, *args, **kwargs):
-    #     context = super().get_context(request, *args, **kwargs)
-
-    #     context['exposed_news'] = NewsPage.objects.all().first()
-    #     return context
+from .base_pages import ObjectProfilePage, ObjectListPage
 
 
 # list pages
@@ -115,11 +81,4 @@ class LibraryPage(ObjectProfilePage):
     pass
 
 LibraryPage._meta.get_field('color_scheme').default = 'pink'
-
-# other pages
-class ContentPage(BasePage):
-    subpage_types = []
-    content_panels = Page.content_panels + [
-        FieldPanel('color_scheme'),
-    ]
     
