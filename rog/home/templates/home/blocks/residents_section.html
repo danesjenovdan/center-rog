@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+
+<section class="color-scheme-dark-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>{{ value.title }}</h1>
+                <p>{{ value.intro_text }}</p>
+                <div class="row">
+                {% for resident in residents %}
+                    <div class="col-4">
+                        {{ resident }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

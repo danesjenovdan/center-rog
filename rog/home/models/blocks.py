@@ -4,7 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from .pages import LabPage, StudioPage, MarketStorePage
+from .pages import LabPage, StudioPage, MarketStorePage, ResidencePage
 from news.models import NewsPage
 from events.models import EventPage
 
@@ -183,6 +183,24 @@ class ColoredTextBlock(ColoredStructBlock):
         template = "home/blocks/colored_text_section.html",
 
 
+def get_residents():
+    return [(resident.id, resident.title) for resident in ResidencePage.objects.all()]
+
+class ResidentsBlock(blocks.StructBlock):
+    title = blocks.CharBlock(label=_("Naslov"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
+    residents = blocks.MultipleChoiceBlock(label=_("Rezidenti"), choices=get_residents)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["residents"] = ResidencePage.objects.filter(id__in=value["residents"])
+        return context
+
+    class Meta:
+        label = _("ROG rezidenti")
+        template = "home/blocks/residents_section.html",
+
+
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
     labs_section = LabsBlock()
@@ -194,6 +212,7 @@ class ModuleBlock(blocks.StreamBlock):
     marketplace = MarketplaceBlock()
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
+    residents_section = ResidentsBlock()
 
     class Meta:
         label = _("Modul")
