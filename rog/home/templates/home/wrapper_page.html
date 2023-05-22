@@ -5,6 +5,22 @@
 
 {% endblock extra_css %}
 
+{% block extra_js %}
+<script>
+    const myCollapsible = document.getElementById('navbar-collapsable-menu')
+
+    myCollapsible.addEventListener('hide.bs.collapse', event => {
+        document.getElementById('primary-navigation').classList.toggle("custom-navigation-show");
+    })
+
+    myCollapsible.addEventListener('show.bs.collapse', event => {
+        document.getElementById('primary-navigation').classList.toggle("custom-navigation-show");
+    })
+
+</script>
+{% endblock extra_js %}
+
+
 {% block content %}
 
 {% include "home/includes/header.html" %}
