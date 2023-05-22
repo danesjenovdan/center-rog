@@ -1,6 +1,15 @@
 // Set Bootstrap variables here.
 // This file is included before Bootstrap is compiled.
 
+$grid-breakpoints: (
+  xs: 0,
+  sm: 480px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1500px
+) !default;
+
 // color scheme variables
 $cs-brown: #5E2610;
 $cs-light-gray: #E0E6EE;
@@ -25,9 +34,21 @@ $lg-font-size: 40px;
 $xl-font-size: 50px;
 $xxl-font-size: 60px;
 
+// font families
+$font-family-rog: "ROGEdition-60";
+$font-family-rog-italic: "ROGEdition-60";
+
+$font-family-rog-bold: "ROGEdition-70";
+$font-family-rog-bold-italic: "ROGEdition-70";
+
+$font-family-rog-bolder: "ROGEdition-80";
+$font-family-rog-bolder-italic: "ROGEdition-80";
+
+$font-family-rog-boldest: "ROGEdition-100";
+$font-family-rog-boldest-italic: "ROGEdition-100";
+
 // cards
 $card-border-radius: 0;
-
 
 // $body-color: #000;
 // $font-family-sans-serif: 'Comfortaa', sans-serif;
