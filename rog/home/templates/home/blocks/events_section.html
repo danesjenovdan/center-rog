@@ -1,17 +1,18 @@
 {% load wagtailcore_tags %}
 
-<section class="color-scheme-light-gray">
+<section class="color-scheme-light-gray events-section position-relative">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>{{ value.title }}</h1>
-                <div class="row">
-                {% for event in value.exposed_events %}
-                    <div class="col-4">
-                        {% include "events/includes/card.html" with event=event.value %}
-                    </div>
-                {% endfor %}
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+                <h2>{{ value.title }}</h2>
             </div>
+        </div>
+    </div>
+    <div class="container-fluid events-container">
+        <div class="row position-absolute w-100">
+            {% for event in value.exposed_events %}
+                {% include "events/includes/card.html" with event=event.value %}
+            {% endfor %}
         </div>
     </div>
 </section>

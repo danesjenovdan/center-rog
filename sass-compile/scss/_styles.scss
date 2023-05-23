@@ -484,5 +484,27 @@ body {
                 text-decoration: none;
             }
         }
+
+        &.events-section {
+            h2 {
+                margin-bottom: 40px;
+            }
+
+            .events-container {
+                height: 400px;
+    
+                .row {
+                    left: 0;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+    
+                .card {
+                    margin-left: 15px;
+                    margin-right: 15px;
+                }
+                
+            }
+        }
     }
 }
