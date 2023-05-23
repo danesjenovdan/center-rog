@@ -46,6 +46,18 @@ LabListPage._meta.get_field('color_scheme').default = 'light-green'
 
 # profile pages
 class StudioPage(ObjectProfilePage):
+    thumbnail = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('thumbnail'),
+    ]
+
     parent_page_types = [
         'home.StudioListPage'
     ]
