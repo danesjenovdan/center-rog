@@ -366,8 +366,6 @@ body {
         opacity: 0;
         width: 100%;
 
-        
-
         &.collapse:not(.show) {
             display: flex;
             visibility: hidden;
@@ -465,6 +463,26 @@ body {
         p {
             font-size: $xs-font-size;
             margin-bottom: 30px;
+        }
+
+        &.white-list-section {
+            background-color: white;
+
+            h2 {
+                color: $cs-red;
+                margin-bottom: 40px;
+            }
+
+            p {
+                font-size: $md-font-size;
+                color: $cs-dark-green;
+            }
+
+            li a {
+                font-size: $md-font-size;
+                color: $cs-dark-blue;
+                text-decoration: none;
+            }
         }
     }
 }
