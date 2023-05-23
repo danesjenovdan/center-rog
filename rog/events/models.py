@@ -30,12 +30,16 @@ class EventPage(BasePage):
         EventCategory, null=True, blank=True, on_delete=models.SET_NULL)
     start_time = models.TimeField()
     end_time = models.TimeField()
+    start_day = models.DateField()
+    end_day = models.DateField()
 
     content_panels = Page.content_panels + [
         FieldPanel('short_description'),
         FieldPanel('long_description'),
         FieldPanel('thumbnail'),
         FieldPanel('category'),
+        FieldPanel('start_day'),
+        FieldPanel('end_day'),
         FieldPanel('start_time'),
         FieldPanel('end_time'),
     ]

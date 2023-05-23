@@ -415,3 +415,31 @@ body {
     }
 
 }
+
+.events-card,
+.news-card {
+    height: 400px;
+    width: 250px;
+    padding: 30px;
+
+    img + .card-body {
+        margin-top: 10px;
+    }
+
+    .card-body {
+        padding: 0;
+
+        p {
+            font-size: $xxs-font-size;
+            margin-bottom: 2px;
+        }
+
+        .card-title {
+            font-size: $xs-font-size;
+            font-weight: 400;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    }
+    
+}

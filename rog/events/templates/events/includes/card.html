@@ -1,10 +1,10 @@
 {% load wagtailimages_tags %}
 
-<div class="card news-card {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
+<div class="card events-card d-flex flex-column justify-content-between {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
   <div class="card-body">
-    <h6 class="card-subtitle">{{ event.category.name }}</h6>
-    <h6 class="card-subtitle mb-2">{{ event.start_time }}</h6>
-    <h5 class="card-title">{{ event.title }}</h5>
+    <p class="event-category">{{ event.category.name }}</p>
+    <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {{ event.start_time }}</p>
+    <h4 class="card-title">{{ event.title }}</h4>
     <!-- <p class="card-text">
       {{ event.short_description }}
     </p> -->
