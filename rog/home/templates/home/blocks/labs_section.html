@@ -1,18 +1,21 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 <section class="color-scheme-light-green">
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1>{{ value.title }}</h1>
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-10 col-xxl-8">
+                <h2>{{ value.title }}</h2>
                 <p>{{ value.intro_text }}</p>
-                <div class="row">
-                {% for lab in labs %}
-                    <div class="col-4">
-                        {{ lab }}
-                    </div>
-                {% endfor %}
             </div>
+        </div>
+        <div class="row">
+        {% for lab in labs %}
+            <div class="col-md-4 col-xxl-3">
+                <a href="{{ lab.get_url }}">
+                    {% image lab.thumbnail original class="img-fluid" alt="..." %}
+                </a>
+            </div>
+        {% endfor %}
         </div>
     </div>
 </section>

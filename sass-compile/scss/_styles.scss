@@ -1,6 +1,12 @@
 // Add custom styles here.
 // This file is included after Bootstrap.
 
+.flex-page-height {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .box-emphasized {
     .box {
         border: 2px solid black;
@@ -364,6 +370,7 @@ body {
 
         &.collapse:not(.show) {
             display: flex;
+            visibility: hidden;
         }
 
         &.collapsing {
@@ -442,4 +449,22 @@ body {
         }
     }
     
+}
+
+.template-homepage {
+    section {
+        padding: 60px 0;
+
+        h2 {
+            font-size: $lg-font-size;
+            font-weight: 400;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: $xs-font-size;
+            margin-bottom: 30px;
+        }
+    }
 }

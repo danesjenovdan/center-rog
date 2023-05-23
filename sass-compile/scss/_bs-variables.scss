@@ -10,6 +10,14 @@ $grid-breakpoints: (
   xxl: 1500px
 ) !default;
 
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 800px,
+  xxl: 1320px
+);
+
 // color scheme variables
 $cs-brown: #5E2610;
 $cs-light-gray: #E0E6EE;

@@ -70,6 +70,26 @@ MarketStorePage._meta.get_field('color_scheme').default = 'brown'
 
 
 class LabPage(ObjectProfilePage):
+    thumbnail = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+    thumbnail_animation = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel('thumbnail'),
+        FieldPanel('thumbnail_animation'),
+    ]
+
     parent_page_types = [
         'home.LabListPage'
     ]

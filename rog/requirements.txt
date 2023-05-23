@@ -6,3 +6,4 @@ boto3
 requests==2.28.2
 xmltodict==0.13.0
 wagtail-localize==1.5
+Pillow==9.5
