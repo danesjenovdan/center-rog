@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wagtailimages', '0025_alter_image_file_alter_rendition_file'),
-        ('home', '0015_labpage_thumbnail_labpage_thumbnail_animation'),
+        ('home', '0007_labpage_thumbnail_labpage_thumbnail_animation'),
     ]
 
     operations = [
