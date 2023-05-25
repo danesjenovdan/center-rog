@@ -149,18 +149,12 @@ class StudiosBlock(blocks.StructBlock):
         template = "home/blocks/studios_section.html",
 
 
-def get_markets():
-    return [(market.id, market.title) for market in MarketStorePage.objects.all()]
-
 class MarketplaceBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    markets = blocks.MultipleChoiceBlock(label=_("Trgovine"), choices=get_markets)
-
-    def get_context(self, value, parent_context=None):
-        context = super().get_context(value, parent_context=parent_context)
-        context["markets"] = MarketStorePage.objects.filter(id__in=value["markets"])
-        return context
+    markets = blocks.ListBlock(ColoredStructBlock([
+        ('market', blocks.PageChooserBlock(page_type="home.MarketStorePage")),
+    ]))
 
     class Meta:
         label = _("Tržnica")
