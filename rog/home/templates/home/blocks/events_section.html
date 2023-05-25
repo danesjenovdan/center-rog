@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="container-fluid events-container">
-        <div class="row position-absolute w-100">
+        <div class="row">
             {% for event in value.exposed_events %}
                 {% include "events/includes/card.html" with event=event.value %}
             {% endfor %}

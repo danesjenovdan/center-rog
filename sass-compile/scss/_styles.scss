@@ -500,12 +500,14 @@ body {
             }
         }
 
-        &.events-section {
+        &.events-section,
+        &.news-section {
             h2 {
                 margin-bottom: 40px;
             }
 
-            .events-container {    
+            .events-container,
+            .news-container {    
                 .row {
                     padding-left: 15px;
                     padding-right: 15px;
