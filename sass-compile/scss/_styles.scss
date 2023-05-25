@@ -556,5 +556,21 @@ body {
                 object-fit: cover;
             }
         }
+
+        &.colored-text-section {
+
+            .with-image {
+                p {
+                    font-size: $xs-font-size;
+                }
+            }
+
+            .no-image {
+                p {
+                    font-size: $md-font-size;
+                }
+            }
+            
+        }
     }
 }
