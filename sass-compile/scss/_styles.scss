@@ -546,5 +546,15 @@ body {
                 font-weight: 400;
             }
         }
+
+        &.image-embed {
+            padding: 0;
+
+            img {
+                height: 90vh;
+                width: 100%;
+                object-fit: cover;
+            }
+        }
     }
 }
