@@ -182,18 +182,14 @@ class ColoredTextBlock(ColoredStructBlock):
         template = "home/blocks/colored_text_section.html",
 
 
+# TODO: zbrisi, ko se bodo pocistile migracije
 def get_residents():
     return [(resident.id, resident.title) for resident in ResidencePage.objects.all()]
 
 class ResidentsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    residents = blocks.MultipleChoiceBlock(label=_("Rezidenti"), choices=get_residents)
-
-    def get_context(self, value, parent_context=None):
-        context = super().get_context(value, parent_context=parent_context)
-        context["residents"] = ResidencePage.objects.filter(id__in=value["residents"])
-        return context
+    residents = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.ResidencePage"), min_num=1, max_num=5)
 
     class Meta:
         label = _("ROG rezidenti")
