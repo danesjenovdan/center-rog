@@ -1,13 +1,12 @@
 from django.core.management.base import BaseCommand
+from django.core.files.images import ImageFile
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from datetime import datetime, date, time
-
 import json
 
-from django.core.files.images import ImageFile
 from wagtail.images.models import Image
 
 from home import models
@@ -341,7 +340,48 @@ class Command(BaseCommand):
         eventslistpage.add_child(instance=event2)
         eventslistpage.add_child(instance=event3)
 
-        
+        # add pages to header
+        meta_settings = models.MetaSettings.load()
+        meta_settings.header_links = json.dumps([
+            {
+                "type": "page_link",
+                "value": {
+                    "page": newslistpage.pk
+                }
+            },
+            {
+                "type": "page_link",
+                "value": {
+                    "page": eventslistpage.pk
+                }
+            },
+            {
+                "type": "page_link",
+                "value": {
+                    "page": studiolistpage.pk
+                }
+            },
+            {
+                "type": "page_link",
+                "value": {
+                    "page": marketstorelistpage.pk
+                }
+            },
+            {
+                "type": "page_link",
+                "value": {
+                    "page": residencelistpage.pk
+                }
+            },
+            {
+                "type": "page_link",
+                "value": {
+                    "page": lablistpage.pk
+                }
+            },
+        ])
+
+        meta_settings.save()
 
         ## create homepage models
         homepage.body = json.dumps([
