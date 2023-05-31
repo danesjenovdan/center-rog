@@ -1,14 +1,18 @@
 {% load wagtailcore_tags %}
 
-<div class="row">
-    <div class="col">
-        <h1>{{ value.title }}</h1>
-        <div class="row">
-        {% for news_page in value.news %}
-            <div class="col-4">
-                <h5>{{ news_page.value.title }}</h5>
-                <p>{{ news_page.value.short_description }}</p>
+<section class="color-scheme-light-gray news-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+                <h2>{{ value.title }}</h2>
             </div>
-        {% endfor %}
+        </div>
     </div>
-</div>
+    <div class="container-fluid news-container">
+        <div class="row">
+            {% for news_page in value.exposed_news %}
+                {% include "news/includes/card.html" with news=news_page.value %}
+            {% endfor %}
+        </div>
+    </div>
+</section>

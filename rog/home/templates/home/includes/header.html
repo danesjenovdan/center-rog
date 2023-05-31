@@ -1,48 +1,66 @@
-{% load static wagtailcore_tags %}
+{% load static i18n wagtailcore_tags %}
 {% wagtail_site as current_site %}
 
-<header>
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a href="/" class="navbar-brand">
-        CENTER ROG
+<header class="fixed-top">
+  <nav id="primary-navigation" class="position-relative">
+    <div id="primary-navigation-background" class="position-absolute"></div>
+    <div class="navbar px-4 justify-content-end">
+      <a href="/" class="navbar-brand position-absolute">
+        <img src="{% static 'images/Center-Rog-logo.svg' %}" />
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarSupportedContent">
-        <ul class="navbar-nav">
-          {% for navigation_link in settings.home.MetaSettings.header_links %}
-          <li class="nav-item">
-            <a class="nav-link {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
-                href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
-                {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
-              {% if navigation_link.value.name %}
-                {{ navigation_link.value.name }}
-              {% elif navigation_link.value.page %}
-                {{ navigation_link.value.page.title }}
-              {% endif %}
-            </a>
-          </li>
+      <ul class="navbar-nav flex-row align-items-center">
+        <!-- prevodi -->
+        <li class="nav-item mx-2">
+          {% for translation in page.get_translations.live %}
+              {% get_language_info for translation.locale.language_code as lang %}
+              <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ language_code }}" class="nav-link">
+                  {{ lang.name_local }}
+              </a>
           {% endfor %}
-        </ul>
-        
-        <ul class="navbar-nav">
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="/profil">Moj profil</a>
+        </li>
+        <!-- profile / sign in  -->
+        {% if user.is_authenticated %}
+        <li class="nav-item mx-2">
+          <a class="primary-button primary-button-blue button-medium" href="/profil">Moj profil</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="/odjava">Odjava</a>
+        </li> -->
+        {% else %}
+        <li class="nav-item">
+          <a class="primary-button primary-button-blue button-medium" href="/prijava">Prijava</a>
+        </li>
+        {% endif %}
+      </ul>
+      <!-- toggler -->
+      <button class="navbar-toggler ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapsable-menu" aria-controls="navbar-collapsable-menu" aria-expanded="false" aria-label="Toggle navigation">
+        <div id="custom-navbar-toggler">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
+    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start" id="navbar-collapsable-menu">
+      {% for navigation_link in settings.home.MetaSettings.header_links %}
+        {% if forloop.counter0|divisibleby:3 %}
+          <ul class="col-3 navbar-nav">
+        {% endif %}
+            <li class="nav-item">
+              <a class="nav-link pb-2 {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
+                  href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
+                  {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
+                {% if navigation_link.value.name %}
+                  {{ navigation_link.value.name }}
+                {% elif navigation_link.value.page %}
+                  {{ navigation_link.value.page.title }}
+                {% endif %}
+              </a>
             </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/odjava">Odjava</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="/prijava">Prijava</a>
-          </li>
-          {% endif %}
-          </li>
-        </ul>
-      </div>
+        {% if forloop.counter|divisibleby:3 %}
+          </ul>
+        {% endif %}
+      {% endfor %}
     </div>
   </nav>
 </header>

@@ -29,9 +29,12 @@ INSTALLED_APPS = [
     "users",
     "events",
     "news",
+    "wagtail_localize",
+    "wagtail_localize.locales",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
+    "wagtail.contrib.modeladmin",
     "wagtail.embeds",
     "wagtail.sites",
     "wagtail.users",
@@ -59,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -123,18 +127,25 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "sl-SI"
+LANGUAGE_CODE = "sl"
 
 TIME_ZONE = "Europe/Ljubljana"
 
 USE_I18N = True
+WAGTAIL_I18N_ENABLED = True
 
 USE_L10N = True
 
 USE_TZ = True
 
+# possible values of the language_code field
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
+    ('en', "English"),
+    ('sl', "Slovenian"),
+]
 
-# User
+
+# User settings
 AUTH_USER_MODEL = 'users.User'
 WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
@@ -188,3 +199,25 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = "http://example.com"
 
 WAGTAIL_ALLOW_UNICODE_SLUGS = False
+
+# Prima settings
+PRIMA_USERNAME = os.getenv('PRIMA_USERNAME', 'example')
+PRIMA_PASSWORD = os.getenv('PRIMA_PASSWORD', 'example')
+PRIMA_URL = "https://centerrog.primacloud.si/bin/sysfcgi.fx"
+
+# Custom
+COLOR_SCHEMES = [
+    ("brown", "Rjava"),
+    ("light-gray", "Svetlo siva"),
+    ("dark-gray", "Temno siva"),
+    ("light-blue", "Svetlo modra"),
+    ("dark-blue", "Temno modra"),
+    ("light-green", "Svetlo zelena"),
+    ("dark-green", "Temno zelena"),
+    ("purple", "Vijolična"),
+    ("red", "Rdeča"),
+    ("orange", "Oranžna"),
+    ("pink", "Roza"),
+    ("yellow", "Rumena"),
+    ("white", "Bela"),
+]

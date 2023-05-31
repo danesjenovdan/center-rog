@@ -1,0 +1,92 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section class="color-scheme-light-gray bulletin-board">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="text-center">{{ value.title }}</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-4 col-xxl-3">
+        {% include "events/includes/card.html" with event=event %}
+        <div class="bulletin-board-link">
+          <a href="{% pageurl events_list %}">Poglej vse dogodke</a>
+        </div>
+      </div>
+      <div class="d-none col-xxl-3">
+        {% include "news/includes/card.html" with news=news %}
+        <div class="bulletin-board-link">
+          <a href="{% pageurl events_list %}">Poglej vse novice</a>
+        </div>
+      </div>
+      <div class="col-xl-8 col-xxl-6">
+        <div class="row">
+          <div class="col-6">
+            <div class="labs-section">
+              <a href="{% pageurl lab %}">
+                {% image lab.thumbnail original class="img-fluid" alt="..." %}
+              </a>
+              <div class="bulletin-board-link">
+                <a href="{% pageurl labs_list %}">Poglej vse labe</a>
+              </div>
+            </div>
+            <div class="market-section my-4">
+              <div class="markets-container">
+                <div class="color-scheme-brown py-3">
+                  <a
+                    href="{% pageurl markets.0.localized %}"
+                    class="text-center"
+                  >
+                    <h4 class="m-0">{{ markets.0.localized }}</h4>
+                  </a>
+                </div>
+                <div class="color-scheme-light-blue py-3">
+                  <a
+                    href="{% pageurl markets.1.localized %}"
+                    class="text-center"
+                  >
+                    <h4 class="m-0">{{ markets.1.localized }}</h4>
+                  </a>
+                </div>
+              </div>
+              <div class="bulletin-board-link">
+                <a href="{% pageurl markets_list %}">Poglej Rog Market</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <a
+              href="{% pageurl studios_list %}"
+              class="color-scheme-dark-green studios-link"
+            >
+              Poglej kdo vse je v naših studiih
+            </a>
+            <div class="notice-wrapper color-scheme-white">
+              <div class="tape"></div>
+              <div class="notice">{{ value.notice }}</div>
+              <div class="tape"></div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="residents-section">
+              <div class="doorbell">
+                <div class="resident">
+                  <a
+                    href="{% pageurl residents_list %}"
+                    class="doorbell-button"
+                  ></a>
+                  <div class="resident-name">
+                    <div class="paper">Poglej naše rezidence</div>
+                    <div class="tape"></div>
+                    <div class="tape"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

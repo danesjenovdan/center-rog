@@ -1,0 +1,57 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container">
+
+    {% block profile_page_header %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">{{ page.title }}</h1>
+        </div>
+    </div>
+    {% endblock profile_page_header %}
+    
+    {% block profile_page_body %}
+    {% block profile_page_intro %}
+    <div class="row">
+        
+        <div class="col-6">
+            {% block profile_page_desc %}
+            <p>{{ page.description }}</p>
+            {% endblock profile_page_desc %}
+        </div>
+        
+        <div class="col-6">
+            {% block profile_page_contact_information %}
+            <div>
+                {{ page.email }}
+                {{ page.phone }}
+                {% for working_hours in page.working_hours %}
+                    {{ working_hours.value.day }}
+                    {{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}
+                {% endfor %}
+            </div>
+            {% endblock profile_page_contact_information %}
+
+            {% block profile_page_working_hours %}
+            {% endblock profile_page_working_hours %}
+            
+        </div>
+        
+    </div>
+    {% endblock profile_page_intro %}
+    {% endblock profile_page_body %}
+
+    {% block profile_page_see_more %}
+    {% endblock profile_page_see_more %}
+</div>
+
+{% endblock page_body %}

@@ -19,6 +19,8 @@ services:
       DB_NAME: wagtail
       DB_USERNAME: wagtail
       DB_PASSWORD: changeme
+      PRIMA_USERNAME: "${PRIMA_USERNAME}"
+      PRIMA_PASSWORD: "${PRIMA_PASSWORD}"
     depends_on:
       - db
 

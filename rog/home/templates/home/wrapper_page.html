@@ -5,15 +5,94 @@
 
 {% endblock extra_css %}
 
+{% block extra_js %}
+<script>
+    const myCollapsible = document.getElementById('navbar-collapsable-menu')
+
+    myCollapsible.addEventListener('hide.bs.collapse', event => {
+        document.getElementById('primary-navigation').classList.toggle("custom-navigation-show");
+    })
+
+    myCollapsible.addEventListener('show.bs.collapse', event => {
+        document.getElementById('primary-navigation').classList.toggle("custom-navigation-show");
+    })
+
+</script>
+{% endblock extra_js %}
+
+
 {% block content %}
 
 {% include "home/includes/header.html" %}
 
-<main class="flex-page-height">
+<main class="flex-page-height {% if page.color_scheme %}color-scheme-{{ page.color_scheme }}{% endif %}">
 
-    <div class="container-fluid flex-grow-1">
+    <div class="flex-grow-1">
         {% block page_body %}{% endblock page_body %}
     </div>
+
+    <!-- button testing -->
+    <!-- <div class="container">
+        <div>
+            <a type="button" href="/" class="primary-button button-small">gumb</a>
+            <button class="primary-button button-small">gumb</button>
+    
+            <a type="button" href="/" class="secondary-button button-small">gumb</a>
+            <button class="secondary-button button-small">gumb</button>
+    
+            <a href="/" class="link">gumb</a>
+        </div>
+        
+        <div>
+            <a type="button" href="/" class="primary-button button-small">Primarni gumb a button</a>
+            <button class="primary-button button-small">Primarni gumb button</button>
+    
+            <a type="button" href="/" class="secondary-button button-small">Sekundarni gumb a button</a>
+            <button class="secondary-button button-small">Sekundarni gumb button</button>
+    
+            <a href="/" class="link">Povezava</a>
+        </div>
+    
+        <div>
+            <a type="button" href="/" class="primary-button button-medium">gumb</a>
+            <button class="primary-button button-medium">gumb</button>
+    
+            <a type="button" href="/" class="secondary-button button-medium">gumb</a>
+            <button class="secondary-button button-medium">gumb</button>
+    
+            <a href="/" class="link">gumb</a>
+        </div>
+    
+        <div>
+            <a type="button" href="/" class="primary-button button-medium">Primarni gumb a button</a>
+            <button class="primary-button button-medium">Primarni gumb button</button>
+    
+            <a type="button" href="/" class="secondary-button button-medium">Sekundarni gumb a button</a>
+            <button class="secondary-button button-medium">Sekundarni gumb button</button>
+    
+            <a href="/" class="link">Povezava</a>
+        </div>
+    
+        <div>
+            <a type="button" href="/" class="primary-button button-large">gumb</a>
+            <button class="primary-button button-large">gumb</button>
+    
+            <a type="button" href="/" class="secondary-button button-large">gumb</a>
+            <button class="secondary-button button-large">gumb</button>
+    
+            <a href="/" class="link">gumb</a>
+        </div>
+    
+        <div>
+            <a type="button" href="/" class="primary-button button-large">Primarni gumb a button</a>
+            <button class="primary-button button-large">Primarni gumb button</button>
+    
+            <a type="button" href="/" class="secondary-button button-large">Sekundarni gumb a button</a>
+            <button class="secondary-button button-large">Sekundarni gumb button</button>
+    
+            <a href="/" class="link">Povezava</a>
+        </div>
+    </div> -->
     
 </main>
 
