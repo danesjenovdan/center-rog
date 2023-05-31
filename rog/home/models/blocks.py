@@ -4,9 +4,11 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-from .pages import LabPage, StudioPage, MarketStorePage, ResidencePage
-from news.models import NewsPage
-from events.models import EventPage
+from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
+from news.models import NewsPage, NewsListPage
+from events.models import EventPage, EventListPage
+
+import random
 
 
 class ColoredStructBlock(blocks.StructBlock):
@@ -51,13 +53,40 @@ class ButtonsBlock(blocks.StreamBlock):
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov"))
     notice = blocks.TextBlock(label=_("Obvestilo"))
+    event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek"), page_type="events.EventPage")
+    news = blocks.PageChooserBlock(label=_("Izpostavljena novica"), page_type="news.NewsPage")
+
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        # exposed event
-        context["event"] = EventPage.objects.all().first()
-        # exposed news
-        context["news"] = NewsPage.objects.all().first()
+        # random event (TODO: samo prihajajoči)
+        events = list(EventPage.objects.all())
+        context["event"] = random.choice(events)
+        # random news
+        news = list(NewsPage.objects.all())
+        context["news"] = random.choice(news)
+        # random lab
+        labs = list(LabPage.objects.all())
+        context["lab"] = random.choice(labs)
+        # random markets
+        markets = list(MarketStorePage.objects.all())
+        context["markets"] = random.sample(markets, 2)
+        # random resident
+        # residents = list(ResidencePage.objects.all())
+        # context["resident"] = random.choice(residents)
+        # link to events
+        context["events_list"] = EventListPage.objects.all().first()
+        # link to news
+        context["news_list"] = NewsListPage.objects.all().first()
+        # link to studios
+        context["studios_list"] = StudioListPage.objects.all().first()
+        # link to labs
+        context["labs_list"] = LabListPage.objects.all().first()
+        # link to markets
+        context["markets_list"] = MarketStoreListPage.objects.all().first()
+        # link to residences
+        context["residents_list"] = ResidenceListPage.objects.all().first()
+
         return context
 
     class Meta:
