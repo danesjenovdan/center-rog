@@ -1,8 +1,39 @@
 {% extends "home/object_profile_page.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
-{% block body_class %}template-lab{% endblock %}
+{% block body_class %}{{ block.super }} template-lab{% endblock %}
 
-{% block extra_css %}
+{% block container_class %}lab-profile-container{% endblock %}
 
-{% endblock extra_css %}
+{% block hero_image %}
+{% include "home/blocks/image_embed.html" with value=page.image %}
+{% endblock hero_image %}
+
+{% block profile_page_desc %}
+<div class="col-md-6 col-xl-8 intro-text">
+    <p>{{ page.description }}</p>
+</div>
+{% endblock profile_page_desc %}
+
+{% block profile_page_contact_information %}
+<div class="col-md-6 col-xl-4">
+    <p>
+        Vodja laba:<br />
+        {{ page.lab_lead }}
+    </p>
+    <p>
+        <a href="{{ page.email }}">e-pošta</a>
+    </p>
+    <p>
+        <a href="">termini usposabljanj</a>
+    </p>
+    <p>
+        <a href="">spletna usposabljanja</a>
+    </p>
+</div>
+{% endblock profile_page_contact_information %}
+
+{% block profile_page_content %}
+{% for tool in page.tools %}
+{% endfor %}
+{% endblock profile_page_content %}

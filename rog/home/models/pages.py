@@ -9,42 +9,14 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 
 from .base_pages import ObjectProfilePage, ObjectListPage
+from news.models import NewsPage
+from events.models import EventPage
+
+import random
 
 
-# list pages
-class StudioListPage(ObjectListPage):
-    subpage_types = [
-        'home.StudioPage',
-    ]
+### OBJECT PROFILE PAGES ###
 
-StudioListPage._meta.get_field('color_scheme').default = 'yellow'
-
-
-class MarketStoreListPage(ObjectListPage):
-    subpage_types = [
-        'home.MarketStorePage',
-    ]
-
-MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
-
-
-class ResidenceListPage(ObjectListPage):
-    subpage_types = [
-        'home.ResidencePage',
-    ]
-
-ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
-
-
-class LabListPage(ObjectListPage):
-    subpage_types = [
-        'home.LabPage',
-    ]
-
-LabListPage._meta.get_field('color_scheme').default = 'light-green'
-
-
-# profile pages
 class StudioPage(ObjectProfilePage):
     thumbnail = models.ForeignKey(
         'wagtailimages.Image',
@@ -113,4 +85,80 @@ class LibraryPage(ObjectProfilePage):
     pass
 
 LibraryPage._meta.get_field('color_scheme').default = 'pink'
+
+
+### OBJECT LIST PAGES ###
+
+class StudioListPage(ObjectListPage):
+    subpage_types = [
+        'home.StudioPage',
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["studios"] = StudioPage.objects.child_of(self).live()
+
+        return context
+
+StudioListPage._meta.get_field('color_scheme').default = 'yellow'
+
+
+class MarketStoreListPage(ObjectListPage):
+    subpage_types = [
+        'home.MarketStorePage',
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["markets"] = MarketStorePage.objects.child_of(self).live()
+
+        return context
+
+MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
+
+
+class ResidenceListPage(ObjectListPage):
+    subpage_types = [
+        'home.ResidencePage',
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["residents"] = ResidencePage.objects.child_of(self).live()
+
+        return context
+
+ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
+
+
+class LabListPage(ObjectListPage):
+    subpage_types = [
+        "home.LabPage",
+    ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["labs"] = LabPage.objects.child_of(self).live()
+
+        # see more
+        # random event
+        events = list(EventPage.objects.live())
+        context["event"] = random.choice(events)
+        # random news
+        news = list(NewsPage.objects.live())
+        context["news"] = random.choice(news)
+        # random lab
+        labs = list(context["labs"])
+        context["lab"] = random.choice(labs)
+        # random studio
+        studios = list(StudioPage.objects.live())
+        context["studio"] = random.choice(studios)
+
+        return context
+
+LabListPage._meta.get_field('color_scheme').default = 'light-green'
     

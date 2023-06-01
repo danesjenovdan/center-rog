@@ -22,10 +22,16 @@ class BasePage(Page):
 
 class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True)
+    show_see_more_section = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
         FieldPanel('intro_text'),
+        FieldPanel('show_see_more_section'),
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        return context
 
     class Meta:
         abstract = True
@@ -33,6 +39,13 @@ class ObjectListPage(BasePage):
 
 class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     # contact information
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=12, blank=True)
@@ -58,6 +71,7 @@ class ObjectProfilePage(BasePage):
     
     content_panels = Page.content_panels + [
         FieldPanel('description'),
+        FieldPanel('image'),
         MultiFieldPanel(
             [
                 FieldPanel('email'),

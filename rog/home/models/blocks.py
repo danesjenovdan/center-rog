@@ -124,11 +124,11 @@ def get_labs():
 class LabsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    labs = blocks.MultipleChoiceBlock(label=_("Izpostavljeni laboratoriji"), choices=get_labs)
+    labs = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.LabPage"), min_num=1, max_num=5, label=_("Izpostavljeni laboratoriji"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context['labs'] = LabPage.objects.filter(id__in=value["labs"])
+        context["labs_list"] = LabListPage.objects.all().first()
         return context
 
     class Meta:

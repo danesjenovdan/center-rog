@@ -1,9 +1,14 @@
 {% extends "home/object_list_page.html" %}
 {% load static %}
 
-{% block body_class %}template-studio-list{% endblock %}
+{% block body_class %}{{ block.super }} template-studio-list{% endblock %}
 
-{% block extra_css %}
-
-{% endblock extra_css %}
-
+{% block list_page_list %}
+<div class="row my-5">
+    {% for studio in studios %}
+    <div class="col-md-4 col-xxl-3">
+        {% include "home/includes/studio_card.html" with studio=studio %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock list_page_list %}

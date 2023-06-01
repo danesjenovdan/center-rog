@@ -1,0 +1,26 @@
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
+
+<section class="color-scheme-light-gray see-more-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2>Poglej še</h2>
+      </div>
+      <div class="col-xl-4 col-xxl-3">
+        {% include "events/includes/card.html" with event=event %}
+      </div>
+      <div class="col-xl-4 col-xxl-3">
+        {% include "news/includes/card.html" with news=news %}
+      </div>
+      <div class="col-xl-4 col-xxl-3 labs-section">
+        <a href="{{ lab.get_url }}" class="lab">
+          {% image lab.thumbnail original class="img-fluid" alt="..." %}
+          <h6>{{ lab.title }}</h6>
+        </a>
+      </div>
+      <div class="d-none d-xxl-block col-xxl-3">
+        {% include "home/includes/studio_card.html" with studio=studio %}
+      </div>
+    </div>
+  </div>
+</section>

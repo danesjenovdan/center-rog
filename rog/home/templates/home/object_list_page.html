@@ -9,7 +9,7 @@
 
 {% block page_body %}
 
-<div class="container">
+<div class="container list-container {% block container_class %}{% endblock %}">
     
     {% block list_page_header %}
     <div class="row">
@@ -22,11 +22,11 @@
     {% block list_page_body %}
 
         {% block list_page_intro %}
-        <div class="row">
+        <div class="row justify-content-center">
             
-            <div class="col-12">
+            <div class="col-10">
                 {% block list_page_desc %}
-                <p class="text-center">{{ page.intro_text }}</p>
+                <p class="intro">{{ page.intro_text }}</p>
                 {% endblock list_page_desc %}
             </div>
             
@@ -38,9 +38,12 @@
 
     {% endblock list_page_body %}
 
-    {% block list_page_see_more %}
-    {% endblock list_page_see_more %}
-
 </div>
+
+{% if page.show_see_more_section %}
+{% block list_page_see_more %}
+{% include "home/includes/see_more.html" %} <!-- with event=event.value -->
+{% endblock list_page_see_more %}
+{% endif %}
 
 {% endblock page_body %}

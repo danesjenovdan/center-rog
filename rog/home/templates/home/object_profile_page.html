@@ -9,7 +9,9 @@
 
 {% block page_body %}
 
-<div class="container">
+{% block hero_image %}{% endblock hero_image %}
+
+<div class="container object-profile-container {% block container_class %}{% endblock %}">
 
     {% block profile_page_header %}
     <div class="row">
@@ -20,34 +22,53 @@
     {% endblock profile_page_header %}
     
     {% block profile_page_body %}
+    
     {% block profile_page_intro %}
     <div class="row">
         
-        <div class="col-6">
-            {% block profile_page_desc %}
+        {% block profile_page_desc %}
+        <div class="col-6 intro-text">
             <p>{{ page.description }}</p>
-            {% endblock profile_page_desc %}
         </div>
+        {% endblock profile_page_desc %}
         
+        {% block profile_page_contact_information %}
         <div class="col-6">
-            {% block profile_page_contact_information %}
-            <div>
-                {{ page.email }}
-                {{ page.phone }}
-                {% for working_hours in page.working_hours %}
-                    {{ working_hours.value.day }}
-                    {{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}
-                {% endfor %}
+            <div class="contact-information color-scheme-white">
+                <div class="tape"></div>
+                <div class="notice">
+                    <p><a href="mailto:{{ page.email }}">e-pošta</a></p>
+                    <p>{{ page.phone }}</p>
+                    <p>Vsak element je lahko link, lahko pa samo tekst</p>
+                </div>
+                <div class="tape"></div>
             </div>
-            {% endblock profile_page_contact_information %}
 
-            {% block profile_page_working_hours %}
-            {% endblock profile_page_working_hours %}
-            
+            {% if page.working_hours %}
+            <div class="working-hours color-scheme-yellow">
+                <div class="tape"></div>
+                <div class="notice">
+                    {% for working_hours in page.working_hours %}
+                    <p>
+                        <span>{{ working_hours.value.day }}</span>
+                        <span>{{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}</span>
+                    </p>
+                    {% endfor %}
+                </div>
+                <div class="tape"></div>
+            </div>
+            {% endif %}
+
         </div>
+
+        {% endblock profile_page_contact_information %}
         
     </div>
     {% endblock profile_page_intro %}
+
+    {% block profile_page_content %}
+    {% endblock profile_page_content %}
+
     {% endblock profile_page_body %}
 
     {% block profile_page_see_more %}
