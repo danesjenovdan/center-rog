@@ -1,9 +1,31 @@
 {% extends "home/object_list_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags %}
 
-{% block body_class %}template-studio-list{% endblock %}
+{% block body_class %}{{ block.super }} template-studio-list{% endblock %}
 
-{% block extra_css %}
+{% block list_page_body %}
 
-{% endblock extra_css %}
+<div class="row">
+    <div class="col-xl-7">
+        <p class="intro">{{ page.intro_text }}</p>
+    </div>
 
+    <div class="col-xl-5 residents-section">
+        <div class="doorbell">
+            {% for resident in residents %}
+                <div class="resident">
+                    <a href="{% pageurl resident.localized %}" class="doorbell-button"></a>
+                    <div class="resident-name">
+                        <div class="paper">
+                            {{ resident }}
+                        </div>
+                        <div class="tape"></div>
+                        <div class="tape"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock list_page_body %}

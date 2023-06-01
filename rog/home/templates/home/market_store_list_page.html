@@ -1,9 +1,26 @@
 {% extends "home/object_list_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags %}
 
-{% block body_class %}template-studio-list{% endblock %}
+{% block body_class %}{{ block.super }} template-studio-list{% endblock %}
 
-{% block extra_css %}
+{% block list_page_intro %}
+<div class="row">
+    <div class="col-12">
+        {% block list_page_desc %}
+        <p class="intro">{{ page.intro_text }}</p>
+        {% endblock list_page_desc %}
+    </div>
+</div>
+{% endblock list_page_intro %}
 
-{% endblock extra_css %}
-
+{% block list_page_list %}
+<div class="row my-5">
+    {% for market in markets %}
+    <div class="color-scheme-{{ market.color }}">
+        <a href="{% pageurl market.localized %}" class="col-12 text-center py-3">
+            <h4 class="m-0">{{ market.localized }}</h4>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock list_page_list %}

@@ -285,141 +285,6 @@ body {
             }
         }   
     }
-
-    .residents-section {
-        .doorbell {
-            background-color: #F7F7F7;
-            box-shadow: 0px 2.57726px 2.57726px rgba(0, 0, 0, 0.25), inset -2px 2px 4px rgba(146, 146, 146, 0.4), inset 2.57726px -2.57726px 4px rgba(0, 0, 0, 0.23);
-            border-radius: 12px;
-            max-width: 400px;
-            padding: 30px;
-
-            .resident {
-                display: flex;
-
-                .resident-name {
-                    background: #D9D9D9;
-                    border: 1px solid #D9D9D9;
-                    box-shadow: inset 3.04px 1.04px 8.04px rgba(0, 0, 0, 0.25);
-                    border-radius: 4px;
-                    flex-grow: 1;
-                    padding: 10px;
-                    position: relative;
-                    display: flex;
-                    align-items: center;
-
-                    .paper {
-                        background-color: #FFFFFF;
-                        font-size: 18px;
-                        text-align: center;
-                        color: #000000;
-                        z-index: 10;
-                        flex-grow: 1;
-                        padding: 10px;
-                    }
-
-                    .tape {
-                        background: rgba(255, 255, 255, 0.3);
-                        position: absolute;
-                    }
-                }
-
-                .doorbell-button {
-                    display: block;
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 30px;
-                    background: radial-gradient(50% 50% at 50% 50%, #F0F0F0 0%, #D9D9D9 100%);
-                    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15), inset 0px 0.510827px 3.57579px rgba(0, 0, 0, 0.25), inset 0px 2.04331px 5.10827px #FFFFFF, inset -2.04331px -2.04331px 2.04331px rgba(0, 0, 0, 0.25);
-                    margin-right: 10px;
-                    flex-shrink: 0;
-                }
-
-                &:not(:last-child) {
-                    margin-bottom: 20px;
-                }
-
-                &:nth-child(1) {
-                    .paper {
-                        transform: matrix(1, -0.02, 0.02, 1, 0, 0);
-                        font-family: 'Times New Roman', Times, serif;                            
-                    }
-                }
-
-                &:nth-child(2) {
-                    .resident-name {
-                        padding: 10px 20px;
-                    }
-
-                    .paper {
-                        transform: matrix(1, 0.02, -0.02, 1, 0, 0);
-                        font-family: 'Arial Narrow', Arial, Helvetica, sans-serif;
-                        font-weight: 700;
-                        text-align: center;
-                    }
-
-                    .tape {
-                        width: 25px;
-                        height: 45px;
-
-                        &:not(:last-child) {
-                            left: 10px;
-                        }
-
-                        &:last-child {
-                            right: 10px;
-                        }
-                    }
-                }
-
-                &:nth-child(3) {
-                    .resident-name {
-                        padding: 10px 50px;
-                    }
-
-                    .paper {
-                        transform: matrix(1, -0.02, 0.02, 1, 0, 0);
-                        font-family: Arial, Helvetica, sans-serif;
-                        text-transform: uppercase;
-                    }
-
-                    .tape {
-                        transform: matrix(1, 0.02, -0.02, 1, 0, 0);
-                        height: 30px;
-                        left: 15px;
-                        right: 5px;
-                    }
-                }
-
-                &:nth-child(4) {
-                    .paper {
-                        font-family: $font-family-rog;
-                    }
-                }
-
-                &:nth-child(5) {
-                    .resident-name {
-                        padding: 10px 30px;
-                    }
-
-                    .paper {
-                        transform: matrix(1, 0.01, -0.02, 1, 0, 0);
-                        font-family: Arial, Helvetica, sans-serif;
-                        font-size: 14px;
-                        padding: 8px;
-                    }
-
-                    .tape {
-                        transform: matrix(1, 0.07, -0.07, 1, 0, 0);
-                        background: #F4F4F4;
-                        height: 38px;
-                        left: 40px;
-                        right: 40px;
-                    }
-                }
-            }
-        }
-    }
 }
 
 .labs-section {
@@ -431,6 +296,141 @@ body {
             text-align: center;
             font-size: $xs-font-size;
             margin: 10px 0;
+        }
+    }
+}
+
+.residents-section {
+    .doorbell {
+        background-color: #F7F7F7;
+        box-shadow: 0px 2.57726px 2.57726px rgba(0, 0, 0, 0.25), inset -2px 2px 4px rgba(146, 146, 146, 0.4), inset 2.57726px -2.57726px 4px rgba(0, 0, 0, 0.23);
+        border-radius: 12px;
+        max-width: 400px;
+        padding: 30px;
+
+        .resident {
+            display: flex;
+
+            .resident-name {
+                background: #D9D9D9;
+                border: 1px solid #D9D9D9;
+                box-shadow: inset 3.04px 1.04px 8.04px rgba(0, 0, 0, 0.25);
+                border-radius: 4px;
+                flex-grow: 1;
+                padding: 10px;
+                position: relative;
+                display: flex;
+                align-items: center;
+
+                .paper {
+                    background-color: #FFFFFF;
+                    font-size: 18px;
+                    text-align: center;
+                    color: #000000;
+                    z-index: 10;
+                    flex-grow: 1;
+                    padding: 10px;
+                }
+
+                .tape {
+                    background: rgba(255, 255, 255, 0.3);
+                    position: absolute;
+                }
+            }
+
+            .doorbell-button {
+                display: block;
+                width: 60px;
+                height: 60px;
+                border-radius: 30px;
+                background: radial-gradient(50% 50% at 50% 50%, #F0F0F0 0%, #D9D9D9 100%);
+                box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15), inset 0px 0.510827px 3.57579px rgba(0, 0, 0, 0.25), inset 0px 2.04331px 5.10827px #FFFFFF, inset -2.04331px -2.04331px 2.04331px rgba(0, 0, 0, 0.25);
+                margin-right: 10px;
+                flex-shrink: 0;
+            }
+
+            &:not(:last-child) {
+                margin-bottom: 20px;
+            }
+
+            &:nth-child(1) {
+                .paper {
+                    transform: matrix(1, -0.02, 0.02, 1, 0, 0);
+                    font-family: 'Times New Roman', Times, serif;                            
+                }
+            }
+
+            &:nth-child(2) {
+                .resident-name {
+                    padding: 10px 20px;
+                }
+
+                .paper {
+                    transform: matrix(1, 0.02, -0.02, 1, 0, 0);
+                    font-family: 'Arial Narrow', Arial, Helvetica, sans-serif;
+                    font-weight: 700;
+                    text-align: center;
+                }
+
+                .tape {
+                    width: 25px;
+                    height: 45px;
+
+                    &:not(:last-child) {
+                        left: 10px;
+                    }
+
+                    &:last-child {
+                        right: 10px;
+                    }
+                }
+            }
+
+            &:nth-child(3) {
+                .resident-name {
+                    padding: 10px 50px;
+                }
+
+                .paper {
+                    transform: matrix(1, -0.02, 0.02, 1, 0, 0);
+                    font-family: Arial, Helvetica, sans-serif;
+                    text-transform: uppercase;
+                }
+
+                .tape {
+                    transform: matrix(1, 0.02, -0.02, 1, 0, 0);
+                    height: 30px;
+                    left: 15px;
+                    right: 5px;
+                }
+            }
+
+            &:nth-child(4) {
+                .paper {
+                    font-family: $font-family-rog;
+                }
+            }
+
+            &:nth-child(5) {
+                .resident-name {
+                    padding: 10px 30px;
+                }
+
+                .paper {
+                    transform: matrix(1, 0.01, -0.02, 1, 0, 0);
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 14px;
+                    padding: 8px;
+                }
+
+                .tape {
+                    transform: matrix(1, 0.07, -0.07, 1, 0, 0);
+                    background: #F4F4F4;
+                    height: 38px;
+                    left: 40px;
+                    right: 40px;
+                }
+            }
         }
     }
 }
@@ -468,7 +468,7 @@ body {
             font-size: $xs-font-size;
         }
     }
-    
+
     .contact-information {
 
     }

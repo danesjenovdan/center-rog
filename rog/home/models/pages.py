@@ -102,6 +102,13 @@ class StudioListPage(ObjectListPage):
         'home.StudioPage',
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["studios"] = StudioPage.objects.child_of(self).live()
+
+        return context
+
 StudioListPage._meta.get_field('color_scheme').default = 'yellow'
 
 
@@ -110,6 +117,13 @@ class MarketStoreListPage(ObjectListPage):
         'home.MarketStorePage',
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["markets"] = MarketStorePage.objects.child_of(self).live()
+
+        return context
+
 MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
 
 
@@ -117,6 +131,13 @@ class ResidenceListPage(ObjectListPage):
     subpage_types = [
         'home.ResidencePage',
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["residents"] = ResidencePage.objects.child_of(self).live()
+
+        return context
 
 ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
 
