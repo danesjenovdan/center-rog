@@ -22,10 +22,16 @@ class BasePage(Page):
 
 class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True)
+    show_see_more_section = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
         FieldPanel('intro_text'),
+        FieldPanel('show_see_more_section'),
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        return context
 
     class Meta:
         abstract = True

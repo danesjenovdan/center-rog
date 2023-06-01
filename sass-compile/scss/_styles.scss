@@ -4,7 +4,7 @@
 .flex-page-height {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .box-emphasized {
@@ -66,366 +66,6 @@ body {
     height: 70px;
     font-size: $sm-font-size;
     padding: 22.5px 35px;
-}
-
-
-/* COLOR SCHEMES */
-
-.color-scheme-brown {
-    background-color: $cs-brown;
-    color: $cs-pink;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-brown;
-    }
-}
-
-.color-scheme-light-blue {
-    background-color: $cs-light-blue;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
-    }
-}
-
-.color-scheme-dark-gray {
-    background-color: $cs-dark-gray;
-    color: $cs-light-gray;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-gray;
-    }
-}
-
-.color-scheme-purple {
-    background-color: $cs-purple;
-    color: $cs-light-green;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-green;
-    }
-}
-
-.color-scheme-red {
-    background-color: $cs-red;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
-    }
-}
-
-.color-scheme-orange {
-    background-color: $cs-orange;
-    color: $cs-white;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-white;
-    }
-}
-
-.color-scheme-dark-blue {
-    background-color: $cs-dark-blue;
-    color: $cs-light-green;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-green;
-    }
-}
-
-.color-scheme-light-green {
-    background-color: $cs-light-green;
-    color: $cs-dark-blue;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-blue;
-    }
-}
-
-.color-scheme-dark-green {
-    background-color: $cs-dark-green;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
-    }
-}
-
-.color-scheme-pink {
-    background-color: $cs-pink;
-    color: $cs-brown;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-brown;
-    }
-}
-
-.color-scheme-light-gray {
-    background-color: $cs-light-gray;
-    color: $cs-dark-gray;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-gray;
-    }
-}
-
-.color-scheme-yellow {
-    background-color: $cs-yellow;
-    color: $cs-dark-green;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-green;
-    }
-}
-
-.color-scheme-white {
-    background-color: $cs-white;
-    color: $cs-dark-gray;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-gray;
-    }
-}
-
-
-#primary-navigation {
-
-    #primary-navigation-background {
-        -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 0%);
-        clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 0%);
-        height: 140px;
-        width: 100%;
-        background-color: #FFFFFF;
-        transition: clip-path 0.35s;
-    }
-
-    .navbar-toggler {
-        border: 0;
-
-        &:focus {
-            border: 0;
-            box-shadow: none;
-        }
-    }
-
-    .nav-link {
-        color: $cs-dark-gray;
-
-        &:hover {
-            color: $cs-light-blue;
-        }
-    }
-
-    @include media-breakpoint-up(xl) {
-        .nav-link {
-            font-size: $xs-font-size;
-        }
-    }
-
-    @include media-breakpoint-up(xxl) {
-        .nav-link {
-            font-size: $sm-font-size;
-        }
-    }
-
-    #custom-navbar-toggler {
-        width: 35px;
-        height: 20px;
-        position: relative;
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-        -webkit-transition: .5s ease-in-out;
-        -moz-transition: .5s ease-in-out;
-        -o-transition: .5s ease-in-out;
-        transition: .5s ease-in-out;
-        cursor: pointer;
-
-        span {
-            display: block;
-            position: absolute;
-            height: 2px;
-            width: 100%;
-            background: $cs-dark-gray;
-            border-radius: 2px;
-            opacity: 1;
-            left: 0;
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-            -webkit-transform-origin: left center;
-            -moz-transform-origin: left center;
-            -o-transform-origin: left center;
-            transform-origin: left center;
-            -webkit-transition: .25s ease-in-out;
-            -moz-transition: .25s ease-in-out;
-            -o-transition: .25s ease-in-out;
-            transition: .25s ease-in-out;
-
-            &:nth-child(1) {
-                top: 0px;
-            }
-
-            &:nth-child(2) {
-                top: 9px;
-            }
-
-            &:nth-child(3) {
-                top: 18px;
-            }
-        }
-    }
-
-    #navbar-collapsable-menu {
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%) translateY(-30px) rotate(3deg);
-        transform-origin: bottom right;
-        transition: all 0.35s ease;
-        opacity: 0;
-        width: 100%;
-
-        &.collapse:not(.show) {
-            display: flex;
-            visibility: hidden;
-        }
-
-        &.collapsing {
-            height: unset;
-            overflow: unset;
-        }
-
-        @include media-breakpoint-up(xl) {
-            width: 640px;
-        }
-
-        @include media-breakpoint-up(xxl) {}
-
-    }
-
-    .navbar-brand {
-        top: 10px;
-        left: 10px;
-        // filter: invert(100%);
-        // backdrop-filter: invert(100%);
-
-        img {
-            width: 140px;
-            height: auto;
-        }
-    }
-
-    &.custom-navigation-show {
-        #primary-navigation-background {
-            -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
-            clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
-        }
-
-        #custom-navbar-toggler {
-            span:nth-child(1) {
-                -webkit-transform: rotate(45deg);
-                -moz-transform: rotate(45deg);
-                -o-transform: rotate(45deg);
-                transform: rotate(45deg);
-            }
-
-            span:nth-child(2),
-            span:nth-child(3) {
-                -webkit-transform: rotate(-45deg);
-                -moz-transform: rotate(-45deg);
-                -o-transform: rotate(-45deg);
-                transform: rotate(-45deg);
-                top: 24px;
-            }
-        }
-
-        #navbar-collapsable-menu {
-            transform: translateX(-50%) rotate(0deg);
-            opacity: 1;
-        }
-    }
-
 }
 
 .events-card,
@@ -789,5 +429,50 @@ body {
                 }
             }
         }
+    }
+}
+
+.labs-section {
+    .lab {
+        color: $cs-dark-blue;
+        text-decoration: none;
+
+        h6 {
+            text-align: center;
+            font-size: $xs-font-size;
+            margin: 10px 0;
+        }
+    }
+}
+
+.template-object-list {
+    h1 {
+        margin-top: 40px;
+        margin-bottom: 30px;
+        font-size: $lg-font-size;
+    }
+
+    p.intro {
+        font-size: $xs-font-size;
+    }
+
+    .list-container {
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+}
+
+
+
+.see-more-section {
+    padding-top: 30px;
+    padding-bottom: 60px;
+
+    h2 {
+        color: $cs-dark-blue;
+        font-size: $lg-font-size;
+        font-weight: 400;
+        text-align: center;
+        margin-bottom: 30px;
     }
 }

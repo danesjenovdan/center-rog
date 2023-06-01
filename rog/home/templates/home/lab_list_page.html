@@ -1,9 +1,21 @@
 {% extends "home/object_list_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-lab-list{% endblock %}
+{% block body_class %}{{ block.super }} template-lab-list{% endblock %}
 
-{% block extra_css %}
+{% block container_class %}labs-list-container{% endblock %}
 
-{% endblock extra_css %}
+{% block list_page_list %}
 
+<div class="row labs-section">
+    {% for lab in labs %}
+    <div class="col-md-4 col-xxl-3">
+        <a href="{{ lab.get_url }}" class="lab">
+            {% image lab.thumbnail original class="img-fluid" alt="..." %}
+            <h6>{{ lab.title }}</h6>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock list_page_list %}
