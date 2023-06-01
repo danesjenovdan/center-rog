@@ -26,7 +26,7 @@ class StudioPage(ObjectProfilePage):
         related_name='+'
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = ObjectProfilePage.content_panels + [
         FieldPanel('thumbnail'),
     ]
 
@@ -69,7 +69,7 @@ class LabPage(ObjectProfilePage):
         related_name='+'
     )
 
-    content_panels = Page.content_panels + [
+    content_panels = ObjectProfilePage.content_panels + [
         FieldPanel('thumbnail'),
         FieldPanel('thumbnail_animation'),
     ]
