@@ -510,6 +510,49 @@ body {
             }
         }
 
+        .working-hours {
+            min-width: 260px;
+            position: relative;
+            margin-left: 50%;
+            display: inline-flex;
+            justify-content: center;
+            transform: translateX(-50%) rotate(-6deg);
+
+            .notice {
+                padding: 30px 10px;
+                font-size: $xs-font-size;
+                color: $cs-dark-gray;
+                flex-grow: 1;
+
+                p {
+                    margin-bottom: 0;
+                    display: flex;
+                    justify-content: space-between;
+
+                    span:first-of-type {
+                        padding-right: 10px;
+                    }
+                }
+            }
+
+            .tape {
+                background: rgba(255, 255, 255, 0.5);
+                width: 65px;
+                height: 25px;
+                position: absolute;
+            }
+
+            .tape:first-child {
+                transform: rotate(-10deg);
+                top: -10px;
+            }
+
+            .notice + .tape {
+                transform: rotate(-2deg);
+                bottom: -10px;
+            }
+        }
+
         &.lab-profile-container {
             padding-top: 0;
             padding-bottom: 0;

@@ -44,15 +44,22 @@
                 <div class="tape"></div>
             </div>
 
-            {% for working_hours in page.working_hours %}
-                {{ working_hours.value.day }}
-                {{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}
-            {% endfor %}
+            {% if page.working_hours %}
+            <div class="working-hours color-scheme-yellow">
+                <div class="tape"></div>
+                <div class="notice">
+                    {% for working_hours in page.working_hours %}
+                    <p>
+                        <span>{{ working_hours.value.day }}</span>
+                        <span>{{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}</span>
+                    </p>
+                    {% endfor %}
+                </div>
+                <div class="tape"></div>
+            </div>
+            {% endif %}
 
         </div>
-                
-        {% block profile_page_working_hours %}
-        {% endblock profile_page_working_hours %}
 
         {% endblock profile_page_contact_information %}
         
