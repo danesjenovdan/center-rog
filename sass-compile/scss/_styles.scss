@@ -462,26 +462,65 @@ body {
     }
 }
 
-.object-profile-container {
-    .intro-text {
-        p {
-            font-size: $xs-font-size;
+.template-profile {
+    .object-profile-container {
+        padding-top: 60px;
+        padding-bottom: 60px;
+
+        h1 {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            font-size: $lg-font-size;
+        }
+
+        .intro-text {
+            p {
+                font-size: $xs-font-size;
+            }
+        }
+    
+        .contact-information {
+            position: relative;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            transform: rotate(3deg);
+
+            .notice {
+                padding: 20px;
+                font-size: $xs-font-size;
+                flex-grow: 1;
+            }
+
+            .tape {
+                background: rgba(0, 140, 240, 0.74);
+                width: 65px;
+                height: 25px;
+                position: absolute;
+            }
+
+            .tape:first-child {
+                transform: rotate(2deg);
+                top: -10px;
+            }
+
+            .notice + .tape {
+                transform: rotate(8deg);
+                bottom: -10px;
+            }
+        }
+
+        &.lab-profile-container {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            h1 {
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
         }
     }
-
-    .contact-information {
-
-    }
 }
-
-.lab-profile-container {
-    h1 {
-        margin-top: 30px;
-        margin-bottom: 20px;
-    }
-}
-
-
 
 .see-more-section {
     padding-top: 30px;

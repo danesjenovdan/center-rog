@@ -68,18 +68,10 @@ class LabPage(ObjectProfilePage):
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    hero_image = models.ForeignKey(
-        'wagtailimages.Image',
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
-    )
 
     content_panels = Page.content_panels + [
         FieldPanel('thumbnail'),
         FieldPanel('thumbnail_animation'),
-        FieldPanel('hero_image'),
     ]
 
     parent_page_types = [

@@ -39,6 +39,13 @@ class ObjectListPage(BasePage):
 
 class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
     # contact information
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=12, blank=True)
@@ -64,6 +71,7 @@ class ObjectProfilePage(BasePage):
     
     content_panels = Page.content_panels + [
         FieldPanel('description'),
+        FieldPanel('image'),
         MultiFieldPanel(
             [
                 FieldPanel('email'),

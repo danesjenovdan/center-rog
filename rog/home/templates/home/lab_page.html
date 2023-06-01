@@ -1,12 +1,12 @@
 {% extends "home/object_profile_page.html" %}
 {% load static wagtailimages_tags %}
 
-{% block body_class %}template-lab{% endblock %}
+{% block body_class %}{{ block.super }} template-lab{% endblock %}
 
 {% block container_class %}lab-profile-container{% endblock %}
 
 {% block hero_image %}
-{% include "home/blocks/image_embed.html" with value=page.hero_image %}
+{% include "home/blocks/image_embed.html" with value=page.image %}
 {% endblock hero_image %}
 
 {% block profile_page_desc %}
@@ -16,7 +16,7 @@
 {% endblock profile_page_desc %}
 
 {% block profile_page_contact_information %}
-<div class="col-md-6 col-xl-4 contact-information">
+<div class="col-md-6 col-xl-4">
     <p>
         Vodja laba:<br />
         {{ page.lab_lead }}
