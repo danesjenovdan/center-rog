@@ -255,16 +255,6 @@ body {
             }
         }
 
-        &.image-embed {
-            padding: 0;
-
-            img {
-                height: 90vh;
-                width: 100%;
-                object-fit: cover;
-            }
-        }
-
         &.colored-text-section {
 
             .with-image {
@@ -445,6 +435,16 @@ body {
     }
 }
 
+.image-embed {
+    padding: 0;
+
+    img {
+        height: 90vh;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+
 .template-object-list {
     h1 {
         margin-top: 40px;
@@ -459,6 +459,25 @@ body {
     .list-container {
         padding-top: 60px;
         padding-bottom: 60px;
+    }
+}
+
+.object-profile-container {
+    .intro-text {
+        p {
+            font-size: $xs-font-size;
+        }
+    }
+    
+    .contact-information {
+
+    }
+}
+
+.lab-profile-container {
+    h1 {
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
 }
 

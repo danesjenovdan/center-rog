@@ -9,7 +9,9 @@
 
 {% block page_body %}
 
-<div class="container">
+{% block hero_image %}{% endblock hero_image %}
+
+<div class="container object-profile-container {% block container_class %}{% endblock %}">
 
     {% block profile_page_header %}
     <div class="row">
@@ -20,17 +22,18 @@
     {% endblock profile_page_header %}
     
     {% block profile_page_body %}
+    
     {% block profile_page_intro %}
     <div class="row">
         
-        <div class="col-6">
-            {% block profile_page_desc %}
+        {% block profile_page_desc %}
+        <div class="col-6 intro-text">
             <p>{{ page.description }}</p>
-            {% endblock profile_page_desc %}
         </div>
+        {% endblock profile_page_desc %}
         
-        <div class="col-6">
-            {% block profile_page_contact_information %}
+        {% block profile_page_contact_information %}
+        <div class="col-6 contact-information">
             <div>
                 {{ page.email }}
                 {{ page.phone }}
@@ -39,15 +42,17 @@
                     {{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}
                 {% endfor %}
             </div>
-            {% endblock profile_page_contact_information %}
-
             {% block profile_page_working_hours %}
             {% endblock profile_page_working_hours %}
-            
         </div>
+        {% endblock profile_page_contact_information %}
         
     </div>
     {% endblock profile_page_intro %}
+
+    {% block profile_page_content %}
+    {% endblock profile_page_content %}
+
     {% endblock profile_page_body %}
 
     {% block profile_page_see_more %}
