@@ -15,11 +15,11 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            "username",
-            "first_name",
-            "last_name",
+            # "username",
+            # "first_name",
+            # "last_name",
             "email",
-            "phone",
+            # "phone",
             "password",
             # 'newsletter_permission'
         ]
