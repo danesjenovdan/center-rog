@@ -62,21 +62,17 @@ class SearchProfileView(TemplateView):
         return render(request, self.template_name, {'users': users})
 
 
-class ThankYouForRegistrationView(TemplateView):
-    template_name = "registration/thankyou.html"
-
-
 class RegistrationView(View):
     def get(self, request):
         form = RegisterForm()
         return render(request, "registration/registration.html", context={ "form": form })
 
     def post(self, request):
-        username = request.POST.get("username")
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
+        # username = request.POST.get("username")
+        # first_name = request.POST.get("first_name")
+        # last_name = request.POST.get("last_name")
         email = request.POST.get("email")
-        phone = request.POST.get("phone")
+        # phone = request.POST.get("phone")
         password = request.POST.get("password")
         # newsletter_permission = request.POST.get("newsletter_permission", False)
 
@@ -91,28 +87,78 @@ class RegistrationView(View):
         # )
 
         # prima api call
-        data, message = prima_api.createUser(first_name, last_name, username, email, phone)
-        print(data)
+        # data, message = prima_api.createUser(first_name, last_name, username, email, phone)
+        # print(data)
 
-        if data:
-            prima_id = data['UsrID']
+        # if data:
+        #     prima_id = data['UsrID']
 
-            user = User.objects.create_user(
-                username=username,
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                phone=phone,
-                password=password,
-                prima_id=int(prima_id),
-                is_active=True
-            ) # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
+        #     user = User.objects.create_user(
+        #         username=username,
+        #         first_name=first_name,
+        #         last_name=last_name,
+        #         email=email,
+        #         phone=phone,
+        #         password=password,
+        #         prima_id=int(prima_id),
+        #         is_active=True
+        #     ) # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
 
-            print("Novi user", user)
+        #     print("Novi user", user)
 
-            # Newsletter(
-            #     user=user, permission=True if newsletter_permission == "on" else False
-            # ).save()
-            # TODO send verification email
+        #     # Newsletter(
+        #     #     user=user, permission=True if newsletter_permission == "on" else False
+        #     # ).save()
+        #     # TODO send verification email
+
+        user = User.objects.create_user(
+            email=email,
+            password=password,
+            prima_id=99,
+            is_active=True
+        )
+
+        login(request, user)
         
-        return redirect("/hvala/")
+        # return redirect("/hvala/")
+
+        return redirect("registration-membership")
+    
+
+@method_decorator(login_required, name='dispatch')
+class RegistrationMembershipView(View):
+
+    def get(self, request):
+        user = request.user
+        return render(request, "registration/registration_2_membership.html", context={ "user": user })
+
+
+@method_decorator(login_required, name='dispatch')
+class RegistrationInformationView(View):
+
+    def get(self, request):
+        user = request.user
+        return render(request, "registration/registration_3_information.html", context={ "user": user })
+
+
+@method_decorator(login_required, name='dispatch')
+class RegistrationProfileView(View):
+
+    def get(self, request):
+        user = request.user
+        return render(request, "registration/registration_4_profile.html", context={ "user": user })
+
+
+@method_decorator(login_required, name='dispatch')
+class RegistrationPaymentView(View):
+
+    def get(self, request):
+        user = request.user
+        return render(request, "registration/registration_5_payment.html", context={ "user": user })
+
+
+@method_decorator(login_required, name='dispatch')
+class RegistrationSuccessView(View):
+
+    def get(self, request):
+        return render(request, "registration/registration_6_success.html")

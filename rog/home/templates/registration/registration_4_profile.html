@@ -1,0 +1,32 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Registracija{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container my-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8 col-lg-6 col-xl-4">
+
+            <h1>osebni profil</h1>
+
+            {{ user.email }}
+
+            <a href="http://localhost:8000/registracija/placilo">Naprej</a>
+        
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock page_body %}
