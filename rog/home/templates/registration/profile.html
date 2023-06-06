@@ -11,87 +11,50 @@
 
 {% block page_body %}
 
-<div class="container">
+<div class="container user-profile-container">
 
-    <div class="row my-4">
-
-        <div class="col">
-
-            <h1>{{ user.username }}</h1>
-
-            <div>{{ response }}</div>
-
-            <a href="/profil/isci" class="btn btn-primary">Poišči druge uporabnike</a>
-            <a href="/profil/uredi" class="btn btn-primary">Uredi profil</a>
-        
+    <div class="row">
+        <div class="col-12">
+            <h1>Živjo, {{ user.first_name }}!</h1>
         </div>
-
     </div>
 
     <div class="row my-4">
-
-        <div class="col">
-
-            <h4>Rezerviraj termin za uporabo orodja</h4>
-
-            <div>iframe...</div>
-
-        </div>
-
-    </div>
-
-    <div class="row my-4">
-
-        <div class="col">
-
-            <h4>Sredstva</h4>
-
-            <div>Število točk:</div>
-
-            <button class="btn btn-primary">dodaj sredstva</button>
-
+        <div class="col-12">
+            <h2>Denarnica</h2>
+            <p>Ure, ki jih še imate ta mesec: {{ user_balance }}</p>
+            <button class="btn btn-primary">zakupi nov mesec</button>
             <button class="btn btn-primary">pretekla poraba</button>
-
         </div>
-
     </div>
 
     <div class="row my-4">
-
-        <div class="col">
-
-            <h4>Članarina</h4>
-
-            <div>Velja do:</div>
-
-            <button class="btn btn-primary">podaljšaj</button>
-
+        <div class="col-12">
+            <h2>Članstvo</h2>
+            <p>Tip članarine: {{ user_type }}</p>
+            <p>Članarina se avtomatsko obnovi: {{ obnovitev_clanarine }}</p>
+            <a href="/profil/uredi" class="btn btn-primary">Uredi profil</a>
+            <a href="/odjava" class="btn btn-primary">Odjava</a>
+            <a href="/profil/isci" class="btn btn-primary">Poišči druge uporabnike</a>
         </div>
-
     </div>
 
     <div class="row my-4">
-
-        <div class="col">
-
-            <h4>Vaši prihajajoči dogodki</h4>
-
-            <div>TODO</div>
-
+        <div class="col-12">
+            <h2>Tvoji prihajajoči dogodki (SEZNAM)</h2>
         </div>
-
     </div>
 
     <div class="row my-4">
-
-        <div class="col">
-
-            <h4>Nabor opravljenih usposabljanj</h4>
-
-            <div>TODO</div>
-
+        <div class="col-12">
+            <h2>Tvoji prihajajoči dogodki (IFRAME)</h2>
         </div>
+    </div>
 
+    <div class="row my-4">
+        <div class="col-12">
+            <h2>Nabor opravljenih usposabljanj</h2>
+        </div>
     </div>
 
 </div>
