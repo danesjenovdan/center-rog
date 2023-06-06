@@ -108,7 +108,21 @@ class PrimaApi(object):
     
     def readUsers(self, user_id=None):
         """
-        ...
+        Returns user data:
+        { 'user': {
+            '@UsrID': '5', 
+            '@UsrName': 'Janez', 
+            '@UsrLastName': 'Novak', 
+            '@UsrPhone': '0038640111111', 
+            '@UsrEMail': 'jn@test.si', 
+            '@UsrOfflineScheduleID': '1', 
+            '@UsrLanguage': 'en_US', 
+            '@UsrAccessLevel': '5', 
+            '@UsrValidFrom': '2000-01-01 12:00:00', 
+            '@UsrValidTo': '2035-01-01 12:00:00', 
+            '@UsrLoginName': 'jn@test.si'
+          }
+        } 
         """
 
         if user_id: # read specific user
@@ -183,8 +197,17 @@ class PrimaApi(object):
     ### BOOKINGS
     
     def readUserBalances(self, user_id):
-        """ 
-        TODO: ta request vrne {'@name': 'ReadUserBalances', '@status': '9', '@message': 'Unknown request. '}
+        """
+        Returns user balance data:
+        data = { 'balance': [
+            {'@WltID': '1', '@WltTitle': 'Ure za CNC'}, 
+            {'@WltID': '2', '@WltTitle': 'Ure za Stroje'}, 
+            {'@WltID': '4', '@WltTitle': 'Ure za laser'}, 
+            {'@WltID': '5', '@WltTitle': 'Digitalni tiskalnik za tekstil'}, 
+            {'@WltID': '6', '@WltTitle': '3D printer za keramiko'}
+            ]
+        },
+        message = 'Success'
         """
 
         payload = {
