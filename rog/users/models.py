@@ -3,6 +3,14 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 
 
+class Membership(models.Model):
+    start_day = models.DateField()
+    end_day = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.start_day} - {self.end_day}"
+
+
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
@@ -48,6 +56,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     prima_id = models.IntegerField(null=True)
     phone = models.CharField(max_length=20, null=True)
+    membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL)
 
     objects = UserManager()
 

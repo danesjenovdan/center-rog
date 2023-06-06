@@ -149,7 +149,7 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
 AUTH_USER_MODEL = 'users.User'
 WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['prima_id']
+WAGTAIL_USER_CUSTOM_FIELDS = ['prima_id', 'membership']
 
 
 # Static files (CSS, JavaScript, Images)
