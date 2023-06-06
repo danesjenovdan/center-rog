@@ -18,10 +18,13 @@
         <div class="col-md-8 col-lg-6 col-xl-4">
 
             <h1>izberi membership</h1>
+            <p>{{ user }}</p>
 
-            {{ user.email }}
-
-            <a href="http://localhost:8000/registracija/podatki">Naprej</a>
+            <form action="{% url 'registration-membership' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Naprej">
+            </form>
         
         </div>
 

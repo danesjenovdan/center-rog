@@ -4,8 +4,6 @@ from users.models import User
 
 
 class RegisterForm(forms.ModelForm):
-    # email = forms.CharField(widget=widgets.EmailInput, label='E-naslov')
-    # password = forms.CharField(widget=widgets.PasswordInput, label='Geslo')
     # newsletter_permission = forms.BooleanField(
     #     label="Newsletter",
     #     label_suffix='',
@@ -15,11 +13,23 @@ class RegisterForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            # "username",
-            # "first_name",
-            # "last_name",
             "email",
-            # "phone",
             "password",
-            # 'newsletter_permission'
+        ]
+
+
+class RegistrationMembershipForm(forms.Form):
+    membership_choice = forms.ChoiceField(required=True, choices=[
+        ("no-membership", "Brez članstva"), 
+        ("with-membership", "S članstvom")
+    ], widget=forms.RadioSelect)
+
+
+class RegistrationInformationForm(forms.ModelForm):    
+    class Meta:
+        model = User
+        fields = [
+            "first_name",
+            "last_name",
+            # "phone",
         ]
