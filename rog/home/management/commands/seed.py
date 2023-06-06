@@ -29,7 +29,11 @@ class Command(BaseCommand):
 
         ## create user
         User = get_user_model()
-        User.objects.create_superuser('admin', 'admin@center-rog.si', 'changeme')
+        user = User.objects.create_superuser("test@test.si", "changeme")
+        user.first_name = "Janez"
+        user.last_name = "Novak"
+        user.prima_id = "5"
+        user.save()
 
         ## stock image
         stock_img_name = "stock-hills.jpg"
