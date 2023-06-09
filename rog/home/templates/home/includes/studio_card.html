@@ -1,8 +1,8 @@
-{% load wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
-<div class="card studio-card d-flex flex-column justify-content-between color-scheme-dark-green">
+<a href="{% pageurl studio %}" class="card studio-card d-flex flex-column justify-content-between color-scheme-dark-green">
   <div class="card-body">
     <h4 class="card-title">{{ studio.title }}</h4>
   </div>
-  {% image studio.thumbnail width-200 class="img-fluid card-img-top" alt="..." %}
-</div>
+  {% image studio.thumbnail original class="img-fluid card-img-top" alt="..." %}
+</a>

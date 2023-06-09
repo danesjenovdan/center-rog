@@ -99,15 +99,22 @@ body {
     width: 250px;
     min-height: 320px;
     padding: 20px;
+    text-decoration: none;
 
     .card-body {
         padding: 0;
+        flex-grow: 0;
     }
 
     .card-title {
         font-size: $xs-font-size;
         font-weight: 400;
         margin-bottom: 10px;
+    }
+
+    img {
+        object-fit: cover;
+        flex-grow: 1;
     }
 }
 
