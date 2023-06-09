@@ -54,9 +54,17 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
-    prima_id = models.IntegerField(null=True)
-    phone = models.CharField(max_length=20, null=True)
     membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL)
+    prima_id = models.IntegerField(null=True)
+    phone = models.CharField(max_length=20, blank=True) # ne rabimo?
+    address_1 = models.CharField(max_length=200, blank=True)
+    address_2 = models.CharField(max_length=200, blank=True)
+    public_profile = models.BooleanField(default=False)
+    public_username = models.CharField(max_length=20, blank=True)
+    description = models.TextField(blank=True)
+    link = models.URLField(blank=True)
+    # categories
+    # images
 
     objects = UserManager()
 

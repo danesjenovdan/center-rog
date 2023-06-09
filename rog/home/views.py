@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
 
-from home.forms import RegisterForm, RegistrationMembershipForm
+from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, RegistrationProfileForm
 
 from users.models import User, Membership
 from users.prima_api import PrimaApi
@@ -144,7 +144,25 @@ class RegistrationInformationView(View):
 
     def get(self, request):
         user = request.user
-        return render(request, "registration/registration_3_information.html", context={ "user": user })
+
+        form = RegistrationInformationForm()
+        return render(request, "registration/registration_3_information.html", context={ "form": form })
+    
+    def post(self, request):
+        user = request.user
+        form = RegistrationInformationForm(request.POST)
+
+        if form.is_valid():
+            address_1 = form.cleaned_data["address_1"]
+            address_2 = form.cleaned_data["address_2"]
+
+            user.address_1 = address_1 # TODO: throw error if there is no address 1
+            # TODO: save address_2, if it exists
+            user.save()
+
+            return redirect("registration-profile")
+        else:
+            return render(request, "registration/registration_3_information.html", context={ "form": form })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -152,7 +170,30 @@ class RegistrationProfileView(View):
 
     def get(self, request):
         user = request.user
-        return render(request, "registration/registration_4_profile.html", context={ "user": user })
+
+        form = RegistrationProfileForm()
+        return render(request, "registration/registration_4_profile.html", context={ "form": form })
+    
+    def post(self, request):
+        user = request.user
+        form = RegistrationProfileForm(request.POST)
+
+        if form.is_valid():
+            public_profile = form.cleaned_data["public_profile"]
+            public_username = form.cleaned_data["public_username"]
+            description = form.cleaned_data["description"]
+            link = form.cleaned_data["link"]
+
+            user.public_profile = public_profile
+            user.public_username = public_username
+            user.description = description
+            user.link = link
+
+            user.save()
+
+            return redirect("registration-payment")
+        else:
+            return render(request, "registration/registration_4_profile.html", context={ "form": form })
     
     # def post(self, request):
         # create PRIMA user
@@ -179,6 +220,9 @@ class RegistrationPaymentView(View):
 
     def get(self, request):
         user = request.user
+
+        # TODO: payment logika
+        
         return render(request, "registration/registration_5_payment.html", context={ "user": user })
 
 

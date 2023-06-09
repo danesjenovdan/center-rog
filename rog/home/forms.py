@@ -29,7 +29,18 @@ class RegistrationInformationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
-            "first_name",
-            "last_name",
+            "address_1",
+            "address_2",
             # "phone",
         ]
+
+class RegistrationProfileForm(forms.ModelForm):    
+    class Meta:
+        model = User
+        fields = [
+            "public_profile",
+            "public_username",
+            "description",
+            "link"
+        ]
+

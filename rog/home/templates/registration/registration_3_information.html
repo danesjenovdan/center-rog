@@ -19,9 +19,13 @@
 
             <h1>izpolni podatke</h1>
 
-            {{ user.email }}
+            {{ user }}
 
-            <a href="http://localhost:8000/registracija/profil">Naprej</a>
+            <form action="{% url 'registration-information' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Naprej">
+            </form>
         
         </div>
 
