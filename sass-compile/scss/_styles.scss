@@ -597,3 +597,51 @@ body {
         margin-bottom: 30px;
     }
 }
+
+.tns-outer {
+    .tns-controls {
+        text-align: center;
+    }
+}
+
+.tiny-slider-carousel {
+    display: flex;
+    align-items: center;
+
+    .tns-item {
+        position: relative;
+        z-index: 0;
+        filter: blur(6px);
+        transform: scale(1);
+        transition: filter 0.5s linear, transform 0.5s linear;
+
+        img {
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    .tns-item.active {
+        z-index: 3;
+        filter: blur(0px);
+        transform: scale(2);
+
+        img {
+            box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.33);
+        }
+    }
+
+    .tns-item.active-prev1,
+    .tns-item.active-next1 {
+        z-index: 2;
+        filter: blur(3px);
+        transform: scale(1.5);
+    }
+
+    .tns-item.active-prev2,
+    .tns-item.active-next2 {
+        z-index: 1;
+        filter: blur(6px);
+        transform: scale(1.25);
+    }
+}

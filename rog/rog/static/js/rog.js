@@ -1,4 +1,4 @@
-async function start() {
+function labsHoverAnimations() {
   console.log("rog.js");
 
   const labs = document.querySelectorAll(".labs-section .lab");
@@ -29,6 +29,49 @@ function onVideoEnded(img, video) {
   video.currentTime = 0;
 }
 
+function carousel() {
+  const slider = tns({
+    container: ".tiny-slider-carousel",
+    items: 5,
+    slideBy: 1,
+    // autoplay: true,
+    loop: false,
+    center: true,
+    mouseDrag: true,
+    nav: false,
+    // controls: false,
+    autoplayButtonOutput: false,
+    onInit(info) {
+      const h = getComputedStyle(info.container)["height"];
+      info.container.style.height = `${parseInt(h) * 2}px`;
+      onSliderIndexChanged(info);
+    },
+  });
+
+  slider.events.on("indexChanged", (info) => {
+    onSliderIndexChanged(info);
+  });
+}
+
+function onSliderIndexChanged(info) {
+  [...info.slideItems].forEach((item) => {
+    item.classList.remove(
+      "active-prev2",
+      "active-prev1",
+      "active",
+      "active-next1",
+      "active-next2"
+    );
+  });
+
+  info.slideItems[info.index - 2]?.classList.add("active-prev2");
+  info.slideItems[info.index - 1]?.classList.add("active-prev1");
+  info.slideItems[info.index].classList.add("active");
+  info.slideItems[info.index + 1]?.classList.add("active-next1");
+  info.slideItems[info.index + 2]?.classList.add("active-next2");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  start();
+  labsHoverAnimations();
+  carousel();
 });
