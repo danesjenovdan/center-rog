@@ -285,19 +285,27 @@ body {
                 color: inherit;
                 text-decoration: none;
             }
-    
+
             h4 {
                 font-size: $sm-font-size;
                 font-weight: 400;
             }
-        }   
+        }
     }
 }
 
 .labs-section {
     .lab {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
         color: $cs-dark-blue;
         text-decoration: none;
+
+        img, video {
+            grid-column: 1 / 1;
+            grid-row: 1 / 1;
+        }
 
         h6 {
             text-align: center;
@@ -363,7 +371,7 @@ body {
             &:nth-child(1) {
                 .paper {
                     transform: matrix(1, -0.02, 0.02, 1, 0, 0);
-                    font-family: 'Times New Roman', Times, serif;                            
+                    font-family: 'Times New Roman', Times, serif;
                 }
             }
 
@@ -485,7 +493,7 @@ body {
                 font-size: $xs-font-size;
             }
         }
-    
+
         .contact-information {
             position: relative;
             margin: 20px 0;

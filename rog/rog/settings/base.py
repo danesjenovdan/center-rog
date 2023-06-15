@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "wagtail",
     "modelcluster",
     "taggit",
+    "wagtailmedia",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -221,3 +222,8 @@ COLOR_SCHEMES = [
     ("yellow", "Rumena"),
     ("white", "Bela"),
 ]
+
+WAGTAILMEDIA = {
+    "AUDIO_EXTENSIONS": [],
+    "VIDEO_EXTENSIONS": ["mp4", "webm"],
+}
