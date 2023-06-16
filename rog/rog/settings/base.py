@@ -227,3 +227,7 @@ WAGTAILMEDIA = {
     "AUDIO_EXTENSIONS": [],
     "VIDEO_EXTENSIONS": ["mp4", "webm"],
 }
+
+PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
+PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
+REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
