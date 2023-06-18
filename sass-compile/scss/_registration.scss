@@ -1,0 +1,103 @@
+.register-container {
+    margin-top: 100px;
+    margin-bottom: 60px;
+
+    .registration-progress {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 50px 50px 20px;
+        position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            border-top: 1px solid $cs-dark-gray;
+            width: 100%;
+        }
+
+        .point {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border: 1px solid $cs-dark-gray;
+            background-color: $cs-light-gray;
+            border-radius: 50%;
+            text-align: center;
+            color: $cs-dark-gray;
+            z-index: 2;
+        
+            span {
+                position: absolute;
+                top: -50px;
+                transform: translateX(-50%);
+                font-size: $xxs-font-size;
+                opacity: 50%;
+            }
+
+            &.active {
+                background-color: $cs-dark-gray;
+
+                span {
+                    opacity: 100%;
+                }
+            }
+        }
+    }
+
+    h1 {
+        font-size: $sm-font-size;
+        font-weight: 400;
+        margin-top: 40px;
+        margin-bottom: 30px;
+    }
+
+    form {
+        label {
+            display: block;
+            font-size: $xxs-font-size;
+            margin-bottom: 5px;
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    .radio-square-wrapper {
+        columns: auto 2;
+        column-gap: 30px;
+
+        .radio-square {
+            border: 1px solid $cs-dark-gray;
+            border-radius: 3px;
+            padding: 15px;
+            text-align: left;
+
+            &:hover {
+                box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
+            }
+
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+            h3 {
+                font-size: $md-font-size;
+            }
+
+            h4 {
+                font-size: $sm-font-size;
+            }
+        }
+
+        .btn-check:checked + .btn {
+            color: #fff;
+            background-color: $cs-dark-gray;
+        }
+    }
+}

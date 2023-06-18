@@ -20,8 +20,8 @@ from home.views import (
     RegistrationMembershipView,
     RegistrationInformationView,
     RegistrationProfileView,
-    RegistrationPaymentView,
-    RegistrationSuccessView,
+    # RegistrationPaymentView,
+    # RegistrationSuccessView,
 )
 
 # Non-translatable URLs
@@ -57,8 +57,8 @@ urlpatterns = urlpatterns + i18n_patterns(
     path('registracija/clanarina', RegistrationMembershipView.as_view(), name='registration-membership'),
     path('registracija/podatki', RegistrationInformationView.as_view(), name='registration-information'),
     path('registracija/profil', RegistrationProfileView.as_view(), name='registration-profile'),
-    path('registracija/placilo', RegistrationPaymentView.as_view(), name='registration-payment'),
-    path('registracija/uspeh', RegistrationSuccessView.as_view(), name='registration-success'),
+    # path('registracija/placilo', RegistrationPaymentView.as_view(), name='registration-payment'),
+    # path('registracija/uspeh', RegistrationSuccessView.as_view(), name='registration-success'),
     path('profil/uredi/', EditProfileView.as_view(), name='profile-edit'),
     path('profil/isci/', SearchProfileView.as_view(), name='profile-search'),
     path('profil/<int:id>/', UserProfileView.as_view(), name='profile-user'),

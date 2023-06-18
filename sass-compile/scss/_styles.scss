@@ -23,6 +23,22 @@ body {
     line-height: 1.2;
 }
 
+input {
+    border: 1px solid $cs-dark-gray;
+    border-radius: 3px;
+    padding: 10px;
+    // color: $cs-dark-gray;
+}
+
+.form-field-wrapper {
+    margin-bottom: 10px;
+
+    &.one-line {
+        display: flex;
+        align-items: center;
+    }
+}
+
 .primary-button,
 .secondary-button {
     border-radius: 50%;
@@ -30,7 +46,7 @@ body {
     border-style: solid;
     text-decoration: none;
     display: inline-block;
-    line-height: 118%;
+    line-height: 1;
 }
 
 .secondary-button {

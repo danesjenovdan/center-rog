@@ -153,11 +153,17 @@ class RegistrationInformationView(View):
         form = RegistrationInformationForm(request.POST)
 
         if form.is_valid():
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
             address_1 = form.cleaned_data["address_1"]
             address_2 = form.cleaned_data["address_2"]
 
+            user.first_name = first_name
+            user.last_name = last_name
             user.address_1 = address_1 # TODO: throw error if there is no address 1
             # TODO: save address_2, if it exists
+            if address_2:
+                user.address_2 = address_2
             user.save()
 
             return redirect("registration-profile")
@@ -191,7 +197,7 @@ class RegistrationProfileView(View):
 
             user.save()
 
-            return redirect("registration-payment")
+            return redirect("profile-my")
         else:
             return render(request, "registration/registration_4_profile.html", context={ "form": form })
     
@@ -215,19 +221,19 @@ class RegistrationProfileView(View):
         #     print("Novi user", user)
 
 
-@method_decorator(login_required, name='dispatch')
-class RegistrationPaymentView(View):
+# @method_decorator(login_required, name='dispatch')
+# class RegistrationPaymentView(View):
 
-    def get(self, request):
-        user = request.user
+#     def get(self, request):
+#         user = request.user
 
-        # TODO: payment logika
+#         # TODO: payment logika
         
-        return render(request, "registration/registration_5_payment.html", context={ "user": user })
+#         return render(request, "registration/registration_5_payment.html", context={ "user": user })
 
 
-@method_decorator(login_required, name='dispatch')
-class RegistrationSuccessView(View):
+# @method_decorator(login_required, name='dispatch')
+# class RegistrationSuccessView(View):
 
-    def get(self, request):
-        return render(request, "registration/registration_6_success.html")
+#     def get(self, request):
+#         return render(request, "registration/registration_6_success.html")
