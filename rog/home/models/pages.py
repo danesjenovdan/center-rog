@@ -7,6 +7,7 @@ from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
+from wagtailmedia.edit_handlers import MediaChooserPanel
 
 from .base_pages import ObjectProfilePage, ObjectListPage
 from news.models import NewsPage
@@ -62,7 +63,7 @@ class LabPage(ObjectProfilePage):
         related_name='+'
     )
     thumbnail_animation = models.ForeignKey(
-        'wagtailimages.Image',
+        'wagtailmedia.Media',
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -71,7 +72,7 @@ class LabPage(ObjectProfilePage):
 
     content_panels = ObjectProfilePage.content_panels + [
         FieldPanel('thumbnail'),
-        FieldPanel('thumbnail_animation'),
+        MediaChooserPanel('thumbnail_animation'),
     ]
 
     parent_page_types = [
@@ -161,4 +162,3 @@ class LabListPage(ObjectListPage):
         return context
 
 LabListPage._meta.get_field('color_scheme').default = 'light-green'
-    

@@ -1,0 +1,53 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Plačilo{% endblock %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+
+{% block extra_js %}
+<script>
+
+    function initPayment()  {
+        fetch("http://localhost:8000/placilo/", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              "X-CSRFTOKEN": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({
+                plan: "1"
+            })
+        })
+        .then(data => {
+            //handle data
+            console.log(data);
+            return data.json();
+        })
+        .then(data => {
+            console.log(data);
+            window.location.href = data.redirect_url;
+        })
+    }
+
+</script>
+{% endblock extra_js %}
+
+{% block page_body %}
+
+<div class="container user-profile-container">
+
+    <p>
+        Tuki pride nek text o plačilu
+    </p>
+
+    <button onclick="initPayment()" id="payment" class="btn btn-primary">Plači</button>
+
+</div>
+
+{% endblock page_body %}

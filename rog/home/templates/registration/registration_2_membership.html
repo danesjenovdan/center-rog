@@ -1,35 +1,50 @@
-{% extends "home/wrapper_page.html" %}
+{% extends "registration/registration_wrapper.html" %}
 {% load static %}
 
 {% block title %}Registracija{% endblock %}
 
 {% block body_class %}template-register{% endblock %}
 
-{% block extra_css %}
+{% block form_title %}
+<h1>Izberi tip članstva:</h1>
+{% endblock form_title %}
 
-{% endblock extra_css %}
+{% block form_block %}
 
-{% block page_body %}
-
-<div class="container my-5">
-
-    <div class="row justify-content-center">
-
-        <div class="col-md-8 col-lg-6 col-xl-4">
-
-            <h1>izberi membership</h1>
-            <p>{{ user }}</p>
-
-            <form action="{% url 'registration-membership' %}" method="post">
-                {% csrf_token %}
-                {{ form }}
-                <input type="submit" value="Naprej">
-            </form>
-        
-        </div>
-
+<form action="{% url 'registration-membership' %}" method="post">
+    {% csrf_token %}
+    <div class="radio-square-wrapper">
+        <input type="radio" name="membership_choice" value="with-membership" required="" id="id_membership_choice_1" class="btn-check">
+        <label for="id_membership_choice_1" class="radio-square btn">
+            <h4>ROG članstvo</h4>
+            <ul>
+                <li>Prijava na delavnice</li>
+                <li>Dostop do orodij</li>
+                <li>Bookiranje terminov</li>
+                <li>Delo s tehnologi</li>
+                <li>Novice iz Roga</li>
+            </ul>
+            <h3>cena</h3>
+        </label>
+        <input type="radio" name="membership_choice" value="no-membership" required="" id="id_membership_choice_0" class="btn-check">
+        <label for="id_membership_choice_0" class="radio-square btn">
+            <h4>Brezplačno članstvo</h4>
+            <ul>
+                <li>Prijava na delavnice</li>
+                <li>Dostop do orodij</li>
+                <li>Bookiranje terminov</li>
+                <li>Delo s tehnologi</li>
+                <li>Novice iz Roga</li>
+            </ul>
+            <h3>cena</h3>
+        </label>
     </div>
+    {% if form.membership_choice.errors %}
+    <p class="error">{{ form.membership_choice.errors }}</p>
+    {% endif %}
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">naprej</button>
+    </div>
+</form>
 
-</div>
-
-{% endblock page_body %}
+{% endblock form_block %}

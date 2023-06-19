@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.core.files import File
 from django.core.files.images import ImageFile
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group, Permission
@@ -8,6 +9,7 @@ from datetime import datetime, date, time
 import json
 
 from wagtail.images.models import Image
+from wagtailmedia.models import Media, MediaType
 
 from home import models
 from news import models as news_models
@@ -24,6 +26,14 @@ class Command(BaseCommand):
         image = Image(title=image_name, file=image_file)
         image.save()
         return image
+
+    def create_media(self, media_name):
+        media_directory = "rog/static/images"
+        media_path = f"{media_directory}/{media_name}"
+        media_file = File(open(media_path, 'rb'), name=media_name)
+        media = Media(title=media_name, file=media_file, type=MediaType.VIDEO)
+        media.save()
+        return media
 
     def handle(self, *args, **options):
 
@@ -138,8 +148,8 @@ class Command(BaseCommand):
         three_d_lab_img_name = "labs/3D-lab.jpg"
         three_d_lab_img = self.create_image(three_d_lab_img_name)
 
-        three_d_lab_animation_name = "labs/3D-lab.gif"
-        three_d_lab_animation = self.create_image(three_d_lab_animation_name)
+        three_d_lab_animation_name = "labs/3D-lab.webm"
+        three_d_lab_animation = self.create_media(three_d_lab_animation_name)
 
         three_d_lab = models.LabPage(
             title="3D laboratorij",
@@ -157,8 +167,8 @@ class Command(BaseCommand):
         kovinarski_lab_img_name = "labs/kovinarski-lab.jpg"
         kovinarski_lab_img = self.create_image(kovinarski_lab_img_name)
 
-        kovinarski_lab_animation_name = "labs/kovinarski-lab.gif"
-        kovinarski_lab_animation = self.create_image(kovinarski_lab_animation_name)
+        kovinarski_lab_animation_name = "labs/kovinarski-lab.webm"
+        kovinarski_lab_animation = self.create_media(kovinarski_lab_animation_name)
 
         kovinarski_lab = models.LabPage(
             title="Kovinarski laboratorij",
@@ -176,8 +186,8 @@ class Command(BaseCommand):
         kuharski_lab_img_name = "labs/kuharski-lab.jpg"
         kuharski_lab_img = self.create_image(kuharski_lab_img_name)
 
-        kuharski_lab_animation_name = "labs/kuharski-lab.gif"
-        kuharski_lab_animation = self.create_image(kuharski_lab_animation_name)
+        kuharski_lab_animation_name = "labs/kuharski-lab.webm"
+        kuharski_lab_animation = self.create_media(kuharski_lab_animation_name)
 
         kuharski_lab = models.LabPage(
             title="Kuharski laboratorij",
@@ -195,8 +205,8 @@ class Command(BaseCommand):
         lesni_lab_img_name = "labs/lesni-lab.jpg"
         lesni_lab_img = self.create_image(lesni_lab_img_name)
 
-        lesni_lab_animation_name = "labs/lesni-lab.gif"
-        lesni_lab_animation = self.create_image(lesni_lab_animation_name)
+        lesni_lab_animation_name = "labs/lesni-lab.webm"
+        lesni_lab_animation = self.create_media(lesni_lab_animation_name)
 
         lesni_lab = models.LabPage(
             title="Lesni laboratorij",

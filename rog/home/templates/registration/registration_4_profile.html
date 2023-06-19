@@ -1,32 +1,70 @@
-{% extends "home/wrapper_page.html" %}
+{% extends "registration/registration_wrapper.html" %}
 {% load static %}
 
 {% block title %}Registracija{% endblock %}
 
 {% block body_class %}template-register{% endblock %}
 
-{% block extra_css %}
+{% block form_title %}
+<h1>Izpolni podatke za osebni profil:</h1>
+{% endblock form_title %}
 
-{% endblock extra_css %}
+{% block form_block %}
 
-{% block page_body %}
+<form action="{% url 'registration-profile' %}" method="post">
+    {% csrf_token %}
 
-<div class="container my-5">
+    <p>
+        Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...
+    </p>
 
-    <div class="row justify-content-center">
-
-        <div class="col-md-8 col-lg-6 col-xl-4">
-
-            <h1>osebni profil</h1>
-
-            {{ user.email }}
-
-            <a href="http://localhost:8000/registracija/placilo">Naprej</a>
-        
-        </div>
-
+    <div class="form-field-wrapper one-line">
+        {{ form.public_profile }} {{ form.public_profile.label_tag }}
     </div>
 
-</div>
+    <div class="form-field-wrapper">
+        {{ form.public_username.label_tag }} {{ form.public_username }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.public_username.errors %}
+        <p class="error">{{ form.public_username.errors }}</p>
+        {% endif %}
+    </div>
 
-{% endblock page_body %}
+    <div class="form-field-wrapper">
+        {{ form.description.label_tag }} {{ form.description }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.description.errors %}
+        <p class="error">{{ form.description.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.link.label_tag }} {{ form.link }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.link.errors %}
+        <p class="error">{{ form.link.errors }}</p>
+        {% endif %}
+    </div>
+
+    <h1>Izberi kategorije, ki te zanimajo:</h1>
+
+    <h1>Dodaj slike svojih izdelkov:</h1>
+
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">naprej</button>
+    </div>
+</form>
+
+{% endblock form_block %}

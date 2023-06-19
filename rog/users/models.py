@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
+from django.utils.translation import gettext_lazy as _
 
 
 class Membership(models.Model):
@@ -21,9 +22,9 @@ class UserManager(BaseUserManager):
 
         if not email:
             raise ValueError("Users must have an email address")
-        
+
         user = self.model(
-            email=self.normalize_email(email), 
+            email=self.normalize_email(email),
             **extra_fields
         )
         user.set_password(password)
@@ -39,7 +40,7 @@ class UserManager(BaseUserManager):
         """
         Creates and saves a superuser with the given email and password.
         """
-        
+
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
@@ -54,9 +55,17 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
-    prima_id = models.IntegerField(null=True)
-    phone = models.CharField(max_length=20, null=True)
     membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL)
+    prima_id = models.IntegerField(null=True)
+    phone = models.CharField(max_length=20, blank=True) # ne rabimo?
+    address_1 = models.CharField(max_length=200, blank=True)
+    address_2 = models.CharField(max_length=200, blank=True)
+    public_profile = models.BooleanField(default=False)
+    public_username = models.CharField(max_length=20, blank=True)
+    description = models.TextField(blank=True)
+    link = models.URLField(blank=True)
+    # categories
+    # images
 
     objects = UserManager()
 

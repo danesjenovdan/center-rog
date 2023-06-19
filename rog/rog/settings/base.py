@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "users",
     "events",
     "news",
+    "payments",
     "wagtail_localize",
     "wagtail_localize.locales",
     "wagtail.contrib.forms",
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     "wagtail",
     "modelcluster",
     "taggit",
+    "wagtailmedia",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -149,7 +151,7 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
 AUTH_USER_MODEL = 'users.User'
 WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
-WAGTAIL_USER_CUSTOM_FIELDS = ['prima_id', 'membership']
+WAGTAIL_USER_CUSTOM_FIELDS = ['prima_id', 'membership', 'address_1', 'address_2', 'public_profile', 'public_username', 'description', 'link']
 
 
 # Static files (CSS, JavaScript, Images)
@@ -221,3 +223,16 @@ COLOR_SCHEMES = [
     ("yellow", "Rumena"),
     ("white", "Bela"),
 ]
+
+WAGTAILMEDIA = {
+    "AUDIO_EXTENSIONS": [],
+    "VIDEO_EXTENSIONS": ["mp4", "webm"],
+}
+
+PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
+PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
+REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
+
+ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']

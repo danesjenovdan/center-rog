@@ -120,7 +120,8 @@
     }
 }
 
-.color-scheme-dark-green {
+.color-scheme-dark-green,
+.color-scheme-dark-green:hover {
     background-color: $cs-dark-green;
     color: $cs-yellow;
 
