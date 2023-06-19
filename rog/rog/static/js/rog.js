@@ -73,5 +73,5 @@ function onSliderIndexChanged(info) {
 
 document.addEventListener("DOMContentLoaded", () => {
   labsHoverAnimations();
-  carousel();
+  //carousel();
 });

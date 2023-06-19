@@ -29,7 +29,6 @@ urlpatterns = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    
 ]
 
 
@@ -63,6 +62,7 @@ urlpatterns = urlpatterns + i18n_patterns(
     path('profil/isci/', SearchProfileView.as_view(), name='profile-search'),
     path('profil/<int:id>/', UserProfileView.as_view(), name='profile-user'),
     path('profil/', MyProfileView.as_view(), name='profile-my'),
+    path('placilo/', include('payments.urls')),
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
