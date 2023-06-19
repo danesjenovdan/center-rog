@@ -232,3 +232,7 @@ WAGTAILMEDIA = {
 PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
 PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
 REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
+
+ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']

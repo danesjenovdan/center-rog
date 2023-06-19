@@ -20,7 +20,9 @@ class Plan(Timestampable):
     price = models.IntegerField()
     is_subscription = models.BooleanField(default=False)
     valid_from = models.DateTimeField(
-        auto_now_add=True, help_text=_("When the plan starts")
+        auto_now_add=True, help_text=_("When the plan starts"),
+        null=True,
+        blank=True
     )
     valid_to = models.DateTimeField(
         help_text=_("When the plan expires"),

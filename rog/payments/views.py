@@ -14,11 +14,10 @@ from rest_framework.response import Response
 # TODO views.APIView zamenjaj z django.views.View
 class Pay(views.APIView):
     def get(self, request):
-        return render(request, 'payment_init.html', {})
+        return render(request, 'payment.html', {})
 
-
-class InitPay(views.APIView):
     def post(self, request):
+        print('INIT PAY')
         data = request.data
         payment = Payment(
             user=request.user,
@@ -82,6 +81,7 @@ class PaymentDataXML(views.APIView):
 class PaymentSuccessXML(views.APIView):
     def POST(self, request):
         data = request.data
+        print(data)
         payment = Payment.objects.get(id=data['id'])
         payment.status = Payment.Status.SUCCESS
         payment.finished_at = timezone.now()
@@ -96,7 +96,7 @@ class PaymentSuccess(views.APIView):
         if urlpar == 'wizard':
             return render(request,'wizard_payment_success.html', {})
         else:
-            return render(request, 'generic_payment_success.html', {})
+            return render(request, 'payment_success.html', {})
 
 
 class PaymentFailure(views.APIView):
@@ -106,4 +106,4 @@ class PaymentFailure(views.APIView):
         payment.status = Payment.Status.ERROR
         payment.finished_at = timezone.now()
         payment.save()
-        return render(request, 'fake_payment_error.html', {})
+        return render(request, 'payment_failed.html', {})
