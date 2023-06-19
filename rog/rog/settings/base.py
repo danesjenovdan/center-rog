@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "users",
     "events",
     "news",
+    "payments",
     "wagtail_localize",
     "wagtail_localize.locales",
     "wagtail.contrib.forms",
