@@ -16,6 +16,12 @@ class BasePage(Page):
         default="white",
     )
 
+    def short_title(self):
+        if len(self.title) > 65:
+            return self.title[:62] + "..."
+        else:
+            return self.title
+
     class Meta:
         abstract = True
 

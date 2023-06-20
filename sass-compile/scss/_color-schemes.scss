@@ -1,6 +1,7 @@
 /* COLOR SCHEMES */
 
-.color-scheme-brown {
+.color-scheme-brown,
+.color-scheme-brown:hover {
     background-color: $cs-brown;
     color: $cs-pink;
 
@@ -15,7 +16,8 @@
     }
 }
 
-.color-scheme-light-blue {
+.color-scheme-light-blue,
+.color-scheme-light-blue:hover {
     background-color: $cs-light-blue;
     color: $cs-yellow;
 
@@ -30,7 +32,8 @@
     }
 }
 
-.color-scheme-dark-gray {
+.color-scheme-dark-gray,
+.color-scheme-dark-gray:hover {
     background-color: $cs-dark-gray;
     color: $cs-light-gray;
 
@@ -45,7 +48,8 @@
     }
 }
 
-.color-scheme-purple {
+.color-scheme-purple,
+.color-scheme-purple:hover {
     background-color: $cs-purple;
     color: $cs-light-green;
 
@@ -60,7 +64,8 @@
     }
 }
 
-.color-scheme-red {
+.color-scheme-red,
+.color-scheme-red:hover {
     background-color: $cs-red;
     color: $cs-yellow;
 
@@ -75,7 +80,8 @@
     }
 }
 
-.color-scheme-orange {
+.color-scheme-orange,
+.color-scheme-orange:hover {
     background-color: $cs-orange;
     color: $cs-white;
 
@@ -90,7 +96,8 @@
     }
 }
 
-.color-scheme-dark-blue {
+.color-scheme-dark-blue,
+.color-scheme-dark-blue:hover {
     background-color: $cs-dark-blue;
     color: $cs-light-green;
 
@@ -105,7 +112,8 @@
     }
 }
 
-.color-scheme-light-green {
+.color-scheme-light-green,
+.color-scheme-light-green:hover {
     background-color: $cs-light-green;
     color: $cs-dark-blue;
 
@@ -136,7 +144,8 @@
     }
 }
 
-.color-scheme-pink {
+.color-scheme-pink,
+.color-scheme-pink:hover {
     background-color: $cs-pink;
     color: $cs-brown;
 
@@ -151,7 +160,8 @@
     }
 }
 
-.color-scheme-light-gray {
+.color-scheme-light-gray,
+.color-scheme-light-gray:hover {
     background-color: $cs-light-gray;
     color: $cs-dark-gray;
 
@@ -166,7 +176,8 @@
     }
 }
 
-.color-scheme-yellow {
+.color-scheme-yellow,
+.color-scheme-yellow:hover {
     background-color: $cs-yellow;
     color: $cs-dark-green;
 
@@ -181,7 +192,8 @@
     }
 }
 
-.color-scheme-white {
+.color-scheme-white,
+.color-scheme-white:hover {
     background-color: $cs-white;
     color: $cs-dark-gray;
 

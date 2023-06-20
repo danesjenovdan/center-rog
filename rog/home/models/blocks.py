@@ -190,7 +190,10 @@ class MarketplaceBlock(blocks.StructBlock):
         template = "home/blocks/marketplace_section.html",
 
 
-class FullWidthImageBlock(ImageChooserBlock):
+class FullWidthImageBlock(ColoredStructBlock):
+    image = ImageChooserBlock(label=_("Slika"))
+    text = blocks.TextBlock(label=_("Besedilo (opcijsko)"), blank=True, required=False)
+    
     class Meta:
         label = _("Slika")
         template = "home/blocks/image_embed.html",

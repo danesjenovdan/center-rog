@@ -10,10 +10,32 @@
         </div>
     </div>
     <div class="container-fluid studios-container">
-        <div class="row">
+        <div class="row my-3">
             {% for studio in studios %}
                 {% include "home/includes/studio_card.html" with studio=studio %}
             {% endfor %}
+            {% for studio in studios %}
+                {% include "home/includes/studio_card.html" with studio=studio %}
+            {% endfor %}
+            {% for studio in studios %}
+                {% include "home/includes/studio_card.html" with studio=studio %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <div class="scrolling-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a href="">link z ikono</a>
+            </div>
         </div>
     </div>
 </section>

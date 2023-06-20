@@ -9,3 +9,7 @@ Project made with django 4.2 and wagtail 4.2
 `docker compose run wagtail python manage.py migrate`
 
 `docker compose run wagtail python manage.py seed`
+
+Uporabniško ime: test@test.si
+
+Geslo: changeme

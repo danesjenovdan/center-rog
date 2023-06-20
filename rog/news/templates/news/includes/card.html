@@ -1,15 +1,10 @@
 {% load wagtailimages_tags %}
 
-<div
-  class="card news-card d-flex flex-column justify-content-between {% if news.category %}color-scheme-{{ news.category.color_scheme }}{% endif %}"
->
-  {% image news.hero_image width-200 class="img-fluid card-img-top" alt="..." %}
-  <div class="card-body">
+<div class="card news-card {% if news.category %}color-scheme-{{ news.category.color_scheme }}{% endif %}">
+  {% image news.thumbnail width-480 class="card-img-top" alt="..." %}
+  <div class="card-body p-md-0">
     <p>{{ news.category.name }}</p>
     <p>{{ news.last_published_at|date:"j. n. Y" }}</p>
-    <h4 class="card-title">{{ news.title }}</h4>
-    <!-- <p class="card-text">
-      {{ news.short_description }}
-    </p> -->
+    <h4 class="card-title">{{ news.short_title }}</h4>
   </div>
 </div>
