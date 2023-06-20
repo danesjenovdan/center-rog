@@ -101,8 +101,8 @@ function scrollingDots(section, container) {
 
 document.addEventListener("DOMContentLoaded", () => {
   labsHoverAnimations();
-  //carousel();
-  scrollingDots("events-section", "events-container");
-  scrollingDots("studios-section", "studios-container");
-  scrollingDots("news-section", "news-container");
+  // carousel();
+  // scrollingDots("events-section", "events-container");
+  // scrollingDots("studios-section", "studios-container");
+  // scrollingDots("news-section", "news-container");
 });
