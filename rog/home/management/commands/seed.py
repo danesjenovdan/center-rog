@@ -577,7 +577,11 @@ class Command(BaseCommand):
             },
             {
                 "type": "image_embed",
-                "value": stock_img.id
+                "value": {
+                    "color": "dark-green",
+                    "text": "Tovarna Rog, simbol kultnih Rogovih koles, je najpomembnejši del industrijske kulturne dediščine 20. stoletja v Ljubljani. S projektom prenove in v njeni prvotni funkciji: v prihodnje bo delovala kot javni proizvodni prostor 21. stoletja, namenjen kulturnemu in kreativnemu sektorju, s poudarkom na izdelovalništvu, uporabnih umetnostih in oblikovanju.",
+                    "image": stock_img.id,
+                }
             },
             {
                 "type": "colored_text",

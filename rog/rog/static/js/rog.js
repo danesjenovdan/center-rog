@@ -71,7 +71,38 @@ function onSliderIndexChanged(info) {
   info.slideItems[info.index + 2]?.classList.add("active-next2");
 }
 
+function scrollingDots(section, container) {
+  const eventsSectionDots = document.querySelectorAll(`.${section} .scrolling-dots span`);
+  const eventsSectionScrollable = document.querySelector(`.${section} .${container}`);
+
+  eventsSectionDots[0].addEventListener("click", () => {
+    eventsSectionScrollable.scrollTo({
+      left: 0,
+      behavior: "smooth",
+    })
+  });
+
+  eventsSectionDots[1].addEventListener("click", () => {
+    console.log(eventsSectionScrollable.scrollWidth)
+    console.log(eventsSectionScrollable.offsetWidth)
+    eventsSectionScrollable.scrollTo({
+      left: (eventsSectionScrollable.scrollWidth - eventsSectionScrollable.offsetWidth) / 2,
+      behavior: "smooth",
+    })
+  });
+
+  eventsSectionDots[2].addEventListener("click", () => {
+    eventsSectionScrollable.scrollTo({
+      left: eventsSectionScrollable.scrollWidth,
+      behavior: "smooth",
+    })
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   labsHoverAnimations();
   //carousel();
+  scrollingDots("events-section", "events-container");
+  scrollingDots("studios-section", "studios-container");
+  scrollingDots("news-section", "news-container");
 });
