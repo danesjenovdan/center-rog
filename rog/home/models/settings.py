@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
+
 from wagtail.admin.panels import (
     FieldPanel,
     ObjectList,
@@ -76,19 +78,26 @@ class MetaSettings(BaseGenericSetting):
             ("external_link", ExternalLinkBlock()),
         ],
         verbose_name="Povezave v navigacijski vrstici",
-        use_json_field=False
+        use_json_field=True,
+        blank=True
     )
-    # footer_links = StreamField(
-    #     [
-    #         ("page_link", PageLinkBlock()),
-    #         ("external_link", ExternalLinkBlock()),
-    #     ],
-    #     verbose_name=_("Povezave v nogi"),
-    # )
+    footer_links = StreamField(
+        [
+            ("page_link", PageLinkBlock()),
+            ("external_link", ExternalLinkBlock()),
+        ],
+        verbose_name=_("Povezave v nogi"),
+        use_json_field=True,
+        blank=True
+    )
 
     link_tab_panels = [
         FieldPanel("header_links"),
         # FieldPanel("footer_links"),
+    ]
+
+    footer_tab_panels = [
+        FieldPanel("footer_links"),
     ]
 
     # facebook = models.URLField(
@@ -189,7 +198,8 @@ class MetaSettings(BaseGenericSetting):
 
     edit_handler = TabbedInterface(
         [
-            ObjectList(link_tab_panels, heading="Seznam povezav"),
+            ObjectList(link_tab_panels, heading="Navigacija"),
+            ObjectList(footer_tab_panels, heading="Noga"),
             # ObjectList(social_tab_panels, heading="Socialna omrežja"),
             # ObjectList(meta_tab_panels, heading="Meta opisi"),
         ]
