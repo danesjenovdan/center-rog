@@ -83,8 +83,6 @@ function scrollingDots(section, container) {
   });
 
   eventsSectionDots[1].addEventListener("click", () => {
-    console.log(eventsSectionScrollable.scrollWidth)
-    console.log(eventsSectionScrollable.offsetWidth)
     eventsSectionScrollable.scrollTo({
       left: (eventsSectionScrollable.scrollWidth - eventsSectionScrollable.offsetWidth) / 2,
       behavior: "smooth",
@@ -101,8 +99,20 @@ function scrollingDots(section, container) {
 
 document.addEventListener("DOMContentLoaded", () => {
   labsHoverAnimations();
-  // carousel();
-  // scrollingDots("events-section", "events-container");
-  // scrollingDots("studios-section", "studios-container");
-  // scrollingDots("news-section", "news-container");
+  
+  if (document.querySelector(".tiny-slider-carousel")) {
+    carousel();
+  }
+
+  if (document.querySelector(".events-section")) {
+    scrollingDots("events-section", "events-container");
+  }
+
+  if (document.querySelector(".studios-section")) {
+    scrollingDots("studios-section", "studios-container");
+  }
+
+  if (document.querySelector(".news-section")) {
+    scrollingDots("news-section", "news-container");
+  }
 });
