@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import sys
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -236,3 +237,28 @@ REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
 ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
 CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
+
+LOGGING = {
+   'version': 1,
+   'disable_existing_loggers': False,
+   'formatters': {
+       'verbose': {
+           'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
+       },
+   },
+   'handlers': {
+       'console': {
+           'level': 'INFO',
+           'class': 'logging.StreamHandler',
+           'stream': sys.stdout,
+           'formatter': 'verbose'
+       },
+   },
+   'loggers': {
+       '': {
+           'handlers': ['console'],
+           'level': 'INFO',
+           'propagate': True,
+       },
+   },
+}
