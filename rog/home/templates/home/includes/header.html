@@ -1,13 +1,15 @@
 {% load static i18n wagtailcore_tags %}
 {% wagtail_site as current_site %}
 
+<div id="logo-navigation">
+  <a href="/">
+    <img src="{% static 'images/Center-Rog-logo.svg' %}" />
+  </a>
+</div>
 <header class="fixed-top">
   <nav id="primary-navigation" class="position-relative">
     <div id="primary-navigation-background" class="position-absolute"></div>
     <div class="navbar px-4 justify-content-end">
-      <a href="/" class="navbar-brand position-absolute">
-        <img src="{% static 'images/Center-Rog-logo.svg' %}" />
-      </a>
       <ul class="navbar-nav flex-row align-items-center">
         <!-- prevodi -->
         <li class="nav-item mx-2">
