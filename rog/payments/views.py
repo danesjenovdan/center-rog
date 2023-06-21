@@ -7,6 +7,8 @@ from .models import Payment, Plan
 from rest_framework import  views
 from rest_framework.response import Response
 
+from .parsers import XMLParser
+
 
 # Create your views here.
 
@@ -79,10 +81,12 @@ class PaymentDataXML(views.APIView):
 
 
 class PaymentSuccessXML(views.APIView):
+    parser_classes = [XMLParser]
     def post(self, request):
         data = request.data
         print(data)
-        payment = Payment.objects.get(id=data['id'])
+        payment_id = request.GET.get('id')
+        payment = Payment.objects.get(id=payment_id)
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.finished_at = timezone.now()
