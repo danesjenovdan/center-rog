@@ -1,5 +1,30 @@
 /* PRIMARY NAVIGATION */
 
+#logo-navigation {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 999999;
+    mix-blend-mode: difference;
+
+    a {
+        display: inline-block;
+
+        img {
+            width: 140px;
+            height: auto;
+            transform: rotate(1deg);
+            transition: transform 0.35s;
+        }
+    }
+
+    &.custom-navigation-show {
+        img {
+            transform: rotate(-10deg);
+        }
+    }
+}
+
 #primary-navigation {
 
     #primary-navigation-background {
@@ -115,18 +140,6 @@
 
         @include media-breakpoint-up(xxl) {}
 
-    }
-
-    .navbar-brand {
-        top: 10px;
-        left: 10px;
-        // filter: invert(100%);
-        // backdrop-filter: invert(100%);
-
-        img {
-            width: 140px;
-            height: auto;
-        }
     }
 
     &.custom-navigation-show {
