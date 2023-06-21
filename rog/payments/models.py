@@ -85,7 +85,7 @@ class Payment(Timestampable):
     )
 
     def __str__(self):
-        return f"{self.user} - {self.amount} - {self.date_created}"
+        return f"{self.user} - {self.amount} - {self.created_at}"
 
 
 class Token(Timestampable):

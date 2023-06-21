@@ -79,11 +79,12 @@ class PaymentDataXML(views.APIView):
 
 
 class PaymentSuccessXML(views.APIView):
-    def POST(self, request):
+    def post(self, request):
         data = request.data
         print(data)
         payment = Payment.objects.get(id=data['id'])
         payment.status = Payment.Status.SUCCESS
+        payment.info = str(data)
         payment.finished_at = timezone.now()
         payment.save()
         # TODO add tokens
