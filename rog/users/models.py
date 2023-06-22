@@ -54,7 +54,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, verbose_name="elektronski naslov")
     membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL)
     prima_id = models.IntegerField(null=True)
     phone = models.CharField(max_length=20, blank=True) # ne rabimo?

@@ -33,18 +33,19 @@ a {
     }
 }
 
-input {
-    border: 1px solid $cs-dark-gray;
-    border-radius: 3px;
-    padding: 10px;
-    // color: $cs-dark-gray;
-}
+.form-field-wrapper {
+    margin-bottom: 10px;
 
-form {
     label {
         display: block;
         font-size: $xxs-font-size;
         margin-bottom: 5px;
+    }
+
+    input {
+        border: 1px solid $cs-dark-gray;
+        border-radius: 3px;
+        padding: 10px;
     }
 
     input[type=text],
@@ -53,10 +54,6 @@ form {
         display: block;
         width: 100%;
     }
-}
-
-.form-field-wrapper {
-    margin-bottom: 10px;
 
     &.one-line {
         display: flex;
