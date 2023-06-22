@@ -12,16 +12,21 @@ from search import views as search_views
 from django.contrib.auth import views as auth_views
 
 from home.views import (
-    MyProfileView, 
-    EditProfileView, 
-    SearchProfileView, 
-    UserProfileView, 
+    MyProfileView,
+    EditProfileView,
+    SearchProfileView,
+    UserProfileView,
     RegistrationView,
     RegistrationMembershipView,
     RegistrationInformationView,
     RegistrationProfileView,
     # RegistrationPaymentView,
     # RegistrationSuccessView,
+)
+
+from users.views import (
+    CheckTokenView,
+    TestCalendarTemplateView,
 )
 
 # Non-translatable URLs
@@ -63,6 +68,9 @@ urlpatterns = urlpatterns + i18n_patterns(
     path('profil/<int:id>/', UserProfileView.as_view(), name='profile-user'),
     path('profil/', MyProfileView.as_view(), name='profile-my'),
     path('placilo/', include('payments.urls')),
+    path('ulagtoken', CheckTokenView.as_view(), name='check-token'),
+    path('test-calendar-embed/', TestCalendarTemplateView.as_view(), name='test-calendar-embed'),
+
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
