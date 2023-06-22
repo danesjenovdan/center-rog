@@ -2,6 +2,10 @@
     margin-top: 100px;
     margin-bottom: 60px;
 
+    p, a {
+        font-size: $xxs-font-size;
+    }
+
     .registration-progress {
         display: flex;
         align-items: center;
