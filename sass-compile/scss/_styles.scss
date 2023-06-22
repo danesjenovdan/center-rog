@@ -103,21 +103,21 @@ a {
 }
 
 .button-small {
-    height: 30px;
-    font-size: $xxs-font-size;
-    padding: 7.5px 10px;
+    height: 30px !important;
+    font-size: $xxs-font-size !important;
+    padding: 7.5px 10px !important;
 }
 
 .button-medium {
-    height: 40px;
-    font-size: $xs-font-size;
-    padding: 10px 20px;
+    height: 40px !important;
+    font-size: $xs-font-size !important;
+    padding: 10px 20px !important;
 }
 
 .button-large {
-    height: 70px;
-    font-size: $sm-font-size;
-    padding: 22.5px 35px;
+    height: 70px !important;
+    font-size: $sm-font-size !important;
+    padding: 22.5px 35px !important;
 }
 
 .events-card,
@@ -809,6 +809,40 @@ section.image-embed {
     .user-profile-container {
         margin-top: 100px;
         margin-bottom: 60px;
+
+        h1 {
+            font-size: $lg-font-size;
+        }
+
+        p, a {
+            font-size: $xxs-font-size;
+        }
+
+        section {
+            padding: 10px;
+            height: 270px;
+
+            .balance {
+                font-size: $xl-font-size;
+            }
+
+            button {
+                margin-bottom: 10px;
+            }
+
+            a {
+                margin-bottom: 0;
+            }
+
+            h6 {
+                font-size: $md-font-size;
+            }
+        }
+
+        .calendar-embed {
+            height: 500px;
+            padding: 0;
+        }
     }
 }
 
