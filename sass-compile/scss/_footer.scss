@@ -1,3 +1,76 @@
 footer.container-fluid {
     padding: 30px;
+
+    p {
+        font-size: $xs-font-size;
+
+        a {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .working-hours {
+        max-width: 150px;
+
+        p {
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+
+            span:first-of-type {
+                padding-right: 10px;
+            }
+        }
+    }
+
+    .form-field-wrapper {
+        @include media-breakpoint-up(xl) {
+            padding-right: 35px;
+        }
+    }
+
+    .footer-logos {
+        flex-wrap: wrap;
+    }
+
+    .footer-logo {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        margin-bottom: 20px;
+
+        &:nth-child(odd) {
+            margin-right: 20px;
+        }
+
+        @include media-breakpoint-up(md) {
+            margin-right: 20px;
+            margin-bottom: 0;
+        }
+
+        p {
+            font-size: $xxs-font-size;
+            margin-bottom: 5px;
+        }
+
+        img {
+            max-width: 100%;
+            object-fit: contain;
+            max-height: 125px;
+            height: auto;
+        }
+
+        @include media-breakpoint-up(md) {
+            width: 100px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 200px;
+        }
+    }
 }

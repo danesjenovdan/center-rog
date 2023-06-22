@@ -85,6 +85,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
+                "home.models.footer_image_processor"
             ],
         },
     },
@@ -203,6 +204,13 @@ WAGTAILADMIN_BASE_URL = "http://example.com"
 
 WAGTAIL_ALLOW_UNICODE_SLUGS = False
 
+WAGTAILIMAGES_IMAGE_MODEL = "home.CustomImage"
+
+WAGTAILMEDIA = {
+    "AUDIO_EXTENSIONS": [],
+    "VIDEO_EXTENSIONS": ["mp4", "webm"],
+}
+
 # Prima settings
 PRIMA_USERNAME = os.getenv('PRIMA_USERNAME', 'example')
 PRIMA_PASSWORD = os.getenv('PRIMA_PASSWORD', 'example')
@@ -224,11 +232,6 @@ COLOR_SCHEMES = [
     ("yellow", "Rumena"),
     ("white", "Bela"),
 ]
-
-WAGTAILMEDIA = {
-    "AUDIO_EXTENSIONS": [],
-    "VIDEO_EXTENSIONS": ["mp4", "webm"],
-}
 
 PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
 PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
