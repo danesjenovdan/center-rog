@@ -15,45 +15,72 @@
 
     <div class="row">
         <div class="col-12">
-            <h1>Živjo, {{ user.first_name }}!</h1>
+            <h1 class="text-center">Živjo, {{ user.first_name }}!</h1>
+        </div>
+    </div>
+
+    <div class="row my-4">
+        <div class="col-6">
+            <p class="mb-1">denarnica</p>
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+                <div class="">
+                    <p>točke na računu</p>
+                    <p class="balance">1000</p> <!-- {{ user_balance }} -->
+                </div>
+                <div>
+                    <div>
+                        <button class="secondary-button button-medium">dodaj sredstva</button>
+                    </div>
+                    <p>
+                        <a href="">pretekla poraba</a>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-6">
+            <p class="mb-1">članstvo</p>
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
+                <div class="">
+                    <h6>{{ user_type }}</h6>
+                    <p class="subtitle">
+                        Članarina se avtomatsko obnovi: <br />
+                        {{ obnovitev_clanarine }}
+                    </p>
+                    <p class="mb-2">
+                        <a href="/profil/uredi" class="secondary-button button-small">uredi profil</a>
+                    </p>
+                    <p class="mb-2">
+                        <a href="/odjava" class="secondary-button button-small">odjava</a>
+                    </p>
+                </div>
+                <div>
+                    <a href="/profil/isci" class="primary-button button-medium">poišči druge uporabnike</a>
+                </div>
+            </section>
         </div>
     </div>
 
     <div class="row my-4">
         <div class="col-12">
-            <h2>Denarnica</h2>
-            <p>Ure, ki jih še imate ta mesec: {{ user_balance }}</p>
-            <button class="btn btn-primary">zakupi nov mesec</button>
-            <button class="btn btn-primary">pretekla poraba</button>
+            <p class="mb-1">tvoji prihajajoči dogodki</p>
+            <div class="">PRIHAJAJOČI DOGODKI</div>
         </div>
     </div>
 
     <div class="row my-4">
         <div class="col-12">
-            <h2>Članstvo</h2>
-            <p>Tip članarine: {{ user_type }}</p>
-            <p>Članarina se avtomatsko obnovi: {{ obnovitev_clanarine }}</p>
-            <a href="/profil/uredi" class="btn btn-primary">Uredi profil</a>
-            <a href="/odjava" class="btn btn-primary">Odjava</a>
-            <a href="/profil/isci" class="btn btn-primary">Poišči druge uporabnike</a>
+            <p class="mb-1">tvoji prihajajoči dogodki</p>
+            <div class="layout-content-body calendar-embed">
+                <iframe id="iframe_booking" style="width: 100%; height: 100%; border: none; display:block;" src="https://centerrog.primacloud.si/app/booking/index.html?location=2&amp;picker=1&amp;ulagtoken={{ ulagtoken }}&amp;x=1"></iframe>
+            </div>
         </div>
     </div>
 
     <div class="row my-4">
         <div class="col-12">
-            <h2>Tvoji prihajajoči dogodki (SEZNAM)</h2>
-        </div>
-    </div>
-
-    <div class="row my-4">
-        <div class="col-12">
-            <h2>Tvoji prihajajoči dogodki (IFRAME)</h2>
-        </div>
-    </div>
-
-    <div class="row my-4">
-        <div class="col-12">
-            <h2>Nabor opravljenih usposabljanj</h2>
+            <p class="mb-1">nabor opravljenih usposabljanj</p>
+            <div class="">OPRAVLJENA USPOSABLJANJA</div>
         </div>
     </div>
 

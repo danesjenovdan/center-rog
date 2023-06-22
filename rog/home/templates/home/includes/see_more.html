@@ -14,6 +14,9 @@
       </div>
       <div class="col-xl-4 col-xxl-3 labs-section">
         <a href="{{ lab.get_url }}" class="lab">
+          {% if lab.thumbnail_animation %}
+            <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
+          {% endif %}
           {% image lab.thumbnail original class="img-fluid" alt="..." %}
           <h6>{{ lab.title }}</h6>
         </a>

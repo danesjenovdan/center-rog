@@ -24,7 +24,10 @@
         <div class="row">
           <div class="col-6">
             <div class="labs-section">
-              <a href="{% pageurl lab %}">
+              <a href="{% pageurl lab %}" class="lab">
+                {% if lab.thumbnail_animation %}
+                  <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
+                {% endif %}
                 {% image lab.thumbnail original class="img-fluid" alt="..." %}
               </a>
               <div class="bulletin-board-link mb-4">
