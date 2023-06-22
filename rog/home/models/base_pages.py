@@ -66,7 +66,7 @@ class ObjectProfilePage(BasePage):
             ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
             ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
         ], label=_('Dan in ura')))
-    ], blank=True, null=True, use_json_field=False)
+    ], blank=True, null=True, use_json_field=True)
     # gallery
     # gallery = StreamField(
     #     blocks.ListBlock(ImageChooserBlock()),

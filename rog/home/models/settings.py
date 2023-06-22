@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from django.core.validators import (
+    MaxValueValidator,
+    MinValueValidator,
+)
+
 from wagtail.admin.panels import (
     FieldPanel,
     ObjectList,
@@ -12,9 +17,22 @@ from wagtail.contrib.settings.models import (
 )
 from wagtail.snippets.models import register_snippet
 from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.fields import StreamField
-# from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.edit_handlers import ImageChooserPanel
 
+from .image import CustomImage
+
+import random
+
+
+## CUSTOM CONTEXT PROCESSORS
+
+def footer_image_processor(request):
+    last_20_images = list(CustomImage.objects.filter(show_in_footer=True)[:20])
+    random_image = random.choice(last_20_images)
+    print(random_image)
+    return {'random_image': random_image}
 
 # @register_snippet
 # class Infopush(models.Model):
@@ -72,6 +90,45 @@ class PageLinkBlock(blocks.StructBlock):
 
 @register_setting(icon="cog")
 class MetaSettings(BaseGenericSetting):
+    organization_name = models.TextField(verbose_name=_("Ime"))
+    organization_address = models.TextField(verbose_name=_("Ulica in hišna številka"))
+    organization_postal_number = models.IntegerField(verbose_name=_("Poštna številka"), validators=[MinValueValidator(1000), MaxValueValidator(9999)])
+    organization_post = models.TextField(verbose_name=_("Pošta"))
+    organization_country = models.TextField(verbose_name=_("Država"))
+    organization_email = models.EmailField(verbose_name=_("E-pošta"))
+    organization_phone_number = models.CharField(verbose_name=_("Telefonska številka"), max_length=20)
+    organization_working_hours = StreamField([
+        ('time', blocks.StructBlock([
+            ('day', blocks.CharBlock(label=_('Dan'))),
+            ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
+            ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
+        ], label=_('Dan in ura')))
+    ], blank=True, null=True, use_json_field=True)
+
+    basic_information_tab_panels = [
+        FieldPanel("organization_name"),
+        FieldPanel("organization_address"),
+        FieldPanel("organization_postal_number"),
+        FieldPanel("organization_post"),
+        FieldPanel("organization_country"),
+        FieldPanel("organization_email"),
+        FieldPanel("organization_phone_number"),
+        FieldPanel("organization_working_hours"),
+    ]
+
+    social_media_links = StreamField(
+        [
+            ("external_link", ExternalLinkBlock()),
+        ],
+        verbose_name="Družbena omrežja",
+        use_json_field=True,
+        blank=True
+    )
+
+    social_media_tab_panels = [
+        FieldPanel("social_media_links"),
+    ]
+
     header_links = StreamField(
         [
             ("page_link", PageLinkBlock()),
@@ -81,6 +138,11 @@ class MetaSettings(BaseGenericSetting):
         use_json_field=True,
         blank=True
     )
+
+    header_tab_panels = [
+        FieldPanel("header_links"),
+    ]
+
     footer_links = StreamField(
         [
             ("page_link", PageLinkBlock()),
@@ -91,80 +153,26 @@ class MetaSettings(BaseGenericSetting):
         blank=True
     )
 
-    link_tab_panels = [
-        FieldPanel("header_links"),
-        # FieldPanel("footer_links"),
-    ]
+    footer_images = StreamField(
+        [
+            ("logo", blocks.StructBlock([
+                ("image", ImageChooserBlock()),
+                ("description", blocks.CharBlock(label=_("Naslov"), blank=True, required=False))
+            ]))
+        ],
+        block_counts = {
+            "logo": {"max_num": 4},
+        },
+        verbose_name=_("Logotipi"),
+        use_json_field=True,
+        blank=True
+    )
 
     footer_tab_panels = [
         FieldPanel("footer_links"),
+        FieldPanel("footer_images")
     ]
 
-    # facebook = models.URLField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # twitter = models.URLField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # instagram = models.URLField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # youtube = models.URLField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # email = models.EmailField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # social_label = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    # )
-    # newsletter_label = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    # )
-    # newsletter_sublabel = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    # )
-    # newsletter_consent = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    # )
-
-    # social_tab_panels = [
-    #     FieldPanel("facebook"),
-    #     FieldPanel("twitter"),
-    #     FieldPanel("instagram"),
-    #     FieldPanel("youtube"),
-    #     FieldPanel("email"),
-    #     FieldPanel("social_label"),
-    #     FieldPanel("newsletter_label"),
-    #     FieldPanel("newsletter_sublabel"),
-    #     FieldPanel("newsletter_consent"),
-    # ]
-
-    # meta_title = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="Meta naslov",
-    # )
-    # meta_description = models.CharField(
-    #     max_length=255,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="Meta opis",
-    # )
     # meta_image = models.ForeignKey(
     #     "wagtailimages.Image",
     #     null=True,
@@ -173,37 +181,16 @@ class MetaSettings(BaseGenericSetting):
     #     related_name="+",
     #     verbose_name="OG slika",
     # )
-    # meta_image_alt_text = models.TextField(
-    #     blank=True,
-    #     verbose_name="Alt tekst za OG sliko"
-    # )
-
-    # share_email_text = models.TextField(
-    #     null=True,
-    #     blank=True,
-    # )
-    # share_twitter_text = models.TextField(
-    #     null=True,
-    #     blank=True,
-    # )
-
-    # meta_tab_panels = [
-    #     FieldPanel("meta_title"),
-    #     FieldPanel("meta_description"),
-    #     FieldPanel("meta_image"),
-    #     FieldPanel("meta_image_alt_text"),
-    #     FieldPanel("share_email_text"),
-    #     FieldPanel("share_twitter_text"),
-    # ]
 
     edit_handler = TabbedInterface(
         [
-            ObjectList(link_tab_panels, heading="Navigacija"),
+            ObjectList(basic_information_tab_panels, heading="Osnovne informacije o organizaciji"),
+            ObjectList(social_media_tab_panels, heading="Družbena omrežja"),
+            ObjectList(header_tab_panels, heading="Navigacija"),
             ObjectList(footer_tab_panels, heading="Noga"),
-            # ObjectList(social_tab_panels, heading="Socialna omrežja"),
-            # ObjectList(meta_tab_panels, heading="Meta opisi"),
         ]
     )
 
     class Meta:
         verbose_name = "Nastavitve spletnega mesta"
+

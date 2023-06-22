@@ -52,21 +52,6 @@
         margin-bottom: 30px;
     }
 
-    form {
-        label {
-            display: block;
-            font-size: $xxs-font-size;
-            margin-bottom: 5px;
-        }
-
-        input[type=text],
-        input[type=email],
-        input[type=password] {
-            display: block;
-            width: 100%;
-        }
-    }
-
     .radio-square-wrapper {
         columns: auto 2;
         column-gap: 30px;

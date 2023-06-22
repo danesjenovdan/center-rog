@@ -1,61 +1,97 @@
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
+
 <footer class="container-fluid color-scheme-white">
-    <div class="row">
+    <div class="row mb-xl-5">
         <div class="col-6">
             <div class="row">
-                <div class="col-6">
+                <div class="col-md-6 col-xxl-5">
                     <p>
-                        Center Rog<br />
-                        Trubarjeva 72<br />
-                        1000 Ljubljana<br />
-                        Slovenija<br />
-                        info@center-rog.si<br />
-                        +386 1 251 6301
+                        {{ settings.home.MetaSettings.organization_name }}<br />
+                        {{ settings.home.MetaSettings.organization_address }}<br />
+                        {{ settings.home.MetaSettings.organization_postal_number }} {{ settings.home.MetaSettings.organization_post }}<br />
+                        {{ settings.home.MetaSettings.organization_country }}<br />
+                        <a href="mailto:{{ settings.home.MetaSettings.organization_email }}">{{ settings.home.MetaSettings.organization_email }}</a><br />
+                        {{ settings.home.MetaSettings.organization_phone_number }}
                     </p>
                 </div>
-                <div class="col-6">
+                <div class="col-md-6 col-xxl-5">
                     <p>
-                        sitemap<br />
-                        pogosta vprašanja<br />
-                        cenik storitev<br />
-                        politika zasebnosti<br />
-                        pogoji uporabe
+                        {% for link in settings.home.MetaSettings.footer_links %}
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
+                            {% if link.value.name %}
+                            {{ link.value.name }}
+                            {% elif link.value.page %}
+                            {{ link.value.page.title }}
+                            {% endif %}
+                        </a><br />
+                        {% endfor %}
                     </p>
                 </div>
-                <div class="col-6">
-                    <p>
-                        Mon-Fri 8-20<br />
-                        Sat 8-14<br />
-                        Sun 10-18
-                    </p>
+                <div class="col-md-6 col-xxl-5">
+                    <div class="working-hours">
+                        {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
+                        <p>
+                            <span>{{ working_hours.value.day }}</span>
+                            <span>{{ working_hours.value.start_time|time:"G" }}-{{ working_hours.value.end_time|time:"G" }}</span>                        
+                        </p>
+                        {% endfor %}
+                        <br />
+                    </div>
                 </div>
-                <div class="col-6">
+                {% if settings.home.MetaSettings.social_media_links %}
+                <div class="col-md-6 col-xxl-5">
                     <p>
                         sledi nam:<br />
-                        instagram<br />
-                        facebook<br />
-                        twitter
+                        {% for link in settings.home.MetaSettings.social_media_links %}
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}" target="_blank">
+                            {% if link.value.name %}
+                            {{ link.value.name }}
+                            {% elif link.value.page %}
+                            {{ link.value.page.title }}
+                            {% endif %}
+                        </a><br />
+                        {% endfor %}
                     </p>
                 </div>
+                {% endif %}
             </div>
         </div>
         <div class="col-6">
             <form>
-                <label for="newsletter-input-footer">Input label</label>
-                <input type="text" id="newsletter-input-footer">
-
-                <label for="newsletter-checkbox-footer">
+                <div class="form-field-wrapper">
+                    <label for="newsletter-input-footer">Input label</label>
+                    <input type="text" id="newsletter-input-footer">
+                </div>
+                
+                <div class="form-field-wrapper one-line">
                     <input type="checkbox" id="newsletter-checkbox-footer">
-                    <span>checkbox s tekstom</span>
-                </label>
-
-                <div class="my-4">
-                    <button type="submit" class="secondary-button button-medium">naprej</button>
+                    <label for="newsletter-checkbox-footer">
+                        <span>checkbox s tekstom</span>
+                    </label>
+                </div>
+                
+                <div class="my-3">
+                    <button type="submit" class="secondary-button button-medium">pošlji</button>
                 </div>
             </form>
         </div>
     </div>
+    {% if settings.home.MetaSettings.footer_images %}
     <div class="row">
-        <div class="col">stiri slikce</div>
+        <div class="col d-flex justify-content-between">
+            <div class="footer-logos d-flex">
+                {% for img in settings.home.MetaSettings.footer_images %}
+                <div class="footer-logo">
+                    <p>{{ img.value.description }}</p>
+                    {% image img.value.image width-200 class="" alt="..." %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="random-image d-none d-md-block">
+                {% image random_image fill-200x270 class="" alt="..." %}
+            </div>
+        </div>
     </div>
+    {% endif %}
     
 </footer>
