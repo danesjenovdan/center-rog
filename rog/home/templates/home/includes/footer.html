@@ -87,9 +87,11 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if random_image %}
             <div class="random-image d-none d-md-block">
                 {% image random_image fill-200x270 class="" alt="..." %}
             </div>
+            {% endif %}
         </div>
     </div>
     {% endif %}

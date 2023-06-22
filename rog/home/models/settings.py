@@ -29,9 +29,11 @@ import random
 ## CUSTOM CONTEXT PROCESSORS
 
 def footer_image_processor(request):
+    random_image = None
+
     last_20_images = list(CustomImage.objects.filter(show_in_footer=True)[:20])
-    random_image = random.choice(last_20_images)
-    print(random_image)
+    if (last_20_images):
+        random_image = random.choice(last_20_images)
     return {'random_image': random_image}
 
 # @register_snippet
