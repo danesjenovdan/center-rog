@@ -2,11 +2,13 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.utils import timezone
+from django.views import View
 
-from .models import Payment, Plan
 from rest_framework import  views
 from rest_framework.response import Response
+from datetime import timedelta
 
+from .models import Payment, Plan, Token
 from .parsers import XMLParser
 
 
@@ -28,14 +30,13 @@ class Pay(views.APIView):
             plan = Plan.objects.get(id=data['plan'])
             payment.plan = plan
             payment.amount = plan.price
-        # TODO buy tokens
         payment.save()
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar=wizard'
+        is_wizard = request.GET.get("wizard", False)
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&{"urlpar=wizard" if is_wizard else ""}'
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
 
@@ -89,9 +90,26 @@ class PaymentSuccessXML(views.APIView):
         payment = Payment.objects.get(id=payment_id)
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
-        payment.finished_at = timezone.now()
+        payment.successed_at = timezone.now()
+        # set active_to if plan is subscription
+        if payment.plan and payment.plan.is_subscription:
+            payment.active_to = timezone.now() + timedelta(days=payment.plan.duration)
         payment.save()
-        # TODO add tokens
+        # create tokens
+        Token.objects.bulk_create([
+            Token(
+                payment=payment,
+                valid_from=timezone.now(),
+                valid_to=timezone.now() + timedelta(days=payment.plan.duration)
+            ) for i in range(payment.plan.tokens)
+        ] + [
+            Token(
+                payment=payment,
+                valid_from=timezone.now(),
+                valid_to=timezone.now() + timedelta(days=payment.plan.duration),
+                type_of=Token.WORKSHOP
+            ) for i in range(payment.plan.workshops)
+        ])
         return Response({'status': 'OK'})
 
 
@@ -112,3 +130,18 @@ class PaymentFailure(views.APIView):
         payment.finished_at = timezone.now()
         payment.save()
         return render(request, 'payment_failed.html', {})
+
+
+class PaymentHistory(View):
+    def get(self, request):
+        user = request.user
+        payments = user.payments.all().order_by('-created_at')
+
+        return render(
+            request,
+            'payment_hystory.html',
+            {
+                'username': user.email.split('@')[0],
+                'payments': payments
+            }
+        )

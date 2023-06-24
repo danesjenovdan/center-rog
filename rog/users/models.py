@@ -72,6 +72,12 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
+    def has_valid_subscription(self):
+        return self.payments.all().is_active_subscription()
+    
+    def get_valid_tokens(self):
+        return self.payments.all().get_valid_tokens()
+
 
 class BookingToken(models.Model):
     email = models.EmailField(unique=True)
