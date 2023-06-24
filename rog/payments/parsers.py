@@ -15,5 +15,4 @@ class XMLParser(BaseParser):
 
     def parse(self, stream, media_type=None, parser_context=None):
         print(media_type)
-
         return stream.read()

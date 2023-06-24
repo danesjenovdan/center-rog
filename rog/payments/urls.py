@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import Pay, PaymentDataXML, PaymentSuccess, PaymentFailure, PaymentSuccessXML
+from .views import (
+    Pay,
+    PaymentDataXML,
+    PaymentSuccess,
+    PaymentFailure,
+    PaymentSuccessXML,
+    PaymentHistory
+)
 
 urlpatterns = [
     path('', Pay.as_view()),
@@ -7,4 +14,5 @@ urlpatterns = [
     path('uspesno/', PaymentSuccess.as_view()),
     path('neuspesno/', PaymentFailure .as_view()),
     path('potrditev/', PaymentSuccessXML.as_view()),
+    path('zgodovina/', PaymentHistory.as_view()),
 ]

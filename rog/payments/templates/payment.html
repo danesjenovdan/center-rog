@@ -14,7 +14,7 @@
 <script>
 
     function initPayment()  {
-        fetch("/placilo/", {
+        fetch("/placilo/?wizard=wizard", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
