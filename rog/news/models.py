@@ -1,12 +1,13 @@
 from django.db import models
 from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 
-from home.models import BasePage
+from home.models import BasePage, CustomImage
 
 
 class NewsCategory(models.Model):
@@ -26,11 +27,11 @@ class NewsCategory(models.Model):
 class NewsPage(BasePage):
     short_description = models.TextField(blank=True)
     thumbnail = models.ForeignKey(
-        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     category = models.ForeignKey(
         NewsCategory, null=True, on_delete=models.SET_NULL)
     hero_image = models.ForeignKey(
-        'wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
     body = RichTextField(blank=True, null=True)
     gallery = StreamField([
         ('image', ImageChooserBlock())
@@ -55,6 +56,20 @@ class NewsListPage(BasePage):
     subpage_types = [
         'news.NewsPage',
     ]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        all_news_page_objects = NewsPage.objects.live().order_by('-first_published_at')
+        paginator = Paginator(all_news_page_objects, 6)
+        page = request.GET.get("page")
+        try:
+            news_pages = paginator.page(page)
+        except PageNotAnInteger:
+            news_pages = paginator.page(1)
+        except EmptyPage:
+            news_pages = paginator.page(paginator.num_pages)
+        context['news_pages'] = news_pages
+        return context
 
 
 class NewsListArchivePage(BasePage):
