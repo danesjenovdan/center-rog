@@ -9,6 +9,7 @@ from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
 
 import random
+from datetime import date
 
 
 class ColoredStructBlock(blocks.StructBlock):
@@ -53,45 +54,60 @@ class ButtonsBlock(blocks.StreamBlock):
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov"))
     notice = blocks.TextBlock(label=_("Obvestilo"))
-    event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek"), page_type="events.EventPage")
-    news = blocks.PageChooserBlock(label=_("Izpostavljena novica"), page_type="news.NewsPage")
-
+    event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek (če pustite prazno, se izbere naključni)"), page_type="events.EventPage", required=False)
+    news = blocks.PageChooserBlock(label=_("Izpostavljena novica (če pustite prazno, se izbere naključna)"), page_type="news.NewsPage", required=False)
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        # random event (TODO: samo prihajajoči)
-        events = list(EventPage.objects.all())
-        context["event"] = random.choice(events)
+
+        # random event
+        today = date.today()
+        if value["event"] is not None:
+            context["event"] = value["event"]
+        else:
+            upcoming_events = list(EventPage.objects.live().filter(start_day__gte=today))
+            if len(upcoming_events) > 0:
+                context["event"] = random.choice(upcoming_events)
+        # link to all events
+        context["events_list"] = EventListPage.objects.live().first()
+
         # random news
-        news = list(NewsPage.objects.all())
-        context["news"] = random.choice(news)
-        # random lab
-        labs = list(LabPage.objects.all())
-        context["lab"] = random.choice(labs)
-        # random markets
-        markets = list(MarketStorePage.objects.all())
-        context["markets"] = random.sample(markets, 2)
-        # random resident
-        # residents = list(ResidencePage.objects.all())
-        # context["resident"] = random.choice(residents)
-        # link to events
-        context["events_list"] = EventListPage.objects.all().first()
+        if value["news"] is not None:
+            context["news"] = value["news"]
+        else:
+            news = list(NewsPage.objects.live())
+            if len(news) > 0:
+                context["news"] = random.choice(news)
         # link to news
-        context["news_list"] = NewsListPage.objects.all().first()
-        # link to studios
-        context["studios_list"] = StudioListPage.objects.all().first()
+        context["news_list"] = NewsListPage.objects.live().first()
+
+        # random lab
+        labs = list(LabPage.objects.live())
+        if len(labs) > 0:
+            context["lab"] = random.choice(labs)
         # link to labs
-        context["labs_list"] = LabListPage.objects.all().first()
+        context["labs_list"] = LabListPage.objects.live().first()
+
+        # random markets
+        markets = list(MarketStorePage.objects.live())
+        if len(markets) > 1:
+            context["markets"] = random.sample(markets, 2)
+        elif len(markets) > 0:
+            context["markets"] = random.sample(markets, 1)            
         # link to markets
-        context["markets_list"] = MarketStoreListPage.objects.all().first()
+        context["markets_list"] = MarketStoreListPage.objects.live().first()
+        
+        # link to studios
+        context["studios_list"] = StudioListPage.objects.live().first()
+        
         # link to residences
-        context["residents_list"] = ResidenceListPage.objects.all().first()
+        context["residents_list"] = ResidenceListPage.objects.live().first()
 
         return context
 
     class Meta:
         label = _("Oglasna deska")
-        template = "home/blocks/module_bulletin_board.html"
+        template = "home/blocks/bulletin_board.html"
 
 
 class NewsBlock(blocks.StructBlock):

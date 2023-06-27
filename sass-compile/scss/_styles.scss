@@ -282,9 +282,19 @@ a {
                 a {
                     font-size: $xxs-font-size;
                     color: $cs-dark-gray;
+                    text-decoration: none;
+
+                    span {
+                        text-decoration: underline;
+                    }
                 
                     &:hover {
                         color: $cs-dark-gray;
+                    }
+
+                    &::after {
+                        content: "→";
+                        margin-left: 5px;
                     }
                 }
             }

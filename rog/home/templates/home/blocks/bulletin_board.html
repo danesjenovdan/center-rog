@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load i18n wagtailcore_tags wagtailimages_tags %}
 
 <section class="color-scheme-light-gray bulletin-board">
   <div class="container">
@@ -8,32 +8,39 @@
       </div>
     </div>
     <div class="row">
+      {% if event %}
       <div class="col-md-4 col-xxl-3">
         {% include "events/includes/card.html" with event=event %}
         <div class="bulletin-board-link mb-4">
-          <a href="{% pageurl events_list %}">Poglej vse dogodke</a>
+          <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
         </div>
       </div>
+      {% endif %}
+      {% if news %}
       <div class="d-md-none d-xxl-block col-xxl-3">
         {% include "news/includes/card.html" with news=news %}
         <div class="bulletin-board-link mb-4">
-          <a href="{% pageurl events_list %}">Poglej vse novice</a>
+          <a href="{% pageurl news_list %}"><span>{% translate 'Poglej vse novice' %}</span></a>
         </div>
       </div>
+      {% endif %}
       <div class="col-md-8 col-xxl-6">
         <div class="row">
           <div class="col-6">
+            {% if lab %}
             <div class="labs-section">
               <a href="{% pageurl lab %}" class="lab">
                 {% if lab.thumbnail_animation %}
                   <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
                 {% endif %}
-                {% image lab.thumbnail original class="img-fluid" alt="..." %}
+                {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
               </a>
               <div class="bulletin-board-link mb-4">
-                <a href="{% pageurl labs_list %}">Poglej vse labe</a>
+                <a href="{% pageurl labs_list %}"><span>{% translate 'Poglej vse laboratorije' %}</span></a>
               </div>
             </div>
+            {% endif %}
+            {% if markets %}
             <div class="market-section my-4">
               <div class="markets-container">
                 <div class="color-scheme-brown">
@@ -54,16 +61,17 @@
                 </div>
               </div>
               <div class="bulletin-board-link">
-                <a href="{% pageurl markets_list %}">Poglej Rog Market</a>
+                <a href="{% pageurl markets_list %}"><span>{% translate 'Poglej Rog Market' %}</span></a>
               </div>
             </div>
+            {% endif %}
           </div>
           <div class="col-6">
             <a
               href="{% pageurl studios_list %}"
               class="color-scheme-dark-green studios-link"
             >
-              Poglej kdo vse je v naših studiih
+            {% translate 'Poglej, kdo vse je v naših studiih' %}
             </a>
             <div class="notice-wrapper color-scheme-white">
               <div class="tape"></div>
@@ -80,7 +88,7 @@
                     class="doorbell-button"
                   ></a>
                   <div class="resident-name">
-                    <div class="paper">Poglej naše rezidence</div>
+                    <div class="paper">{% translate 'Poglej naše rezidence' %}</div>
                     <div class="tape"></div>
                     <div class="tape"></div>
                   </div>
