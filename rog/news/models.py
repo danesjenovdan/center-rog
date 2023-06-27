@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
@@ -12,6 +14,7 @@ from home.models import BasePage, CustomImage
 
 class NewsCategory(models.Model):
     name = models.TextField()
+    slug = models.SlugField()
     color_scheme = models.CharField(
         max_length=20,
         choices=settings.COLOR_SCHEMES,
@@ -19,47 +22,70 @@ class NewsCategory(models.Model):
     )
 
     panels = [
-        FieldPanel('category_name'),
-        FieldPanel('color_scheme'),
+        FieldPanel("name"),
+        FieldPanel("color_scheme"),
     ]
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(NewsCategory, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Kategorija novic")
+        verbose_name_plural = _("Kategorije novic")
 
 
 class NewsPage(BasePage):
     short_description = models.TextField(blank=True)
     thumbnail = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     category = models.ForeignKey(
         NewsCategory, null=True, on_delete=models.SET_NULL)
     hero_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name='+')
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
     body = RichTextField(blank=True, null=True)
     gallery = StreamField([
-        ('image', ImageChooserBlock())
-    ], use_json_field=False, null=True)
+        ("image", ImageChooserBlock())
+    ], use_json_field=True, null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('short_description'),
-        FieldPanel('thumbnail'),
-        FieldPanel('category'),
-        FieldPanel('hero_image'),
-        FieldPanel('body'),
-        # FieldPanel('gallery'),
+        FieldPanel("short_description"),
+        FieldPanel("thumbnail"),
+        FieldPanel("category"),
+        FieldPanel("hero_image"),
+        FieldPanel("body"),
+        FieldPanel("gallery"),
 
     ]
 
     parent_page_types = [
-        'news.NewsListPage'
+        "news.NewsListPage"
     ]
 
 
 class NewsListPage(BasePage):
     subpage_types = [
-        'news.NewsPage',
+        "news.NewsPage",
     ]
 
     def get_context(self, request):
         context = super().get_context(request)
-        all_news_page_objects = NewsPage.objects.live().order_by('-first_published_at')
+
+        # categories
+        categories = NewsCategory.objects.all()
+        context["secondary_navigation"] = categories
+
+        all_news_page_objects = NewsPage.objects.live().order_by("-first_published_at")        
+
+        # filtering
+        chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
+        if chosen_category:
+            all_news_page_objects = all_news_page_objects.filter(category=chosen_category)
+
+        # pagination
         paginator = Paginator(all_news_page_objects, 6)
         page = request.GET.get("page")
         try:
@@ -68,7 +94,9 @@ class NewsListPage(BasePage):
             news_pages = paginator.page(1)
         except EmptyPage:
             news_pages = paginator.page(paginator.num_pages)
-        context['news_pages'] = news_pages
+        
+        context["news_pages"] = news_pages
+
         return context
 
 
@@ -76,6 +104,6 @@ class NewsListArchivePage(BasePage):
     subpage_types = []
 
 
-NewsPage._meta.get_field('color_scheme').default = 'light-gray'
-NewsListPage._meta.get_field('color_scheme').default = 'light-gray'
-NewsListArchivePage._meta.get_field('color_scheme').default = 'light-gray'
+NewsPage._meta.get_field("color_scheme").default = "light-gray"
+NewsListPage._meta.get_field("color_scheme").default = "light-gray"
+NewsListArchivePage._meta.get_field("color_scheme").default = "light-gray"

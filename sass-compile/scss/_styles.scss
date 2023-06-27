@@ -957,8 +957,13 @@ section.image-embed {
     }
 }
 
-.template-news-list-page {
-
+.template-object-list {
+    &.template-news-list-page,
+    &.template-event-list-page {
+        .list-container {
+            padding-top: 80px;
+        }
+    }
 }
 
 .see-more-section {

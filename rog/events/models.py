@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
@@ -12,6 +13,7 @@ from home.models import BasePage, CustomImage
 
 class EventCategory(models.Model):
     name = models.TextField()
+    slug = models.SlugField()
     color_scheme = models.CharField(
         max_length=20,
         choices=settings.COLOR_SCHEMES,
@@ -23,8 +25,16 @@ class EventCategory(models.Model):
         FieldPanel("color_scheme"),
     ]
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(EventCategory, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = _("Kategorije dogodkov")
+        verbose_name = _("Kategorija dogodkov")
+        verbose_name_plural = _("Kategorije dogodkov")
 
 
 class EventPage(BasePage):
@@ -64,7 +74,19 @@ class EventListPage(BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
+
+        # categories
+        categories = EventCategory.objects.all()
+        context["secondary_navigation"] = categories
+
         all_event_page_objects = EventPage.objects.live().order_by("-first_published_at")
+
+        # filtering
+        chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
+        if chosen_category:
+            all_event_page_objects = all_event_page_objects.filter(category=chosen_category)
+        
+        # pagination
         paginator = Paginator(all_event_page_objects, 3)
         page = request.GET.get("page")
         try:
@@ -73,7 +95,9 @@ class EventListPage(BasePage):
             event_pages = paginator.page(1)
         except EmptyPage:
             event_pages = paginator.page(paginator.num_pages)
+        
         context["event_pages"] = event_pages
+
         return context
 
 
