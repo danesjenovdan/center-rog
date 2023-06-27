@@ -805,10 +805,13 @@ section.image-embed {
             }
         }
 
-        &.news-page-profile-container {
+        .news-page-profile-container {
             padding-top: 0;
             padding-bottom: 0;
+        }
 
+        &.news-page-profile-container,
+        &.event-page-container {
             h1 {
                 margin-top: 30px;
                 margin-bottom: 30px;
@@ -850,6 +853,66 @@ section.image-embed {
 
                     }
                 }
+            }
+        }
+
+        &.event-page-container {
+            .contact-information {
+                margin: 20px;
+                transform: rotate(-4deg);
+                position: relative;
+
+                .notice {
+                    font-size: $md-font-size;
+                    padding: 25px;
+
+                    p {
+                        margin-bottom: 10px;
+                    }
+                }
+
+                .pin {
+                    position: absolute;
+                    width: 18px;
+                    height: 1px;
+                    background-color: #000000;
+                    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.40);
+
+                    &:nth-child(1) {
+                        left: 5px;
+                        top: 7px;
+                        transform: rotate(-10deg);
+                    }
+
+                    &:nth-child(2) {
+                        left: 10px;
+                        top: 12px;
+                    }
+
+                    &:nth-child(3) {
+                        right: 8px;
+                        top: 12px;
+                        transform: rotate(20deg);
+                    }
+
+                    &:nth-child(4) {
+                        right: 8px;
+                        bottom: 10px;
+                        transform: rotate(-8deg);
+                    }
+
+                    &:nth-child(5) {
+                        left: 6px;
+                        bottom: 10px;
+                        transform: rotate(-24deg);
+                    }
+                }
+            }
+
+            .hero-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
     }
