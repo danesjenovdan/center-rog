@@ -6,7 +6,8 @@ from wagtail import blocks
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
-from wagtail.images.blocks import ImageChooserBlock
+
+from .image import CustomImage
 
 
 class BasePage(Page):
@@ -31,8 +32,8 @@ class ObjectListPage(BasePage):
     show_see_more_section = models.BooleanField(default=False)
 
     content_panels = Page.content_panels + [
-        FieldPanel('intro_text'),
-        FieldPanel('show_see_more_section'),
+        FieldPanel("intro_text"),
+        FieldPanel("show_see_more_section"),
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -46,11 +47,11 @@ class ObjectListPage(BasePage):
 class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True)
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        CustomImage,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
     # contact information
     email = models.EmailField(blank=True)
@@ -61,11 +62,11 @@ class ObjectProfilePage(BasePage):
     contact_description = models.TextField(blank=True)
     # working hours
     working_hours = StreamField([
-        ('time', blocks.StructBlock([
-            ('day', blocks.CharBlock(label=_('Dan'))),
-            ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
-            ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
-        ], label=_('Dan in ura')))
+        ("time", blocks.StructBlock([
+            ("day", blocks.CharBlock(label=_("Dan"))),
+            ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
+            ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
+        ], label=_("Dan in ura")))
     ], blank=True, null=True, use_json_field=True)
     # gallery
     # gallery = StreamField(
@@ -76,20 +77,20 @@ class ObjectProfilePage(BasePage):
     # )
     
     content_panels = Page.content_panels + [
-        FieldPanel('description'),
-        FieldPanel('image'),
+        FieldPanel("description"),
+        FieldPanel("image"),
         MultiFieldPanel(
             [
-                FieldPanel('email'),
-                FieldPanel('phone'),
-                FieldPanel('link_1'),
-                FieldPanel('link_2'),
-                FieldPanel('link_3'),
-                FieldPanel('contact_description'),
+                FieldPanel("email"),
+                FieldPanel("phone"),
+                FieldPanel("link_1"),
+                FieldPanel("link_2"),
+                FieldPanel("link_3"),
+                FieldPanel("contact_description"),
             ],
-            heading=_('Kontaktni podatki')
+            heading=_("Kontaktni podatki")
         ),
-        FieldPanel('working_hours'),
+        FieldPanel("working_hours"),
     ]
 
     subpage_types = []
