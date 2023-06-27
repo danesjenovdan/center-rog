@@ -207,6 +207,24 @@ a {
     }
 }
 
+.tool-card {
+    padding: 20px 30px;
+
+    h4 {
+        font-size: $xs-font-size;
+        margin-bottom: 15px;
+    }
+
+    img, .specifications, .button-medium {
+        margin-bottom: 15px;
+    }
+
+    p {
+        margin-bottom: 5px;
+        font-size: $xxs-font-size;
+    }
+}
+
 .scrolling-dots {
     span {
         display: inline-block;
