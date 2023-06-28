@@ -23,7 +23,7 @@ class Command(BaseCommand):
         img_directory = "rog/static/images"
         img_path = f"{img_directory}/{image_name}"
         image_file = ImageFile(open(img_path, 'rb'), name=image_name)
-        image = Image(title=image_name, file=image_file)
+        image = models.CustomImage(title=image_name, file=image_file)
         image.save()
         return image
 
@@ -160,7 +160,8 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=three_d_lab_img,
-            thumbnail_animation=three_d_lab_animation
+            thumbnail_animation=three_d_lab_animation,
+            image=stock_img
         )
 
         # kovinarski laboratorij
@@ -179,7 +180,8 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=kovinarski_lab_img,
-            thumbnail_animation=kovinarski_lab_animation
+            thumbnail_animation=kovinarski_lab_animation,
+            image=stock_img
         )
 
         # kuharski laboratorij
@@ -198,7 +200,8 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=kuharski_lab_img,
-            thumbnail_animation=kuharski_lab_animation
+            thumbnail_animation=kuharski_lab_animation,
+            image=stock_img
         )
 
         # lesni laboratorij
@@ -217,7 +220,8 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=lesni_lab_img,
-            thumbnail_animation=lesni_lab_animation
+            thumbnail_animation=lesni_lab_animation,
+            image=stock_img
         )
 
         newslistpage = news_models.NewsListPage(
@@ -294,34 +298,37 @@ class Command(BaseCommand):
         event1 = events_models.EventPage(
             title="Lorem ipsum dolor sit amet",
             short_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            hero_image=stock_img,
             category=eventscategory1,
             start_time=time(15, 0, 0),
             end_time=time(20, 0, 0),
             start_day = date(2023, 1, 23),
             end_day = date(2023, 1, 23),
-            thumbnail=stock_img
+            location="Lesni lab"
         )
 
         event2 = events_models.EventPage(
             title="Consectetur adipiscing elit",
             short_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            hero_image=stock_img,
             category=eventscategory2,
             start_time=time(9, 30, 0),
             end_time=time(10, 30, 0),
             start_day = date(2023, 2, 23),
             end_day = date(2023, 2, 24),
-            thumbnail=stock_img
+            location="Velika dvorana, Center Rog"
         )
 
         event3 = events_models.EventPage(
             title="Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
             short_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            hero_image=stock_img,
             category=eventscategory3,
             start_time=time(20, 0, 0),
             end_time=time(21, 0, 0),
             start_day = date(2023, 3, 23),
             end_day = date(2023, 4, 12),
-            thumbnail=stock_img
+            location=""
         )
 
         homepage.add_child(instance=studiolistpage)
@@ -355,7 +362,33 @@ class Command(BaseCommand):
         eventslistpage.add_child(instance=event3)
 
         # add pages to header
-        meta_settings = models.MetaSettings.load()
+        meta_settings = models.MetaSettings()
+        meta_settings.organization_name = "Center Rog"
+        meta_settings.organization_address = "Trubarjeva 72"
+        meta_settings.organization_postal_number = 1000
+        meta_settings.organization_post = "Ljubljana"
+        meta_settings.organization_country = "Slovenija"
+        meta_settings.organization_email = "info@center-rog.si"
+        meta_settings.organization_phone_number = "+386 1 251 6301"
+        meta_settings.organization_working_hours = json.dumps([
+            {
+                "type": "time",
+                "value": {
+                    "day": "pon - pet",
+                    "start_time": "08:00:00",
+                    "end_time": "20:00:00",
+                }
+            },
+            {
+                "type": "time",
+                "value": {
+                    "day": "sob",
+                    "start_time": "10:00:00",
+                    "end_time": "15:00:00",
+                }
+            },
+        ])
+
         meta_settings.header_links = json.dumps([
             {
                 "type": "page_link",
