@@ -51,13 +51,23 @@
                 {% endfor %}
             </div>
             {% endif %}
-            <div class="text-center">
-                <a href="" class="primary-button button-medium">rezerviraj</a>
-            </div>
-            {% if tool.related_trainings.all %}
+            {% if user.is_authenticated %}
+                <div class="text-center">
+                    <a href="" class="primary-button button-medium">rezerviraj</a>
+                </div>
+                {% if tool.required_workshop %}
+                    {% if tool.required_workshop in user.workshops_attended.all %}
+                    <p>Usposabljanje je opravljeno!</p>
+                    {% else %}
+                    <p>Za rezervacijo potrebuješ usposabljanje.</p>
+                    <p>Prijava na usposabljanje. {{ tool.required_workshop.name }}</p>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+            <p class="bulletin-board-link">
+                Za rezervacijo orodje se je potrebno <a href="/prijava"><span>prijaviti</span></a>.
+            </p>
             {% endif %}
-            <p>Za rezervacijo potrebuješ usposabljanje.</p>
-            <p>Prijava na usposabljanje.</p>
         </div>
     </div>
     {% endfor %}

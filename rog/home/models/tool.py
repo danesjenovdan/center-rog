@@ -7,33 +7,32 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
-
-from home.models import CustomImage, LabPage
+from .image import CustomImage
+from .pages import LabPage
+from .workshop import Workshop
 
 
 class Tool(Orderable, ClusterableModel):
     name = models.TextField()
     image = models.ForeignKey(
         CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    # lab = models.ForeignKey(
-    #     LabPage, on_delete=models.CASCADE, related_name="+")
     lab = ParentalKey(LabPage, on_delete=models.CASCADE, related_name="related_tools")
+    required_workshop = models.ForeignKey(
+        Workshop, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Zahteva usposabljanje?"))
 
     panels = [
         FieldPanel("name"),
         FieldPanel("image"),
-        # InlinePanel("related_trainings", label="Related tools"),
-        InlinePanel("related_tool_specifications", label=_("Specifikacija"))
+        InlinePanel("related_tool_specifications", label=_("Specifikacija")),
+        FieldPanel("required_workshop"),
     ]
 
-
-class Training(models.Model):
-    name = models.TextField(verbose_name=_("Usposabljanje"))
-    # tool = ParentalKey(Tool, on_delete=models.CASCADE, related_name="related_trainings")
-
-    panels = [
-        FieldPanel("name"),
-    ]
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = _("Orodje")
+        verbose_name_plural = _("Orodja")
 
 
 class ToolSpecification(Orderable):
@@ -41,8 +40,14 @@ class ToolSpecification(Orderable):
     value = models.TextField(verbose_name=_("Vrednost"))
     tool = ParentalKey(Tool, on_delete=models.CASCADE, related_name="related_tool_specifications")
 
+    def __str__(self):
+        return self.name
+
     panels = [
         FieldPanel("name"),
         FieldPanel("value"),
     ]
 
+    class Meta:
+        verbose_name = _("Specifikacija orodja")
+        verbose_name_plural = _("Specifikacije orodja")

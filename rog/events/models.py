@@ -8,7 +8,7 @@ from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField, StreamField
 
-from home.models import BasePage, CustomImage
+from home.models import BasePage, CustomImage, Workshop
 
 
 class EventCategory(models.Model):
@@ -49,6 +49,7 @@ class EventPage(BasePage):
     start_day = models.DateField()
     end_day = models.DateField()
     location = models.TextField(blank=True)
+    event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL)
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),
@@ -59,7 +60,8 @@ class EventPage(BasePage):
         FieldPanel("end_day"),
         FieldPanel("start_time"),
         FieldPanel("end_time"),
-        FieldPanel("location")
+        FieldPanel("location"),
+        FieldPanel("event_is_workshop")
     ]
 
     parent_page_types = [
