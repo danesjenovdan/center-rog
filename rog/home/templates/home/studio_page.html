@@ -2,11 +2,3 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}{{ block.super }} template-studio{% endblock %}
-
-{% block profile_page_content %}
-
-{% if page.image %}
-{% image page.image original class="img-fluid" %}
-{% endif %}
-
-{% endblock profile_page_content %}

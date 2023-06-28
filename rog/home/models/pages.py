@@ -17,6 +17,23 @@ from events.models import EventPage
 import random
 
 
+def add_see_more_fields(context):
+    # random event
+    events = list(EventPage.objects.live())
+    context["event"] = random.choice(events)
+    # random news
+    news = list(NewsPage.objects.live())
+    context["news"] = random.choice(news)
+    # random lab
+    labs = list(LabPage.objects.live())
+    context["lab"] = random.choice(labs)
+    # random studio
+    studios = list(StudioPage.objects.live())
+    context["studio"] = random.choice(studios)
+
+    return context
+
+
 ### OBJECT PROFILE PAGES ###
 
 class StudioPage(ObjectProfilePage):
@@ -36,6 +53,14 @@ class StudioPage(ObjectProfilePage):
         "home.StudioListPage"
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
 StudioPage._meta.get_field("color_scheme").default = "yellow"
 
 
@@ -44,6 +69,14 @@ class ResidencePage(ObjectProfilePage):
         "home.ResidenceListPage"
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
 ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
 
@@ -51,6 +84,14 @@ class MarketStorePage(ObjectProfilePage):
     parent_page_types = [
         "home.MarketStoreListPage"
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
 
 MarketStorePage._meta.get_field("color_scheme").default = "brown"
 
@@ -81,6 +122,14 @@ class LabPage(ObjectProfilePage):
         "home.LabListPage"
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
 LabPage._meta.get_field("color_scheme").default = "light-green"
 
 
@@ -102,6 +151,9 @@ class StudioListPage(ObjectListPage):
 
         context["studios"] = StudioPage.objects.child_of(self).live()
 
+        # see more
+        context = add_see_more_fields(context)
+
         return context
 
 StudioListPage._meta.get_field("color_scheme").default = "yellow"
@@ -116,6 +168,9 @@ class MarketStoreListPage(ObjectListPage):
         context = super().get_context(request, *args, **kwargs)
 
         context["markets"] = MarketStorePage.objects.child_of(self).live()
+
+        # see more
+        context = add_see_more_fields(context)
 
         return context
 
@@ -132,6 +187,9 @@ class ResidenceListPage(ObjectListPage):
 
         context["residents"] = ResidencePage.objects.child_of(self).live()
 
+        # see more
+        context = add_see_more_fields(context)
+
         return context
 
 ResidenceListPage._meta.get_field("color_scheme").default = "dark-gray"
@@ -147,19 +205,8 @@ class LabListPage(ObjectListPage):
 
         context["labs"] = LabPage.objects.child_of(self).live()
 
-        # see more
-        # random event
-        events = list(EventPage.objects.live())
-        context["event"] = random.choice(events)
-        # random news
-        news = list(NewsPage.objects.live())
-        context["news"] = random.choice(news)
-        # random lab
-        labs = list(context["labs"])
-        context["lab"] = random.choice(labs)
-        # random studio
-        studios = list(StudioPage.objects.live())
-        context["studio"] = random.choice(studios)
+       # see more
+        context = add_see_more_fields(context)
 
         return context
 

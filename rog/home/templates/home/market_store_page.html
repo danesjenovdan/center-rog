@@ -2,16 +2,3 @@
 {% load static wagtailimages_tags %}
 
 {% block body_class %}{{ block.super }} template-market-store{% endblock %}
-
-{% block profile_page_content %}
-
-{% if page.image %}
-<div class="row my-5">
-    <div class="col-12">
-        {% image page.image original class="img-fluid" %}
-    </div>
-</div>
-{% endif %}
-
-
-{% endblock profile_page_content %}
