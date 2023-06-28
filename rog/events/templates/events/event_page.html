@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
-{% block body_class %}template-event-list-page{% endblock %}
+{% block body_class %}template-profile template-event-list-page{% endblock %}
 
 {% block extra_css %}
 
@@ -9,18 +9,49 @@
 
 {% block page_body %}
 
-<h1>
-    {{ self.title }}
-</h1>
+<div class="container object-profile-container event-page-container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">
+                {{ page.title }}
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <div class="contact-information color-scheme-white">
+                <span class="pin"></span>
+                <span class="pin"></span>
+                <span class="pin"></span>
+                <span class="pin"></span>
+                <span class="pin"></span>
+                <div class="notice text-center">
+                    <p>{{ page.start_day|date:"j. n. Y" }}</p>
+                    {% if page.end_day %}
+                    <p>{{ page.end_day|date:"j. n. Y" }}</p>
+                    {% endif %}
+                    <p><span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span></p>
+                    <p>{{ page.location }}</p>
+                    <!-- <button class="primary-button button-small">Prijava na dogodek</button> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            {% image page.hero_image original class="hero-image" alt="..." %}
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-12 intro-text">
+            <p>{{ page.short_description }}</p>
+        </div>
+    </div> -->
+    
+    <div class="row">
+        <div class="col-12 body">
+            {{ page.body|safe }}
+        </div>
+    </div>
 
-<div>
-<span>{{ self.start_time }} - {{ self.end_time }}
 </div>
-
-<p>
-    {{ self.long_description }}
-</p>
-
-<button class="btn btn-primary">PRIJAVA</button>
 
 {% endblock page_body %}

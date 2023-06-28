@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-news-page{% endblock %}
+{% block body_class %}template-profile template-news-page{% endblock %}
 
 {% block extra_css %}
 
@@ -9,12 +9,36 @@
 
 {% block page_body %}
 
-<div class="container">
+{% image page.hero_image original as hero_image %}
 
-    <div class="col-12">
-        <h1 class="text-center">
-            {{ page.title }}
-        </h1>
+<section style="background-image: url({{ hero_image.url }})" class="container-fluid image-embed px-4 px-md-0"></section>
+
+<div class="container object-profile-container news-page-profile-container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">
+                {{ page.title }}
+            </h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="information">
+                <span>{{ page.category.name }}</span>
+                <span>{{ page.first_published_at|date:"j. n. Y" }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 intro-text">
+            <p>{{ page.short_description }}</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12 body">
+            {{ page.body|safe }}
+        </div>
     </div>
 
 </div>

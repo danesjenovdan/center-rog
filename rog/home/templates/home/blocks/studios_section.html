@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <section class="color-scheme-yellow studios-section">
     <div class="container">
@@ -11,13 +11,7 @@
     </div>
     <div class="container-fluid studios-container">
         <div class="row my-3">
-            {% for studio in studios %}
-                {% include "home/includes/studio_card.html" with studio=studio %}
-            {% endfor %}
-            {% for studio in studios %}
-                {% include "home/includes/studio_card.html" with studio=studio %}
-            {% endfor %}
-            {% for studio in studios %}
+            {% for studio in value.studios %}
                 {% include "home/includes/studio_card.html" with studio=studio %}
             {% endfor %}
         </div>
@@ -33,8 +27,8 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="">link z ikono</a>
+            <div class="col-12 text-center bulletin-board-link">
+                <a href="{% pageurl studios_list %}"><span>{% translate 'Poglej vse studie' %}</span></a>
             </div>
         </div>
     </div>

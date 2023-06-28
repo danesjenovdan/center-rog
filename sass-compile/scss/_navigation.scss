@@ -118,7 +118,7 @@
     #navbar-collapsable-menu {
         top: 0;
         left: 50%;
-        transform: translateX(-50%) translateY(-30px) rotate(3deg);
+        transform: translateX(-50%) translateY(-30px) rotate(3.56deg);
         transform-origin: bottom right;
         transition: all 0.35s ease;
         opacity: 0;
@@ -170,5 +170,27 @@
             transform: translateX(-50%) rotate(0deg);
             opacity: 1;
         }
+    }
+}
+
+#secondary-navigation {
+    position: absolute;
+    top: 56px;
+    transform: rotate(3.56deg);
+    transition: all 0.35s ease;
+    width: 100%;
+
+    .nav-item {
+        border-radius: 3px; 
+
+        .nav-link {
+            color: inherit;
+            font-size: $xxs-font-size;
+        }
+    }
+
+    &.custom-navigation-show {
+        transform: rotate(-0.5deg);
+        top: 140px;
     }
 }

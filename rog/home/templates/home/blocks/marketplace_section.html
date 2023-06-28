@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <section class="color-scheme-brown market-section">
     <div class="container">
@@ -20,8 +20,8 @@
     </div>
     <div class="container">
         <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="">link z ikono</a>
+            <div class="col-12 text-center bulletin-board-link">
+                <a href="{% pageurl markets_list %}"><span>{% translate 'Poglej celotno tržnico' %}</span></a>
             </div>
         </div>
     </div>

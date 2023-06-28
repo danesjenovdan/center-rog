@@ -1,0 +1,30 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Plačilo{% endblock %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container user-profile-container">
+    <h2>Živjo {{ username }}</h2>
+    <table>
+        {% for payment in payments %}
+            <tr>
+                <td>{{ payment.successed_at }}</td>
+                <td>{{ payment.history_name }}</td>
+                <td>{{ payment.amount }}€</td>
+                <td><div>Izvozi račun</div></td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+{% endblock page_body %}

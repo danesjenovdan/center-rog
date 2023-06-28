@@ -4,12 +4,13 @@ from django.conf import settings
 
 from wagtail import blocks
 from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.edit_handlers import MediaChooserPanel
 
 from .base_pages import ObjectProfilePage, ObjectListPage
+from .image import CustomImage
 from news.models import NewsPage
 from events.models import EventPage
 
@@ -20,79 +21,80 @@ import random
 
 class StudioPage(ObjectProfilePage):
     thumbnail = models.ForeignKey(
-        'wagtailimages.Image',
+        CustomImage,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
 
     content_panels = ObjectProfilePage.content_panels + [
-        FieldPanel('thumbnail'),
+        FieldPanel("thumbnail"),
     ]
 
     parent_page_types = [
-        'home.StudioListPage'
+        "home.StudioListPage"
     ]
 
-StudioPage._meta.get_field('color_scheme').default = 'yellow'
+StudioPage._meta.get_field("color_scheme").default = "yellow"
 
 
 class ResidencePage(ObjectProfilePage):
     parent_page_types = [
-        'home.ResidenceListPage'
+        "home.ResidenceListPage"
     ]
 
-ResidencePage._meta.get_field('color_scheme').default = 'dark-gray'
+ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
 
 class MarketStorePage(ObjectProfilePage):
     parent_page_types = [
-        'home.MarketStoreListPage'
+        "home.MarketStoreListPage"
     ]
 
-MarketStorePage._meta.get_field('color_scheme').default = 'brown'
+MarketStorePage._meta.get_field("color_scheme").default = "brown"
 
 
 class LabPage(ObjectProfilePage):
     thumbnail = models.ForeignKey(
-        'wagtailimages.Image',
+        CustomImage,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
     thumbnail_animation = models.ForeignKey(
-        'wagtailmedia.Media',
+        "wagtailmedia.Media",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
 
     content_panels = ObjectProfilePage.content_panels + [
-        FieldPanel('thumbnail'),
-        MediaChooserPanel('thumbnail_animation'),
+        FieldPanel("thumbnail"),
+        MediaChooserPanel("thumbnail_animation"),
+        InlinePanel("related_tools", label="Orodja"),
     ]
 
     parent_page_types = [
-        'home.LabListPage'
+        "home.LabListPage"
     ]
 
-LabPage._meta.get_field('color_scheme').default = 'light-green'
+LabPage._meta.get_field("color_scheme").default = "light-green"
 
 
 class LibraryPage(ObjectProfilePage):
     pass
 
-LibraryPage._meta.get_field('color_scheme').default = 'pink'
+LibraryPage._meta.get_field("color_scheme").default = "pink"
 
 
 ### OBJECT LIST PAGES ###
 
 class StudioListPage(ObjectListPage):
     subpage_types = [
-        'home.StudioPage',
+        "home.StudioPage",
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -102,12 +104,12 @@ class StudioListPage(ObjectListPage):
 
         return context
 
-StudioListPage._meta.get_field('color_scheme').default = 'yellow'
+StudioListPage._meta.get_field("color_scheme").default = "yellow"
 
 
 class MarketStoreListPage(ObjectListPage):
     subpage_types = [
-        'home.MarketStorePage',
+        "home.MarketStorePage",
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -117,12 +119,12 @@ class MarketStoreListPage(ObjectListPage):
 
         return context
 
-MarketStoreListPage._meta.get_field('color_scheme').default = 'brown'
+MarketStoreListPage._meta.get_field("color_scheme").default = "brown"
 
 
 class ResidenceListPage(ObjectListPage):
     subpage_types = [
-        'home.ResidencePage',
+        "home.ResidencePage",
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -132,7 +134,7 @@ class ResidenceListPage(ObjectListPage):
 
         return context
 
-ResidenceListPage._meta.get_field('color_scheme').default = 'dark-gray'
+ResidenceListPage._meta.get_field("color_scheme").default = "dark-gray"
 
 
 class LabListPage(ObjectListPage):
@@ -161,4 +163,4 @@ class LabListPage(ObjectListPage):
 
         return context
 
-LabListPage._meta.get_field('color_scheme').default = 'light-green'
+LabListPage._meta.get_field("color_scheme").default = "light-green"

@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <section class="color-scheme-dark-gray residents-section">
     <div class="container">
@@ -26,8 +26,8 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="">link z ikono</a>
+            <div class="col-12 text-center bulletin-board-link">
+                <a href="{% pageurl residents_list %}"><span>{% translate 'Poglej vse rezidente' %}</span></a>
             </div>
         </div>
     </div>

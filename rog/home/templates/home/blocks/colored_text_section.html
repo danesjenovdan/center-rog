@@ -12,17 +12,40 @@
             {% if value.image_position == 'align-bottom' %}
             <div class="col-12">
                 <p>{{ value.text }}</p>
-                {% image value.image original class="img-fluid" alt="..." %}
+                <div>
+                    {% image value.image original class="img-fluid" %}
+                    <p class="image-description">{{ value.image.alt_description }}</p>
+                </div>
             </div>
             {% else %}
             <div class="col-md-6 {% if value.image_position == 'align-left' %}order-2{% endif %}">
                 <p>{{ value.text }}</p>
             </div>
             <div class="col-md-6">
-                {% image value.image original class="img-fluid mb-4 mb-md-0" alt="..." %}
+                <div>
+                    {% image value.image original class="img-fluid mb-4 mb-md-0" %}
+                    <p class="image-description">{{ value.image.alt_description }}</p>
+                </div>
             </div>
             {% endif %}
         </div>
+        {% if value.link %}
+        <div class="row mt-3">
+            <div class="col-12 bulletin-board-link text-center">
+                {% for link in value.link %}
+                <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
+                    <span>
+                        {% if link.value.name %}
+                        {{ link.value.name }}
+                        {% elif link.value.page %}
+                        {{ link.value.page.title }}
+                        {% endif %}
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 
 {% else %}
@@ -31,6 +54,21 @@
             <div class="col-12 col-xxl-8">
                 <!-- <h2 class="text-center">{{ value.title }}</h2> -->
                 <p>{{ value.text }}</p>
+                {% if value.link %}
+                <div class="bulletin-board-link">
+                    {% for link in value.link %}
+                    <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
+                        <span>
+                            {% if link.value.name %}
+                            {{ link.value.name }}
+                            {% elif link.value.page %}
+                            {{ link.value.page.title }}
+                            {% endif %}
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>

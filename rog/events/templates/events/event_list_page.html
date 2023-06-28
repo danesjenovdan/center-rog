@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
 {% load static %}
 
-{% block body_class %}template-event-list-page{% endblock %}
+{% block body_class %}template-object-list template-event-list-page{% endblock %}
 
 {% block extra_css %}
 
@@ -9,10 +9,26 @@
 
 {% block page_body %}
 
-<h1>Seznam dogodkov</h1>
+<div class="container list-container">
 
-{% for page in self.get_children.specific %}
-    <a href="{{ page.url }}">{{ page.title }}</a>
-{% endfor %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">{{ page.title }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for event in event_pages %}
+        <div class="col-4 mb-4">
+            {% include "events/includes/card.html" with event=event %}
+        </div> 
+        {% endfor %}
+    </div>
+
+    {% if event_pages.paginator.num_pages > 1 %}
+        {% include "home/includes/pagination.html" with objects=event_pages %}
+    {% endif %}
+
+</div>
 
 {% endblock page_body %}

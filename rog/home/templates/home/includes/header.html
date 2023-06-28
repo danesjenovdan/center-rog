@@ -65,4 +65,20 @@
       {% endfor %}
     </div>
   </nav>
+  {% if secondary_navigation %}
+  <nav id="secondary-navigation" class="">
+    <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
+      <ul class="navbar-nav">
+        {% for item in secondary_navigation %}
+        <li class="nav-item color-scheme-{{ item.color_scheme }} mx-2 {% if item.slug == request.GET.category %}active{% endif %}">
+          <a class="nav-link" href="{{ request.path }}?category={{ item.slug }}">
+              {{ item }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </nav>
+  {% endif %}
 </header>

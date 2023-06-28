@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load i18n wagtailcore_tags wagtailimages_tags %}
 
 <section class="color-scheme-light-green labs-section">
   <div class="container">
@@ -15,7 +15,7 @@
           {% if lab.thumbnail_animation %}
             <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
           {% endif %}
-          {% image lab.thumbnail original class="img-fluid" alt="..." %}
+          {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
           <h6>{{ lab.title }}</h6>
         </a>
       </div>
@@ -24,7 +24,7 @@
     <div class="row mt-4">
       <div class="col-12 text-center">
         <a href="{% pageurl labs_list %}" class="secondary-button button-medium"
-          >Vsi laboratoriji</a
+          >{% translate 'Vsi laboratoriji' %}</a
         >
       </div>
     </div>

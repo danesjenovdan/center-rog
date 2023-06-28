@@ -24,7 +24,7 @@
     {% block profile_page_body %}
     
     {% block profile_page_intro %}
-    <div class="row">
+    <div class="row mb-4">
         
         {% block profile_page_desc %}
         <div class="col-6 intro-text">
@@ -51,7 +51,7 @@
                     {% for working_hours in page.working_hours %}
                     <p>
                         <span>{{ working_hours.value.day }}</span>
-                        <span>{{ working_hours.value.start_time }}-{{ working_hours.value.end_time }}</span>
+                        <span>{{ working_hours.value.start_time }} - {{ working_hours.value.end_time }}</span>
                     </p>
                     {% endfor %}
                 </div>

@@ -1,4 +1,4 @@
-{% load wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 <section class="color-scheme-light-gray events-section position-relative">
     <div class="container">
@@ -26,8 +26,8 @@
             </div>
         </div>
         <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="">link z ikono</a>
+            <div class="col-12 text-center bulletin-board-link">
+                <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
             </div>
         </div>
     </div>
