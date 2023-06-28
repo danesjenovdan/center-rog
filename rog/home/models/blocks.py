@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
+from .settings import ExternalLinkBlock, PageLinkBlock
 from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
 
@@ -52,7 +53,7 @@ class ButtonsBlock(blocks.StreamBlock):
 
 
 class BulletinBoardBlock(blocks.StructBlock):
-    title = blocks.TextBlock(label=_("Naslov"))
+    title = blocks.TextBlock(label=_("Naslov sekcije"))
     notice = blocks.TextBlock(label=_("Obvestilo"))
     event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek (če pustite prazno, se izbere naključni)"), page_type="events.EventPage", required=False)
     news = blocks.PageChooserBlock(label=_("Izpostavljena novica (če pustite prazno, se izbere naključna)"), page_type="news.NewsPage", required=False)
@@ -111,11 +112,16 @@ class BulletinBoardBlock(blocks.StructBlock):
 
 
 class NewsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     exposed_news = blocks.StreamBlock([
         ("news_page", blocks.PageChooserBlock(
             label=_("Novica"), page_type="news.NewsPage"))
-    ])
+    ], label=_("Novice"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["news_list"] = NewsListPage.objects.live().first()
+        return context
 
     class Meta:
         label = _("Izpostavljene novice")
@@ -123,11 +129,16 @@ class NewsBlock(blocks.StructBlock):
 
 
 class EventsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     exposed_events = blocks.StreamBlock([
         ("event", blocks.PageChooserBlock(
             label=_("Dogodek"), page_type="events.EventPage"))
-    ])
+    ], label=_("Dogodki"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["events_list"] = EventListPage.objects.live().first()
+        return context
 
     class Meta:
         label = _("Izpostavljeni dogodki")
@@ -138,13 +149,13 @@ def get_labs():
     return [(lab.id, lab.title) for lab in LabPage.objects.all()]
 
 class LabsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    labs = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.LabPage"), min_num=1, max_num=5, label=_("Izpostavljeni laboratoriji"))
+    labs = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.LabPage"), label=_("Izpostavljeni laboratoriji"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context["labs_list"] = LabListPage.objects.all().first()
+        context["labs_list"] = LabListPage.objects.live().first()
         return context
 
     class Meta:
@@ -153,7 +164,7 @@ class LabsBlock(blocks.StructBlock):
 
 
 class WhiteListBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     links = blocks.StreamBlock([
         ("link", blocks.StructBlock([
@@ -161,6 +172,7 @@ class WhiteListBlock(blocks.StructBlock):
             ("text", blocks.TextBlock(label=_("Ime povezave"))),
         ], label=_("Povezava")))
     ], label=_("Seznam povezav"))
+    button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
 
     class Meta:
         label = _("Seznam povezav")
@@ -168,8 +180,9 @@ class WhiteListBlock(blocks.StructBlock):
 
 
 class GalleryBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
-    gallery = blocks.ListBlock(ImageChooserBlock())
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
+    button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
 
     class Meta:
         label = _("Galerija")
@@ -180,13 +193,13 @@ def get_studios():
     return [(studio.id, studio.title) for studio in StudioPage.objects.all()]
 
 class StudiosBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    studios = blocks.MultipleChoiceBlock(label=_("Izpostavljeni studii"), choices=get_studios)
+    studios = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.StudioPage"), label=_("Izpostavljeni studii"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context['studios'] = StudioPage.objects.filter(id__in=value["studios"])
+        context["studios_list"] = StudioListPage.objects.live().first()
         return context
 
     class Meta:
@@ -195,11 +208,16 @@ class StudiosBlock(blocks.StructBlock):
 
 
 class MarketplaceBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     markets = blocks.ListBlock(ColoredStructBlock([
-        ('market', blocks.PageChooserBlock(page_type="home.MarketStorePage")),
-    ]))
+        ('market', blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor"))),
+    ]), label=_("Izpostavljeni prostori"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["markets_list"] = MarketStoreListPage.objects.live().first()
+        return context
 
     class Meta:
         label = _("Tržnica")
@@ -209,6 +227,10 @@ class MarketplaceBlock(blocks.StructBlock):
 class FullWidthImageBlock(ColoredStructBlock):
     image = ImageChooserBlock(label=_("Slika"))
     text = blocks.TextBlock(label=_("Besedilo (opcijsko)"), blank=True, required=False)
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, required=False, label=_("Povezava pod besedilom"))
     
     class Meta:
         label = _("Slika")
@@ -216,8 +238,12 @@ class FullWidthImageBlock(ColoredStructBlock):
 
 
 class ColoredTextBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov"), required=False)
+    title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     text = blocks.TextBlock(label=_("Besedilo"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, required=False, label=_("Povezava pod besedilom"))
     image = ImageChooserBlock(label=_("Slika"), required=False)
     image_position = blocks.ChoiceBlock(choices=[
         ("align-left", "Levo"),
@@ -235,12 +261,17 @@ def get_residents():
     return [(resident.id, resident.title) for resident in ResidencePage.objects.all()]
 
 class ResidentsBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label=_("Naslov"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    residents = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.ResidencePage"), min_num=1, max_num=5)
+    residents = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.ResidencePage"), min_num=1, max_num=5, label=_("Rezidenti"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["residents_list"] = ResidenceListPage.objects.live().first()
+        return context
 
     class Meta:
-        label = _("ROG rezidenti")
+        label = _("Rezidenti")
         template = "home/blocks/residents_section.html",
 
 

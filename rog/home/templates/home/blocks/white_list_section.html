@@ -21,12 +21,14 @@
                 </ul>
             </div>
         </div>
+        {% if value.button %}
         <div class="row mt-4">
             <div class="col-12 text-center color-scheme-white">
-                <a href="" class="primary-button button-medium">
-                    gumb
+                <a href="{% pageurl value.button %}" class="primary-button button-medium">
+                    {{ value.button }}
                 </a>
             </div>
         </div>
+        {% endif %}
     </div>
 </section>

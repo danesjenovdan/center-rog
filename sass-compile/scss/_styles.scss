@@ -253,6 +253,30 @@ a {
     }
 }
 
+.bulletin-board-link {
+    text-align: center;
+    margin: 10px 0;
+
+    a {
+        font-size: $xxs-font-size;
+        color: $cs-dark-gray;
+        text-decoration: none;
+
+        span {
+            text-decoration: underline;
+        }
+    
+        &:hover {
+            color: $cs-dark-gray;
+        }
+
+        &::after {
+            content: "→";
+            margin-left: 5px;
+        }
+    }
+}
+
 .template-homepage {
     section {
         padding: 60px 0;
@@ -273,30 +297,6 @@ a {
             h1 {
                 margin-top: 40px;
                 margin-bottom: 30px;
-            }
-
-            .bulletin-board-link {
-                text-align: center;
-                margin: 10px 0;
-
-                a {
-                    font-size: $xxs-font-size;
-                    color: $cs-dark-gray;
-                    text-decoration: none;
-
-                    span {
-                        text-decoration: underline;
-                    }
-                
-                    &:hover {
-                        color: $cs-dark-gray;
-                    }
-
-                    &::after {
-                        content: "→";
-                        margin-left: 5px;
-                    }
-                }
             }
 
             .residents-section {
@@ -450,6 +450,10 @@ a {
                     max-width: 250px;
                 }
             }
+
+            .bulletin-board-link a {
+                font-size: $xs-font-size;
+            }
         }
 
         &.studios-section {
@@ -503,13 +507,23 @@ a {
                     }
                 }
             }
+
+            .bulletin-board-link a {
+                color: inherit;
+                font-size: $xs-font-size;
+            }
         }
 
         &.colored-text-section {
-
             .with-image {
                 p {
                     font-size: $xs-font-size;
+
+                    &.image-description {
+                        font-size: $xxs-font-size;
+                        margin-top: 5px;
+                        margin-bottom: 0;
+                    }
                 }
             }
 
@@ -519,6 +533,14 @@ a {
                 }
             }
 
+            .bulletin-board-link {
+                text-align: start;
+
+                a {
+                    color: inherit;
+                    font-size: $xs-font-size;
+                }
+            }
         }
     }
 
@@ -538,6 +560,11 @@ a {
                 font-size: $sm-font-size;
                 font-weight: 400;
             }
+        }
+
+        .bulletin-board-link a {
+            color: inherit;
+            font-size: $xs-font-size;
         }
     }
 }
@@ -700,6 +727,11 @@ a {
             }
         }
     }
+
+    .bulletin-board-link a {
+        color: inherit;
+        font-size: $xs-font-size;
+    }
 }
 
 section.image-embed {
@@ -712,6 +744,15 @@ section.image-embed {
 
     p {
         font-size: $sm-font-size;
+    }
+
+    .bulletin-board-link {
+        text-align: start;
+
+        a {
+            color: inherit;
+            font-size: $xs-font-size;
+        }
     }
 }
 
