@@ -107,7 +107,7 @@ class PaymentSuccessXML(views.APIView):
                 payment=payment,
                 valid_from=timezone.now(),
                 valid_to=timezone.now() + timedelta(days=payment.plan.duration),
-                type_of=Token.WORKSHOP
+                type_of=Token.Type.WORKSHOP
             ) for i in range(payment.plan.workshops)
         ])
         return Response({'status': 'OK'})
