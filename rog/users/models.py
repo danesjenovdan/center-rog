@@ -130,6 +130,9 @@ class User(AbstractUser):
     
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()
+    
+    def get_available_workshops(self):
+        return self.payments.all().get_available_workshops()
 
 
 class BookingToken(models.Model):
