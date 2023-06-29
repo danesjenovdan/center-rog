@@ -1,0 +1,33 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block body_class %}template-archive-list{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container list-container {% block container_class %}{% endblock %}">
+    
+    {% block list_page_header %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-4">{{ self.title }}</h1>
+        </div>
+    </div>
+    {% endblock list_page_header %}
+
+    {% block list_page_body %}
+    {% endblock list_page_body %}
+
+</div>
+
+{% if page.show_see_more_section %}
+{% block list_page_see_more %}
+{% include "home/includes/see_more.html" %} <!-- with event=event.value -->
+{% endblock list_page_see_more %}
+{% endif %}
+
+{% endblock page_body %}

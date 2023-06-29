@@ -45,6 +45,17 @@ class ObjectListPage(BasePage):
         abstract = True
 
 
+class ObjectArchiveListPage(BasePage):
+    show_see_more_section = models.BooleanField(default=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
 class ObjectProfilePage(BasePage):
     description = models.TextField(blank=True, verbose_name=_("Opis"))
     image = models.ForeignKey(

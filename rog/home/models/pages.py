@@ -9,7 +9,7 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.edit_handlers import MediaChooserPanel
 
-from .base_pages import ObjectProfilePage, ObjectListPage
+from .base_pages import ObjectProfilePage, ObjectListPage, ObjectArchiveListPage
 from .image import CustomImage
 from news.models import NewsPage
 from events.models import EventPage
@@ -139,6 +139,40 @@ class LibraryPage(ObjectProfilePage):
 LibraryPage._meta.get_field("color_scheme").default = "pink"
 
 
+## OBJECT ARCHIVE LIST PAGES
+
+class StudioArchiveListPage(ObjectArchiveListPage):
+    subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["list"] = StudioPage.objects.live().filter(archived=True)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
+StudioArchiveListPage._meta.get_field("color_scheme").default = "yellow"
+
+
+class ResidenceArchiveListPage(ObjectArchiveListPage):
+    subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["list"] = ResidencePage.objects.live().filter(archived=True)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
+ResidenceArchiveListPage._meta.get_field("color_scheme").default = "dark-gray"
+
+
 ### OBJECT LIST PAGES ###
 
 class StudioListPage(ObjectListPage):
@@ -150,6 +184,7 @@ class StudioListPage(ObjectListPage):
         context = super().get_context(request, *args, **kwargs)
 
         context["studios"] = StudioPage.objects.child_of(self).live()
+        context["archive_page"] = StudioArchiveListPage.objects.live().first()
 
         # see more
         context = add_see_more_fields(context)
@@ -186,6 +221,7 @@ class ResidenceListPage(ObjectListPage):
         context = super().get_context(request, *args, **kwargs)
 
         context["residents"] = ResidencePage.objects.child_of(self).live()
+        context["archive_page"] = ResidenceArchiveListPage.objects.live().first()
 
         # see more
         context = add_see_more_fields(context)
