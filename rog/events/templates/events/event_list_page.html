@@ -25,11 +25,13 @@
         {% endfor %}
     </div>
 
+    {% if archive_page %}
     <div class="row">
         <div class="col-12 text-end bulletin-board-link">
             <a href="{{ archive_page.url }}"><span>{% translate 'arhiv' %}</span></a>
         </div>
     </div>
+    {% endif %}
 
     {% if event_pages.paginator.num_pages > 1 %}
         {% include "home/includes/pagination.html" with objects=event_pages %}

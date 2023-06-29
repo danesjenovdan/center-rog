@@ -39,17 +39,19 @@ class NewsCategory(models.Model):
 
 
 class NewsPage(BasePage):
-    short_description = models.TextField(blank=True)
+    short_description = models.TextField(blank=True, verbose_name=_("Kratek opis"))
     thumbnail = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Predogledna slika"))
     category = models.ForeignKey(
-        NewsCategory, null=True, on_delete=models.SET_NULL)
+        NewsCategory, null=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
     hero_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
-    body = RichTextField(blank=True, null=True)
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Naslovna slika"))
+    body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
     gallery = StreamField([
         ("image", ImageChooserBlock())
-    ], use_json_field=True, null=True, blank=True)
+    ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
+    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
+    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),
@@ -58,12 +60,31 @@ class NewsPage(BasePage):
         FieldPanel("hero_image"),
         FieldPanel("body"),
         FieldPanel("gallery"),
-
+        FieldPanel("archived"),
+        FieldPanel("show_see_more_section")
     ]
 
     parent_page_types = [
         "news.NewsListPage"
     ]
+
+    class Meta:
+        verbose_name = _("Novica")
+        verbose_name = _("Novice")
+
+
+class NewsListArchivePage(BasePage):
+    subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["list"] = NewsPage.objects.live().filter(archived=True)
+
+        # see more
+        # context = add_see_more_fields(context)
+
+        return context
 
 
 class NewsListPage(BasePage):
@@ -85,6 +106,9 @@ class NewsListPage(BasePage):
         if chosen_category:
             all_news_page_objects = all_news_page_objects.filter(category=chosen_category)
 
+        # arhiv
+        context["archive_page"] = NewsListArchivePage.objects.live().first()
+        
         # pagination
         paginator = Paginator(all_news_page_objects, 6)
         page = request.GET.get("page")
@@ -98,10 +122,6 @@ class NewsListPage(BasePage):
         context["news_pages"] = news_pages
 
         return context
-
-
-class NewsListArchivePage(BasePage):
-    subpage_types = []
 
 
 NewsPage._meta.get_field("color_scheme").default = "light-gray"
