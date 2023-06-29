@@ -3,7 +3,7 @@
 
 {% block body_class %}{{ block.super }} template-lab{% endblock %}
 
-{% block container_class %}lab-profile-container mb-5{% endblock %}
+{% block container_class %}lab-profile-container{% endblock %}
 
 {% block hero_image %}
 {% image page.image original as hero_image %}
@@ -35,32 +35,44 @@
 {% endblock profile_page_contact_information %}
 
 {% block profile_page_content %}
-<div class="row">
-    {% for tool in page.related_tools.all %}
-    <div class="col-4">
-        <div class="card tool-card color-scheme-white">
-            <h4 class="card-title text-center">{{ tool.name }}</h4>
-            {% image tool.image original class="img-fluid" alt="..." %}
-            {% if tool.related_tool_specifications.all %}
-            <div class="specifications">
-                {% for spec in tool.related_tool_specifications.all %}
-                <p class="d-flex justify-content-between">
-                    <span>{{ spec.name }}</span>
-                    <span>{{ spec.value }}</span>
+<div class="container mb-5">
+    <div class="row">
+        {% for tool in page.related_tools.all %}
+        <div class="col-4">
+            <div class="card tool-card color-scheme-white">
+                <h4 class="card-title text-center">{{ tool.name }}</h4>
+                {% image tool.image original class="img-fluid" alt="..." %}
+                {% if tool.related_tool_specifications.all %}
+                <div class="specifications">
+                    {% for spec in tool.related_tool_specifications.all %}
+                    <p class="d-flex justify-content-between">
+                        <span>{{ spec.name }}</span>
+                        <span>{{ spec.value }}</span>
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <div class="text-center">
+                        <a href="" class="primary-button button-medium">rezerviraj</a>
+                    </div>
+                    {% if tool.required_workshop %}
+                        {% if tool.required_workshop in user.workshops_attended.all %}
+                        <p>Usposabljanje je opravljeno!</p>
+                        {% else %}
+                        <p>Za rezervacijo potrebuješ usposabljanje.</p>
+                        <p>Prijava na usposabljanje. {{ tool.required_workshop.name }}</p>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                <p class="bulletin-board-link">
+                    Za rezervacijo orodje se je potrebno <a href="/prijava"><span>prijaviti</span></a>.
                 </p>
-                {% endfor %}
+                {% endif %}
             </div>
-            {% endif %}
-            <div class="text-center">
-                <a href="" class="primary-button button-medium">rezerviraj</a>
-            </div>
-            {% if tool.related_trainings.all %}
-            {% endif %}
-            <p>Za rezervacijo potrebuješ usposabljanje.</p>
-            <p>Prijava na usposabljanje.</p>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 {% endblock profile_page_content %}

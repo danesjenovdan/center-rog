@@ -6,6 +6,7 @@ from wagtail import blocks
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
+from wagtail.images.blocks import ImageChooserBlock
 
 from .image import CustomImage
 
@@ -44,22 +45,35 @@ class ObjectListPage(BasePage):
         abstract = True
 
 
+class ObjectArchiveListPage(BasePage):
+    show_see_more_section = models.BooleanField(default=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section"),
+    ]
+
+    class Meta:
+        abstract = True
+
+
 class ObjectProfilePage(BasePage):
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, verbose_name=_("Opis"))
     image = models.ForeignKey(
         CustomImage,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="+"
+        related_name="+",
+        verbose_name=_("Slika")
     )
+    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"))
     # contact information
-    email = models.EmailField(blank=True)
-    phone = models.CharField(max_length=12, blank=True)
-    link_1 = models.URLField(blank=True)
-    link_2 = models.URLField(blank=True)
-    link_3 = models.URLField(blank=True)
-    contact_description = models.TextField(blank=True)
+    email = models.EmailField(blank=True, verbose_name=_("Elektronski naslov"))
+    phone = models.CharField(max_length=12, blank=True, verbose_name=_("Telefonska številka"))
+    link_1 = models.URLField(blank=True, verbose_name=_("Povezava"))
+    link_2 = models.URLField(blank=True, verbose_name=_("Povezava"))
+    link_3 = models.URLField(blank=True, verbose_name=_("Povezava"))
+    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"))
     # working hours
     working_hours = StreamField([
         ("time", blocks.StructBlock([
@@ -67,18 +81,16 @@ class ObjectProfilePage(BasePage):
             ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
             ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
         ], label=_("Dan in ura")))
-    ], blank=True, null=True, use_json_field=True)
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas"))
     # gallery
-    # gallery = StreamField(
-    #     blocks.ListBlock(ImageChooserBlock()),
-    #     blank=True,
-    #     null=True,
-    #     use_json_field=False
-    # )
+    gallery = StreamField([
+        ("image", ImageChooserBlock(label=_("Slika")))
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
+    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
+    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
     
     content_panels = Page.content_panels + [
         FieldPanel("description"),
-        FieldPanel("image"),
         MultiFieldPanel(
             [
                 FieldPanel("email"),
@@ -91,6 +103,16 @@ class ObjectProfilePage(BasePage):
             heading=_("Kontaktni podatki")
         ),
         FieldPanel("working_hours"),
+        MultiFieldPanel(
+            [
+                FieldPanel("image"),
+                FieldPanel("image_description"),
+            ],
+            heading=_("Slika")
+        ),
+        FieldPanel("gallery"),
+        FieldPanel("archived"),
+        FieldPanel("show_see_more_section"),
     ]
 
     subpage_types = []

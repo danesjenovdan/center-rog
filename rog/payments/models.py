@@ -8,16 +8,16 @@ class ActiveAtQuerySet(models.QuerySet):
     def is_active_subscription(self):
         now = datetime.now()
         return True if self.filter(
-            plna__subscription=True,
+            plan__is_subscription=True,
             active_to__gte=now,
         ) else False
 
     def get_valid_tokens(self):
         timestamp = datetime.now()
-        return self.tokens.filter(
+        return Token.objects.filter(
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
-            is_used=False,
+            is_used=False
         )
 
 
@@ -148,4 +148,4 @@ class Token(Timestampable):
     is_used = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user} - {self.token} - {self.date}"
+        return f"{self.type_of} - {self.is_used}"

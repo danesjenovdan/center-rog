@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
+from home.models import Workshop
+
 
 class Membership(models.Model):
     start_day = models.DateField()
@@ -66,6 +68,7 @@ class User(AbstractUser):
     link = models.URLField(blank=True)
     # categories
     # images
+    workshops_attended = models.ManyToManyField(Workshop, verbose_name="Opravljena usposabljanja")
 
     objects = UserManager()
 

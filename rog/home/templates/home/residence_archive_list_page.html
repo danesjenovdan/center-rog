@@ -1,0 +1,14 @@
+{% extends "home/object_archive_list_page.html" %}
+{% load static %}
+
+{% block list_page_body %}
+<div class="row">
+    <div class="col-12">
+        {% for element in list %}
+        <a href="{{ element.url }}" class="color-scheme-light-gray list-element">
+            {{ element }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock list_page_body %}

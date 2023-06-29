@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load static wagtailimages_tags %}
 
 {% block body_class %}template-profile{% endblock %}
 
@@ -27,19 +27,38 @@
     <div class="row mb-4">
         
         {% block profile_page_desc %}
-        <div class="col-6 intro-text">
+        <div class="col-md-6 intro-text">
             <p>{{ page.description }}</p>
         </div>
         {% endblock profile_page_desc %}
         
         {% block profile_page_contact_information %}
-        <div class="col-6">
+        <div class="col-md-6">
             <div class="contact-information color-scheme-white">
                 <div class="tape"></div>
                 <div class="notice">
+                    {% if page.email %}
                     <p><a href="mailto:{{ page.email }}">e-pošta</a></p>
+                    {% endif %}
+                    {% if page.phone %}
                     <p>{{ page.phone }}</p>
-                    <p>Vsak element je lahko link, lahko pa samo tekst</p>
+                    {% endif %}
+                    {% if page.link_1 or page.link_2 or page.link_3 %}
+                    <div class="mb-2">
+                        {% if page.link_1 %}
+                        <a href="{{ page.link_1 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        {% endif %}
+                        {% if page.link_2 %}
+                        <a href="{{ page.link_2 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        {% endif %}
+                        {% if page.link_3 %}
+                        <a href="{{ page.link_3 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if page.contact_description %}
+                    <p>{{ page.contact_description }}</p>
+                    {% endif %}
                 </div>
                 <div class="tape"></div>
             </div>
@@ -65,14 +84,45 @@
         
     </div>
     {% endblock profile_page_intro %}
-
-    {% block profile_page_content %}
-    {% endblock profile_page_content %}
-
-    {% endblock profile_page_body %}
-
-    {% block profile_page_see_more %}
-    {% endblock profile_page_see_more %}
 </div>
+
+{% block profile_page_content %}
+
+{% if page.image %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% image page.image original class="img-fluid" %}
+            {% if page.image_description %}
+            <p class="image-description mt-2">{{ page.image_description }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if page.gallery %}
+<div class="container-fluid">
+    <div class="row mb-5 mt-3">
+        <div class="col-12">
+            <div class="tiny-slider-carousel">
+                {% for element in page.gallery %}
+                  <div>{% image element.value original class="img-fluid" %}</div>
+                {% endfor %}
+              </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock profile_page_content %}
+
+{% endblock profile_page_body %}
+
+{% if page.show_see_more_section %}
+{% block profile_page_see_more %}
+{% include "home/includes/see_more.html" %}
+{% endblock profile_page_see_more %}
+{% endif %}
 
 {% endblock page_body %}
