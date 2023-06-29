@@ -144,19 +144,19 @@ class PrimaApi(object):
 
         return data, message
     
-    def createUser(self, name, lastname, username, email, phone):
+    def createUser(self, email):
         """ 
-        ...
+        Create user in Prima system.
         """
 
         payload = {
             'Request': 'CreateUser', 
-            'UsrName': name,
-            'UsrLastName': lastname,
+            # 'UsrName': name,
+            # 'UsrLastName': lastname,
             'UsrAccessLevel': '5', # UsrAccessLevel=5 pomeni omejen dostop do requestov
-            'UsrLoginName': username,
+            'UsrLoginName': email,
             'UsrEMail': email,
-            'UsrPhone': phone
+            # 'UsrPhone': phone
         }
 
         print("Create user", payload)

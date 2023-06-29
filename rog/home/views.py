@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 from django.views import View
@@ -11,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 
 from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, RegistrationProfileForm
 
-from users.models import User, Membership
+from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
 
 prima_api = PrimaApi()
@@ -27,20 +28,10 @@ class MyProfileView(TemplateView):
         prima_user_id = current_user.prima_id
         # print(f"Prima user ID: {prima_user_id}")
 
-        # osnovni podatki o uporabniku - zaenkrat ne rabimo nič od tega
-        # user_data, message = prima_api.readUsers(prima_user_id)
-
-        # stanje na računu uporabnika
-        user_balance = prima_api.readUserBalances(prima_user_id)
-
-        user_type = "ROG član/ica" if current_user.membership else "brezplačni uporabnik"
-        obnovitev_clanarine = current_user.membership.end_day if current_user.membership else None
+        obnovitev_clanarine = current_user.membership.valid_to
 
         return render(request, self.template_name, { 
             'user': current_user, 
-            'user_balance': user_balance,
-            # 'user_data': user_data,
-            'user_type': user_type,
             'obnovitev_clanarine': obnovitev_clanarine
         })
     
@@ -92,13 +83,24 @@ class RegistrationView(View):
                 login(request, user)
                 return redirect("profile-my")
 
-            user = User.objects.create_user(
-                email=email,
-                password=password,
-                is_active=True
-            )
+            # create PRIMA user
+            data, message = prima_api.createUser(email)
+            print(data)
 
-            login(request, user)
+            if data:
+                prima_id = data['UsrID']
+                user = User.objects.create_user(
+                    email=email,
+                    password=password,
+                    prima_id=int(prima_id),
+                    is_active=True # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
+                )
+                print("Novi user", user)
+                login(request, user)
+            else:
+                print("Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu.")
+                return render(request, "registration/registration.html", context={ "form": form, "error": _("Uporabnika ni bilo mogoče ustvariti.") })
+            
 
             # TODO subscribe to newsletter
             # Newsletter(
@@ -117,27 +119,31 @@ class RegistrationMembershipView(View):
 
     def get(self, request):
         user = request.user
+        membership_types = MembershipType.objects.all()
 
         form = RegistrationMembershipForm()
-        return render(request, "registration/registration_2_membership.html", context={ "form": form })
+        return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
     
     def post(self, request):
         user = request.user
+        membership_types = MembershipType.objects.all()
+
         form = RegistrationMembershipForm(request.POST)
 
         if form.is_valid():
             membership_choice = form.cleaned_data["membership_choice"]
 
-            if membership_choice == "with-membership":
-                today = date.today()
-                one_year_from_now = today + relativedelta(years=1)
-                user.membership = Membership(start_day=today, end_day=one_year_from_now)
-                user.membership.save()
-                user.save()
+            membership_type = MembershipType.objects.get(id=membership_choice)
+            today = datetime.now()
+            one_year_from_now = today + relativedelta(years=1)
+            active = membership_type.price == 0
+            user.membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active)
+            user.membership.save()
+            user.save()
 
             return redirect("registration-information")
         else:
-            return render(request, "registration/registration_2_membership.html", context={ "form": form })
+            return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
 
 @method_decorator(login_required, name='dispatch')
 class RegistrationInformationView(View):
@@ -146,7 +152,7 @@ class RegistrationInformationView(View):
         user = request.user
 
         form = RegistrationInformationForm()
-        return render(request, "registration/registration_3_information.html", context={ "form": form })
+        return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
     
     def post(self, request):
         user = request.user
@@ -161,14 +167,13 @@ class RegistrationInformationView(View):
             user.first_name = first_name
             user.last_name = last_name
             user.address_1 = address_1 # TODO: throw error if there is no address 1
-            # TODO: save address_2, if it exists
             if address_2:
                 user.address_2 = address_2
             user.save()
 
             return redirect("registration-profile")
         else:
-            return render(request, "registration/registration_3_information.html", context={ "form": form })
+            return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -178,7 +183,7 @@ class RegistrationProfileView(View):
         user = request.user
 
         form = RegistrationProfileForm()
-        return render(request, "registration/registration_4_profile.html", context={ "form": form })
+        return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
     
     def post(self, request):
         user = request.user
@@ -197,29 +202,9 @@ class RegistrationProfileView(View):
 
             user.save()
 
-            return redirect("profile-my")
+            return redirect("/placilo")
         else:
-            return render(request, "registration/registration_4_profile.html", context={ "form": form })
-    
-    # def post(self, request):
-        # create PRIMA user
-        # data, message = prima_api.createUser(first_name, last_name, username, email, phone)
-        # print(data)
-
-        # if data:
-        #     prima_id = data['UsrID']
-        #     user = User.objects.create_user(
-        #         username=username,
-        #         first_name=first_name,
-        #         last_name=last_name,
-        #         email=email,
-        #         phone=phone,
-        #         password=password,
-        #         prima_id=int(prima_id),
-        #         is_active=True
-        #     ) # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
-        #     print("Novi user", user)
-
+            return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
 
 # @method_decorator(login_required, name='dispatch')
 # class RegistrationPaymentView(View):

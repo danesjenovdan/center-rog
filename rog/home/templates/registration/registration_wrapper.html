@@ -18,11 +18,11 @@
         <div class="col-md-10 col-xxl-6">
 
             <div class="registration-progress">
-                <div class="point active"><span>začetek registracije</span></div>
-                <div class="point"><span>izbira članstva</span></div>
-                <div class="point"><span>osnovni podatki</span></div>
-                <div class="point"><span>osebni profil</span></div>
-                <div class="point"><span>plačilo</span></div>
+                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>začetek registracije</span></div>
+                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>izbira članstva</span></div>
+                <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>osnovni podatki</span></div>
+                <div class="point {% if registration_step == 3 %} active{% elif registration_step > 3 %} done{% endif %}"><span>osebni profil</span></div>
+                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 4 %} done{% endif %}"><span>plačilo</span></div>
             </div>
 
             {% block form_title %}

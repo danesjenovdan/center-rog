@@ -3,15 +3,65 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
+from wagtail.models import Orderable
+from wagtail.admin.panels import FieldPanel, InlinePanel
+
+from modelcluster.fields import ParentalKey
+from modelcluster.models import ClusterableModel
+
 from home.models import Workshop
 
 
-class Membership(models.Model):
-    start_day = models.DateField()
-    end_day = models.DateField(blank=True, null=True)
+class MembershipType(ClusterableModel):
+    name = models.TextField(verbose_name=_("Ime članstva"))
+    price = models.IntegerField(verbose_name=_("Cena"))
 
     def __str__(self):
-        return f"{self.start_day} - {self.end_day}"
+        return self.name
+    
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("price"),
+        InlinePanel("related_specifications", label=_("Bonitete")),
+    ]
+    
+    class Meta:
+        verbose_name = _("Tip članstva")
+        verbose_name_plural = _("Tipi članstva")
+    
+
+class MembershipTypeSpecification(Orderable):
+    name = models.TextField(verbose_name=_("Boniteta"))
+    membership_type = ParentalKey(MembershipType, on_delete=models.CASCADE, related_name="related_specifications")
+
+    def __str__(self):
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+    ]
+
+    class Meta:
+        verbose_name = _("Boniteta članstva")
+        verbose_name_plural = _("Bonitete članstva")
+
+
+class Membership(models.Model):
+    type = models.ForeignKey(MembershipType, on_delete=models.CASCADE)
+    valid_from = models.DateTimeField(
+        auto_now_add=True,
+        null=True,
+        blank=True
+    )
+    valid_to = models.DateTimeField(
+        help_text=_("When the plan expires"),
+        null=True,
+        blank=True
+    )
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"
 
 
 class UserManager(BaseUserManager):
