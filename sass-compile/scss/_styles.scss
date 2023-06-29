@@ -803,12 +803,27 @@ section.image-embed {
         margin-bottom: 15px;
         font-size: $sm-font-size;
         text-decoration: none;
-        border: 1px solid $cs-dark-green;
+        // border: 1px solid $cs-dark-green;
 
         &:hover {
             background-color: $cs-white;
             border-color: $cs-white;
             color: $cs-dark-gray;
+        }
+    }
+
+    .events-list-archive {
+        .list-element {
+            font-size: $xs-font-size;
+
+            p:first-child {
+                margin-bottom: 5px;
+                font-size: $xxs-font-size;
+            }
+
+            p:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }

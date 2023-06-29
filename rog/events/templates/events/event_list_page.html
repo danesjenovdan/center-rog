@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load i18n static %}
 
 {% block body_class %}template-object-list template-event-list-page{% endblock %}
 
@@ -23,6 +23,12 @@
             {% include "events/includes/card.html" with event=event %}
         </div> 
         {% endfor %}
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-end bulletin-board-link">
+            <a href="{{ archive_page.url }}"><span>{% translate 'arhiv' %}</span></a>
+        </div>
     </div>
 
     {% if event_pages.paginator.num_pages > 1 %}

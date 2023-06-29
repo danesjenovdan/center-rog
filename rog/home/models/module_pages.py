@@ -22,8 +22,10 @@ class HomePage(Page):
 
     subpage_types = [
         'home.StudioListPage',
+        'home.StudioArchiveListPage',
         'home.MarketStoreListPage',
         'home.ResidenceListPage',
+        'home.ResidenceArchiveListPage',
         'home.LabListPage',
         'home.ContentPage',
         'events.EventListPage',
@@ -41,7 +43,17 @@ class HomePage(Page):
 
 
 class ContentPage(BasePage):
-    subpage_types = []
-    content_panels = Page.content_panels + [
-        FieldPanel('color_scheme'),
-    ]
+    pass
+    # body = StreamField(
+    #     ModuleBlock(),
+    #     verbose_name="Telo",
+    #     null=True,
+    #     use_json_field=False
+    # )
+
+    # content_panels = Page.content_panels + [
+    #     FieldPanel('color_scheme'),
+    #     FieldPanel('body'),
+    # ]
+
+    # subpage_types = []
