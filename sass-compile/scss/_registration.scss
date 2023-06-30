@@ -92,4 +92,15 @@
             background-color: $cs-dark-gray;
         }
     }
+
+    button + .button-notice {
+        max-width: 215px;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+}
+
+#legal-information-wrapper.hide {
+    opacity: 80%;
+    pointer-events: none;
 }

@@ -5,6 +5,35 @@
 
 {% block body_class %}template-register{% endblock %}
 
+
+{% block extra_js %}
+<script>
+    const legal_person_checkbox = document.getElementById("id_legal_person_receipt");
+    const legal_information_wrapper = document.getElementById("legal-information-wrapper");
+
+    // make sure it has corrent class on load
+    if (legal_person_checkbox) {
+        if (legal_person_checkbox.checked) {
+            legal_information_wrapper.classList.remove("hide");
+        } else {
+            legal_information_wrapper.classList.add("hide");
+        }
+    }
+
+    // add listener
+    if (legal_person_checkbox && legal_information_wrapper) {
+        legal_person_checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                legal_information_wrapper.classList.remove("hide");
+            } else {
+                legal_information_wrapper.classList.add("hide");
+            }
+        });
+    }
+    
+</script>
+{% endblock %}
+
 {% block form_title %}
 <h1>Izpolni podatke:</h1>
 {% endblock form_title %}
@@ -67,57 +96,61 @@
         {{ form.legal_person_receipt }} {{ form.legal_person_receipt.label_tag }}
     </div>
 
-    <div class="form-field-wrapper">
-        {{ form.legal_person_name.label_tag }} {{ form.legal_person_name }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.legal_person_name.errors %}
-        <p class="error">{{ form.legal_person_name.errors }}</p>
-        {% endif %}
-    </div>
+    <div id="legal-information-wrapper" class="hide">
 
-    <div class="form-field-wrapper">
-        {{ form.legal_person_address_1.label_tag }} {{ form.legal_person_address_1 }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.legal_person_address_1.errors %}
-        <p class="error">{{ form.legal_person_address_1.errors }}</p>
-        {% endif %}
-    </div>
+        <div class="form-field-wrapper">
+            {{ form.legal_person_name.label_tag }} {{ form.legal_person_name }}
+            <!-- 
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %} 
+            -->
+            {% if form.legal_person_name.errors %}
+            <p class="error">{{ form.legal_person_name.errors }}</p>
+            {% endif %}
+        </div>
+    
+        <div class="form-field-wrapper">
+            {{ form.legal_person_address_1.label_tag }} {{ form.legal_person_address_1 }}
+            <!-- 
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %} 
+            -->
+            {% if form.legal_person_address_1.errors %}
+            <p class="error">{{ form.legal_person_address_1.errors }}</p>
+            {% endif %}
+        </div>
+    
+        <div class="form-field-wrapper">
+            {{ form.legal_person_address_2.label_tag }} {{ form.legal_person_address_2 }}
+            <!-- 
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %} 
+            -->
+            {% if form.legal_person_address_2.errors %}
+            <p class="error">{{ form.legal_person_address_2.errors }}</p>
+            {% endif %}
+        </div>
+    
+        <div class="form-field-wrapper">
+            {{ form.legal_person_tax_number.label_tag }} {{ form.legal_person_tax_number }}
+            <!-- 
+            {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+            {% endif %} 
+            -->
+            {% if form.legal_person_tax_number.errors %}
+            <p class="error">{{ form.legal_person_tax_number.errors }}</p>
+            {% endif %}
+        </div>
+    
+        <div class="form-field-wrapper one-line">
+            {{ form.legal_person_vat.errors }}
+            {{ form.legal_person_vat }} {{ form.legal_person_vat.label_tag }}
+        </div>
 
-    <div class="form-field-wrapper">
-        {{ form.legal_person_address_2.label_tag }} {{ form.legal_person_address_2 }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.legal_person_address_2.errors %}
-        <p class="error">{{ form.legal_person_address_2.errors }}</p>
-        {% endif %}
-    </div>
-
-    <div class="form-field-wrapper">
-        {{ form.legal_person_tax_number.label_tag }} {{ form.legal_person_tax_number }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.legal_person_tax_number.errors %}
-        <p class="error">{{ form.legal_person_tax_number.errors }}</p>
-        {% endif %}
-    </div>
-
-    <div class="form-field-wrapper one-line">
-        {{ form.legal_person_vat.errors }}
-        {{ form.legal_person_vat }} {{ form.legal_person_vat.label_tag }}
     </div>
 
     <div class="d-flex justify-content-end my-4">

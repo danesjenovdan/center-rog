@@ -105,8 +105,8 @@ class Plan(Timestampable):
     ]
 
     class Meta:
-        verbose_name = _("Uporabnina")
-        verbose_name_plural = _("Uporabnine")
+        verbose_name = _("Plačilni paket")
+        verbose_name_plural = _("Plačilni paket")
 
 
 class Payment(Timestampable):

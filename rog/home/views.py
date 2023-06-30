@@ -120,7 +120,7 @@ class RegistrationMembershipView(View):
     def get(self, request):
         user = request.user
         membership_types = MembershipType.objects.all()
-
+        # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
         return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
     
@@ -133,10 +133,12 @@ class RegistrationMembershipView(View):
         if form.is_valid():
             membership_choice = form.cleaned_data["membership_choice"]
 
+            print("membership_choice", membership_choice)
+
             membership_type = MembershipType.objects.get(id=membership_choice)
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
-            active = membership_type.price == 0
+            active = membership_type.plan is None
             user.membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active)
             user.membership.save()
             user.save()
@@ -151,7 +153,7 @@ class RegistrationInformationView(View):
     def get(self, request):
         user = request.user
 
-        form = RegistrationInformationForm()
+        form = RegistrationInformationForm(instance=user)
         return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
     
     def post(self, request):
@@ -163,12 +165,27 @@ class RegistrationInformationView(View):
             last_name = form.cleaned_data["last_name"]
             address_1 = form.cleaned_data["address_1"]
             address_2 = form.cleaned_data["address_2"]
-
+            
+            legal_person_receipt = form.cleaned_data["legal_person_receipt"]
+            if legal_person_receipt:
+                legal_person_name = form.cleaned_data["legal_person_name"]
+                legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
+                legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
+                legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
+                legal_person_vat = form.cleaned_data["legal_person_vat"]
+            
             user.first_name = first_name
             user.last_name = last_name
-            user.address_1 = address_1 # TODO: throw error if there is no address 1
+            user.address_1 = address_1
             if address_2:
                 user.address_2 = address_2
+
+            user.legal_person_name = legal_person_name
+            user.legal_person_address_1 = legal_person_address_1
+            user.legal_person_address_2 = legal_person_address_2
+            user.legal_person_tax_number = legal_person_tax_number
+            user.legal_person_vat = legal_person_vat
+
             user.save()
 
             return redirect("registration-profile")

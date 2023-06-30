@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.users.forms import UserEditForm, UserCreationForm
 
-from users.models import Membership
 from home.models import Workshop
 
 

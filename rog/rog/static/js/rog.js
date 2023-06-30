@@ -97,6 +97,28 @@ function scrollingDots(section, container) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const collapsable_menu = document.getElementById("navbar-collapsable-menu");
+  const secondary_navigation = document.getElementById("secondary-navigation");
+
+  collapsable_menu.addEventListener("hide.bs.collapse", event => {
+      document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
+      document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
+
+      if (secondary_navigation) {
+          secondary_navigation.classList.toggle("custom-navigation-show");
+      }
+  });
+
+  collapsable_menu.addEventListener("show.bs.collapse", event => {
+      document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
+      document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
+
+      if (secondary_navigation) {
+          secondary_navigation.classList.toggle("custom-navigation-show");
+      }
+  });
+
+
   labsHoverAnimations();
 
   carousel();

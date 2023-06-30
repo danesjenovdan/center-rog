@@ -42,7 +42,7 @@ a {
         margin-bottom: 5px;
     }
 
-    input {
+    input, textarea {
         border: 1px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
@@ -50,7 +50,9 @@ a {
 
     input[type=text],
     input[type=email],
-    input[type=password] {
+    input[type=password],
+    input[type=url],
+    textarea {
         display: block;
         width: 100%;
     }
@@ -62,10 +64,6 @@ a {
         label {
             margin-bottom: 0;
         }
-    }
-
-    &.disabled {
-
     }
 }
 
@@ -812,7 +810,8 @@ section.image-embed {
         }
     }
 
-    .events-list-archive {
+    .events-list-archive,
+    .news-list-archive {
         .list-element {
             font-size: $xs-font-size;
 
@@ -1238,4 +1237,10 @@ section.image-embed {
 
 .template-news-page {
 
+}
+
+.template-profile {
+    .payment-notice {
+        font-size: $sm-font-size;
+    }
 }
