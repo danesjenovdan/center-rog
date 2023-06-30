@@ -14,10 +14,12 @@
 <form action="{% url 'registration-membership' %}" method="post">
     {% csrf_token %}
     <div class="row radio-square-wrapper">
+
+        <!-- {{ form.type }} -->
         {% for membership_type in membership_types %}
         <div class="col-6">
-            <input type="radio" name="membership_choice" value="{{ membership_type.id }}" required="" id="id_membership_choice_{{ membership_type.id }}" class="btn-check">
-            <label for="id_membership_choice_{{ membership_type.id }}" class="radio-square btn">
+            <input type="radio" name="type" value="{{ membership_type.id }}" required="" id="id_type_{{ membership_type.id }}" class="btn-check">
+            <label for="id_type_{{ membership_type.id }}" class="radio-square btn">
                 <h4>{{ membership_type.name }}</h4>
                 <ul>
                     {% for specification in membership_type.related_specifications.all %}
