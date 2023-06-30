@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
+from django.db import ProgrammingError
 
 from users.models import User, MembershipType
 
@@ -37,7 +38,10 @@ class RegisterForm(forms.ModelForm):
 
 
 class RegistrationMembershipForm(forms.Form):
-    membership_types = [ (mt.id, mt.name) for mt in MembershipType.objects.all()]
+    try:
+        membership_types = [ (mt.id, mt.name) for mt in MembershipType.objects.all() ]
+    except ProgrammingError: # ta exception je treba dat, ker MembershipType še ne obstaja v bazi, ko se prvič požene projekt
+        membership_types = []
     membership_choice = forms.ChoiceField(required=True, choices=membership_types, widget=forms.RadioSelect)
 
 

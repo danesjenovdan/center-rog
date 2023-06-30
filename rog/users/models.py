@@ -47,7 +47,7 @@ class MembershipTypeSpecification(Orderable):
 
 
 class Membership(models.Model):
-    type = models.ForeignKey(MembershipType, on_delete=models.CASCADE)
+    type = models.ForeignKey(MembershipType, on_delete=models.CASCADE, null=True, blank=True)
     valid_from = models.DateTimeField(
         auto_now_add=True,
         null=True,
