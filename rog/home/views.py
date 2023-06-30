@@ -131,11 +131,7 @@ class RegistrationMembershipView(View):
         form = RegistrationMembershipForm(request.POST)
 
         if form.is_valid():
-            membership_choice = form.cleaned_data["membership_choice"]
-
-            print("membership_choice", membership_choice)
-
-            membership_type = MembershipType.objects.get(id=membership_choice)
+            membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
             active = membership_type.plan is None
