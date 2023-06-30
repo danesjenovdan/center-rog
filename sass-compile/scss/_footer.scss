@@ -2,10 +2,15 @@ footer.container-fluid {
     padding: 30px;
 
     p {
-        font-size: $xs-font-size;
+        font-size: $xxs-font-size;
+
+        @include media-breakpoint-up(md) {
+            font-size: $xs-font-size;
+        }
 
         a {
             text-decoration: none;
+            font-size: inherit;
 
             &:hover {
                 text-decoration: underline;
