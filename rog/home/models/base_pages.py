@@ -5,7 +5,7 @@ from django.conf import settings
 from wagtail import blocks
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.fields import StreamField
+from wagtail.fields import StreamField, RichTextField
 from wagtail.images.blocks import ImageChooserBlock
 
 from .image import CustomImage
@@ -119,3 +119,14 @@ class ObjectProfilePage(BasePage):
 
     class Meta:
         abstract = True
+
+
+class BasicTextPage(Page):
+    body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+    ]
+
+    subpage_types = []
+

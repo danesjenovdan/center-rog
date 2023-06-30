@@ -29,6 +29,7 @@ class HomePage(Page):
         'home.LabListPage',
         'home.ContentPage',
         'home.LibraryPage',
+        'home.BasicTextPage',
         'events.EventListPage',
         'events.EventListArchivePage',
         'news.NewsListPage',

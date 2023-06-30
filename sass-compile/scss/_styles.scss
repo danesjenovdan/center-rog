@@ -1244,3 +1244,12 @@ section.image-embed {
         font-size: $sm-font-size;
     }
 }
+
+.container-basic-page {
+    padding-top: 60px;
+    padding-bottom: 60px;
+
+    h1 {
+        margin-bottom: 50px;
+    }
+}
