@@ -38,18 +38,20 @@ class EventCategory(models.Model):
 
 
 class EventPage(BasePage):
-    short_description = models.TextField(blank=True)
+    short_description = models.TextField(blank=True, verbose_name=_("Kratek opis"))
     hero_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Slika dogodka"))
     category = models.ForeignKey(
-        EventCategory, null=True, blank=True, on_delete=models.SET_NULL)
-    body = RichTextField(blank=True, null=True)
-    start_time = models.TimeField()
-    end_time = models.TimeField()
-    start_day = models.DateField()
-    end_day = models.DateField()
-    location = models.TextField(blank=True)
-    event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL)
+        EventCategory, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
+    body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
+    start_time = models.TimeField(verbose_name=_("Ura začetka"))
+    end_time = models.TimeField(verbose_name=_("Ura konca"))
+    start_day = models.DateField(verbose_name=_("Datum začetka"))
+    end_day = models.DateField(verbose_name=_("Datum konca"))
+    location = models.TextField(blank=True, verbose_name=_("Lokacija"))
+    event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
+    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
+    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),
@@ -61,12 +63,32 @@ class EventPage(BasePage):
         FieldPanel("start_time"),
         FieldPanel("end_time"),
         FieldPanel("location"),
-        FieldPanel("event_is_workshop")
+        FieldPanel("event_is_workshop"),
+        FieldPanel("archived"),
+        FieldPanel("show_see_more_section")
     ]
 
     parent_page_types = [
         "events.EventListPage"
     ]
+
+    class Meta:
+        verbose_name = _("Dogodek")
+        verbose_name = _("Dogodki")
+
+
+class EventListArchivePage(BasePage):
+    subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        context["list"] = EventPage.objects.live().filter(archived=True)
+
+        # see more
+        # context = add_see_more_fields(context)
+
+        return context
 
 
 class EventListPage(BasePage):
@@ -87,6 +109,9 @@ class EventListPage(BasePage):
         chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
         if chosen_category:
             all_event_page_objects = all_event_page_objects.filter(category=chosen_category)
+
+        # arhiv
+        context["archive_page"] = EventListArchivePage.objects.live().first()
         
         # pagination
         paginator = Paginator(all_event_page_objects, 3)
@@ -101,10 +126,6 @@ class EventListPage(BasePage):
         context["event_pages"] = event_pages
 
         return context
-
-
-class EventListArchivePage(BasePage):
-    subpage_types = []
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

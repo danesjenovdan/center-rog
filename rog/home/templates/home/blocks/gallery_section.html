@@ -5,22 +5,27 @@
     <div class="row justify-content-center">
       <div class="col-12">
         <h2 class="text-center">{{ value.title }}</h2>
-        <div class="tiny-slider-carousel">
-          {% for element in value.gallery %}
-            <div>{% image element original class="img-fluid" %}</div>
-            <!-- <p>{{ element.alt_description }}</p> -->
-          {% endfor %}
+        <div class="glide">
+          <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">🡸</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">🡺</button>
+          </div>
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              {% for element in value.gallery %}
+              <li class="glide__slide">{% image element original class="img-fluid" %}</li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
     {% if value.button %}
-        <div class="row mt-4">
-            <div class="col-12 text-center">
-                <a href="{% pageurl value.button %}" class="primary-button button-medium">
-                    {{ value.button }}
-                </a>
-            </div>
-        </div>
-        {% endif %}
+    <div class="row mt-4">
+      <div class="col-12 text-center">
+        <a href="{% pageurl value.button %}" class="primary-button button-medium">{{ value.button }}</a>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </section>

@@ -13,31 +13,21 @@
 
 <form action="{% url 'registration-membership' %}" method="post">
     {% csrf_token %}
-    <div class="radio-square-wrapper">
-        <input type="radio" name="membership_choice" value="with-membership" required="" id="id_membership_choice_1" class="btn-check">
-        <label for="id_membership_choice_1" class="radio-square btn">
-            <h4>ROG članstvo</h4>
-            <ul>
-                <li>Prijava na delavnice</li>
-                <li>Dostop do orodij</li>
-                <li>Bookiranje terminov</li>
-                <li>Delo s tehnologi</li>
-                <li>Novice iz Roga</li>
-            </ul>
-            <h3>cena</h3>
-        </label>
-        <input type="radio" name="membership_choice" value="no-membership" required="" id="id_membership_choice_0" class="btn-check">
-        <label for="id_membership_choice_0" class="radio-square btn">
-            <h4>Brezplačno članstvo</h4>
-            <ul>
-                <li>Prijava na delavnice</li>
-                <li>Dostop do orodij</li>
-                <li>Bookiranje terminov</li>
-                <li>Delo s tehnologi</li>
-                <li>Novice iz Roga</li>
-            </ul>
-            <h3>cena</h3>
-        </label>
+    <div class="row radio-square-wrapper">
+        {% for membership_type in membership_types %}
+        <div class="col-6">
+            <input type="radio" name="membership_choice" value="{{ membership_type.id }}" required="" id="id_membership_choice_{{ membership_type.id }}" class="btn-check">
+            <label for="id_membership_choice_{{ membership_type.id }}" class="radio-square btn">
+                <h4>{{ membership_type.name }}</h4>
+                <ul>
+                    {% for specification in membership_type.related_specifications.all %}
+                    <li>{{ specification }}</li>
+                    {% endfor %}
+                </ul>
+                <h3>{{ membership_type.price }}</h3>
+            </label>
+        </div>
+        {% endfor %}
     </div>
     {% if form.membership_choice.errors %}
     <p class="error">{{ form.membership_choice.errors }}</p>

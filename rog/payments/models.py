@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from wagtail.admin.panels import FieldPanel
+
 from datetime import datetime
 
 
@@ -17,9 +19,18 @@ class ActiveAtQuerySet(models.QuerySet):
         return Token.objects.filter(
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
-            is_used=False
+            is_used=False,
+            type_of=Token.Type.LAB
         )
-
+    
+    def get_available_workshops(self):
+        timestamp = datetime.now()
+        return Token.objects.filter(
+            valid_from__lte=timestamp,
+            valid_to__gte=timestamp,
+            is_used=False,
+            type_of=Token.Type.WORKSHOP
+        )
 
 class Timestampable(models.Model):
     """
@@ -78,7 +89,24 @@ class Plan(Timestampable):
     )
 
     def __str__(self):
-        return f"{self.name} - {self.price} - {self.duration}"
+        return f"{self.name}"
+    
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("price"),
+        FieldPanel("is_subscription"),
+        FieldPanel("valid_to"),
+        FieldPanel("duration"),
+        FieldPanel("tokens"),
+        FieldPanel("week_token_limit"),
+        FieldPanel("month_token_limit"),
+        FieldPanel("year_token_limit"),
+        FieldPanel("workshops"),
+    ]
+
+    class Meta:
+        verbose_name = _("Plačilni paket")
+        verbose_name_plural = _("Plačilni paket")
 
 
 class Payment(Timestampable):

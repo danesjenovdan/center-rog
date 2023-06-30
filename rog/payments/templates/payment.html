@@ -14,6 +14,7 @@
 <script>
 
     function initPayment()  {
+        console.log("INIT PAYMENT")
         fetch("/placilo/?wizard=wizard", {
             method: 'POST',
             headers: {
@@ -35,19 +36,21 @@
         })
     }
 
+    document.addEventListener("DOMContentLoaded", () => {
+        initPayment();
+    });
+
 </script>
 {% endblock extra_js %}
 
 {% block page_body %}
 
-<div class="container user-profile-container">
-
-    <p>
-        Tuki pride nek text o plačilu
-    </p>
-
-    <button onclick="initPayment()" id="payment" class="btn btn-primary">Plači</button>
-
+<div class="container payment-notice color-scheme-light-gray">
+    <div class="row my-5">
+        <div class="col-12">
+            <p class="text-center my-5">Poteka preusmeritev na stran za plačilo...</p>
+        </div>
+    </div>
 </div>
 
 {% endblock page_body %}

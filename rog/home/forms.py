@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
+from django.db import ProgrammingError
 
-from users.models import User
+from users.models import User, MembershipType
 
 
 class RegisterForm(forms.ModelForm):
@@ -37,10 +38,11 @@ class RegisterForm(forms.ModelForm):
 
 
 class RegistrationMembershipForm(forms.Form):
-    membership_choice = forms.ChoiceField(required=True, choices=[
-        ("no-membership", "Brez članstva"), 
-        ("with-membership", "S članstvom")
-    ], widget=forms.RadioSelect)
+    try:
+        membership_types = [ (mt.id, mt.name) for mt in MembershipType.objects.all() ]
+    except ProgrammingError: # ta exception je treba dat, ker MembershipType še ne obstaja v bazi, ko se prvič požene projekt
+        membership_types = []
+    membership_choice = forms.ChoiceField(required=True, choices=membership_types, widget=forms.RadioSelect)
 
 
 class RegistrationInformationForm(forms.ModelForm):
@@ -57,7 +59,7 @@ class RegistrationInformationForm(forms.ModelForm):
         label_suffix="",
     )
     address_2 = forms.CharField(
-        label=_("Naslov 2"),
+        label=_("Naslov 2 (neobvezno)"),
         label_suffix="",
         required=False
     )
@@ -131,7 +133,8 @@ class RegistrationProfileForm(forms.ModelForm):
     )
     link = forms.URLField(
         label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
-        label_suffix=""
+        label_suffix="",
+        required=False
     )
 
     class Meta:

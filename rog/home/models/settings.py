@@ -131,6 +131,7 @@ class MetaSettings(BaseGenericSetting):
         FieldPanel("social_media_links"),
     ]
 
+    header_marquee = models.TextField(verbose_name=_("Vrteče besedilo"), blank=True, null=True)
     header_links = StreamField(
         [
             ("page_link", PageLinkBlock()),
@@ -142,6 +143,7 @@ class MetaSettings(BaseGenericSetting):
     )
 
     header_tab_panels = [
+        FieldPanel("header_marquee"),
         FieldPanel("header_links"),
     ]
 
@@ -195,4 +197,3 @@ class MetaSettings(BaseGenericSetting):
 
     class Meta:
         verbose_name = "Nastavitve spletnega mesta"
-

@@ -9,7 +9,7 @@
 <header class="fixed-top">
   <nav id="primary-navigation" class="position-relative">
     <div id="primary-navigation-background" class="position-absolute"></div>
-    <div class="navbar px-4 justify-content-end">
+    <div class="navbar px-4 justify-content-end navbar-toggler-container">
       <ul class="navbar-nav flex-row align-items-center">
         <!-- prevodi -->
         <li class="nav-item mx-2">
@@ -43,6 +43,32 @@
         </div>
       </button>
     </div>
+    {% if settings.home.MetaSettings.header_marquee %}
+    <div class="header-marquee">
+      <div class="header-marquee-text">
+        {{ settings.home.MetaSettings.header_marquee }}
+      </div>
+    </div>
+    <script>
+      (function() {
+        var element = document.querySelector(".header-marquee-text");
+        animateMarquee(element);
+        function animateMarquee(element) {
+          let elementWidth = element.offsetWidth;
+          let parentWidth = element.parentElement.offsetWidth;
+          let flag = 0;
+          requestAnimationFrame(function frame() {
+            flag -= 1;
+            element.style.transform = `translateX(${flag}px)`;
+            if (flag < -elementWidth) {
+                flag = parentWidth;
+            }
+            requestAnimationFrame(frame);
+          });
+        }
+      })();
+    </script>
+    {% endif %}
     <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start" id="navbar-collapsable-menu">
       {% for navigation_link in settings.home.MetaSettings.header_links %}
         {% if forloop.counter0|divisibleby:3 %}
