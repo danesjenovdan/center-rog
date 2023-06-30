@@ -1,6 +1,4 @@
 function labsHoverAnimations() {
-  console.log("rog.js");
-
   const labs = document.querySelectorAll(".labs-section .lab");
   labs.forEach((lab) => {
     lab.addEventListener("mouseenter", onLabEnter);
@@ -30,45 +28,46 @@ function onVideoEnded(img, video) {
 }
 
 function carousel() {
-  const slider = tns({
-    container: ".tiny-slider-carousel",
-    items: 5,
-    slideBy: 1,
-    // autoplay: true,
-    loop: false,
-    center: true,
-    mouseDrag: true,
-    nav: false,
-    // controls: false,
-    autoplayButtonOutput: false,
-    onInit(info) {
-      const h = getComputedStyle(info.container)["height"];
-      info.container.style.height = `${parseInt(h) * 2}px`;
-      onSliderIndexChanged(info);
-    },
+  const elements = document.querySelectorAll(".glide");
+  elements.forEach((element, i) => {
+    const count = element.querySelectorAll(".glide__slide").length;
+    if (count > 0) {
+      const startIndex = count >= 5 ? 2 : Math.floor(count / 2);
+      const glide = new Glide(element, {
+        startAt: startIndex,
+        perView: 5,
+        focusAt: "center",
+        rewind: false,
+        gap: 0,
+        animationDuration: 150,
+        breakpoints: {
+          600: {
+            perView: 3,
+          },
+        },
+      });
+      glide.on(["mount.after", "resize"], () => {
+        const track = glide.selector.querySelector(".glide__track");
+        track.style.aspectRatio = `${glide.settings.perView} / 2`;
+      });
+      glide.on(["mount.after", "run.after"], () => {
+        const items = glide.selector.querySelectorAll(".glide__slide");
+        items.forEach((item) => {
+          item.classList.remove(
+            "glide__slide--active-prev2",
+            "glide__slide--active-prev1",
+            "glide__slide--active-next1",
+            "glide__slide--active-next2"
+          );
+        });
+        items[glide.index - 2]?.classList.add("glide__slide--active-prev2");
+        items[glide.index - 1]?.classList.add("glide__slide--active-prev1");
+        items[glide.index + 1]?.classList.add("glide__slide--active-next1");
+        items[glide.index + 2]?.classList.add("glide__slide--active-next2");
+      });
+      glide.mount();
+    }
   });
-
-  slider.events.on("indexChanged", (info) => {
-    onSliderIndexChanged(info);
-  });
-}
-
-function onSliderIndexChanged(info) {
-  [...info.slideItems].forEach((item) => {
-    item.classList.remove(
-      "active-prev2",
-      "active-prev1",
-      "active",
-      "active-next1",
-      "active-next2"
-    );
-  });
-
-  info.slideItems[info.index - 2]?.classList.add("active-prev2");
-  info.slideItems[info.index - 1]?.classList.add("active-prev1");
-  info.slideItems[info.index].classList.add("active");
-  info.slideItems[info.index + 1]?.classList.add("active-next1");
-  info.slideItems[info.index + 2]?.classList.add("active-next2");
 }
 
 function scrollingDots(section, container) {
@@ -79,30 +78,28 @@ function scrollingDots(section, container) {
     eventsSectionScrollable.scrollTo({
       left: 0,
       behavior: "smooth",
-    })
+    });
   });
 
   eventsSectionDots[1].addEventListener("click", () => {
     eventsSectionScrollable.scrollTo({
       left: (eventsSectionScrollable.scrollWidth - eventsSectionScrollable.offsetWidth) / 2,
       behavior: "smooth",
-    })
+    });
   });
 
   eventsSectionDots[2].addEventListener("click", () => {
     eventsSectionScrollable.scrollTo({
       left: eventsSectionScrollable.scrollWidth,
       behavior: "smooth",
-    })
+    });
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   labsHoverAnimations();
-  
-  if (document.querySelector(".tiny-slider-carousel")) {
-    carousel();
-  }
+
+  carousel();
 
   if (document.querySelector(".events-section")) {
     scrollingDots("events-section", "events-container");
