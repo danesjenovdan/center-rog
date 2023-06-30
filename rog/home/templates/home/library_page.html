@@ -1,8 +1,4 @@
 {% extends "home/object_profile_page.html" %}
-{% load static %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
-{% block body_class %}template-library{% endblock %}
-
-{% block extra_css %}
-
-{% endblock extra_css %}
+{% block body_class %}{{ block.super }} template-studio{% endblock %}

@@ -28,6 +28,7 @@ class HomePage(Page):
         'home.ResidenceArchiveListPage',
         'home.LabListPage',
         'home.ContentPage',
+        'home.LibraryPage',
         'events.EventListPage',
         'events.EventListArchivePage',
         'news.NewsListPage',
