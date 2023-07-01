@@ -130,3 +130,7 @@ class BasicTextPage(Page):
 
     subpage_types = []
 
+    class Meta:
+        verbose_name = _("Osnovna stran z besedilom")
+        verbose_name_plural = _("Osnovne strani z besedilom")
+

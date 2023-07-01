@@ -27,9 +27,9 @@ class HomePage(Page):
         'home.ResidenceListPage',
         'home.ResidenceArchiveListPage',
         'home.LabListPage',
-        'home.ContentPage',
         'home.LibraryPage',
         'home.BasicTextPage',
+        'home.ContentPage',
         'events.EventListPage',
         'events.EventListArchivePage',
         'news.NewsListPage',
@@ -44,18 +44,19 @@ class HomePage(Page):
 
 
 
-class ContentPage(BasePage):
-    pass
-    # body = StreamField(
-    #     ModuleBlock(),
-    #     verbose_name="Telo",
-    #     null=True,
-    #     use_json_field=False
-    # )
+class ContentPage(Page):
+    body = StreamField(
+        ModuleBlock(),
+        verbose_name="Telo",
+        use_json_field=True
+    )
 
-    # content_panels = Page.content_panels + [
-    #     FieldPanel('color_scheme'),
-    #     FieldPanel('body'),
-    # ]
+    content_panels = Page.content_panels + [
+        FieldPanel('body'),
+    ]
 
-    # subpage_types = []
+    subpage_types = []
+
+    class Meta:
+        verbose_name = _("Osnovna stran z moduli")
+        verbose_name_plural = _("Osnovne strani z moduli")
