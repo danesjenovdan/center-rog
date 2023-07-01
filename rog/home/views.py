@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
 
-from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, RegistrationProfileForm
+from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm
 
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
@@ -195,29 +195,73 @@ class RegistrationProfileView(View):
     def get(self, request):
         user = request.user
 
-        form = RegistrationProfileForm()
+        form = EditProfileForm(instance=user)
         return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
     
     def post(self, request):
         user = request.user
-        form = RegistrationProfileForm(request.POST)
+        form = EditProfileForm(request.POST)
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
             public_username = form.cleaned_data["public_username"]
             description = form.cleaned_data["description"]
-            link = form.cleaned_data["link"]
+            link_1 = form.cleaned_data["link_1"]
+            link_2 = form.cleaned_data["link_2"]
+            link_3 = form.cleaned_data["link_3"]
+            contact = form.cleaned_data["contact"]
 
             user.public_profile = public_profile
             user.public_username = public_username
             user.description = description
-            user.link = link
+            user.link_1 = link_1
+            user.link_2 = link_2
+            user.link_3 = link_3
+            user.contact = contact
 
             user.save()
 
             return redirect("/placilo")
         else:
             return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
+
+
+@method_decorator(login_required, name='dispatch')
+class EditProfileView(View):
+
+    def get(self, request):
+        user = request.user
+
+        form = EditProfileForm(instance=user)
+        return render(request, "registration/edit_profile.html", context={ "form": form })
+    
+    def post(self, request):
+        user = request.user
+        form = EditProfileForm(request.POST)
+
+        if form.is_valid():
+            public_profile = form.cleaned_data["public_profile"]
+            public_username = form.cleaned_data["public_username"]
+            description = form.cleaned_data["description"]
+            link_1 = form.cleaned_data["link_1"]
+            link_2 = form.cleaned_data["link_2"]
+            link_3 = form.cleaned_data["link_3"]
+            contact = form.cleaned_data["contact"]
+
+            user.public_profile = public_profile
+            user.public_username = public_username
+            user.description = description
+            user.link_1 = link_1
+            user.link_2 = link_2
+            user.link_3 = link_3
+            user.contact = contact
+
+            user.save()
+
+            return redirect("profile-my")
+        else:
+            return render(request, "registration/edit_profile.html", context={ "form": form })
+
 
 # @method_decorator(login_required, name='dispatch')
 # class RegistrationPaymentView(View):

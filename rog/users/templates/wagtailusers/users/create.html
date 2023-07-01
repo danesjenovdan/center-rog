@@ -11,9 +11,15 @@
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_address_2 %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_tax_number %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_vat %}</li>
+    <h2>Uporabniški profil</h2>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.public_profile %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.public_username %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.description %}</li>
-    <li>{% include "wagtailadmin/shared/field.html" with field=form.link %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.link_1 %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.link_2 %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.link_3 %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.contact %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.workshops_attended %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.interests %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.gallery %}</li>
 {% endblock extra_fields %}

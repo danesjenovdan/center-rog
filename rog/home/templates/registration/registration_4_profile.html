@@ -11,61 +11,6 @@
 
 {% block form_block %}
 
-<form action="{% url 'registration-profile' %}" method="post">
-    {% csrf_token %}
-
-    <p>
-        Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...
-    </p>
-
-    <div class="form-field-wrapper one-line">
-        {{ form.public_profile }} {{ form.public_profile.label_tag }}
-    </div>
-
-    <div class="form-field-wrapper">
-        {{ form.public_username.label_tag }} {{ form.public_username }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.public_username.errors %}
-        <p class="error">{{ form.public_username.errors }}</p>
-        {% endif %}
-    </div>
-
-    <div class="form-field-wrapper">
-        {{ form.description.label_tag }} {{ form.description }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.description.errors %}
-        <p class="error">{{ form.description.errors }}</p>
-        {% endif %}
-    </div>
-
-    <div class="form-field-wrapper">
-        {{ form.link.label_tag }} {{ form.link }}
-        <!-- 
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
-        -->
-        {% if form.link.errors %}
-        <p class="error">{{ form.link.errors }}</p>
-        {% endif %}
-    </div>
-
-    <h1>Izberi kategorije, ki te zanimajo:</h1>
-
-    <h1>Dodaj slike svojih izdelkov:</h1>
-
-    <div class="d-flex flex-column align-items-end my-4">
-        <button type="submit" class="secondary-button button-medium">nadaljuj na plačilo*</button>
-        <p class="button-notice">*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart</p>
-    </div>
-</form>
+{% include "home/includes/edit_profile_form.html" with button_text="nadaljuj na plačilo*" button_notice="*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart" %}
 
 {% endblock form_block %}

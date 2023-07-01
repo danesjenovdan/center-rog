@@ -165,8 +165,14 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'legal_person_vat',
     'public_profile', 
     'public_username', 
-    'description', 
-    'link'
+    'description',
+    'link_1',
+    'link_2',
+    'link_3',
+    'contact',
+    'workshops_attended',
+    'interests',
+    'gallery'
 ]
 
 
