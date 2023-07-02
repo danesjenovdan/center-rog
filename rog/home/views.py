@@ -10,10 +10,12 @@ from django.views.generic import TemplateView
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
 
-from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm
+from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm, PurchasePlanForm
 
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
+
+from payments.models import Plan
 
 prima_api = PrimaApi()
 
@@ -78,6 +80,33 @@ class SearchProfileView(TemplateView):
             print("Form ni valid")
 
         return render(request, self.template_name, {"users": users, "form": form})
+
+
+@method_decorator(login_required, name='dispatch')
+class PurchasePlanView(TemplateView):
+    template_name = "registration/user_purchase_plan.html"
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+
+        form = PurchasePlanForm()
+        membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+
+        return render(request, self.template_name, { 'user': current_user, "form": form })
+    
+    def post(self, request):
+        form = PurchasePlanForm(request.POST)
+        membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+        
+        if form.is_valid():
+            plan = form.cleaned_data["plans"]
+            print("Chosen plan", plan)
+        else:
+            print("Form ni valid")
+
+        return render(request, self.template_name, { "form": form })
 
 
 class RegistrationView(View):

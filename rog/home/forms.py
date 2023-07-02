@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import ProgrammingError
 
 from users.models import User, MembershipType, Membership, UserInterest
+from payments.models import Plan
 
 
 class RegisterForm(forms.ModelForm):
@@ -184,4 +185,12 @@ class UserInterestsForm(forms.Form):
         required=False,
         queryset=UserInterest.objects,
         widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+    )
+
+
+class PurchasePlanForm(forms.Form):    
+    plans = forms.ModelChoiceField(
+        required=True,
+        queryset=Plan.objects,
+        widget=forms.RadioSelect(attrs={"class": "radio"})
     )
