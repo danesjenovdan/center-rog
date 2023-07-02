@@ -3,7 +3,7 @@ from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.db import ProgrammingError
 
-from users.models import User, MembershipType, Membership
+from users.models import User, MembershipType, Membership, UserInterest
 
 
 class RegisterForm(forms.ModelForm):
@@ -178,3 +178,10 @@ class EditProfileForm(forms.ModelForm):
             "interests": forms.CheckboxSelectMultiple(attrs={"class": "radio"}),
         }
 
+
+class UserInterestsForm(forms.Form):    
+    interests = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=UserInterest.objects,
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+    )

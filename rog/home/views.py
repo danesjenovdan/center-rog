@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
 
-from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm
+from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm
 
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
@@ -61,8 +61,23 @@ class SearchProfileView(TemplateView):
     template_name = "registration/search_profile.html"
 
     def get(self, request, *args, **kwargs):
-        users = User.objects.all() # TODO: spremeni to v filtrirane UserProfile objekte, ko extendaš Userja
-        return render(request, self.template_name, {'users': users})
+        users = User.objects.filter(public_profile=True)
+
+        form = UserInterestsForm()
+
+        return render(request, self.template_name, {"users": users, "form": form})
+    
+    def post(self, request):
+        form = UserInterestsForm(request.POST)
+        
+
+        if form.is_valid():
+            interests = form.cleaned_data["interests"]
+            users = User.objects.filter(public_profile=True, interests__in=interests)
+        else:
+            print("Form ni valid")
+
+        return render(request, self.template_name, {"users": users, "form": form})
 
 
 class RegistrationView(View):
