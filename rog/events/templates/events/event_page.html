@@ -9,7 +9,7 @@
 
 {% block page_body %}
 
-<div class="container object-profile-container event-page-container">
+<div class="container object-profile-container event-page-container mb-5">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">
@@ -46,11 +46,13 @@
         </div>
     </div> -->
     
+    {% if page.body %}
     <div class="row">
         <div class="col-12 body">
             {{ page.body|safe }}
         </div>
     </div>
+    {% endif %}
 
 </div>
 
