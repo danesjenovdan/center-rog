@@ -86,7 +86,7 @@
     <h2>Izberi kategorije, ki te zanimajo:</h2>
 
         {% for interest in form.interests %}
-        <div class="radio-square-wrapper">
+        <div class="radio-square-wrapper d-inline-block mb-2">
             {{ interest.tag }}
             <label for="{{ interest.id_for_label }}" class="radio-square btn">
                 {{ interest.choice_label }}
