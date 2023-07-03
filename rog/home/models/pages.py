@@ -61,7 +61,7 @@ class StudioPage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Studio")
         verbose_name_plural = _("Studii")
@@ -81,7 +81,7 @@ class ResidencePage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Rezidenca")
         verbose_name_plural = _("Rezidence")
@@ -112,7 +112,7 @@ class MarketStorePage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Trgovina")
         verbose_name_plural = _("Trgovine")
@@ -137,8 +137,14 @@ class LabPage(ObjectProfilePage):
         related_name="+",
         verbose_name=_("Animacija predogledne slike")
     )
+    lab_lead = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name=_("Vodja laboratorija")
+    )
 
     content_panels = ObjectProfilePage.content_panels + [
+        FieldPanel("lab_lead"),
         FieldPanel("thumbnail"),
         MediaChooserPanel("thumbnail_animation"),
         InlinePanel("related_tools", label="Orodja"),
@@ -155,7 +161,7 @@ class LabPage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Laboratorij")
         verbose_name_plural = _("Laboratoriji")
@@ -164,7 +170,7 @@ LabPage._meta.get_field("color_scheme").default = "light-green"
 
 
 class LibraryPage(ObjectProfilePage):
-    
+
     class Meta:
         verbose_name = _("Knjižnica")
         verbose_name_plural = _("Knjižnice")
@@ -186,7 +192,7 @@ class StudioArchiveListPage(ObjectArchiveListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Arhiv studiev")
         verbose_name_plural = _("Arhivi studiev")
@@ -206,7 +212,7 @@ class ResidenceArchiveListPage(ObjectArchiveListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Arhiv rezidenc")
         verbose_name_plural = _("Arhivi rezidenc")
@@ -231,7 +237,7 @@ class StudioListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Seznam studiev")
         verbose_name_plural = _("Seznami studiev")
@@ -253,7 +259,7 @@ class MarketStoreListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Tržnica")
         verbose_name_plural = _("Tržnice")
@@ -276,7 +282,7 @@ class ResidenceListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Seznam rezidenc")
         verbose_name_plural = _("Seznami rezidenc")
@@ -298,7 +304,7 @@ class LabListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Seznam laboratorijev")
         verbose_name_plural = _("Seznami laboratorijev")

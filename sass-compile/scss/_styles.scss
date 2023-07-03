@@ -1015,6 +1015,16 @@ section.image-embed {
                 margin-top: 30px;
                 margin-bottom: 20px;
             }
+
+            .lab-contact-information {
+                p {
+                    margin-bottom: 0.5rem;
+
+                    a {
+                        font-size: inherit;
+                    }
+                }
+            }
         }
 
         .news-page-profile-container {
