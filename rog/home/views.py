@@ -32,12 +32,21 @@ class MyProfileView(TemplateView):
         prima_user_id = current_user.prima_id
         # print(f"Prima user ID: {prima_user_id}")
 
+        location_id = None
+        if "location" in request.GET:
+            location_id = request.GET.get("location")
+        group_id = None
+        if "group" in request.GET:
+            group_id = request.GET.get("group")
+
         obnovitev_clanarine = current_user.membership.valid_to
 
         return render(request, self.template_name, { 
             'user': current_user,
             'ulagtoken': get_token_for_user(current_user),
-            'obnovitev_clanarine': obnovitev_clanarine
+            'obnovitev_clanarine': obnovitev_clanarine,
+            "location_id": location_id,
+            "group_id": group_id,
         })
     
 

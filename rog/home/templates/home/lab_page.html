@@ -64,7 +64,7 @@
                 {% endif %}
                 {% if user.is_authenticated %}
                     <div class="text-center">
-                        <a href="" class="primary-button button-medium">rezerviraj</a>
+                        <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="primary-button button-medium">rezerviraj</a>
                     </div>
                     {% if tool.required_workshop %}
                         {% if tool.required_workshop in user.workshops_attended.all %}
