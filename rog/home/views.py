@@ -106,6 +106,8 @@ class PurchasePlanView(TemplateView):
         if form.is_valid():
             plan = form.cleaned_data["plans"]
             print("Chosen plan", plan)
+
+            return redirect(f"/placilo?plan_id={plan.id}")
         else:
             print("Form ni valid")
 
@@ -242,13 +244,25 @@ class RegistrationProfileView(View):
 
     def get(self, request):
         user = request.user
-
         form = EditProfileForm(instance=user)
-        return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
+
+        plan_id = None
+        payment_needed = False
+        if user.membership and user.membership.type:
+            payment_needed = user.membership.type.price() > 0
+            plan_id = user.membership.type.plan.id
+
+        return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
     
     def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
+
+        plan_id = None
+        payment_needed = False
+        if user.membership and user.membership.type:
+            payment_needed = user.membership.type.price() > 0
+            plan_id = user.membership.type.plan.id
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
@@ -269,9 +283,12 @@ class RegistrationProfileView(View):
 
             user.save()
 
-            return redirect("/placilo")
+            if payment_needed:
+                return redirect(f"/placilo?plan_id={plan_id}")
+            else:
+                return redirect("profile-my")
         else:
-            return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3 })
+            return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
 
 
 @method_decorator(login_required, name='dispatch')

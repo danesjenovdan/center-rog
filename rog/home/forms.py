@@ -161,6 +161,11 @@ class EditProfileForm(forms.ModelForm):
         label_suffix="",
         required=False
     )
+    interests = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=UserInterest.objects,
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+    )
 
     class Meta:
         model = User
@@ -175,9 +180,6 @@ class EditProfileForm(forms.ModelForm):
             "interests",
             # "gallery"
         ]
-        widgets = {
-            "interests": forms.CheckboxSelectMultiple(attrs={"class": "radio"}),
-        }
 
 
 class UserInterestsForm(forms.Form):    
