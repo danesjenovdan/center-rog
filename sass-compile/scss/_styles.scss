@@ -254,6 +254,39 @@ a {
     }
 }
 
+.market-card {
+    height: 300px;
+    padding: 10px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: $sm-font-size;
+
+    &:nth-child(1n) {
+        transform: rotate(-3deg);
+    }
+    &:nth-child(2n) {
+        transform: rotate(2deg);
+    }
+    &:nth-child(3n) {
+        transform: rotate(-5deg);
+    }
+    &:nth-child(4n) {
+        transform: rotate(-1deg);
+    }
+    &:nth-child(5n) {
+        transform: rotate(3deg);
+    }
+    &:nth-child(6n) {
+        transform: rotate(1deg);
+    }
+    &:nth-child(7n) {
+        transform: rotate(-4deg);
+    }
+}
+
 .tool-card {
     padding: 20px 30px;
 

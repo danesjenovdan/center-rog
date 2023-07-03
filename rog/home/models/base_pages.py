@@ -30,7 +30,7 @@ class BasePage(Page):
 
 class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True)
-    show_see_more_section = models.BooleanField(default=False)
+    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Dodaj sekcijo 'Poglej več'"))
 
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),

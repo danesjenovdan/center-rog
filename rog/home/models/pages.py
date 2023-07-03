@@ -42,7 +42,8 @@ class StudioPage(ObjectProfilePage):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="+"
+        related_name="+",
+        verbose_name=_("Predogledna slika")
     )
 
     content_panels = ObjectProfilePage.content_panels + [
@@ -89,8 +90,19 @@ ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
 
 class MarketStorePage(ObjectProfilePage):
+    card_color_scheme = models.CharField(
+        max_length=20,
+        choices=settings.COLOR_SCHEMES,
+        default="white",
+        verbose_name=_("Barvna shema kartice na seznamu")
+    )
+
     parent_page_types = [
         "home.MarketStoreListPage"
+    ]
+
+    content_panels = ObjectProfilePage.content_panels + [
+        FieldPanel("card_color_scheme"),
     ]
 
     def get_context(self, request, *args, **kwargs):
@@ -114,14 +126,16 @@ class LabPage(ObjectProfilePage):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="+"
+        related_name="+",
+        verbose_name=_("Predogledna slika")
     )
     thumbnail_animation = models.ForeignKey(
         "wagtailmedia.Media",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name="+"
+        related_name="+",
+        verbose_name=_("Animacija predogledne slike")
     )
 
     content_panels = ObjectProfilePage.content_panels + [

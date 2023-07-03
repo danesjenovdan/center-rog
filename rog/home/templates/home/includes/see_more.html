@@ -6,13 +6,13 @@
       <div class="col-12">
         <h2>Poglej še</h2>
       </div>
-      <div class="col-xl-4 col-xxl-3">
+      <div class="col-md-4 col-xxl-3">
         {% include "events/includes/card.html" with event=event %}
       </div>
-      <div class="col-xl-4 col-xxl-3">
+      <div class="col-md-4 col-xxl-3">
         {% include "news/includes/card.html" with news=news %}
       </div>
-      <div class="col-xl-4 col-xxl-3 labs-section">
+      <div class="col-md-4 col-xxl-3 labs-section">
         <a href="{{ lab.get_url }}" class="lab">
           {% if lab.thumbnail_animation %}
             <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
