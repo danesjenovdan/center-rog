@@ -7,16 +7,16 @@
         Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...
     </p>
 
-    <div class="form-field-wrapper one-line mb-5">
+    <div class="form-field-wrapper one-line mb-5 rog-check">
         {{ form.public_profile }} {{ form.public_profile.label_tag }}
     </div>
 
     <div class="form-field-wrapper">
         {{ form.public_username.label_tag }} {{ form.public_username }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.public_username.errors %}
         <p class="error">{{ form.public_username.errors }}</p>
@@ -25,10 +25,10 @@
 
     <div class="form-field-wrapper">
         {{ form.description.label_tag }} {{ form.description }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.description.errors %}
         <p class="error">{{ form.description.errors }}</p>
@@ -37,10 +37,10 @@
 
     <div class="form-field-wrapper">
         {{ form.link_1.label_tag }} {{ form.link_1 }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.link_1.errors %}
         <p class="error">{{ form.link_1.errors }}</p>
@@ -49,10 +49,10 @@
 
     <div class="form-field-wrapper">
         {{ form.link_2.label_tag }} {{ form.link_2 }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.link_2.errors %}
         <p class="error">{{ form.link_2.errors }}</p>
@@ -61,10 +61,10 @@
 
     <div class="form-field-wrapper">
         {{ form.link_3.label_tag }} {{ form.link_3 }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.link_3.errors %}
         <p class="error">{{ form.link_3.errors }}</p>
@@ -73,10 +73,10 @@
 
     <div class="form-field-wrapper">
         {{ form.contact.label_tag }} {{ form.contact }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.contact.errors %}
         <p class="error">{{ form.contact.errors }}</p>

@@ -181,9 +181,7 @@ class StudiosBlock(blocks.StructBlock):
 class MarketplaceBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    markets = blocks.ListBlock(ColoredStructBlock([
-        ('market', blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor"))),
-    ]), label=_("Izpostavljeni prostori"))
+    markets = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor")), label=_("Izpostavljeni prostori"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)

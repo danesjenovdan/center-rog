@@ -254,6 +254,39 @@ a {
     }
 }
 
+.market-card {
+    height: 300px;
+    padding: 10px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: $sm-font-size;
+
+    &:nth-child(1n) {
+        transform: rotate(-3deg);
+    }
+    &:nth-child(2n) {
+        transform: rotate(2deg);
+    }
+    &:nth-child(3n) {
+        transform: rotate(-5deg);
+    }
+    &:nth-child(4n) {
+        transform: rotate(-1deg);
+    }
+    &:nth-child(5n) {
+        transform: rotate(3deg);
+    }
+    &:nth-child(6n) {
+        transform: rotate(1deg);
+    }
+    &:nth-child(7n) {
+        transform: rotate(-4deg);
+    }
+}
+
 .tool-card {
     padding: 20px 30px;
 
@@ -1322,10 +1355,61 @@ section.image-embed {
     }
 
     &:active {
-        box-shadow: 0px 0px 10px 0px rgba(59, 67, 82, 0.25); 
+        box-shadow: 0px 0px 10px 0px rgba(59, 67, 82, 0.25);
     }
 
     &:focus {
-        outline: 3px solid #07D907;
+        outline: 3px solid $cs-focus-green;
+    }
+}
+
+.rog-check {
+    position: relative;
+    padding-left: 30px;
+    min-height: 23px;
+    margin-bottom: 0.5rem;
+
+    input[type="checkbox"] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        appearance: none;
+        width: 23px;
+        height: 23px;
+        border: 1px solid $cs-dark-gray;
+        border-radius: 3px;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+        &.disabled,
+        &:disabled {
+            border-color: $cs-disabled;
+
+            &:checked {
+                background-color: $cs-disabled;
+            }
+        }
+
+        &:not(.disabled, :disabled) {
+            cursor: pointer;
+
+            &:focus-visible {
+                outline: none;
+                border-color: $cs-focus-green;
+                box-shadow: 0 0 0 2px $cs-focus-green;
+            }
+
+            &:hover {
+                background-color: $cs-white;
+            }
+
+            &:checked {
+                background-color: $cs-dark-gray;
+            }
+        }
+    }
+
+    label {
+        padding-top: 3px;
+        font-size: 15px;
     }
 }
