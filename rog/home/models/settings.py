@@ -105,7 +105,7 @@ class MetaSettings(BaseGenericSetting):
             ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
             ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
         ], label=_('Dan in ura')))
-    ], blank=True, null=True, use_json_field=True)
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas organizacije"))
 
     basic_information_tab_panels = [
         FieldPanel("organization_name"),

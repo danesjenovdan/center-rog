@@ -13,9 +13,6 @@
             {% for news_page in value.exposed_news %}
                 {% include "news/includes/card.html" with news=news_page.value %}
             {% endfor %}
-            {% for news_page in value.exposed_news %}
-                {% include "news/includes/card.html" with news=news_page.value %}
-            {% endfor %}
         </div>
     </div>
     <div class="container">

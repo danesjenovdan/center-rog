@@ -1,0 +1,55 @@
+{% extends "home/wrapper_page.html" %}
+{% load static %}
+
+{% block title %}Registracija{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block page_body %}
+
+<div class="container register-container color-scheme-light-gray">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-10 col-xxl-6">
+
+            <div class="registration-progress">
+                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>izbira uporabnine</span></div>
+                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 1 %} done{% endif %}"><span>plačilo</span></div>
+            </div>
+
+            <h1>Izberi uporabnino:</h1>
+
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row radio-square-wrapper">
+            
+                    {% for plan in form.plans %}
+                    <div class="col-6">
+                        {{ plan.tag }}
+                        <label for="{{ plan.id_for_label }}" class="radio-square btn">
+                            <h4>{{ plan.choice_label }}</h4>
+                            <h3>{{ plan.price }}</h3>
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex justify-content-end my-4">
+                    <button type="submit" class="secondary-button button-medium">naprej</button>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock page_body %}

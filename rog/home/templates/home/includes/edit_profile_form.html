@@ -1,0 +1,111 @@
+{% load static wagtailimages_tags %}
+
+<form action="" method="post" class="edit-profile-form">
+    {% csrf_token %}
+
+    <p>
+        Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...
+    </p>
+
+    <div class="form-field-wrapper one-line mb-5">
+        {{ form.public_profile }} {{ form.public_profile.label_tag }}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.public_username.label_tag }} {{ form.public_username }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.public_username.errors %}
+        <p class="error">{{ form.public_username.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.description.label_tag }} {{ form.description }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.description.errors %}
+        <p class="error">{{ form.description.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.link_1.label_tag }} {{ form.link_1 }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.link_1.errors %}
+        <p class="error">{{ form.link_1.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.link_2.label_tag }} {{ form.link_2 }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.link_2.errors %}
+        <p class="error">{{ form.link_2.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.link_3.label_tag }} {{ form.link_3 }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.link_3.errors %}
+        <p class="error">{{ form.link_3.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper">
+        {{ form.contact.label_tag }} {{ form.contact }}
+        <!-- 
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %} 
+        -->
+        {% if form.contact.errors %}
+        <p class="error">{{ form.contact.errors }}</p>
+        {% endif %}
+    </div>
+
+    <h2>Izberi kategorije, ki te zanimajo:</h2>
+
+        {% for interest in form.interests %}
+        <div class="radio-square-wrapper">
+            {{ interest.tag }}
+            <label for="{{ interest.id_for_label }}" class="radio-square btn">
+                {{ interest.choice_label }}
+            </label>
+        </div>
+        {% endfor %}
+
+        {% if form.interests.errors %}
+        <p class="error">{{ form.interests.errors }}</p>
+        {% endif %}
+
+    <h2>Dodaj slike svojih izdelkov:</h2>
+
+    TODO
+
+    <div class="d-flex flex-column align-items-end my-4">
+        <button type="submit" class="secondary-button button-medium">{{ button_text }}</button>
+        {% if button_notice %}
+        <p class="button-notice">{{ button_notice }}</p>
+        {% endif %}
+    </div>
+</form>

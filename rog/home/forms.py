@@ -3,7 +3,8 @@ from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.db import ProgrammingError
 
-from users.models import User, MembershipType, Membership
+from users.models import User, MembershipType, Membership, UserInterest
+from payments.models import Plan
 
 
 class RegisterForm(forms.ModelForm):
@@ -122,7 +123,7 @@ class RegistrationInformationForm(forms.ModelForm):
             "legal_person_vat"
         ]
 
-class RegistrationProfileForm(forms.ModelForm):    
+class EditProfileForm(forms.ModelForm):    
     public_profile = forms.BooleanField(
         label=_("Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"),
         label_suffix="",
@@ -140,8 +141,23 @@ class RegistrationProfileForm(forms.ModelForm):
         label_suffix="",
         required=False
     )
-    link = forms.URLField(
+    link_1 = forms.URLField(
         label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label_suffix="",
+        required=False
+    )
+    link_2 = forms.URLField(
+        label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label_suffix="",
+        required=False
+    )
+    link_3 = forms.URLField(
+        label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label_suffix="",
+        required=False
+    )
+    contact = forms.EmailField(
+        label=_("Kontakt"),
         label_suffix="",
         required=False
     )
@@ -152,6 +168,29 @@ class RegistrationProfileForm(forms.ModelForm):
             "public_profile",
             "public_username",
             "description",
-            "link"
+            "link_1",
+            "link_2",
+            "link_3",
+            "contact",
+            "interests",
+            # "gallery"
         ]
+        widgets = {
+            "interests": forms.CheckboxSelectMultiple(attrs={"class": "radio"}),
+        }
 
+
+class UserInterestsForm(forms.Form):    
+    interests = forms.ModelMultipleChoiceField(
+        required=False,
+        queryset=UserInterest.objects,
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+    )
+
+
+class PurchasePlanForm(forms.Form):    
+    plans = forms.ModelChoiceField(
+        required=True,
+        queryset=Plan.objects,
+        widget=forms.RadioSelect(attrs={"class": "radio"})
+    )

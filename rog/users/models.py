@@ -9,6 +9,9 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
+
 from home.models import Workshop
 from payments.models import Plan
 
@@ -68,6 +71,21 @@ class Membership(models.Model):
 
     def __str__(self):
         return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"
+    
+
+class UserInterest(models.Model):
+    name = models.TextField(verbose_name=_("Ime kategorije"))
+
+    def __str__(self):
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+    ]
+
+    class Meta:
+        verbose_name = _("Kategorija zanimanj")
+        verbose_name_plural = _("Kategorije zanimanj")
 
 
 class UserManager(BaseUserManager):
@@ -113,22 +131,29 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
-    membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL)
+    membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Članarina")
     prima_id = models.IntegerField(null=True)
-    address_1 = models.CharField(max_length=200, blank=True)
-    address_2 = models.CharField(max_length=200, blank=True)
-    legal_person_name = models.CharField(max_length=200, blank=True)
-    legal_person_address_1 = models.CharField(max_length=200, blank=True)
-    legal_person_address_2 = models.CharField(max_length=200, blank=True)
-    legal_person_tax_number = models.CharField(max_length=200, blank=True)
-    legal_person_vat = models.CharField(max_length=200, blank=True)
-    public_profile = models.BooleanField(default=False)
-    public_username = models.CharField(max_length=20, blank=True)
-    description = models.TextField(blank=True)
-    link = models.URLField(blank=True)
+    address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
+    address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
+    legal_person_name = models.CharField(max_length=200, blank=True, verbose_name="Naziv pravne osebe")
+    legal_person_address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
+    legal_person_address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
+    legal_person_tax_number = models.CharField(max_length=200, blank=True, verbose_name="Davčna številka")
+    legal_person_vat = models.CharField(max_length=200, blank=True, verbose_name="Zavezanec za DDV")
+    public_profile = models.BooleanField(default=False, verbose_name="Profil naj bo javno viden")
+    public_username = models.CharField(max_length=20, blank=True, verbose_name="Uporabniško ime")
+    description = models.TextField(blank=True, verbose_name="Opis")
+    link_1 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
+    link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
+    link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
+    contact = models.EmailField(blank=True, verbose_name="Kontakt")
     # categories
+    interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images
     workshops_attended = models.ManyToManyField(Workshop, verbose_name="Opravljena usposabljanja")
+    gallery = StreamField([
+        ("image", ImageChooserBlock())
+    ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
 
     objects = UserManager()
 

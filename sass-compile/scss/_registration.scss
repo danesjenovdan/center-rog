@@ -60,38 +60,43 @@
         margin-bottom: 30px;
     }
 
-    .radio-square-wrapper {
-        .radio-square {
-            border: 1px solid $cs-dark-gray;
-            border-radius: 3px;
-            padding: 15px;
-            text-align: left;
-            display: block;
-            height: 100%;
-
-            &:hover {
-                box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
-            }
-
-            ul {
-                list-style-type: none;
-                padding: 0;
-            }
-
-            h3 {
-                font-size: $md-font-size;
-            }
-
-            h4 {
-                font-size: $sm-font-size;
-            }
-        }
-
-        .btn-check:checked + .btn {
-            color: #fff;
-            background-color: $cs-dark-gray;
-        }
+    h4 {
+        font-size: $sm-font-size;
+        margin: 50px 0;
     }
+
+    // .radio-square-wrapper {
+    //     .radio-square {
+    //         border: 1px solid $cs-dark-gray;
+    //         border-radius: 3px;
+    //         padding: 15px;
+    //         text-align: left;
+    //         display: block;
+    //         height: 100%;
+
+    //         &:hover {
+    //             box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
+    //         }
+
+    //         ul {
+    //             list-style-type: none;
+    //             padding: 0;
+    //         }
+
+    //         h3 {
+    //             font-size: $md-font-size;
+    //         }
+
+    //         h4 {
+    //             font-size: $sm-font-size;
+    //         }
+    //     }
+
+    //     .btn-check:checked + .btn {
+    //         color: #fff;
+    //         background-color: $cs-dark-gray;
+    //     }
+    // }
 
     button + .button-notice {
         max-width: 215px;

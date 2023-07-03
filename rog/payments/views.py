@@ -117,7 +117,7 @@ class PaymentSuccess(views.APIView):
     def get(self, request):
         urlpar = request.GET.get('urlpar')
         if urlpar == 'wizard':
-            return render(request,'wizard_payment_success.html', {})
+            return render(request,'registration_payment_success.html', { "registration_step": 5 })
         else:
             return render(request, 'payment_success.html', {})
 

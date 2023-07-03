@@ -60,6 +60,10 @@ class StudioPage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Studio")
+        verbose_name_plural = _("Studii")
 
 StudioPage._meta.get_field("color_scheme").default = "yellow"
 
@@ -76,6 +80,10 @@ class ResidencePage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Rezidenca")
+        verbose_name_plural = _("Rezidence")
 
 ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -92,6 +100,10 @@ class MarketStorePage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Trgovina")
+        verbose_name_plural = _("Trgovine")
 
 MarketStorePage._meta.get_field("color_scheme").default = "brown"
 
@@ -129,12 +141,19 @@ class LabPage(ObjectProfilePage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Laboratorij")
+        verbose_name_plural = _("Laboratoriji")
 
 LabPage._meta.get_field("color_scheme").default = "light-green"
 
 
 class LibraryPage(ObjectProfilePage):
-    pass
+    
+    class Meta:
+        verbose_name = _("Knjižnica")
+        verbose_name_plural = _("Knjižnice")
 
 LibraryPage._meta.get_field("color_scheme").default = "pink"
 
@@ -153,6 +172,10 @@ class StudioArchiveListPage(ObjectArchiveListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Arhiv studiev")
+        verbose_name_plural = _("Arhivi studiev")
 
 StudioArchiveListPage._meta.get_field("color_scheme").default = "yellow"
 
@@ -169,6 +192,10 @@ class ResidenceArchiveListPage(ObjectArchiveListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Arhiv rezidenc")
+        verbose_name_plural = _("Arhivi rezidenc")
 
 ResidenceArchiveListPage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -190,6 +217,10 @@ class StudioListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Seznam studiev")
+        verbose_name_plural = _("Seznami studiev")
 
 StudioListPage._meta.get_field("color_scheme").default = "yellow"
 
@@ -208,6 +239,10 @@ class MarketStoreListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Tržnica")
+        verbose_name_plural = _("Tržnice")
 
 MarketStoreListPage._meta.get_field("color_scheme").default = "brown"
 
@@ -227,6 +262,10 @@ class ResidenceListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Seznam rezidenc")
+        verbose_name_plural = _("Seznami rezidenc")
 
 ResidenceListPage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -245,5 +284,9 @@ class LabListPage(ObjectListPage):
         context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Seznam laboratorijev")
+        verbose_name_plural = _("Seznami laboratorijev")
 
 LabListPage._meta.get_field("color_scheme").default = "light-green"

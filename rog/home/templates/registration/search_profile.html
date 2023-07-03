@@ -1,22 +1,59 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load i18n static %}
 
-{% block body_class %}template-edit-profile{% endblock %}
+{% block body_class %}template-profile{% endblock %}
 
-{% block extra_css %}
-
-{% endblock extra_css %}
+{% block title %}Poišči druge uporabnike{% endblock %}
 
 {% block page_body %}
 
-<h3>
-    POIŠČI DRUGE UPORABNIKE
-</h3>
+<form class="container user-profile-container color-scheme-light-gray" action="" method="post">
+    {% csrf_token %}
 
-{% for user in users %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center">{% translate 'Poišči druge uporabnike:' %}</h1>
+        </div>
+    </div>
 
-<a href="/profil/{{user.id}}">{{ user.username }}</a>
+    <div class="row my-4">
+        <div class="col-12">
+            <h2>{% translate 'Izberi kategorije, ki te zanimajo:' %}</h2>
+            <div>
+                {% for interest in form.interests %}
+                <div class="radio-square-wrapper">
+                    {{ interest.tag }}
+                    <label for="{{ interest.id_for_label }}" class="radio-square btn">
+                        {{ interest.choice_label }}
+                    </label>
+                </div>
+                {% endfor %}
 
-{% endfor %}
+                {% if form.interests.errors %}
+                <p class="error">{{ form.interests.errors }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row my-4">
+        <div class="col-12">
+            <h2>{% translate 'Uporabniki s temi zanimanji:' %}</h2>
+            <div>
+                {% for user in users %}
+                <p>
+                    <a href="/profil/{{user.id}}">{{ user.public_username }}</a>
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-column align-items-end my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'išči' %}</button>
+    </div>
+
+</form>
 
 {% endblock page_body %}
+
