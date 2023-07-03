@@ -11,6 +11,10 @@
 
 {% block form_block %}
 
+{% if payment_needed %}
 {% include "home/includes/edit_profile_form.html" with button_text="nadaljuj na plačilo*" button_notice="*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart" %}
+{% else %}
+{% include "home/includes/edit_profile_form.html" with button_text="končaj" %}
+{% endif %}
 
 {% endblock form_block %}

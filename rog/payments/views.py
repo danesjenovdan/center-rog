@@ -18,7 +18,8 @@ from .parsers import XMLParser
 # TODO views.APIView zamenjaj z django.views.View
 class Pay(views.APIView):
     def get(self, request):
-        return render(request, 'payment.html', {})
+        plan_id = request.GET.get('plan_id', False)
+        return render(request, 'payment.html', { "plan_id": plan_id })
 
     def post(self, request):
         print('INIT PAY')
@@ -115,7 +116,8 @@ class PaymentSuccessXML(views.APIView):
 
 class PaymentSuccess(views.APIView):
     def get(self, request):
-        urlpar = request.GET.get('urlpar')
+        urlpar = request.GET.get('wizard')
+        print("Urlpar", urlpar)
         if urlpar == 'wizard':
             return render(request,'registration_payment_success.html', { "registration_step": 5 })
         else:
