@@ -1,8 +1,16 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 
-<a href="{% pageurl studio %}" class="card studio-card card-hover d-flex flex-column justify-content-between color-scheme-dark-green">
-  <div class="card-body">
-    <h4 class="card-title text-center">{{ studio.title }}</h4>
+<div class="card studio-card color-scheme-dark-green">
+  <div class="show-normal flex-column justify-content-between">
+    <div class="card-body">
+      <h4 class="card-title text-center">{{ studio.title }}</h4>
+    </div>
+    {% image studio.thumbnail original class="img-fluid card-img-top" %}
   </div>
-  {% image studio.thumbnail original class="img-fluid card-img-top" %}
-</a>
+  <div class="show-hover flex-column justify-content-between">
+    <p>{{ studio.short_description }}</p>
+    <div class="text-center">
+      <a href="{% pageurl studio %}" class="button-medium secondary-button">obišči studio</a>
+    </div>
+  </div>
+</div>
