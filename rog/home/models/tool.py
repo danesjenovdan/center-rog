@@ -19,12 +19,16 @@ class Tool(Orderable, ClusterableModel):
     lab = ParentalKey(LabPage, on_delete=models.CASCADE, related_name="related_tools")
     required_workshop = models.ForeignKey(
         Workshop, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Zahteva usposabljanje?"))
+    prima_location_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima location id"))
+    prima_group_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima group id"))
 
     panels = [
         FieldPanel("name"),
         FieldPanel("image"),
         InlinePanel("related_tool_specifications", label=_("Specifikacija")),
         FieldPanel("required_workshop"),
+        FieldPanel("prima_location_id"),
+        FieldPanel("prima_group_id"),
     ]
 
     def __str__(self):
