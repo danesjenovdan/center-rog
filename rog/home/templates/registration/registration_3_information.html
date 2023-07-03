@@ -30,7 +30,7 @@
             }
         });
     }
-    
+
 </script>
 {% endblock %}
 
@@ -45,10 +45,10 @@
 
     <div class="form-field-wrapper">
         {{ form.first_name.label_tag }} {{ form.first_name }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.first_name.errors %}
         <p class="error">{{ form.first_name.errors }}</p>
@@ -57,10 +57,10 @@
 
     <div class="form-field-wrapper">
         {{ form.last_name.label_tag }} {{ form.last_name }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.last_name.errors %}
         <p class="error">{{ form.last_name.errors }}</p>
@@ -69,10 +69,10 @@
 
     <div class="form-field-wrapper">
         {{ form.address_1.label_tag }} {{ form.address_1 }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.address_1.errors %}
         <p class="error">{{ form.address_1.errors }}</p>
@@ -81,17 +81,17 @@
 
     <div class="form-field-wrapper">
         {{ form.address_2.label_tag }} {{ form.address_2 }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.address_2.errors %}
         <p class="error">{{ form.address_2.errors }}</p>
         {% endif %}
     </div>
 
-    <div class="form-field-wrapper one-line">
+    <div class="form-field-wrapper one-line rog-check">
         {{ form.legal_person_receipt.errors }}
         {{ form.legal_person_receipt }} {{ form.legal_person_receipt.label_tag }}
     </div>
@@ -100,53 +100,53 @@
 
         <div class="form-field-wrapper">
             {{ form.legal_person_name.label_tag }} {{ form.legal_person_name }}
-            <!-- 
+            <!--
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %} 
+            {% endif %}
             -->
             {% if form.legal_person_name.errors %}
             <p class="error">{{ form.legal_person_name.errors }}</p>
             {% endif %}
         </div>
-    
+
         <div class="form-field-wrapper">
             {{ form.legal_person_address_1.label_tag }} {{ form.legal_person_address_1 }}
-            <!-- 
+            <!--
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %} 
+            {% endif %}
             -->
             {% if form.legal_person_address_1.errors %}
             <p class="error">{{ form.legal_person_address_1.errors }}</p>
             {% endif %}
         </div>
-    
+
         <div class="form-field-wrapper">
             {{ form.legal_person_address_2.label_tag }} {{ form.legal_person_address_2 }}
-            <!-- 
+            <!--
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %} 
+            {% endif %}
             -->
             {% if form.legal_person_address_2.errors %}
             <p class="error">{{ form.legal_person_address_2.errors }}</p>
             {% endif %}
         </div>
-    
+
         <div class="form-field-wrapper">
             {{ form.legal_person_tax_number.label_tag }} {{ form.legal_person_tax_number }}
-            <!-- 
+            <!--
             {% if field.help_text %}
             <p class="help">{{ field.help_text|safe }}</p>
-            {% endif %} 
+            {% endif %}
             -->
             {% if form.legal_person_tax_number.errors %}
             <p class="error">{{ form.legal_person_tax_number.errors }}</p>
             {% endif %}
         </div>
-    
-        <div class="form-field-wrapper one-line">
+
+        <div class="form-field-wrapper one-line rog-check">
             {{ form.legal_person_vat.errors }}
             {{ form.legal_person_vat }} {{ form.legal_person_vat.label_tag }}
         </div>
