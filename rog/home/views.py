@@ -250,7 +250,8 @@ class RegistrationProfileView(View):
         payment_needed = False
         if user.membership and user.membership.type:
             payment_needed = user.membership.type.price() > 0
-            plan_id = user.membership.type.plan.id
+            if payment_needed:
+                plan_id = user.membership.type.plan.id
 
         return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
     
@@ -262,7 +263,8 @@ class RegistrationProfileView(View):
         payment_needed = False
         if user.membership and user.membership.type:
             payment_needed = user.membership.type.price() > 0
-            plan_id = user.membership.type.plan.id
+            if payment_needed:
+                plan_id = user.membership.type.plan.id
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
