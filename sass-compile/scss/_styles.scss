@@ -231,11 +231,32 @@ a {
 
 .studio-card {
     width: 250px;
-    min-height: 320px;
+    height: 320px;
+    overflow: hidden;
     padding: 20px;
     text-decoration: none;
     border: none;
     border-radius: 2px;
+
+    .show-normal {
+        display: flex;
+        flex-grow: 1;
+    }
+
+    .show-hover {
+        display: none;
+        flex-grow: 1;
+    }
+
+    &:hover {
+        .show-normal {
+            display: none;
+        }
+
+        .show-hover {
+            display: flex;
+        }
+    }
 
     .card-body {
         padding: 0;
@@ -248,9 +269,17 @@ a {
         margin-bottom: 10px;
     }
 
+    p {
+        font-size: $xxs-font-size !important;
+    }
+
     img {
         object-fit: cover;
         flex-grow: 1;
+    }
+
+    a {
+        border-color: inherit !important;
     }
 }
 

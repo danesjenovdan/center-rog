@@ -117,6 +117,12 @@ class ObjectProfilePage(BasePage):
 
     subpage_types = []
 
+    def short_description(self):
+        if len(self.description) > 240:
+            return self.description[:237] + "..."
+        else:
+            return self.description
+
     class Meta:
         abstract = True
 
