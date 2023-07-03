@@ -20,7 +20,8 @@ class ActiveAtQuerySet(models.QuerySet):
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
             is_used=False,
-            type_of=Token.Type.LAB
+            type_of=Token.Type.LAB,
+            payment__in=self
         )
     
     def get_available_workshops(self):
@@ -29,7 +30,8 @@ class ActiveAtQuerySet(models.QuerySet):
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
             is_used=False,
-            type_of=Token.Type.WORKSHOP
+            type_of=Token.Type.WORKSHOP,
+            payment__in=self
         )
 
 class Timestampable(models.Model):
