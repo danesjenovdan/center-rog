@@ -5,16 +5,9 @@ from .models import EventCategory
 
 class EventCategoryAdmin(ModelAdmin):
     model = EventCategory
-    # base_url_path = 'bookadmin' # customise the URL from default to admin/bookadmin
-    # menu_label = 'Book'  # ditch this to use verbose_name_plural from model
-    menu_icon = 'pilcrow'  # change as required
-    menu_order = 200  # will put in 3rd place (000 being 1st, 100 2nd)
-    # add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
-    # exclude_from_explorer = False # or True to exclude pages of this type from Wagtail's explorer view
-    add_to_admin_menu = True  # or False to exclude your model from the menu
-    # list_display = ('title', 'author')
-    # list_filter = ('author',)
-    # search_fields = ('title', 'author')
+    menu_icon = 'pilcrow'
+    menu_order = 200
+    add_to_settings_menu = True
+    add_to_admin_menu = False
 
-# Now you just need to register your customised ModelAdmin class with Wagtail
 modeladmin_register(EventCategoryAdmin)

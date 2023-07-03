@@ -70,7 +70,7 @@ class NewsPage(BasePage):
 
     class Meta:
         verbose_name = _("Novica")
-        verbose_name = _("Novice")
+        verbose_name_plural = _("Novice")
 
 
 class NewsListArchivePage(BasePage):
@@ -85,6 +85,10 @@ class NewsListArchivePage(BasePage):
         # context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Arhiv novic")
+        verbose_name_plural = _("Arhivi novic")
 
 
 class NewsListPage(BasePage):
@@ -122,6 +126,10 @@ class NewsListPage(BasePage):
         context["news_pages"] = news_pages
 
         return context
+    
+    class Meta:
+        verbose_name = _("Seznam novic")
+        verbose_name_plural = _("Seznami novic")
 
 
 NewsPage._meta.get_field("color_scheme").default = "light-gray"

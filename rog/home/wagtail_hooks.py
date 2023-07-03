@@ -7,8 +7,8 @@ class WorkshopAdmin(ModelAdmin):
     model = Workshop
     menu_icon = "pilcrow"
     menu_order = 200
-    # add_to_settings_menu = False  # or True to add your model to the Settings sub-menu
-    add_to_admin_menu = True  # or False to exclude your model from the menu
+    add_to_settings_menu = True  # or True to add your model to the Settings sub-menu
+    add_to_admin_menu = False  # or False to exclude your model from the menu
     # list_display = ('title', 'author')
     # list_filter = ('author',)
     # search_fields = ('title', 'author')

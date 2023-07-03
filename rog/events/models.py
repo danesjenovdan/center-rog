@@ -89,6 +89,10 @@ class EventListArchivePage(BasePage):
         # context = add_see_more_fields(context)
 
         return context
+    
+    class Meta:
+        verbose_name = _("Arhiv dogodkov")
+        verbose_name_plural = _("Arhivi dogodkov")
 
 
 class EventListPage(BasePage):
@@ -126,6 +130,10 @@ class EventListPage(BasePage):
         context["event_pages"] = event_pages
 
         return context
+    
+    class Meta:
+        verbose_name = _("Seznam dogodkov")
+        verbose_name_plural = _("Seznami dogodkov")
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

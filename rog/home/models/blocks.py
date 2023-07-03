@@ -23,35 +23,6 @@ class ColoredStructBlock(blocks.StructBlock):
         abstract = True
 
 
-class ButtonsBlock(blocks.StreamBlock):
-    button = blocks.StructBlock(
-        [
-            # ('style', blocks.ChoiceBlock(
-            #     choices = [
-            #         ('underlined', 'Samo podčrtan'),
-            #         ('normal', 'Z obrobo'),
-            #         ('background', 'Z obrobo in ozadjem')
-            #     ],
-            #     label=_('Stil gumba'),
-            # )),
-            # ('arrow', blocks.BooleanBlock(default=False, label=_('Gumb s puščico'), required=False)),
-            ('text', blocks.CharBlock("Besedilo na gumbu")),
-            # ('function', blocks.ChoiceBlock(
-            #     choices = [
-            #         ('redirect', 'Povezava na stran'),
-            #         ('new_story_modal', 'Odpre okno za oddajo nove zgodbe'),
-            #     ],
-            #     label=_('Funkcija gumba'),
-            # )),
-            ('page', blocks.PageChooserBlock(required=False, label="Stran")),
-        ],
-        label="Gumb",)
-
-    class Meta:
-        label = "Gumbi"
-        icon = 'snippet'
-
-
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov sekcije"))
     notice = blocks.TextBlock(label=_("Obvestilo"))

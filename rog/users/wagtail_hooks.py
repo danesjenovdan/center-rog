@@ -17,8 +17,8 @@ class MembershipTypeAdmin(ModelAdmin):
     model = MembershipType
     menu_icon = 'pilcrow'
     menu_order = 200
-    add_to_settings_menu = False
-    add_to_admin_menu = True
+    add_to_settings_menu = True
+    add_to_admin_menu = False
 
 
 class UserInterestAdmin(ModelAdmin):
