@@ -14,6 +14,8 @@ from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInf
 
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
+from users.tokens import get_token_for_user
+
 
 from payments.models import Plan
 
@@ -33,7 +35,8 @@ class MyProfileView(TemplateView):
         obnovitev_clanarine = current_user.membership.valid_to
 
         return render(request, self.template_name, { 
-            'user': current_user, 
+            'user': current_user,
+            'ulagtoken': get_token_for_user(current_user),
             'obnovitev_clanarine': obnovitev_clanarine
         })
     
@@ -205,26 +208,27 @@ class RegistrationInformationView(View):
             last_name = form.cleaned_data["last_name"]
             address_1 = form.cleaned_data["address_1"]
             address_2 = form.cleaned_data["address_2"]
-            
-            legal_person_receipt = form.cleaned_data["legal_person_receipt"]
-            if legal_person_receipt:
-                legal_person_name = form.cleaned_data["legal_person_name"]
-                legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
-                legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
-                legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
-                legal_person_vat = form.cleaned_data["legal_person_vat"]
-            
+
             user.first_name = first_name
             user.last_name = last_name
             user.address_1 = address_1
             if address_2:
                 user.address_2 = address_2
+            
+            legal_person_receipt = form.cleaned_data["legal_person_receipt"]
+            if legal_person_receipt:
+                
+                legal_person_name = form.cleaned_data["legal_person_name"]
+                legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
+                legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
+                legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
+                legal_person_vat = form.cleaned_data["legal_person_vat"]
 
-            user.legal_person_name = legal_person_name
-            user.legal_person_address_1 = legal_person_address_1
-            user.legal_person_address_2 = legal_person_address_2
-            user.legal_person_tax_number = legal_person_tax_number
-            user.legal_person_vat = legal_person_vat
+                user.legal_person_name = legal_person_name
+                user.legal_person_address_1 = legal_person_address_1
+                user.legal_person_address_2 = legal_person_address_2
+                user.legal_person_tax_number = legal_person_tax_number
+                user.legal_person_vat = legal_person_vat
 
             user.save()
 
