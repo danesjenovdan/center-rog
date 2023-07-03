@@ -1,19 +1,37 @@
 {% extends "home/wrapper_page.html" %}
 {% load static %}
 
-{% block title %}Plačilo{% endblock %}
+{% block title %}Plačilo uspešno{% endblock %}
 
-{% block body_class %}template-profile{% endblock %}
+{% block body_class %}template-register{% endblock %}
 
 {% block extra_css %}
-
 {% endblock extra_css %}
+
+{% block extra_js %}
+{% endblock extra_js %}
 
 {% block page_body %}
 
-<div class="container user-profile-container">
+<div class="container register-container color-scheme-light-gray">
 
-    Plačilo uspešno zaključeno.
+    <div class="row justify-content-center">
+
+        <div class="col-md-10 col-xxl-6">
+
+            <div class="registration-progress">
+                <div class="point done"><span>izbira uporabnine</span></div>
+                <div class="point active done"><span>plačilo</span></div>
+            </div>
+
+            <h4 class="my-5">Plačilo je bilo uspešno!</h4>
+            <div class="text-end">
+                <a href="/profil" class="button-medium secondary-button">na profil</a>
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
