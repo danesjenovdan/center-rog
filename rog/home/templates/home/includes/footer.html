@@ -4,17 +4,32 @@
     <div class="row mb-xl-5">
         <div class="col-12 col-md-6">
             <div class="row">
-                <div class="col-6 col-sm-12 col-md-6 col-xxl-5">
-                    <p>
-                        {{ settings.home.MetaSettings.organization_name }}<br />
-                        {{ settings.home.MetaSettings.organization_address }}<br />
-                        {{ settings.home.MetaSettings.organization_postal_number }} {{ settings.home.MetaSettings.organization_post }}<br />
-                        {{ settings.home.MetaSettings.organization_country }}<br />
-                        <a href="mailto:{{ settings.home.MetaSettings.organization_email }}">{{ settings.home.MetaSettings.organization_email }}</a><br />
-                        {{ settings.home.MetaSettings.organization_phone_number }}
-                    </p>
-                {% comment %} </div>
-                <div class="col-6 col-sm-12 col-md-6 col-xxl-5"> {% endcomment %}
+                <div class="col-12 col-md-6 col-xxl-5">
+                    <div class="row">
+                        <div class="col-6 col-md-12">
+                            <p>
+                                {{ settings.home.MetaSettings.organization_name }}<br />
+                                {{ settings.home.MetaSettings.organization_address }}<br />
+                                {{ settings.home.MetaSettings.organization_postal_number }} {{ settings.home.MetaSettings.organization_post }}<br />
+                                {{ settings.home.MetaSettings.organization_country }}<br />
+                                <a href="mailto:{{ settings.home.MetaSettings.organization_email }}">{{ settings.home.MetaSettings.organization_email }}</a><br />
+                                {{ settings.home.MetaSettings.organization_phone_number }}
+                            </p>
+                        </div>
+                        <div class="col-6 col-md-12">
+                            <div class="working-hours">
+                                {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
+                                <p>
+                                    <span>{{ working_hours.value.day }}</span>
+                                    <span>{{ working_hours.value.start_time|time:"G" }}-{{ working_hours.value.end_time|time:"G" }}</span>
+                                </p>
+                                {% endfor %}
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xxl-5">
                     <p>
                         {% for link in settings.home.MetaSettings.footer_links %}
                         <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
@@ -26,20 +41,7 @@
                         </a><br />
                         {% endfor %}
                     </p>
-                </div>
-                <div class="col-6 col-sm-12 col-md-6 col-xxl-5">
-                    <div class="working-hours">
-                        {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
-                        <p>
-                            <span>{{ working_hours.value.day }}</span>
-                            <span>{{ working_hours.value.start_time|time:"G" }}-{{ working_hours.value.end_time|time:"G" }}</span>
-                        </p>
-                        {% endfor %}
-                        <br />
-                    </div>
-                </div>
-                {% if settings.home.MetaSettings.social_media_links %}
-                <div class="col-6 col-sm-12 col-md-6 col-xxl-5">
+                    {% if settings.home.MetaSettings.social_media_links %}
                     <p>
                         sledi nam:<br />
                         {% for link in settings.home.MetaSettings.social_media_links %}
@@ -52,8 +54,8 @@
                         </a><br />
                         {% endfor %}
                     </p>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
         <div class="col-12 col-md-6">
