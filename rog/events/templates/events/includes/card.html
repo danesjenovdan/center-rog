@@ -1,6 +1,6 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 
-<a href="{% pageurl event.localized %}" class="card events-card {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
+<a href="{% pageurl event.localized %}" class="card events-card card-hover {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
   <div class="card-body p-md-0">
     <p class="event-category">{{ event.category.name }}</p>
     <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {{ event.start_time }}</p>

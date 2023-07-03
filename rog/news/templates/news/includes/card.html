@@ -1,6 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<a href="{% pageurl news.localized %}" class="card news-card {% if news.category %}color-scheme-{{ news.category.color_scheme }}{% endif %}">
+<a href="{% pageurl news.localized %}" class="card news-card card-hover {% if news.category %}color-scheme-{{ news.category.color_scheme }}{% endif %}">
   {% image news.thumbnail width-480 class="card-img-top" alt="..." %}
   <div class="card-body p-md-0">
     <p>{{ news.category.name }}</p>

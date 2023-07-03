@@ -171,6 +171,8 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    border-radius: 2px;
+    border: none;
 
     @include media-breakpoint-up(md) {
         // flex-direction: column;
@@ -232,6 +234,8 @@ a {
     min-height: 320px;
     padding: 20px;
     text-decoration: none;
+    border: none;
+    border-radius: 2px;
 
     .card-body {
         padding: 0;
@@ -494,8 +498,7 @@ a {
                 }
 
                 .row {
-                    padding-left: 15px;
-                    padding-right: 15px;
+                    padding: 3px 15px;
                     flex-wrap: nowrap;
                 }
 
@@ -607,11 +610,6 @@ a {
             a {
                 color: inherit;
                 text-decoration: none;
-
-                &:hover {
-                    background-color: #FFFFFF;
-                    color: $cs-dark-gray;
-                }
             }
 
             h4 {
@@ -1294,10 +1292,6 @@ section.image-embed {
     text-decoration: none;
 }
 
-.template-news-page {
-
-}
-
 .template-profile {
     .payment-notice {
         font-size: $sm-font-size;
@@ -1318,5 +1312,20 @@ section.image-embed {
         font-size: $sm-font-size;
         margin-top: 50px;
         margin-bottom: 20px;
+    }
+}
+
+.card-hover {
+    &:hover {
+        background-color: #FFFFFF;
+        color: $cs-dark-gray;
+    }
+
+    &:active {
+        box-shadow: 0px 0px 10px 0px rgba(59, 67, 82, 0.25); 
+    }
+
+    &:focus {
+        outline: 3px solid #07D907;
     }
 }
