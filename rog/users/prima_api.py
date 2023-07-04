@@ -25,11 +25,11 @@ class PrimaApi(object):
             error_message = "Error - cannot process response."
             return None, error_message
 
-        # get response in text
-        response_text = response.text
-
         # parse xml to dict
         try:
+            # get response in text
+            print("prima response", response)
+            response_text = response.text
             response_dict = xmltodict.parse(response_text)
         except:
             error_message = "Error - Response could not be parsed to XML!"
