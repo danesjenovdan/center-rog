@@ -32,7 +32,7 @@
 #primary-navigation {
 
     #primary-navigation-background {
-        clip-path: polygon(0% 0%, 100% 0%, 100% 70%, 0% 0%);
+        clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 0%);
         height: 140px;
         width: 100%;
         background-color: #FFFFFF;
@@ -47,6 +47,7 @@
 
     .navbar-toggler-container {
         position: relative;
+        padding: 10px 24px;
         // z-index: 999999; // to ne sme bit tako, ker potem se ne da klikat na gumbe v navigaciji
     }
 
@@ -155,7 +156,7 @@
         }
 
         @include media-breakpoint-up(xl) {
-            width: 640px;
+            width: 800px;
         }
 
         @include media-breakpoint-up(xxl) {}
