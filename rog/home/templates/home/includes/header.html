@@ -9,7 +9,7 @@
 <header class="fixed-top">
   <nav id="primary-navigation" class="position-relative">
     <div id="primary-navigation-background" class="position-absolute"></div>
-    <div class="navbar px-4 justify-content-end navbar-toggler-container">
+    <div class="navbar justify-content-end navbar-toggler-container">
       <ul class="navbar-nav flex-row align-items-center">
         <!-- prevodi -->
         <li class="nav-item mx-2">
@@ -69,13 +69,13 @@
       })();
     </script>
     {% endif %}
-    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start" id="navbar-collapsable-menu">
+    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start pt-3" id="navbar-collapsable-menu">
       {% for navigation_link in settings.home.MetaSettings.header_links %}
         {% if forloop.counter0|divisibleby:3 %}
           <ul class="col-3 navbar-nav">
         {% endif %}
             <li class="nav-item">
-              <a class="nav-link pb-2 {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
+              <a class="nav-link py-1 {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
                   href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
                   {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
                 {% if navigation_link.value.name %}
