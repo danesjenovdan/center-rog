@@ -1,209 +1,187 @@
 /* COLOR SCHEMES */
 
-.color-scheme-brown,
-.color-scheme-brown:hover {
-    background-color: $cs-brown;
-    color: $cs-pink;
-
+@mixin primary-button-yellow() {
     .primary-button {
         background-color: $cs-yellow;
-        border-color: $cs-yellow;
         color: $cs-dark-gray;
-    }
 
-    .secondary-button {
-        border-color: $cs-brown;
+        &:active {
+            color: $cs-light-blue;
+        }
     }
 }
 
-.color-scheme-light-blue,
-.color-scheme-light-blue:hover {
-    background-color: $cs-light-blue;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
-    }
-}
-
-.color-scheme-dark-gray,
-.color-scheme-dark-gray:hover {
-    background-color: $cs-dark-gray;
-    color: $cs-light-gray;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-gray;
-    }
-}
-
-.color-scheme-purple,
-.color-scheme-purple:hover {
-    background-color: $cs-purple;
-    color: $cs-light-green;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-green;
-    }
-}
-
-.color-scheme-red,
-.color-scheme-red:hover {
-    background-color: $cs-red;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
-    }
-}
-
-.color-scheme-orange,
-.color-scheme-orange:hover {
-    background-color: $cs-orange;
-    color: $cs-white;
-
+@mixin primary-button-blue() {
     .primary-button {
         background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
         color: $cs-white;
-    }
 
-    .secondary-button {
-        border-color: $cs-white;
-    }
-}
-
-.color-scheme-dark-blue,
-.color-scheme-dark-blue:hover {
-    background-color: $cs-dark-blue;
-    color: $cs-light-green;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-light-green;
+        &:active {
+            color: $cs-yellow;
+        }
     }
 }
 
-.color-scheme-light-green,
-.color-scheme-light-green:hover {
-    background-color: $cs-light-green;
-    color: $cs-dark-blue;
-
+@mixin primary-button-red() {
     .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
+        background-color: $cs-red;
         color: $cs-white;
-    }
 
-    .secondary-button {
-        border-color: $cs-dark-blue;
-    }
-}
-
-.color-scheme-dark-green,
-.color-scheme-dark-green:hover {
-    background-color: $cs-dark-green;
-    color: $cs-yellow;
-
-    .primary-button {
-        background-color: $cs-yellow;
-        border-color: $cs-yellow;
-        color: $cs-dark-gray;
-    }
-
-    .secondary-button {
-        border-color: $cs-yellow;
+        &:active {
+            color: $cs-yellow;
+        }
     }
 }
 
-.color-scheme-pink,
-.color-scheme-pink:hover {
-    background-color: $cs-pink;
-    color: $cs-brown;
-
+@mixin primary-button-purple() {
     .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
+        background-color: $cs-dark-purple;
         color: $cs-white;
-    }
 
-    .secondary-button {
-        border-color: $cs-brown;
-    }
-}
-
-.color-scheme-light-gray,
-.color-scheme-light-gray:hover {
-    background-color: $cs-light-gray;
-    color: $cs-dark-gray;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-gray;
+        &:active {
+            color: $cs-yellow;
+        }
     }
 }
 
-.color-scheme-yellow,
-.color-scheme-yellow:hover {
-    background-color: $cs-yellow;
-    color: $cs-dark-green;
-
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
+@mixin secondary-button($secondary-scheme-color) {
     .secondary-button {
-        border-color: $cs-dark-green;
+        border-color: $secondary-scheme-color;   
     }
 }
 
-.color-scheme-white,
-.color-scheme-white:hover {
+/* LIGHT COLORS */
+
+.color-scheme-white {
     background-color: $cs-white;
     color: $cs-dark-gray;
 
-    .primary-button {
-        background-color: $cs-light-blue;
-        border-color: $cs-light-blue;
-        color: $cs-white;
-    }
-
-    .secondary-button {
-        border-color: $cs-dark-gray;
-    }
+    @include primary-button-blue();
+    @include secondary-button($cs-dark-gray);
 }
+
+.color-scheme-light-gray {
+    background-color: $cs-light-gray;
+    color: $cs-dark-gray;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-dark-gray);
+}
+
+.color-scheme-light-green {
+    background-color: $cs-light-green;
+    color: $cs-dark-blue;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-dark-blue);
+}
+
+.color-scheme-pink {
+    background-color: $cs-pink;
+    color: $cs-brown;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-brown);
+}
+
+.color-scheme-yellow {
+    background-color: $cs-yellow;
+    color: $cs-dark-green;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-dark-green);
+}
+
+.color-scheme-light-purple {
+    background-color: $cs-light-purple;
+    color: $cs-red;
+
+    @include primary-button-red();
+    @include secondary-button($cs-red);
+}
+
+.color-scheme-beige {
+    background-color: $cs-beige;
+    color: $cs-dark-purple;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-dark-purple);
+}
+
+.color-scheme-beige-gray {
+    background-color: $cs-beige-gray;
+    color: $cs-dark-purple;
+
+    @include primary-button-purple();
+    @include secondary-button($cs-dark-purple);
+}
+
+/* --- */
+
+/* DARK COLORS */
+
+.color-scheme-brown {
+    background-color: $cs-brown;
+    color: $cs-pink;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-pink);
+}
+
+.color-scheme-light-blue {
+    background-color: $cs-light-blue;
+    color: $cs-yellow;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-yellow);
+}
+
+.color-scheme-dark-gray {
+    background-color: $cs-dark-gray;
+    color: $cs-light-gray;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-light-gray);
+}
+
+.color-scheme-dark-purple {
+    background-color: $cs-dark-purple;
+    color: $cs-light-green;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-light-green);
+}
+
+.color-scheme-red {
+    background-color: $cs-red;
+    color: $cs-yellow;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-yellow);
+}
+
+.color-scheme-orange {
+    background-color: $cs-orange;
+    color: $cs-white;
+
+    @include primary-button-blue();
+    @include secondary-button($cs-white);
+}
+
+.color-scheme-dark-blue {
+    background-color: $cs-dark-blue;
+    color: $cs-light-green;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-light-green);
+}
+
+.color-scheme-dark-green {
+    background-color: $cs-dark-green;
+    color: $cs-yellow;
+
+    @include primary-button-yellow();
+    @include secondary-button($cs-yellow);
+}
+
+/* --- */
