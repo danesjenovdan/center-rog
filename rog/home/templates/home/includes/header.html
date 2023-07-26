@@ -22,15 +22,15 @@
         </li>
         <!-- profile / sign in  -->
         {% if user.is_authenticated %}
-        <li class="nav-item mx-2">
-          <a class="primary-button primary-button-blue button-medium" href="/profil">Moj profil</a>
+        <li class="nav-item mx-2 color-scheme-white">
+          <a class="primary-button button-medium" href="/profil">Moj profil</a>
         </li>
         <!-- <li class="nav-item">
           <a class="nav-link" href="/odjava">Odjava</a>
         </li> -->
         {% else %}
-        <li class="nav-item">
-          <a class="primary-button primary-button-blue button-medium" href="/prijava">Prijava</a>
+        <li class="nav-item color-scheme-white">
+          <a class="primary-button button-medium" href="/prijava">Prijava</a>
         </li>
         {% endif %}
       </ul>
