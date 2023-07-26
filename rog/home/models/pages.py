@@ -171,6 +171,14 @@ LabPage._meta.get_field("color_scheme").default = "light-green"
 
 class LibraryPage(ObjectProfilePage):
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
     class Meta:
         verbose_name = _("Knjižnica")
         verbose_name_plural = _("Knjižnice")
