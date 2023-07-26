@@ -225,6 +225,19 @@ class ColoredTextBlock(ColoredStructBlock):
         template = "home/blocks/colored_text_section.html",
 
 
+class ColoredTextSmallImagesBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    text = blocks.TextBlock(label=_("Besedilo"), required=False)
+    images = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock()),
+        ("link", blocks.URLBlock(label=_("Povezava"), required=False))
+    ]), label=_("Sličice"), min_num=1, max_num=4)
+
+    class Meta:
+        label = _("Barvno besedilo z majhnimi slikami")
+        template = "home/blocks/colored_text_with_images_section.html",
+
+
 # TODO: zbrisi, ko se bodo pocistile migracije
 def get_residents():
     return [(resident.id, resident.title) for resident in ResidencePage.objects.all()]
@@ -263,6 +276,7 @@ class ModuleBlock(blocks.StreamBlock):
     marketplace = MarketplaceBlock()
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
+    colored_text_with_images = ColoredTextSmallImagesBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 
