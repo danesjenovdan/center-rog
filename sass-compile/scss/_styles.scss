@@ -24,6 +24,17 @@ a.link {
     }
 }
 
+a.email-link {
+    text-decoration: none;
+    font-size: $xs-font-size;
+
+    &:hover {
+        .email-text {
+            text-decoration: underline;
+        }
+    }
+}
+
 .flex-page-height {
     display: flex;
     flex-direction: column;

@@ -258,7 +258,20 @@ class ColoredRichTextBlock(ColoredStructBlock):
     
     class Meta:
         label = _("Barvno obogateno besedilo")
-        template = "home/blocks/colored_rich_text_section.html",
+        template = "home/blocks/colored_rich_text_section.html"
+
+
+class ContactsListBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    contacts = blocks.ListBlock(blocks.StructBlock([
+        ("name", blocks.TextBlock(label=_("Ime"))),
+        ("position", blocks.TextBlock(label=_("Delovno mesto"))),
+        ("email", blocks.EmailBlock(label=_("Elektronski naslov")))
+    ]), label=_("Kontakti"))
+
+    class Meta:
+        label = _("Kontakti")
+        template = "home/blocks/contacts_section.html",
 
 
 # TODO: zbrisi, ko se bodo pocistile migracije
@@ -301,6 +314,7 @@ class ModuleBlock(blocks.StreamBlock):
     colored_text = ColoredTextBlock()
     colored_text_with_images = ColoredTextSmallImagesBlock()
     colored_rich_text = ColoredRichTextBlock()
+    contacts_section = ContactsListBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 

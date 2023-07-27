@@ -53,7 +53,10 @@
 @mixin link($secondary-scheme-color) {
     a.link,
     button.link,
-    .link {
+    .link,
+    a.email-link,
+    button.email-link,
+    .email-link {
         color: $secondary-scheme-color;
     }
 }
