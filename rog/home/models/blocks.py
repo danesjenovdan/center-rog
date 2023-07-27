@@ -161,7 +161,7 @@ class WhiteListBlock(blocks.StructBlock):
 
 
 class GalleryBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
     button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
 
