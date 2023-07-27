@@ -23,6 +23,16 @@ class ColoredStructBlock(blocks.StructBlock):
         abstract = True
 
 
+class ButtonBlock(blocks.StructBlock):
+    button = blocks.PageChooserBlock(label=_("Povezava"))
+    button_text = blocks.TextBlock(label=_("Ime gumba"))
+
+
+class LinkBlock(blocks.StructBlock):
+    link = blocks.URLBlock(label=_("Povezava"))
+    link_text = blocks.TextBlock(label=_("Ime povezave"))
+
+
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov sekcije"))
     notice = blocks.TextBlock(label=_("Obvestilo"))
@@ -199,7 +209,7 @@ class FullWidthImageBlock(ColoredStructBlock):
     link = blocks.StreamBlock([
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, required=False, label=_("Povezava pod besedilom"))
+    ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
     
     class Meta:
         label = _("Slika")
@@ -222,7 +232,7 @@ class ColoredTextBlock(ColoredStructBlock):
 
     class Meta:
         label = _("Barvno besedilo (s sliko)")
-        template = "home/blocks/colored_text_section.html",
+        template = "home/blocks/colored_text_section.html"
 
 
 class ColoredTextSmallImagesBlock(ColoredStructBlock):
@@ -235,7 +245,20 @@ class ColoredTextSmallImagesBlock(ColoredStructBlock):
 
     class Meta:
         label = _("Barvno besedilo z majhnimi slikami")
-        template = "home/blocks/colored_text_with_images_section.html",
+        template = "home/blocks/colored_text_with_images_section.html"
+
+
+class ColoredRichTextBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    rich_text = blocks.RichTextBlock(label=_("Besedilo"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+    
+    class Meta:
+        label = _("Barvno obogateno besedilo")
+        template = "home/blocks/colored_rich_text_section.html",
 
 
 # TODO: zbrisi, ko se bodo pocistile migracije
@@ -277,6 +300,7 @@ class ModuleBlock(blocks.StreamBlock):
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
     colored_text_with_images = ColoredTextSmallImagesBlock()
+    colored_rich_text = ColoredRichTextBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 

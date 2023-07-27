@@ -71,6 +71,10 @@ def footer_image_processor(request):
 class ExternalLinkBlock(blocks.StructBlock):
     name = blocks.CharBlock(label="Ime")
     url = blocks.URLBlock(label="URL")
+    link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
+        ("button", "Gumb"),
+        ("link", "Povezava s puščico")
+    ], default="button")
 
     class Meta:
         label = "Zunanja povezava"
@@ -84,6 +88,10 @@ class PageLinkBlock(blocks.StructBlock):
         help_text="Če je prazno, se uporabi naslov strani.",
     )
     page = blocks.PageChooserBlock(label="Stran")
+    link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
+        ("button", "Gumb"),
+        ("link", "Povezava s puščico")
+    ], default="button")
 
     class Meta:
         label = "Povezava do strani"

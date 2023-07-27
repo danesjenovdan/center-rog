@@ -8,6 +8,7 @@ body {
 
 a.link {
     text-decoration: none;
+    font-size: $xs-font-size;
 
     .link-icon::after {
         content: "→";
@@ -420,6 +421,24 @@ a.primary-button {
             content: "→";
             margin-left: 5px;
         }
+    }
+}
+
+.rich-text-module {
+    p, li {
+        font-size: $xs-font-size;
+    }
+
+    h4 {
+        font-size: $sm-font-size;
+    }
+
+    h3 {
+        font-size: $md-font-size;
+    }
+
+    h2 {
+        font-size: $lg-font-size;
     }
 }
 
@@ -1116,7 +1135,7 @@ section.image-embed {
                 }
             }
 
-            .body {
+            .rich-text-page {
                 font-size: $xs-font-size;
 
                 p, h2, h3, h4, ul {
