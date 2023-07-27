@@ -248,6 +248,25 @@ class ColoredTextSmallImagesBlock(ColoredStructBlock):
         template = "home/blocks/colored_text_with_images_section.html"
 
 
+class ColoredTextCardsBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    text = blocks.TextBlock(label=_("Besedilo"), required=False)
+    cards = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock()),
+        ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
+        ("link", blocks.URLBlock(label=_("Povezava"))),
+        ("link_text", blocks.TextBlock(label=_("Ime povezave"))),
+    ]), label=_("Kartice"), min_num=1, max_num=4)
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+
+    class Meta:
+        label = _("Barvno besedilo s karticami")
+        template = "home/blocks/colored_text_with_cards_section.html"
+
+
 class ColoredRichTextBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     rich_text = blocks.RichTextBlock(label=_("Besedilo"))
@@ -313,6 +332,7 @@ class ModuleBlock(blocks.StreamBlock):
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
     colored_text_with_images = ColoredTextSmallImagesBlock()
+    colored_text_with_cards = ColoredTextCardsBlock()
     colored_rich_text = ColoredRichTextBlock()
     contacts_section = ContactsListBlock()
     residents_section = ResidentsBlock()
