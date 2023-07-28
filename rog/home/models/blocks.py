@@ -6,6 +6,7 @@ from django.conf import settings
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
 from .settings import ExternalLinkBlock, PageLinkBlock
+from users.models import MembershipType
 from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
 
@@ -317,7 +318,24 @@ class NewsletterBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Novičnik")
-        template = "home/blocks/newsletter_section.html",
+        template = "home/blocks/newsletter_section.html"
+
+
+class MembershipsBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["membership_types"] = MembershipType.objects.all()
+        return context
+
+    class Meta:
+        label = _("Vrste članstev")
+        template = "home/blocks/memberships_section.html"
 
 
 class ModuleBlock(blocks.StreamBlock):
@@ -335,6 +353,7 @@ class ModuleBlock(blocks.StreamBlock):
     colored_text_with_cards = ColoredTextCardsBlock()
     colored_rich_text = ColoredRichTextBlock()
     contacts_section = ContactsListBlock()
+    memberships_section = MembershipsBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 

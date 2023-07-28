@@ -45,7 +45,8 @@
 }
 
 @mixin secondary-button($secondary-scheme-color) {
-    .secondary-button {
+    .secondary-button,
+    .radio-square {
         border-color: $secondary-scheme-color;   
     }
 }

@@ -98,7 +98,7 @@ a.primary-button {
     }
 
     &:focus {
-        border: 2px solid $cs-focus-green;
+        border-color: $cs-focus-green;
     }
 
     &:active {
@@ -173,16 +173,13 @@ a.primary-button {
 
 .radio-square-wrapper {
     .radio-square {
-        border: 1px solid $cs-dark-gray;
+        border-width: 1.5px;
+        border-style: solid;
         border-radius: 3px;
         padding: 15px;
         text-align: left;
         display: block;
         height: 100%;
-
-        &:hover {
-            box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
-        }
 
         ul {
             list-style-type: none;
@@ -197,19 +194,28 @@ a.primary-button {
             font-size: $sm-font-size;
         }
     }
-
-    input {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
-        pointer-events: none;
-    }
-
-    input:checked + .btn {
-        color: #fff;
-        background-color: $cs-dark-gray;
-    }
 }
 
+form {
+    .radio-square-wrapper {
+        .radio-square {
+            &:hover {
+                box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
+            }
+        }
+    
+        input {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+            pointer-events: none;
+        }
+    
+        input:checked + .btn {
+            color: #fff;
+            background-color: $cs-dark-gray;
+        }
+    }
+}
 
 
 .events-card,
