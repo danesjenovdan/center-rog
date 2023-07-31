@@ -104,7 +104,23 @@
         {% endfor %}
       </ul>
     </div>
-
+  </nav>
+  {% endif %}
+  {% if page.secondary_navigation %}
+  <nav id="secondary-navigation" class="">
+    <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
+      <ul class="navbar-nav">
+        {% for item in page.body %}
+        {% if item.value.id %}
+        <li class="nav-item color-scheme-{{ item.value.color }} mx-2">
+          <a class="nav-link" href="#{{item.value.id}}">
+              {{ item.value.title }}
+          </a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
   </nav>
   {% endif %}
 </header>
