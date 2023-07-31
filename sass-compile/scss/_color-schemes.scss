@@ -45,8 +45,20 @@
 }
 
 @mixin secondary-button($secondary-scheme-color) {
-    .secondary-button {
+    .secondary-button,
+    .radio-square {
         border-color: $secondary-scheme-color;   
+    }
+}
+
+@mixin link($secondary-scheme-color) {
+    a.link,
+    button.link,
+    .link,
+    a.email-link,
+    button.email-link,
+    .email-link {
+        color: $secondary-scheme-color;
     }
 }
 
@@ -58,6 +70,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-dark-gray);
+    @include link($cs-dark-gray);
 }
 
 .color-scheme-light-gray {
@@ -66,6 +79,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-dark-gray);
+    @include link($cs-dark-gray);
 }
 
 .color-scheme-light-green {
@@ -74,6 +88,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-dark-blue);
+    @include link($cs-dark-blue);
 }
 
 .color-scheme-pink {
@@ -82,6 +97,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-brown);
+    @include link($cs-brown);
 }
 
 .color-scheme-yellow {
@@ -90,6 +106,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-dark-green);
+    @include link($cs-dark-green);
 }
 
 .color-scheme-light-purple {
@@ -98,6 +115,7 @@
 
     @include primary-button-red();
     @include secondary-button($cs-red);
+    @include link($cs-red);
 }
 
 .color-scheme-beige {
@@ -106,6 +124,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-dark-purple);
+    @include link($cs-dark-purple);
 }
 
 .color-scheme-beige-gray {
@@ -114,6 +133,7 @@
 
     @include primary-button-purple();
     @include secondary-button($cs-dark-purple);
+    @include link($cs-dark-purple);
 }
 
 /* --- */
@@ -126,6 +146,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-pink);
+    @include link($cs-pink);
 }
 
 .color-scheme-light-blue {
@@ -134,6 +155,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
+    @include link($cs-yellow);
 }
 
 .color-scheme-dark-gray {
@@ -142,6 +164,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-light-gray);
+    @include link($cs-light-gray);
 }
 
 .color-scheme-dark-purple {
@@ -150,6 +173,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-light-green);
+    @include link($cs-light-green);
 }
 
 .color-scheme-red {
@@ -158,6 +182,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
+    @include link($cs-yellow);
 }
 
 .color-scheme-orange {
@@ -166,6 +191,7 @@
 
     @include primary-button-blue();
     @include secondary-button($cs-white);
+    @include link($cs-white);
 }
 
 .color-scheme-dark-blue {
@@ -174,6 +200,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-light-green);
+    @include link($cs-light-green);
 }
 
 .color-scheme-dark-green {
@@ -182,6 +209,7 @@
 
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
+    @include link($cs-yellow);
 }
 
 /* --- */

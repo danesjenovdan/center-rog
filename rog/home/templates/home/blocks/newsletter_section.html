@@ -1,8 +1,29 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<div class="row">
-    <div class="col d-flex justify-content-center">
-        {% image value.background_image width-1100 class="img-fluid" %}
-        Novičnik forma
+{% image value.background_image original as background_image %}
+
+<section style="background-image: url({{ background_image.url }})" class="container-fluid image-embed px-4 px-md-0">
+    <div class="container color-scheme-white p-4">
+        <div class="row">
+            <div class="col-12">
+                <form>
+                    <div class="form-field-wrapper">
+                        <label for="newsletter-input-footer">Input label</label>
+                        <input type="text" id="newsletter-input-footer">
+                    </div>
+    
+                    <div class="form-field-wrapper one-line rog-check">
+                        <input type="checkbox" id="newsletter-checkbox-footer">
+                        <label for="newsletter-checkbox-footer">
+                            <span>checkbox s tekstom</span>
+                        </label>
+                    </div>
+    
+                    <div class="my-3">
+                        <button type="submit" class="secondary-button button-medium">pošlji</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+</section>

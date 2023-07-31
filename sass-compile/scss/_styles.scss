@@ -8,6 +8,7 @@ body {
 
 a.link {
     text-decoration: none;
+    font-size: $xs-font-size;
 
     .link-icon::after {
         content: "→";
@@ -18,6 +19,17 @@ a.link {
 
     &:hover {
         .link-text {
+            text-decoration: underline;
+        }
+    }
+}
+
+a.email-link {
+    text-decoration: none;
+    font-size: $xs-font-size;
+
+    &:hover {
+        .email-text {
             text-decoration: underline;
         }
     }
@@ -86,7 +98,7 @@ a.primary-button {
     }
 
     &:focus {
-        border: 2px solid $cs-focus-green;
+        border-color: $cs-focus-green;
     }
 
     &:active {
@@ -161,16 +173,13 @@ a.primary-button {
 
 .radio-square-wrapper {
     .radio-square {
-        border: 1px solid $cs-dark-gray;
+        border-width: 1.5px;
+        border-style: solid;
         border-radius: 3px;
         padding: 15px;
         text-align: left;
         display: block;
         height: 100%;
-
-        &:hover {
-            box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
-        }
 
         ul {
             list-style-type: none;
@@ -185,19 +194,28 @@ a.primary-button {
             font-size: $sm-font-size;
         }
     }
-
-    input {
-        position: absolute;
-        clip: rect(0, 0, 0, 0);
-        pointer-events: none;
-    }
-
-    input:checked + .btn {
-        color: #fff;
-        background-color: $cs-dark-gray;
-    }
 }
 
+form {
+    .radio-square-wrapper {
+        .radio-square {
+            &:hover {
+                box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
+            }
+        }
+    
+        input {
+            position: absolute;
+            clip: rect(0, 0, 0, 0);
+            pointer-events: none;
+        }
+    
+        input:checked + .btn {
+            color: #fff;
+            background-color: $cs-dark-gray;
+        }
+    }
+}
 
 
 .events-card,
@@ -420,6 +438,24 @@ a.primary-button {
             content: "→";
             margin-left: 5px;
         }
+    }
+}
+
+.rich-text-module {
+    p, li {
+        font-size: $xs-font-size;
+    }
+
+    h4 {
+        font-size: $sm-font-size;
+    }
+
+    h3 {
+        font-size: $md-font-size;
+    }
+
+    h2 {
+        font-size: $lg-font-size;
     }
 }
 
@@ -1116,7 +1152,7 @@ section.image-embed {
                 }
             }
 
-            .body {
+            .rich-text-page {
                 font-size: $xs-font-size;
 
                 p, h2, h3, h4, ul {
@@ -1487,5 +1523,18 @@ section.image-embed {
     label {
         padding-top: 3px;
         font-size: 15px;
+    }
+}
+
+.link-card {
+    img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .link span {
+        font-size: $xxs-font-size;
     }
 }

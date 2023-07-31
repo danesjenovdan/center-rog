@@ -1,0 +1,30 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<section class="color-scheme-{{ value.color }} colored-text-section">
+
+<div class="container with-image">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">{{ value.title }}</h2>
+            {% if value.text %}
+            <p>{{ value.text }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row my-4 justify-content-center">
+        {% for element in value.images %}
+        <div class="col-6 mb-4 col-md-3 mb-md-0 d-flex align-items-center">
+            {% if element.link %}
+            <a href="{{ element.link }}" target="_blank">
+                {% image element.image original class="img-fluid" alt=element.image.alt_description %}
+            </a>
+            {% else %}
+            {% image element.image original class="img-fluid" alt=element.image.alt_description %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+</section>

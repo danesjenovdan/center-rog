@@ -6,6 +6,7 @@ from django.conf import settings
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
 from .settings import ExternalLinkBlock, PageLinkBlock
+from users.models import MembershipType
 from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
 
@@ -21,6 +22,16 @@ class ColoredStructBlock(blocks.StructBlock):
 
     class Meta:
         abstract = True
+
+
+class ButtonBlock(blocks.StructBlock):
+    button = blocks.PageChooserBlock(label=_("Povezava"))
+    button_text = blocks.TextBlock(label=_("Ime gumba"))
+
+
+class LinkBlock(blocks.StructBlock):
+    link = blocks.URLBlock(label=_("Povezava"))
+    link_text = blocks.TextBlock(label=_("Ime povezave"))
 
 
 class BulletinBoardBlock(blocks.StructBlock):
@@ -151,7 +162,7 @@ class WhiteListBlock(blocks.StructBlock):
 
 
 class GalleryBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
     button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
 
@@ -199,7 +210,7 @@ class FullWidthImageBlock(ColoredStructBlock):
     link = blocks.StreamBlock([
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, required=False, label=_("Povezava pod besedilom"))
+    ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
     
     class Meta:
         label = _("Slika")
@@ -222,7 +233,65 @@ class ColoredTextBlock(ColoredStructBlock):
 
     class Meta:
         label = _("Barvno besedilo (s sliko)")
-        template = "home/blocks/colored_text_section.html",
+        template = "home/blocks/colored_text_section.html"
+
+
+class ColoredTextSmallImagesBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    text = blocks.TextBlock(label=_("Besedilo"), required=False)
+    images = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock()),
+        ("link", blocks.URLBlock(label=_("Povezava"), required=False))
+    ]), label=_("Sličice"), min_num=1, max_num=4)
+
+    class Meta:
+        label = _("Barvno besedilo z majhnimi slikami")
+        template = "home/blocks/colored_text_with_images_section.html"
+
+
+class ColoredTextCardsBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    text = blocks.TextBlock(label=_("Besedilo"), required=False)
+    cards = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock()),
+        ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
+        ("link", blocks.URLBlock(label=_("Povezava"))),
+        ("link_text", blocks.TextBlock(label=_("Ime povezave"))),
+    ]), label=_("Kartice"), min_num=1, max_num=4)
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+
+    class Meta:
+        label = _("Barvno besedilo s karticami")
+        template = "home/blocks/colored_text_with_cards_section.html"
+
+
+class ColoredRichTextBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    rich_text = blocks.RichTextBlock(label=_("Besedilo"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+    
+    class Meta:
+        label = _("Barvno obogateno besedilo")
+        template = "home/blocks/colored_rich_text_section.html"
+
+
+class ContactsListBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    contacts = blocks.ListBlock(blocks.StructBlock([
+        ("name", blocks.TextBlock(label=_("Ime"))),
+        ("position", blocks.TextBlock(label=_("Delovno mesto"))),
+        ("email", blocks.EmailBlock(label=_("Elektronski naslov")))
+    ]), label=_("Kontakti"))
+
+    class Meta:
+        label = _("Kontakti")
+        template = "home/blocks/contacts_section.html",
 
 
 # TODO: zbrisi, ko se bodo pocistile migracije
@@ -249,7 +318,24 @@ class NewsletterBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Novičnik")
-        template = "home/blocks/newsletter_section.html",
+        template = "home/blocks/newsletter_section.html"
+
+
+class MembershipsBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["membership_types"] = MembershipType.objects.all()
+        return context
+
+    class Meta:
+        label = _("Vrste članstev")
+        template = "home/blocks/memberships_section.html"
 
 
 class ModuleBlock(blocks.StreamBlock):
@@ -263,6 +349,11 @@ class ModuleBlock(blocks.StreamBlock):
     marketplace = MarketplaceBlock()
     image_embed = FullWidthImageBlock()
     colored_text = ColoredTextBlock()
+    colored_text_with_images = ColoredTextSmallImagesBlock()
+    colored_text_with_cards = ColoredTextCardsBlock()
+    colored_rich_text = ColoredRichTextBlock()
+    contacts_section = ContactsListBlock()
+    memberships_section = MembershipsBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 
