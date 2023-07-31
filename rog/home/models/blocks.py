@@ -3,6 +3,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.core import validators
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
 from .settings import ExternalLinkBlock, PageLinkBlock
@@ -14,7 +15,19 @@ import random
 from datetime import date
 
 
-class ColoredStructBlock(blocks.StructBlock):
+class ModuleBlock(blocks.StructBlock):
+    id = blocks.CharBlock(
+        required=False,
+        label=_("ID modula (ime-povezave-v-tem-stilu)"),
+        help_text="Potrebno izpolniti, če naj bo povezava do modula prisotna v sekundarnem meniju.",
+        validators=[validators.validate_slug]
+    )
+
+    class Meta:
+        abstract = True
+
+
+class ColoredStructBlock(ModuleBlock):
     color = blocks.ChoiceBlock(
         choices=settings.COLOR_SCHEMES,
         label=_("Barva"),

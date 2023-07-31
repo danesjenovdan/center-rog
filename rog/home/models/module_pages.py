@@ -1,4 +1,4 @@
-# from django.db import models
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.models import Page
@@ -45,6 +45,7 @@ class HomePage(Page):
 
 
 class ContentPage(Page):
+    secondary_navigation = models.BooleanField(default=False, verbose_name="Sekundarni meni")
     body = StreamField(
         ModuleBlock(),
         verbose_name="Telo",
@@ -52,6 +53,7 @@ class ContentPage(Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel('secondary_navigation'),
         FieldPanel('body'),
     ]
 
