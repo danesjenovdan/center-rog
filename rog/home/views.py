@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseNotFound
 from django.views import View
 from django.views.generic import TemplateView
+from django.contrib.auth import get_user_model
 
 from datetime import datetime, date, time
 from dateutil.relativedelta import relativedelta
@@ -41,14 +42,14 @@ class MyProfileView(TemplateView):
 
         obnovitev_clanarine = current_user.membership.valid_to
 
-        return render(request, self.template_name, { 
+        return render(request, self.template_name, {
             'user': current_user,
             'ulagtoken': get_token_for_user(current_user),
             'obnovitev_clanarine': obnovitev_clanarine,
             "location_id": location_id,
             "group_id": group_id,
         })
-    
+
 
 class UserProfileView(TemplateView):
     template_name = "registration/user_profile.html"
@@ -59,7 +60,7 @@ class UserProfileView(TemplateView):
             return render(request, self.template_name, {'user': user})
         except:
             return HttpResponseNotFound("User not found.")
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class EditProfileView(TemplateView):
@@ -68,7 +69,7 @@ class EditProfileView(TemplateView):
     def get(self, request, *args, **kwargs):
         current_user = request.user
         return render(request, self.template_name, {'user': current_user})
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class SearchProfileView(TemplateView):
@@ -80,10 +81,10 @@ class SearchProfileView(TemplateView):
         form = UserInterestsForm()
 
         return render(request, self.template_name, {"users": users, "form": form})
-    
+
     def post(self, request):
         form = UserInterestsForm(request.POST)
-        
+
 
         if form.is_valid():
             interests = form.cleaned_data["interests"]
@@ -106,12 +107,12 @@ class PurchasePlanView(TemplateView):
         form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
 
         return render(request, self.template_name, { 'user': current_user, "form": form })
-    
+
     def post(self, request):
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
         form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
-        
+
         if form.is_valid():
             plan = form.cleaned_data["plans"]
             print("Chosen plan", plan)
@@ -158,7 +159,7 @@ class RegistrationView(View):
             else:
                 print("Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu.")
                 return render(request, "registration/registration.html", context={ "form": form, "error": _("Uporabnika ni bilo mogoče ustvariti.") })
-            
+
 
             # TODO subscribe to newsletter
             # Newsletter(
@@ -166,11 +167,11 @@ class RegistrationView(View):
             # ).save()
 
             # TODO send verification email
-            
+
             return redirect("registration-membership")
         else:
             return render(request, "registration/registration.html", context={ "form": form })
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class RegistrationMembershipView(View):
@@ -181,7 +182,7 @@ class RegistrationMembershipView(View):
         # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
         return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
-    
+
     def post(self, request):
         user = request.user
         membership_types = MembershipType.objects.all()
@@ -209,7 +210,7 @@ class RegistrationInformationView(View):
 
         form = RegistrationInformationForm(instance=user)
         return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
-    
+
     def post(self, request):
         user = request.user
         form = RegistrationInformationForm(request.POST)
@@ -225,10 +226,10 @@ class RegistrationInformationView(View):
             user.address_1 = address_1
             if address_2:
                 user.address_2 = address_2
-            
+
             legal_person_receipt = form.cleaned_data["legal_person_receipt"]
             if legal_person_receipt:
-                
+
                 legal_person_name = form.cleaned_data["legal_person_name"]
                 legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
                 legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
@@ -263,7 +264,7 @@ class RegistrationProfileView(View):
                 plan_id = user.membership.type.plan.id
 
         return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
-    
+
     def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
@@ -283,6 +284,14 @@ class RegistrationProfileView(View):
             link_2 = form.cleaned_data["link_2"]
             link_3 = form.cleaned_data["link_3"]
             contact = form.cleaned_data["contact"]
+
+            User = get_user_model()
+            public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+            if public_username_exists:
+                form.add_error("public_username", _("Uporabniško ime že obstaja."))
+
+            if not form.is_valid():
+                return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
 
             user.public_profile = public_profile
             user.public_username = public_username
@@ -310,7 +319,7 @@ class EditProfileView(View):
 
         form = EditProfileForm(instance=user)
         return render(request, "registration/edit_profile.html", context={ "form": form })
-    
+
     def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
@@ -323,6 +332,14 @@ class EditProfileView(View):
             link_2 = form.cleaned_data["link_2"]
             link_3 = form.cleaned_data["link_3"]
             contact = form.cleaned_data["contact"]
+
+            User = get_user_model()
+            public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+            if public_username_exists:
+                form.add_error("public_username", _("Uporabniško ime že obstaja."))
+
+            if not form.is_valid():
+                return render(request, "registration/edit_profile.html", context={ "form": form })
 
             user.public_profile = public_profile
             user.public_username = public_username
@@ -346,7 +363,7 @@ class EditProfileView(View):
 #         user = request.user
 
 #         # TODO: payment logika
-        
+
 #         return render(request, "registration/registration_5_payment.html", context={ "user": user })
 
 
