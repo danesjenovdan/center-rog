@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags wagtailcore_tags %}
 
 {% block extra_css %}
 
@@ -17,7 +17,7 @@
     </div>
     <div class="row">
         <div class="col-12 body">
-            {{ page.body|safe }}
+            {{ page.body|richtext }}
         </div>
     </div>
 </div>
