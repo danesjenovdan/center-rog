@@ -182,6 +182,9 @@ class EditProfileForm(forms.ModelForm):
         queryset=UserInterest.objects,
         widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
     )
+    gallery = forms.Field(
+        required=False,
+    )
 
     class Meta:
         model = User
@@ -194,7 +197,7 @@ class EditProfileForm(forms.ModelForm):
             "link_3",
             "contact",
             "interests",
-            # "gallery"
+            "gallery",
         ]
 
 

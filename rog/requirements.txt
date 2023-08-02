@@ -9,3 +9,4 @@ wagtail-localize==1.5
 Pillow==9.5
 wagtailmedia==0.14.2
 django-cors-headers==4.1.0
+django-jsonify==0.3.0

@@ -73,6 +73,7 @@ urlpatterns = urlpatterns + i18n_patterns(
     path('placilo/', include('payments.urls')),
     path('ulagtoken', CheckTokenView.as_view(), name='check-token'),
     path('test-calendar-embed/', TestCalendarTemplateView.as_view(), name='test-calendar-embed'),
+    path('users/', include('users.urls')),
 
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
