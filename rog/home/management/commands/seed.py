@@ -561,30 +561,30 @@ class Command(BaseCommand):
                     "title": "Tržnica",
                     "intro_text": "V pritličju in v drugem nadstropju bo 7 proizvodnih laboratorijev oziroma delavnic, tako takšnih s sodobnimi, računalniško vodenimi tehnologijami kot takšnih za tradicionalnejše sodobnimi, računalniško tehnike.",
                     "markets": [
-                        {
-                            "color": "pink",
-                            "market": market1.pk
-                        },
-                        {
-                            "color": "orange",
-                            "market": market2.pk
-                        },
-                        {
-                            "color": "dark-blue",
-                            "market": market3.pk
-                        },
-                        {
-                            "color": "purple",
-                            "market": market1.pk
-                        },
-                        {
-                            "color": "dark-green",
-                            "market": market2.pk
-                        },
-                        {
-                            "color": "light-green",
-                            "market": market3.pk
-                        }
+                        # {
+                        #     "color": "pink",
+                        #     "market": market1.pk
+                        # },
+                        # {
+                        #     "color": "orange",
+                        #     "market": market2.pk
+                        # },
+                        # {
+                        #     "color": "dark-blue",
+                        #     "market": market3.pk
+                        # },
+                        # {
+                        #     "color": "purple",
+                        #     "market": market1.pk
+                        # },
+                        # {
+                        #     "color": "dark-green",
+                        #     "market": market2.pk
+                        # },
+                        # {
+                        #     "color": "light-green",
+                        #     "market": market3.pk
+                        # }
                     ]
                 }
             },
