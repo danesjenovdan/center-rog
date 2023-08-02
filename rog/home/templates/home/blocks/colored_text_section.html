@@ -3,7 +3,7 @@
 <section id="{{ value.id }}" class="color-scheme-{{ value.color }} colored-text-section">
 
 {% if value.image %}
-    <div class="container with-image">
+    <div class="container with-image wider-container">
         <div class="row">
             <div class="col-12">
                 <h2 class="text-center">{{ value.title }}</h2>
@@ -34,13 +34,7 @@
             <div class="col-12 bulletin-board-link text-center">
                 {% for link in value.link %}
                 <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
-                    <span>
-                        {% if link.value.name %}
-                        {{ link.value.name }}
-                        {% elif link.value.page %}
-                        {{ link.value.page.title }}
-                        {% endif %}
-                    </span>
+                    <span>{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</span>
                 </a>
                 {% endfor %}
             </div>
@@ -58,13 +52,7 @@
                 <div class="bulletin-board-link">
                     {% for link in value.link %}
                     <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
-                        <span>
-                            {% if link.value.name %}
-                            {{ link.value.name }}
-                            {% elif link.value.page %}
-                            {{ link.value.page.title }}
-                            {% endif %}
-                        </span>
+                        <span>{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</span>
                     </a>
                     {% endfor %}
                 </div>
