@@ -9,12 +9,9 @@ footer.container-fluid {
         }
 
         a {
-            text-decoration: none;
             font-size: inherit;
 
-            &:hover {
-                text-decoration: underline;
-            }
+            @include underline-text-on-hover();
         }
     }
 

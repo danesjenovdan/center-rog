@@ -17,9 +17,13 @@ a.link {
         position: static;
     }
 
+    .link-text {
+        @include prepare-for-underlined-text();
+    }
+
     &:hover {
         .link-text {
-            text-decoration: underline;
+            @include underline-text();
         }
     }
 }
@@ -28,9 +32,13 @@ a.email-link {
     text-decoration: none;
     font-size: $xs-font-size;
 
+    .email-text {
+        @include prepare-for-underlined-text();
+    }
+
     &:hover {
         .email-text {
-            text-decoration: underline;
+            @include underline-text();
         }
     }
 }
@@ -472,14 +480,14 @@ form {
         text-decoration: none;
 
         span {
-            text-decoration: none;
+            @include prepare-for-underlined-text();
         }
 
         &:hover {
             color: $cs-dark-gray;
 
             span {
-                text-decoration: underline;
+                @include underline-text();
             }
         }
 
@@ -663,11 +671,8 @@ form {
                 a {
                     font-size: $md-font-size;
                     color: $cs-dark-blue;
-                    text-decoration: none;
 
-                    &:hover {
-                        text-decoration: underline;
-                    }
+                    @include underline-text-on-hover();
                 }
 
                 &:before {
