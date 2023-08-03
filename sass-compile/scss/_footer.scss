@@ -29,18 +29,18 @@ footer.container-fluid {
         }
     }
 
-    .form-field-wrapper {
-        @include media-breakpoint-up(xl) {
-            padding-right: 35px;
-        }
-    }
+    // .form-field-wrapper {
+    //     @include media-breakpoint-up(xl) {
+    //         padding-right: 35px;
+    //     }
+    // }
 
     .footer-logos {
         flex-wrap: wrap;
     }
 
     .footer-logo {
-        width: 200px;
+        width: 160px;
         display: flex;
         flex-direction: column;
         justify-content: end;
@@ -51,7 +51,7 @@ footer.container-fluid {
         }
 
         @include media-breakpoint-up(md) {
-            margin-right: 20px;
+            margin-right: 50px !important;
             margin-bottom: 0;
         }
 
@@ -72,7 +72,16 @@ footer.container-fluid {
         }
 
         @include media-breakpoint-up(xl) {
-            width: 200px;
+            width: 160px;
+        }
+    }
+
+    .random-image {
+        width: 200px;
+
+        img {
+            width: 100%;
+            height: auto;
         }
     }
 }

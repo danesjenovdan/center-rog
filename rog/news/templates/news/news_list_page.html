@@ -19,9 +19,15 @@
 
     <div class="row">
         {% for news_page in news_pages %}
-        <div class="col-12 col-md-4 mb-4">
-            {% include "news/includes/card.html" with news=news_page %}
-        </div> 
+            {% if forloop.counter == 1 %}
+                <div class="col-12 col-md-8 mb-4">
+                    {% include "news/includes/card.html" with news=news_page wide=True %}
+                </div>
+            {% else %}
+                <div class="col-12 col-md-4 mb-4">
+                    {% include "news/includes/card.html" with news=news_page wide=False %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

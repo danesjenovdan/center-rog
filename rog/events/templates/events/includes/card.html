@@ -1,10 +1,12 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 
-<a href="{% pageurl event.localized %}" class="card events-card card-hover {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
+<a href="{% pageurl event.localized %}" class="card events-card card-hover {% if wide %}card-wide{% endif %} {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
   <div class="card-body p-md-0">
     <p class="event-category">{{ event.category.name }}</p>
     <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {{ event.start_time }}</p>
     <h4 class="card-title">{{ event.short_title }}</h4>
   </div>
-  {% image event.hero_image width-480 class="card-img-top" alt="..." %}
+  <div class="card-img">
+    {% image event.hero_image width-480 %}
+  </div>
 </a>

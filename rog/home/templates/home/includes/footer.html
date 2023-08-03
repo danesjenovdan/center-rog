@@ -85,13 +85,13 @@
                 {% for img in settings.home.MetaSettings.footer_images %}
                 <div class="footer-logo">
                     <p>{{ img.value.description }}</p>
-                    {% image img.value.image width-200 class="" alt="..." %}
+                    {% image img.value.image width-320 class="" alt="..." %}
                 </div>
                 {% endfor %}
             </div>
             {% if random_image %}
             <div class="random-image d-none d-md-block">
-                {% image random_image fill-200x270 class="" alt="..." %}
+                {% image random_image fill-400x540 class="" alt="..." %}
             </div>
             {% endif %}
         </div>
