@@ -16,10 +16,10 @@
 
     <div class="form-field-wrapper">
         {{ form.email.label_tag }} {{ form.email }}
-        <!-- 
+        <!--
         {% if field.help_text %}
         <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %} 
+        {% endif %}
         -->
         {% if form.email.errors %}
         <p class="error">{{ form.email.errors }}</p>
@@ -32,7 +32,6 @@
     </div> -->
 
     <div class="form-field-wrapper">
-        {{ form.password.errors }}
         {{ form.password.label_tag }} {{ form.password }}
         {% if form.password.errors %}
         <p class="error">{{ form.password.errors }}</p>
@@ -40,7 +39,6 @@
     </div>
 
     <div class="form-field-wrapper">
-        {{ form.password_check.errors }}
         {{ form.password_check.label_tag }} {{ form.password_check }}
         {% if form.password_check.errors %}
         <p class="error">{{ form.password_check.errors }}</p>

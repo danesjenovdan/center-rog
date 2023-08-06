@@ -85,7 +85,7 @@ class NewsListArchivePage(BasePage):
         # context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Arhiv novic")
         verbose_name_plural = _("Arhivi novic")
@@ -103,7 +103,7 @@ class NewsListPage(BasePage):
         categories = NewsCategory.objects.all()
         context["secondary_navigation"] = categories
 
-        all_news_page_objects = NewsPage.objects.live().filter(archived=False).order_by("-first_published_at")        
+        all_news_page_objects = NewsPage.objects.live().filter(archived=False).order_by("-first_published_at")
 
         # filtering
         chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
@@ -112,9 +112,9 @@ class NewsListPage(BasePage):
 
         # arhiv
         context["archive_page"] = NewsListArchivePage.objects.live().first()
-        
+
         # pagination
-        paginator = Paginator(all_news_page_objects, 6)
+        paginator = Paginator(all_news_page_objects, 14)
         page = request.GET.get("page")
         try:
             news_pages = paginator.page(page)
@@ -122,11 +122,11 @@ class NewsListPage(BasePage):
             news_pages = paginator.page(1)
         except EmptyPage:
             news_pages = paginator.page(paginator.num_pages)
-        
+
         context["news_pages"] = news_pages
 
         return context
-    
+
     class Meta:
         verbose_name = _("Seznam novic")
         verbose_name_plural = _("Seznami novic")

@@ -9,7 +9,7 @@
     </div>
     <div class="row">
       {% if event %}
-      <div class="col-md-4 col-xxl-3">
+      <div class="col-md-4 col-xl-3">
         {% include "events/includes/card.html" with event=event %}
         <div class="bulletin-board-link mb-4">
           <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
@@ -17,14 +17,14 @@
       </div>
       {% endif %}
       {% if news %}
-      <div class="d-md-none d-xxl-block col-xxl-3">
+      <div class="d-md-none d-xl-block col-xl-3">
         {% include "news/includes/card.html" with news=news %}
         <div class="bulletin-board-link mb-4">
           <a href="{% pageurl news_list %}"><span>{% translate 'Poglej vse novice' %}</span></a>
         </div>
       </div>
       {% endif %}
-      <div class="col-md-8 col-xxl-6">
+      <div class="col-md-8 col-xl-6">
         <div class="row">
           <div class="col-6">
             {% if lab %}
@@ -43,7 +43,7 @@
             {% if markets %}
             <div class="market-section my-4">
               <div class="markets-container">
-                <div class="color-scheme-brown">
+                <div class="color-scheme-brown card-hover">
                   <a
                     href="{% pageurl markets.0.localized %}"
                     class="text-center p-3 d-block"
@@ -51,7 +51,7 @@
                     <h4 class="m-0">{{ markets.0.localized }}</h4>
                   </a>
                 </div>
-                <div class="color-scheme-light-blue">
+                <div class="color-scheme-light-blue card-hover">
                   <a
                     href="{% pageurl markets.1.localized %}"
                     class="text-center p-3 d-block"
@@ -82,17 +82,14 @@
           <div class="col-12">
             <div class="residents-section">
               <div class="doorbell">
-                <div class="resident">
-                  <a
-                    href="{% pageurl residents_list %}"
-                    class="doorbell-button"
-                  ></a>
+                <a href="{% pageurl residents_list %}" class="resident">
+                  <span class="doorbell-button"></span>
                   <div class="resident-name">
                     <div class="paper">{% translate 'Poglej naše rezidence' %}</div>
                     <div class="tape"></div>
                     <div class="tape"></div>
                   </div>
-                </div>
+                </a>
               </div>
             </div>
           </div>

@@ -216,10 +216,15 @@
 
 #secondary-navigation {
     position: absolute;
-    top: 56px;
-    transform: rotate(3.56deg);
+    top: 34px;
+    transform: rotate(3.25deg);
     transition: all 0.35s ease;
     width: 100%;
+    background: $cs-light-gray;
+
+    .navbar {
+        padding-block: 16px;
+    }
 
     .nav-item {
         border-radius: 3px;
@@ -231,8 +236,8 @@
     }
 
     &.custom-navigation-show {
-        transform: rotate(-0.5deg);
-        top: 140px;
+        transform: rotate(-0.7deg);
+        top: 132px;
     }
 }
 

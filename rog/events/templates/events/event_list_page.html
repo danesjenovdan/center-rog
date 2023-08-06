@@ -19,9 +19,15 @@
 
     <div class="row">
         {% for event in event_pages %}
-        <div class="col-12 col-md-4 mb-4">
-            {% include "events/includes/card.html" with event=event %}
-        </div> 
+            {% if forloop.counter == 1 %}
+                <div class="col-12 col-md-8 mb-4">
+                    {% include "events/includes/card.html" with event=event wide=True %}
+                </div>
+            {% else %}
+                <div class="col-12 col-md-4 mb-4">
+                    {% include "events/includes/card.html" with event=event wide=False %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

@@ -89,7 +89,7 @@ class EventListArchivePage(BasePage):
         # context = add_see_more_fields(context)
 
         return context
-    
+
     class Meta:
         verbose_name = _("Arhiv dogodkov")
         verbose_name_plural = _("Arhivi dogodkov")
@@ -116,9 +116,9 @@ class EventListPage(BasePage):
 
         # arhiv
         context["archive_page"] = EventListArchivePage.objects.live().first()
-        
+
         # pagination
-        paginator = Paginator(all_event_page_objects, 3)
+        paginator = Paginator(all_event_page_objects, 14)
         page = request.GET.get("page")
         try:
             event_pages = paginator.page(page)
@@ -126,11 +126,11 @@ class EventListPage(BasePage):
             event_pages = paginator.page(1)
         except EmptyPage:
             event_pages = paginator.page(paginator.num_pages)
-        
+
         context["event_pages"] = event_pages
 
         return context
-    
+
     class Meta:
         verbose_name = _("Seznam dogodkov")
         verbose_name_plural = _("Seznami dogodkov")

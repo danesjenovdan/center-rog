@@ -7,8 +7,8 @@
                 <h2 class="d-md-none">{{ value.title }}</h2>
                 <div class="doorbell">
                 {% for resident in value.residents %}
-                    <div class="resident">
-                        <a href="{% pageurl resident.localized %}" class="doorbell-button"></a>
+                    <a href="{% pageurl resident.localized %}" class="resident">
+                        <span class="doorbell-button"></span>
                         <div class="resident-name">
                             <div class="paper">
                                 {{ resident }}
@@ -16,7 +16,7 @@
                             <div class="tape"></div>
                             <div class="tape"></div>
                         </div>
-                    </div>
+                    </a>
                 {% endfor %}
                 </div>
             </div>

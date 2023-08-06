@@ -18,15 +18,31 @@ class RegisterForm(forms.ModelForm):
         required=False
     )
     password = forms.CharField(
-        widget=forms.PasswordInput, 
-        label=_("geslo (vsaj 8 znakov, vsaj ena številka)"),
+        widget=forms.PasswordInput,
+        label=_("geslo (vsaj 11 znakov, vsaj ena številka)"),
         label_suffix=""
     )
     password_check = forms.CharField(
-        widget=forms.PasswordInput, 
+        widget=forms.PasswordInput,
         label=_("ponovi geslo"),
         label_suffix=""
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_check = cleaned_data.get("password_check")
+
+        if password and len(password) < 11:
+            self.add_error("password", _("Geslo mora biti dolgo vsaj 11 znakov."))
+        if password and not any(char.isdigit() for char in password):
+            self.add_error("password", _("Geslo mora vsebovati vsaj eno številko."))
+
+        if password != password_check:
+            self.add_error("password", _("Gesli se ne ujemata."))
+            self.add_error("password_check", _("Gesli se ne ujemata."))
+
+        return cleaned_data
 
     class Meta:
         model = User
@@ -79,25 +95,25 @@ class RegistrationInformationForm(forms.ModelForm):
         required=False
     )
     legal_person_name = forms.CharField(
-        widget=forms.TextInput, 
+        widget=forms.TextInput,
         label=_("Naziv pravne osebe"),
         label_suffix="",
         required=False
     )
     legal_person_address_1 = forms.CharField(
-        widget=forms.TextInput, 
+        widget=forms.TextInput,
         label=_("Naslov 1"),
         label_suffix="",
         required=False
     )
     legal_person_address_2 = forms.CharField(
-        widget=forms.TextInput, 
+        widget=forms.TextInput,
         label=_("Naslov 2 (neobvezno)"),
         label_suffix="",
         required=False
     )
     legal_person_tax_number = forms.CharField(
-        widget=forms.TextInput, 
+        widget=forms.TextInput,
         label=_("Davčna številka"),
         label_suffix="",
         required=False
@@ -123,20 +139,20 @@ class RegistrationInformationForm(forms.ModelForm):
             "legal_person_vat"
         ]
 
-class EditProfileForm(forms.ModelForm):    
+class EditProfileForm(forms.ModelForm):
     public_profile = forms.BooleanField(
         label=_("Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"),
         label_suffix="",
         required=False
     )
     public_username = forms.CharField(
-        widget=forms.TextInput, 
+        widget=forms.TextInput,
         label=_("Uporabniško ime"),
         label_suffix="",
         required=False
     )
     description = forms.CharField(
-        widget=forms.Textarea, 
+        widget=forms.Textarea,
         label=_("Opis"),
         label_suffix="",
         required=False
@@ -166,6 +182,9 @@ class EditProfileForm(forms.ModelForm):
         queryset=UserInterest.objects,
         widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
     )
+    gallery = forms.Field(
+        required=False,
+    )
 
     class Meta:
         model = User
@@ -178,11 +197,11 @@ class EditProfileForm(forms.ModelForm):
             "link_3",
             "contact",
             "interests",
-            # "gallery"
+            "gallery",
         ]
 
 
-class UserInterestsForm(forms.Form):    
+class UserInterestsForm(forms.Form):
     interests = forms.ModelMultipleChoiceField(
         required=False,
         queryset=UserInterest.objects,
@@ -190,7 +209,7 @@ class UserInterestsForm(forms.Form):
     )
 
 
-class PurchasePlanForm(forms.Form):    
+class PurchasePlanForm(forms.Form):
     plans = forms.ModelChoiceField(
         required=True,
         queryset=Plan.objects,

@@ -17,9 +17,13 @@ a.link {
         position: static;
     }
 
+    .link-text {
+        @include prepare-for-underlined-text();
+    }
+
     &:hover {
         .link-text {
-            text-decoration: underline;
+            @include underline-text();
         }
     }
 }
@@ -28,9 +32,13 @@ a.email-link {
     text-decoration: none;
     font-size: $xs-font-size;
 
+    .email-text {
+        @include prepare-for-underlined-text();
+    }
+
     &:hover {
         .email-text {
-            text-decoration: underline;
+            @include underline-text();
         }
     }
 }
@@ -39,6 +47,10 @@ a.email-link {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
+    .wrapper-page {
+        min-height: calc(100vh - 44px);
+    }
 }
 
 .box-emphasized {
@@ -90,15 +102,33 @@ a.primary-button {
     background-color: transparent;
     border-width: 1.5px;
     border-style: solid;
+    position: relative;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        border: 1px solid rgba(0, 0, 0, 0.40);
+        border-radius: 50%;
+        filter: blur(1.5px);
+        opacity: 0;
+    }
 
     &:hover {
         color: inherit;
-        box-shadow: 1px 1px 1px 0px rgba(255, 255, 255, 0.85) inset;
-        filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.35));
+
+        &::before{
+            opacity: 1;
+        }
     }
 
     &:focus {
         border-color: $cs-focus-green;
+        outline: none;
     }
 
     &:active {
@@ -169,6 +199,10 @@ a.primary-button {
             margin-bottom: 0;
         }
     }
+
+    .errorlist {
+        color: $cs-red;
+    }
 }
 
 .radio-square-wrapper {
@@ -203,16 +237,39 @@ form {
                 box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
             }
         }
-    
+
         input {
             position: absolute;
             clip: rect(0, 0, 0, 0);
             pointer-events: none;
         }
-    
+
         input:checked + .btn {
             color: #fff;
             background-color: $cs-dark-gray;
+        }
+    }
+}
+
+.user-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .user-image {
+        width: 110px;
+
+        img {
+            display: block;
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+        }
+
+        .btn-link {
+            padding: 0;
+            font-size: 15px;
+            color: inherit;
         }
     }
 }
@@ -226,23 +283,13 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 16px;
     border-radius: 2px;
     border: none;
 
-    @include media-breakpoint-up(md) {
-        // flex-direction: column;
-        // justify-content: space-between;
-    }
-
-    img+.card-body {
-        margin-top: 16px;
-    }
-
-    .card-body+img {
-        margin-top: 16px;
-    }
-
     .card-body {
+        flex: 1;
+
         @include media-breakpoint-up(md) {
             width: unset;
         }
@@ -261,9 +308,28 @@ form {
         }
     }
 
-    img {
-        height: 100%;
-        object-fit: cover;
+    .card-img {
+        flex: 1;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &.card-wide {
+        flex-direction: row;
+
+        > .card-img,
+        > .card-body {
+            flex-basis: 50%;
+            margin-top: 0;
+        }
+
+        .card-title {
+            font-size: $sm-font-size;
+        }
     }
 }
 
@@ -427,11 +493,15 @@ form {
         text-decoration: none;
 
         span {
-            text-decoration: underline;
+            @include prepare-for-underlined-text();
         }
 
         &:hover {
             color: $cs-dark-gray;
+
+            span {
+                @include underline-text();
+            }
         }
 
         &::after {
@@ -485,13 +555,28 @@ form {
 
         &.bulletin-board {
 
+            & > .container {
+                @include media-breakpoint-between(xl, xxl) {
+                    max-width: 1320px;
+                }
+            }
+
             h1 {
                 margin-bottom: 30px;
             }
 
             .residents-section {
                 .doorbell {
-                    max-width: 100%;
+                    max-width: 70%;
+                    padding: 15px;
+                }
+            }
+
+            .market-section {
+                .markets-container {
+                    h4 {
+                        font-size: $xs-font-size;
+                    }
                 }
             }
 
@@ -514,6 +599,7 @@ form {
                 margin: 20px 0;
                 display: flex;
                 justify-content: center;
+                transform: rotate(-5deg);
 
                 .notice {
                     height: 200px;
@@ -535,7 +621,6 @@ form {
                 .tape:first-child {
                     transform: rotate(-3deg);
                     top: -10px;
-                    z-index: -1;
                 }
 
                 .notice + .tape {
@@ -583,6 +668,10 @@ form {
                 color: $cs-dark-green;
             }
 
+            p.intro-text {
+                margin-bottom: 40px;
+            }
+
             ul {
                 list-style: none;
             }
@@ -595,11 +684,8 @@ form {
                 a {
                     font-size: $md-font-size;
                     color: $cs-dark-blue;
-                    text-decoration: none;
 
-                    &:hover {
-                        text-decoration: underline;
-                    }
+                    @include underline-text-on-hover();
                 }
 
                 &:before {
@@ -711,6 +797,12 @@ form {
         }
 
         &.colored-text-section {
+            .with-image.wider-container {
+                @include media-breakpoint-between(xl, xxl) {
+                    max-width: 1000px;
+                }
+            }
+
             .with-image {
                 p {
                     font-size: $xs-font-size;
@@ -741,6 +833,10 @@ form {
     }
 
     .market-section {
+        p {
+            margin-bottom: 2rem;
+        }
+
         .markets-container {
             a {
                 color: inherit;
@@ -767,6 +863,7 @@ form {
         grid-template-rows: auto auto;
         color: $cs-dark-blue;
         text-decoration: none;
+        margin-bottom: 20px;
 
         img, video {
             grid-column: 1 / 1;
@@ -776,7 +873,7 @@ form {
         h6 {
             text-align: center;
             font-size: $xs-font-size;
-            margin: 10px 0;
+            margin: 0;
         }
     }
 }
@@ -791,6 +888,7 @@ form {
 
         .resident {
             display: flex;
+            text-decoration: none;
 
             .resident-name {
                 background: #D9D9D9;
@@ -828,10 +926,30 @@ form {
                 box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.15), inset 0px 0.510827px 3.57579px rgba(0, 0, 0, 0.25), inset 0px 2.04331px 5.10827px #FFFFFF, inset -2.04331px -2.04331px 2.04331px rgba(0, 0, 0, 0.25);
                 margin-right: 10px;
                 flex-shrink: 0;
+            }
 
-                &:hover + .resident-name {
-                    box-shadow: inset 0px 0px 30px rgba(255, 184, 0, 0.7), inset 3.04px 1.04px 8.04px rgba(0, 0, 0, 0.25);
-                }
+            &:hover .doorbell-button,
+            &:active .doorbell-button {
+                background: radial-gradient(50% 50% at 50% 50%, #EAEAEA 0%, #D9D9D9 100%);
+                box-shadow: -2.04330px -2.04330px 2.04330px 0px rgba(0, 0, 0, 0.25) inset, 0px 2.04330px 5.10827px 0px #FFFFFF inset, 0px 0.51082px 3.57578px 0px rgba(0, 0, 0, 0.25) inset, 0px 0px 6px 0px rgba(0, 0, 0, 0.30) inset;
+            }
+
+            &:hover .doorbell-button + .resident-name {
+                box-shadow: inset 0px 0px 30px rgba(255, 184, 0, 0.7), inset 3.04px 1.04px 8.04px rgba(0, 0, 0, 0.25);
+            }
+
+            &:active .doorbell-button + .resident-name {
+                border-color: #CBCBCB;
+                box-shadow: 3.03999px 1.03999px 8.03999px 0px rgba(0, 0, 0, 0.25) inset, 0px 0px 30px 0px #FFD600 inset;
+            }
+
+            &:focus-visible {
+                outline: none;
+            }
+
+            &:focus-visible .doorbell-button,
+            &:focus-visible .doorbell-button + .resident-name {
+                outline: 2px solid $cs-focus-green;
             }
 
             &:not(:last-child) {
@@ -940,18 +1058,32 @@ section.image-embed {
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
 
-    p {
-        font-size: $sm-font-size;
-    }
+    .image-embed-text-box {
+        border-radius: 3px;
 
-    .bulletin-board-link {
-        text-align: start;
+        p {
+            font-size: $sm-font-size;
 
-        a {
-            color: inherit;
-            font-size: $xs-font-size;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .bulletin-board-link {
+            text-align: start;
+
+            a {
+                color: inherit;
+                font-size: $xs-font-size;
+            }
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
+
+
 }
 
 .template-object-list {
@@ -1358,7 +1490,15 @@ section.image-embed {
     }
 }
 
+.template-module-page section h2.gallery-title {
+    margin-bottom: 40px;
+}
+
 .glide {
+    width: auto;
+    margin-left: calc(var(--bs-gutter-x) * 0.5 * -1);
+    margin-right: calc(var(--bs-gutter-x) * 0.5 * -1);
+
     .glide__arrows {
         .glide__arrow {
             color: black;
@@ -1394,10 +1534,6 @@ section.image-embed {
                 z-index: 3;
                 filter: blur(0px);
                 transform: scale(2);
-
-                img {
-                    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.33);
-                }
             }
 
             .glide__slide--active-prev1,
@@ -1410,7 +1546,7 @@ section.image-embed {
             .glide__slide--active-prev2,
             .glide__slide--active-next2 {
                 z-index: 1;
-                filter: blur(5px);
+                filter: blur(10px);
                 transform: scale(1.25);
             }
         }
@@ -1425,6 +1561,7 @@ section.image-embed {
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
 
 .page-num.active {
@@ -1435,6 +1572,10 @@ section.image-embed {
 .page-num a {
     font-size: $xxs-font-size;
     text-decoration: none;
+}
+
+.page-prev {
+    transform: scaleX(-1);
 }
 
 .template-profile {

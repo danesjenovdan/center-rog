@@ -1,0 +1,7 @@
+/* Always show the original block type in admin (even when collapsing) */
+.w-panel__heading .c-sf-block__title {
+  display: none !important;
+}
+.w-panel__heading .c-sf-block__type {
+  display: inline !important;
+}

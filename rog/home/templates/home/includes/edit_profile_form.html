@@ -1,4 +1,4 @@
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags usergallery_tags jsonify %}
 
 <form action="" method="post" class="edit-profile-form">
     {% csrf_token %}
@@ -100,7 +100,25 @@
 
     <h2>Dodaj slike svojih izdelkov:</h2>
 
-    TODO
+    <div class="form-field-wrapper">
+        <p>
+            Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne
+            datoteke je 5MB. Dovoljena formata sta .jpg in .png.
+        </p>
+        <p>
+            <button type="button" class="secondary-button button-small">naloži</button>
+        </p>
+        <div class="user-gallery">
+            <template>
+                <div class="user-image">
+                    <img src="https://placehold.co/200" alt="">
+                    <button type="button" class="btn btn-link">odstrani</button>
+                </div>
+            </template>
+        </div>
+        <script>window.__USER_GALLERY_DATA__ = JSON.parse("{{ form.gallery|gallery_data|jsonify|escapejs }}");</script>
+        <script src="{% static 'js/user_gallery.js' %}"></script>
+    </div>
 
     <div class="d-flex flex-column align-items-end my-4">
         <button type="submit" class="secondary-button button-medium">{{ button_text }}</button>

@@ -2,9 +2,9 @@
     <div class="col-12 d-flex justify-content-center">
         <div class="d-flex">
             {% if objects.has_previous %}
-            <div class="page-num">
+            <div class="page-num page-prev">
                 <a href="?page={{ objects.previous_page_number }}">
-                    <span>◁</span>
+                    <span>▷</span>
                 </a>
             </div>
             {% endif %}
@@ -52,7 +52,7 @@
             {% endif %}
 
             {% if objects.has_next %}
-            <div class="page-num">
+            <div class="page-num page-next">
                 <a href="?page={{ objects.next_page_number }}">
                     <span>▷</span>
                 </a>
