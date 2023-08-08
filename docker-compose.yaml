@@ -1,8 +1,8 @@
-
 version: '3'
 
 volumes:
   postgres-data:
+
 
 services:
   wagtail:
@@ -19,8 +19,7 @@ services:
       DB_NAME: wagtail
       DB_USERNAME: wagtail
       DB_PASSWORD: changeme
-      PRIMA_USERNAME: "${PRIMA_USERNAME}"
-      PRIMA_PASSWORD: "${PRIMA_PASSWORD}"
+      PRIMA_API_KEY: "${PRIMA_API_KEY}"
     depends_on:
       - db
 
