@@ -233,8 +233,7 @@ WAGTAILMEDIA = {
 }
 
 # Prima settings
-PRIMA_USERNAME = os.getenv('PRIMA_USERNAME', 'example')
-PRIMA_PASSWORD = os.getenv('PRIMA_PASSWORD', 'example')
+PRIMA_API_KEY = os.getenv('PRIMA_API_KEY', 'example')
 PRIMA_URL = "https://centerrog.primacloud.si/bin/sysfcgi.fx"
 
 # Custom

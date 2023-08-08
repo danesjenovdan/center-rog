@@ -5,11 +5,9 @@ from django.conf import settings
 
 
 class PrimaApi(object):
-    def __init__(self, username=settings.PRIMA_USERNAME, password=settings.PRIMA_PASSWORD, url=settings.PRIMA_URL):
-        self.username = username
-        self.password = password
+    def __init__(self, api_key=settings.PRIMA_API_KEY, url=settings.PRIMA_URL):
+        self.api_key = api_key
         self.url = url
-        self.session_id = None # Session ID is needed for all other API calls
 
     ### REQUEST AND RESPONSE PROCESSING
     
@@ -28,7 +26,7 @@ class PrimaApi(object):
         # parse xml to dict
         try:
             # get response in text
-            print("prima response", response)
+            print("prima response", response, response.text)
             response_text = response.text
             response_dict = xmltodict.parse(response_text)
         except:
@@ -58,44 +56,12 @@ class PrimaApi(object):
             print(f"Error - {error_message}")
             return None, error_message
 
-    def login(self):
-        """ 
-        Login to acquire session ID.
-        """
-
-        payload = {
-            'Request': 'LoginUser', 
-            'UsrName': self.username,
-            'UsrPassword': self.password
-        }
-
-        r = requests.get(self.url, params=payload)
-
-        data, message = self.primaResponse(r, payload)
-
-        if data:
-            self.session_id = data['SessionID']
-            print("Successful login")
-            return data['UsrID']
-
-        else:
-            print('Error at login', message)
-            return
-
     def primaRequest(self, payload):
         """ 
-        Adds session ID to request.
-        If there is no session ID, first call login().
+        Adds api key to request.
         """
 
-        # if session id does not exist yet
-        if not self.session_id:
-            logged_in = self.login()
-            if not logged_in:
-                print("Error - login request failed")
-                return
-
-        payload['SessionID'] = self.session_id
+        payload['ApiKey'] = self.api_key
         
         response = requests.get(
             self.url,
