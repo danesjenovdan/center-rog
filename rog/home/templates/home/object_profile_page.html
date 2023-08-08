@@ -20,25 +20,34 @@
         </div>
     </div>
     {% endblock profile_page_header %}
-    
+
     {% block profile_page_body %}
-    
+
     {% block profile_page_intro %}
     <div class="row mb-4">
-        
+
         {% block profile_page_desc %}
         <div class="col-md-6 intro-text">
             <p>{{ page.description }}</p>
         </div>
         {% endblock profile_page_desc %}
-        
+
         {% block profile_page_contact_information %}
         <div class="col-md-6">
             <div class="contact-information color-scheme-white">
                 <div class="tape"></div>
                 <div class="notice">
                     {% if page.email %}
-                    <p><a href="mailto:{{ page.email }}">e-pošta</a></p>
+                    <p>
+                        <a href="mailto:{{ page.email }}" target="_blank">e-pošta</a>
+                        <button type="button" class="copy-email-button" data-email="{{ page.email }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
+                                <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
+                                <path stroke="currentColor" stroke-width="1.15" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
+                            </svg>
+                        </button>
+                        <span class="copy-email-confirmation small d-none">kopirano!</span>
+                    </p>
                     {% endif %}
                     {% if page.phone %}
                     <p>{{ page.phone }}</p>
@@ -64,7 +73,7 @@
             </div>
 
             {% if page.working_hours %}
-            <div class="working-hours color-scheme-yellow">
+            <div class="working-hours {% if object_profile_page_type == "StudioPage" %}color-scheme-pink{% else %}color-scheme-yellow{% endif %}">
                 <div class="tape"></div>
                 <div class="notice">
                     {% for working_hours in page.working_hours %}
@@ -81,7 +90,7 @@
         </div>
 
         {% endblock profile_page_contact_information %}
-        
+
     </div>
     {% endblock profile_page_intro %}
 </div>

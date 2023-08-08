@@ -2,6 +2,7 @@ function labsHoverAnimations() {
   const labs = document.querySelectorAll(".labs-section .lab");
   labs.forEach((lab) => {
     lab.addEventListener("mouseenter", onLabEnter);
+    lab.addEventListener("mouseleave", onLabLeave);
   });
 }
 
@@ -13,18 +14,22 @@ function onLabEnter(event) {
     return;
   }
 
-  video.currentTime = 0;
+  video.loop = true;
   video.play();
-  video.addEventListener("ended", () => onVideoEnded(img, video));
 
   img.style.opacity = "0";
 }
 
-function onVideoEnded(img, video) {
-  img.style.opacity = "1";
+function onLabLeave(event) {
+  const img = event.currentTarget.querySelector("img");
+  const video = event.currentTarget.querySelector("video");
+
+  if (!video) {
+    return;
+  }
 
   video.pause();
-  video.currentTime = 0;
+  // img.style.opacity = "1";
 }
 
 function carousel() {
@@ -96,28 +101,47 @@ function scrollingDots(section, container) {
   });
 }
 
+function copyEmailButton() {
+  const copyEmailButton = document.querySelectorAll(".copy-email-button");
+  copyEmailButton.forEach((button) => {
+    const confirmation = button.parentElement.querySelector(".copy-email-confirmation");
+
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+
+      const email = button.dataset.email;
+      await navigator.clipboard.writeText(email);
+
+      confirmation.classList.remove("d-none");
+      setTimeout(() => {
+        confirmation.classList.add("d-none");
+        button.disabled = false;
+      }, 2000);
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const collapsable_menu = document.getElementById("navbar-collapsable-menu");
   const secondary_navigation = document.getElementById("secondary-navigation");
 
-  collapsable_menu.addEventListener("hide.bs.collapse", event => {
-      document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
-      document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
+  collapsable_menu.addEventListener("hide.bs.collapse", (event) => {
+    document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
+    document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
 
-      if (secondary_navigation) {
-          secondary_navigation.classList.toggle("custom-navigation-show");
-      }
+    if (secondary_navigation) {
+      secondary_navigation.classList.toggle("custom-navigation-show");
+    }
   });
 
-  collapsable_menu.addEventListener("show.bs.collapse", event => {
-      document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
-      document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
+  collapsable_menu.addEventListener("show.bs.collapse", (event) => {
+    document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
+    document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
 
-      if (secondary_navigation) {
-          secondary_navigation.classList.toggle("custom-navigation-show");
-      }
+    if (secondary_navigation) {
+      secondary_navigation.classList.toggle("custom-navigation-show");
+    }
   });
-
 
   labsHoverAnimations();
 
@@ -134,4 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector(".news-section")) {
     scrollingDots("news-section", "news-container");
   }
+
+  copyEmailButton();
 });

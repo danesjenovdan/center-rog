@@ -5,7 +5,9 @@
     <div class="card-body">
       <h4 class="card-title text-center">{{ studio.title }}</h4>
     </div>
-    {% image studio.thumbnail original class="img-fluid card-img-top" %}
+    <div class="card-img">
+      {% image studio.thumbnail width-480 %}
+    </div>
   </div>
   <div class="show-hover flex-column justify-content-between">
     <p>{{ studio.short_description }}</p>

@@ -38,7 +38,6 @@ class EventCategory(models.Model):
 
 
 class EventPage(BasePage):
-    short_description = models.TextField(blank=True, verbose_name=_("Kratek opis"))
     hero_image = models.ForeignKey(
         CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Slika dogodka"))
     category = models.ForeignKey(
@@ -47,14 +46,13 @@ class EventPage(BasePage):
     start_time = models.TimeField(verbose_name=_("Ura začetka"))
     end_time = models.TimeField(verbose_name=_("Ura konca"))
     start_day = models.DateField(verbose_name=_("Datum začetka"))
-    end_day = models.DateField(verbose_name=_("Datum konca"))
-    location = models.TextField(blank=True, verbose_name=_("Lokacija"))
+    end_day = models.DateField(blank=True, null=True, verbose_name=_("Datum konca (če gre za večdneven dogodek)"))
+    location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
-        FieldPanel("short_description"),
         FieldPanel("hero_image"),
         FieldPanel("category"),
         FieldPanel("body"),

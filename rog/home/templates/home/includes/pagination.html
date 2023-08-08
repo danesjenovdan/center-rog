@@ -7,6 +7,12 @@
                     <span>▷</span>
                 </a>
             </div>
+            {% else %}
+            <div class="page-num page-prev">
+                <span>
+                    <span>▷</span>
+                </span>
+            </div>
             {% endif %}
 
             {% if objects.number > 2 %}
@@ -56,6 +62,12 @@
                 <a href="?page={{ objects.next_page_number }}">
                     <span>▷</span>
                 </a>
+            </div>
+            {% else %}
+            <div class="page-num page-next">
+                <span>
+                    <span>▷</span>
+                </span>
             </div>
             {% endif %}
         </div>
