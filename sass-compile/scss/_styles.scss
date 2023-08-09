@@ -352,42 +352,51 @@ form {
 }
 
 .studio-card {
-    overflow: hidden;
+    // overflow: hidden;
     text-decoration: none;
     border: none;
     border-radius: 2px;
     margin-inline: 5px;
 
-    // aspect-ratio: 250/320;
-    position: relative;
-    padding-top: 130%;
+    .card-inner {
+        // aspect-ratio: 250/320;
+        padding-top: 130%;
+        position: relative;
 
-    .show-normal,
-    .show-hover {
-        position: absolute;
-        inset: 0;
-        flex-grow: 1;
-        max-height: 100%;
-        padding: 20px;
+        .show-normal,
+        .show-hover {
+            position: absolute;
+            inset: 0;
+            flex-grow: 1;
+            max-height: 100%;
+            padding: 20px;
+        }
     }
 
-    .show-normal {
-        display: flex;
-    }
+    // FLIP EFFECT
+    background-color: transparent;
+    perspective: 1000px;
 
-    .show-hover {
-        display: none;
-    }
+    .card-inner {
+        transition: transform 0.5s ease-in-out;
+        transform-style: preserve-3d;
 
-    &:hover {
-        .show-normal {
-            display: none;
+        .show-normal,
+        .show-hover {
+            backface-visibility: hidden;
         }
 
         .show-hover {
-            display: flex;
+            transform: rotateY(180deg);
         }
     }
+
+    &:hover {
+        .card-inner {
+            transform: rotateY(180deg);
+        }
+    }
+    // END FLIP EFFECT
 
     .card-body {
         padding: 0;
@@ -800,14 +809,17 @@ form {
                 }
 
                 .row {
+                    margin-block: 33px; // needed when cards flip on hover to not create a scrollbar
                     padding-left: 15px;
                     padding-right: 15px;
                     flex-wrap: nowrap;
                 }
 
-                .card {
-                    margin-left: 15px;
-                    margin-right: 15px;
+                .studio-card-col {
+                    // margin-left: 15px;
+                    // margin-right: 15px;
+                    width: 275px;
+                    flex: 0 0 275px;
 
                     &:nth-child(1n) {
                         transform: rotate(-3deg);
@@ -935,9 +947,7 @@ form {
 
 .residents-section {
     > .container {
-        @include media-breakpoint-down(xxl) {
-            max-width: 950px;
-        }
+        max-width: 950px !important;
     }
 
     .doorbell {
