@@ -177,7 +177,7 @@ a.primary-button {
     }
 
     input, textarea {
-        border: 1px solid $cs-dark-gray;
+        border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
     }
@@ -352,42 +352,51 @@ form {
 }
 
 .studio-card {
-    overflow: hidden;
+    // overflow: hidden;
     text-decoration: none;
     border: none;
     border-radius: 2px;
     margin-inline: 5px;
 
-    // aspect-ratio: 250/320;
-    position: relative;
-    padding-top: 130%;
+    .card-inner {
+        // aspect-ratio: 250/320;
+        padding-top: 130%;
+        position: relative;
 
-    .show-normal,
-    .show-hover {
-        position: absolute;
-        inset: 0;
-        flex-grow: 1;
-        max-height: 100%;
-        padding: 20px;
+        .show-normal,
+        .show-hover {
+            position: absolute;
+            inset: 0;
+            flex-grow: 1;
+            max-height: 100%;
+            padding: 20px;
+        }
     }
 
-    .show-normal {
-        display: flex;
-    }
+    // FLIP EFFECT
+    background-color: transparent;
+    perspective: 1000px;
 
-    .show-hover {
-        display: none;
-    }
+    .card-inner {
+        transition: transform 0.5s ease-in-out;
+        transform-style: preserve-3d;
 
-    &:hover {
-        .show-normal {
-            display: none;
+        .show-normal,
+        .show-hover {
+            backface-visibility: hidden;
         }
 
         .show-hover {
-            display: flex;
+            transform: rotateY(180deg);
         }
     }
+
+    &:hover {
+        .card-inner {
+            transform: rotateY(180deg);
+        }
+    }
+    // END FLIP EFFECT
 
     .card-body {
         padding: 0;
@@ -576,10 +585,34 @@ form {
         }
 
         &.bulletin-board {
-
             & > .container {
                 @include media-breakpoint-between(xl, xxl) {
                     max-width: 1320px;
+                }
+            }
+
+            .events-stack,
+            .news-stack {
+                position: relative;
+                height: calc(400px + 70px);
+
+                .events-card,
+                .news-card {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+
+                    &:nth-child(2) {
+                        top: 35px;
+                    }
+
+                    &:nth-child(3) {
+                        top: 70px;
+                    }
+
+                    &:hover {
+                        z-index: 1;
+                    }
                 }
             }
 
@@ -591,6 +624,12 @@ form {
                 .doorbell {
                     max-width: 70%;
                     padding: 15px;
+                }
+            }
+
+            .labs-section {
+                .lab {
+                    margin-bottom: 0;
                 }
             }
 
@@ -612,7 +651,10 @@ form {
                 text-decoration: none;
                 text-align: center;
 
-                &:hover {}
+                &:hover {
+                    background-color: #FFFFFF;
+                    color: $cs-dark-gray;
+                }
             }
 
             .notice-wrapper {
@@ -767,14 +809,17 @@ form {
                 }
 
                 .row {
+                    margin-block: 33px; // needed when cards flip on hover to not create a scrollbar
                     padding-left: 15px;
                     padding-right: 15px;
                     flex-wrap: nowrap;
                 }
 
-                .card {
-                    margin-left: 15px;
-                    margin-right: 15px;
+                .studio-card-col {
+                    // margin-left: 15px;
+                    // margin-right: 15px;
+                    width: 275px;
+                    flex: 0 0 275px;
 
                     &:nth-child(1n) {
                         transform: rotate(-3deg);
@@ -901,11 +946,15 @@ form {
 }
 
 .residents-section {
+    > .container {
+        max-width: 950px !important;
+    }
+
     .doorbell {
         background-color: #F7F7F7;
         box-shadow: 0px 2.57726px 2.57726px rgba(0, 0, 0, 0.25), inset -2px 2px 4px rgba(146, 146, 146, 0.4), inset 2.57726px -2.57726px 4px rgba(0, 0, 0, 0.23);
         border-radius: 12px;
-        max-width: 400px;
+        max-width: 420px;
         padding: 30px;
 
         .resident {
@@ -1066,6 +1115,12 @@ form {
 }
 
 .template-residence-list {
+    .list-container {
+        @include media-breakpoint-down(xxl) {
+            max-width: 950px;
+        }
+    }
+
     .bulletin-board-link a {
         color: inherit;
         font-size: $xs-font-size;
@@ -1191,6 +1246,7 @@ section.image-embed {
                 padding: 20px;
                 font-size: $xs-font-size;
                 flex-grow: 1;
+                min-height: 150px;
             }
 
             .tape {
@@ -1225,7 +1281,7 @@ section.image-embed {
         }
 
         .working-hours {
-            min-width: 260px;
+            min-width: 270px;
             position: relative;
             margin-left: 50%;
             display: inline-flex;
@@ -1705,7 +1761,7 @@ section.image-embed {
         appearance: none;
         width: 23px;
         height: 23px;
-        border: 1px solid $cs-dark-gray;
+        border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 

@@ -10,9 +10,11 @@
         </div>
     </div>
     <div class="container-fluid studios-container">
-        <div class="row my-3">
+        <div class="row">
             {% for studio in value.studios %}
+            <div class="col studio-card-col">
                 {% include "home/includes/studio_card.html" with studio=studio %}
+            </div>
             {% endfor %}
         </div>
     </div>

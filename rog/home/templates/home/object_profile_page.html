@@ -34,6 +34,7 @@
 
         {% block profile_page_contact_information %}
         <div class="col-md-6">
+            {% if page.email or page.phone or page.link_1 or page.link_2 or page.link_3 or page.contact_description %}
             <div class="contact-information color-scheme-white">
                 <div class="tape"></div>
                 <div class="notice">
@@ -71,6 +72,7 @@
                 </div>
                 <div class="tape"></div>
             </div>
+            {% endif %}
 
             {% if page.working_hours %}
             <div class="working-hours {% if object_profile_page_type == "StudioPage" %}color-scheme-pink{% else %}color-scheme-yellow{% endif %}">

@@ -16,7 +16,7 @@
             {% image lab.thumbnail original as lab_thumbnail %}
             <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}" poster="{{ lab_thumbnail.url }}"></video>
           {% endif %}
-          {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
+          {% image lab.thumbnail original class="img-fluid" alt=lab.alt_description %}
           <h6>{{ lab.title }}</h6>
         </a>
       </div>

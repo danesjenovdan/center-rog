@@ -8,9 +8,13 @@
       </div>
     </div>
     <div class="row">
-      {% if event %}
+      {% if events %}
       <div class="col-md-4 col-xl-3">
-        {% include "events/includes/card.html" with event=event %}
+        <div class="events-stack">
+          {% for event_item in events reversed %}
+            {% include "events/includes/card.html" with event=event_item %}
+          {% endfor %}
+        </div>
         <div class="bulletin-board-link mb-4">
           <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
         </div>
@@ -18,7 +22,11 @@
       {% endif %}
       {% if news %}
       <div class="d-md-none d-xl-block col-xl-3">
-        {% include "news/includes/card.html" with news=news %}
+        <div class="news-stack">
+          {% for news_item in news reversed %}
+            {% include "news/includes/card.html" with news=news_item %}
+          {% endfor %}
+        </div>
         <div class="bulletin-board-link mb-4">
           <a href="{% pageurl news_list %}"><span>{% translate 'Poglej vse novice' %}</span></a>
         </div>
@@ -34,7 +42,7 @@
                   {% image lab.thumbnail original as lab_thumbnail %}
                   <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}" poster="{{ lab_thumbnail.url }}"></video>
                 {% endif %}
-                {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
+                {% image lab.thumbnail original class="img-fluid" alt=lab.alt_description %}
               </a>
               <div class="bulletin-board-link mb-4">
                 <a href="{% pageurl labs_list %}"><span>{% translate 'Poglej vse laboratorije' %}</span></a>

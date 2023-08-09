@@ -59,21 +59,27 @@ class BulletinBoardBlock(blocks.StructBlock):
         # random event
         today = date.today()
         if value["event"] is not None:
-            context["event"] = value["event"]
+            context["events"] = [value["event"]]
         else:
-            upcoming_events = list(EventPage.objects.live().filter(start_day__gte=today))
-            if len(upcoming_events) > 0:
-                context["event"] = random.choice(upcoming_events)
+            upcoming_events = EventPage.objects.live().filter(start_day__gte=today).order_by("-first_published_at")
+            used_categories = set()
+            events = list()
+            for event in upcoming_events:
+                if event.category not in used_categories:
+                    events.append(event)
+                    used_categories.add(event.category)
+                if len(events) >= 3:
+                    break
+            context["events"] = events
         # link to all events
         context["events_list"] = EventListPage.objects.live().first()
 
         # random news
         if value["news"] is not None:
-            context["news"] = value["news"]
+            context["news"] = [value["news"]]
         else:
-            news = list(NewsPage.objects.live())
-            if len(news) > 0:
-                context["news"] = random.choice(news)
+            news = NewsPage.objects.live().order_by("-first_published_at")[:3]
+            context["news"] = news
         # link to news
         context["news_list"] = NewsListPage.objects.live().first()
 
@@ -89,13 +95,13 @@ class BulletinBoardBlock(blocks.StructBlock):
         if len(markets) > 1:
             context["markets"] = random.sample(markets, 2)
         elif len(markets) > 0:
-            context["markets"] = random.sample(markets, 1)            
+            context["markets"] = random.sample(markets, 1)
         # link to markets
         context["markets_list"] = MarketStoreListPage.objects.live().first()
-        
+
         # link to studios
         context["studios_list"] = StudioListPage.objects.live().first()
-        
+
         # link to residences
         context["residents_list"] = ResidenceListPage.objects.live().first()
 
@@ -224,7 +230,7 @@ class FullWidthImageBlock(ColoredStructBlock):
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
     ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
-    
+
     class Meta:
         label = _("Slika")
         template = "home/blocks/image_embed.html",
@@ -288,7 +294,7 @@ class ColoredRichTextBlock(ColoredStructBlock):
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
     ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
-    
+
     class Meta:
         label = _("Barvno obogateno besedilo")
         template = "home/blocks/colored_rich_text_section.html"
