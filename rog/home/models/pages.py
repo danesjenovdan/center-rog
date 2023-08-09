@@ -283,7 +283,7 @@ class ResidenceListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["residents"] = ResidencePage.objects.child_of(self).live()
+        context["residents"] = ResidencePage.objects.child_of(self).live().filter(archived=False)
         context["archive_page"] = ResidenceArchiveListPage.objects.live().first()
 
         # see more

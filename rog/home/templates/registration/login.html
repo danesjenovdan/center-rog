@@ -32,16 +32,20 @@
                     <input type="password" name="password" required id="id_password" class="form-control">
                 </div>
 
-                <p><a href="{% url 'password_reset' %}">Pozabljeno geslo?</a></p>
-
-                <div class="d-flex justify-content-end mb-4">
-                    <button type="submit" class="secondary-button button-medium">naprej</button>
+                <div class="row mt-4">
+                    <div class="col-6">
+                        <div class="mb-1"><a href="{% url 'password_reset' %}">Pozabljeno geslo?</a></div>
+                        <div class="mb-1"><a href="/registracija/">Registriraj se</a></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="d-flex justify-content-end mb-4">
+                            <button type="submit" class="secondary-button button-medium">naprej</button>
+                        </div>
+                    </div>
                 </div>
-                
+
             </form>
 
-            <p class="text-center mt-5">Še nimaš profila? <a href="/registracija/">Registriraj se</a></p>
-        
         </div>
 
     </div>
