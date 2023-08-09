@@ -12,9 +12,7 @@
                     {% if value.link %}
                     <div class="bulletin-board-link">
                         {% for link in value.link %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
-                            <span>{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</span>
-                        </a>
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}"><span>{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</span></a>
                         {% endfor %}
                     </div>
                     {% endif %}
