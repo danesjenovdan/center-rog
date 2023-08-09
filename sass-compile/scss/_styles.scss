@@ -642,7 +642,10 @@ form {
                 text-decoration: none;
                 text-align: center;
 
-                &:hover {}
+                &:hover {
+                    background-color: #FFFFFF;
+                    color: $cs-dark-gray;
+                }
             }
 
             .notice-wrapper {
