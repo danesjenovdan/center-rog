@@ -51,6 +51,9 @@ class PrimaApi(object):
             # retry request
             response = self.primaRequest(payload)
             return self.primaResponse(response, payload)
+        elif response_status == '15': # user already exists
+            data = response_data.get('data')
+            return data, "User exists"
         else: # there was an error:
             error_message = response_data.get('@message')
             print(f"Error - {error_message}")
@@ -128,6 +131,16 @@ class PrimaApi(object):
         print("Create user", payload)
 
         data, message = self.primaRequest(payload)
+
+        # TODO WARNING this code contains unsafe assumptions
+        if message == 'User exists':
+            all_users = self.readUsers()
+            the_user = next(filter(lambda user: user.get('@UsrLoginName', '') == email, all_users[0]['user']))
+            
+            original_data, message = self.readUsers(the_user['@UsrID'])
+
+            # finally, remove all the @ signs from the beginning of keys
+            data = {key[1:]: value for key, value in original_data.get('user', {}).items()}
 
         return data, message
     
