@@ -25,7 +25,7 @@ class Tool(Orderable, ClusterableModel):
     panels = [
         FieldPanel("name"),
         FieldPanel("image"),
-        InlinePanel("related_tool_specifications", label=_("Specifikacija")),
+        InlinePanel("related_tool_specifications", max_num=4, label=_("Specifikacija")),
         FieldPanel("required_workshop"),
         FieldPanel("prima_location_id"),
         FieldPanel("prima_group_id"),
@@ -33,7 +33,7 @@ class Tool(Orderable, ClusterableModel):
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name = _("Orodje")
         verbose_name_plural = _("Orodja")

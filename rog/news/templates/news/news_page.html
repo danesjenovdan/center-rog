@@ -9,10 +9,10 @@
 
 {% block page_body %}
 
-{% if page.hero_image %}
+{% comment %} {% if page.hero_image %}
 {% image page.hero_image original as hero_image %}
 <section style="background-image: url({{ hero_image.url }})" class="container-fluid image-embed px-4 px-md-0"></section>
-{% endif %}
+{% endif %} {% endcomment %}
 
 <div class="container object-profile-container news-page-profile-container">
     <div class="row">
@@ -29,6 +29,13 @@
                 <span>{{ page.first_published_at|date:"j. n. Y" }}</span>
             </div>
         </div>
+        {% if page.hero_image %}
+        <div class="col-12">
+            <div class="mt-4">
+                {% image page.hero_image original class="d-block w-100 img-fluid" %}
+            </div>
+        </div>
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-12 intro-text">

@@ -24,10 +24,13 @@
     </p>
     <p>
         <a href="mailto:{{ page.email }}" target="_blank">e-pošta</a>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="17" height="21">
-            <path stroke="#3B4352" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.11" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
-            <path stroke="#3B4352" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.11" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
-        </svg>
+        <button type="button" class="copy-email-button" data-email="{{ page.email }}">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
+                <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
+                <path stroke="currentColor" stroke-width="1.15" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
+            </svg>
+        </button>
+        <span class="copy-email-confirmation small d-none">kopirano!</span>
     </p>
     <p>
         <a href="">termini usposabljanj</a>
@@ -48,7 +51,7 @@
 <div class="container mb-5">
     <div class="row">
         {% for tool in page.related_tools.all %}
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4 col-xxl-3">
             <div class="card tool-card color-scheme-white">
                 <h4 class="card-title text-center">{{ tool.name }}</h4>
                 {% image tool.image original class="img-fluid" alt="..." %}

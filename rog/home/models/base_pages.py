@@ -88,7 +88,7 @@ class ObjectProfilePage(BasePage):
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
-    
+
     content_panels = Page.content_panels + [
         FieldPanel("description"),
         MultiFieldPanel(
@@ -123,6 +123,11 @@ class ObjectProfilePage(BasePage):
         else:
             return self.description
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["object_profile_page_type"] = self.__class__.__name__
+        return context
+
     class Meta:
         abstract = True
 
@@ -139,4 +144,3 @@ class BasicTextPage(Page):
     class Meta:
         verbose_name = _("Osnovna stran z besedilom")
         verbose_name_plural = _("Osnovne strani z besedilom")
-

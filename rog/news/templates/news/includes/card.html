@@ -2,7 +2,11 @@
 
 <a href="{% pageurl news.localized %}" class="card news-card card-hover {% if wide %}card-wide{% endif %} {% if news.category %}color-scheme-{{ news.category.color_scheme }}{% endif %}">
   <div class="card-img">
-    {% image news.thumbnail width-480 %}
+    {% if news.thumbnail %}
+      {% image news.thumbnail width-480 %}
+    {% elif news.hero_image %}
+      {% image news.hero_image width-480 %}
+    {% endif %}
   </div>
   <div class="card-body p-md-0">
     <p>{{ news.category.name }}</p>

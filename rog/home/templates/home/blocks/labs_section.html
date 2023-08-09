@@ -13,7 +13,8 @@
       <div class="col-6 col-md-4 col-xxl-3">
         <a href="{{ lab.get_url }}" class="lab">
           {% if lab.thumbnail_animation %}
-            <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
+            {% image lab.thumbnail original as lab_thumbnail %}
+            <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}" poster="{{ lab_thumbnail.url }}"></video>
           {% endif %}
           {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
           <h6>{{ lab.title }}</h6>

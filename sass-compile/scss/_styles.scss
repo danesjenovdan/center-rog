@@ -310,6 +310,7 @@ form {
 
     .card-img {
         flex: 1;
+        overflow: hidden;
 
         img {
             width: 100%;
@@ -351,22 +352,31 @@ form {
 }
 
 .studio-card {
-    width: 250px;
-    height: 320px;
     overflow: hidden;
-    padding: 20px;
     text-decoration: none;
     border: none;
     border-radius: 2px;
+    margin-inline: 5px;
+
+    // aspect-ratio: 250/320;
+    position: relative;
+    padding-top: 130%;
+
+    .show-normal,
+    .show-hover {
+        position: absolute;
+        inset: 0;
+        flex-grow: 1;
+        max-height: 100%;
+        padding: 20px;
+    }
 
     .show-normal {
         display: flex;
-        flex-grow: 1;
     }
 
     .show-hover {
         display: none;
-        flex-grow: 1;
     }
 
     &:hover {
@@ -382,6 +392,17 @@ form {
     .card-body {
         padding: 0;
         flex-grow: 0;
+    }
+
+    .card-img {
+        flex: 1;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     }
 
     .card-title {
@@ -439,6 +460,7 @@ form {
 
 .tool-card {
     padding: 20px 30px;
+    margin-bottom: var(--bs-gutter-x);
 
     h4 {
         font-size: $xs-font-size;
@@ -1191,10 +1213,14 @@ section.image-embed {
             p {
                 margin-bottom: 8px;
                 font-size: $xs-font-size;
-            }
 
-            a {
-                border-color: inherit;
+                a {
+                    border-color: inherit;
+                    font-size: inherit;
+                    color: inherit;
+
+                    @include underline-text-on-hover();
+                }
             }
         }
 
@@ -1252,13 +1278,24 @@ section.image-embed {
 
             .lab-contact-information {
                 p {
-                    margin-bottom: 0.5rem;
+                    margin-bottom: 0;
 
                     a {
                         font-size: inherit;
+                        color: inherit;
+
+                        @include underline-text-on-hover();
                     }
                 }
             }
+        }
+
+        .copy-email-button {
+            display: inline;
+            padding: 0;
+            background: none;
+            border: none;
+            color: inherit;
         }
 
         .news-page-profile-container {
@@ -1266,8 +1303,14 @@ section.image-embed {
             padding-bottom: 0;
         }
 
+        &.news-page-profile-container {
+            max-width: 800px;
+        }
+
         &.news-page-profile-container,
         &.event-page-container {
+            padding-bottom: 60px;
+
             h1 {
                 margin-top: 30px;
                 margin-bottom: 30px;
@@ -1309,6 +1352,11 @@ section.image-embed {
 
                     }
                 }
+
+                hr {
+                    opacity: 1;
+                    border-top-width: 1.5px;
+                }
             }
         }
 
@@ -1319,11 +1367,11 @@ section.image-embed {
                 position: relative;
 
                 .notice {
-                    font-size: $md-font-size;
                     padding: 25px;
 
                     p {
-                        margin-bottom: 10px;
+                        font-size: $md-font-size;
+                        margin-bottom: 3px;
                     }
                 }
 
@@ -1555,23 +1603,51 @@ section.image-embed {
 
 /* PAGINATION */
 .page-num {
-    margin: 0 5px;
-    height: 30px;
-    width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
+    > a,
+    > span {
+        margin: 0 5px;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        font-size: $xxs-font-size;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid transparent;
+        border-radius: 50%;
+    }
 
-.page-num.active {
-    border: 1px solid $cs-dark-gray;
-    border-radius: 50%;
-}
+    &.disabled > a,
+    > span {
+        color: $cs-disabled;
+        pointer-events: none;
+    }
 
-.page-num a {
-    font-size: $xxs-font-size;
-    text-decoration: none;
+    &.active > a {
+        border-color: $cs-dark-gray;
+    }
+
+    &.page-prev,
+    &.page-next {
+        > a,
+        > span {
+            border-radius: 2px;
+        }
+    }
+
+    > a {
+        &:hover {
+            color: $cs-light-blue;
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: $cs-focus-green;
+            box-shadow: 0 0 0 1px $cs-focus-green;
+        }
+    }
 }
 
 .page-prev {

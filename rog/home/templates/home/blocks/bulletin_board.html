@@ -31,7 +31,8 @@
             <div class="labs-section">
               <a href="{% pageurl lab %}" class="lab">
                 {% if lab.thumbnail_animation %}
-                  <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}"></video>
+                  {% image lab.thumbnail original as lab_thumbnail %}
+                  <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}" poster="{{ lab_thumbnail.url }}"></video>
                 {% endif %}
                 {% image lab.thumbnail original class="img-fluid" alt="{{ lab.alt_description }}" %}
               </a>
