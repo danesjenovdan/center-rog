@@ -148,7 +148,7 @@ class Command(BaseCommand):
         three_d_lab_img_name = "labs/3D-lab.jpg"
         three_d_lab_img = self.create_image(three_d_lab_img_name)
 
-        three_d_lab_animation_name = "labs/3D-lab.webm"
+        three_d_lab_animation_name = "labs/3D-lab.mp4"
         three_d_lab_animation = self.create_media(three_d_lab_animation_name)
 
         three_d_lab = models.LabPage(
@@ -168,7 +168,7 @@ class Command(BaseCommand):
         kovinarski_lab_img_name = "labs/kovinarski-lab.jpg"
         kovinarski_lab_img = self.create_image(kovinarski_lab_img_name)
 
-        kovinarski_lab_animation_name = "labs/kovinarski-lab.webm"
+        kovinarski_lab_animation_name = "labs/kovinarski-lab.mp4"
         kovinarski_lab_animation = self.create_media(kovinarski_lab_animation_name)
 
         kovinarski_lab = models.LabPage(
@@ -188,7 +188,7 @@ class Command(BaseCommand):
         kuharski_lab_img_name = "labs/kuharski-lab.jpg"
         kuharski_lab_img = self.create_image(kuharski_lab_img_name)
 
-        kuharski_lab_animation_name = "labs/kuharski-lab.webm"
+        kuharski_lab_animation_name = "labs/kuharski-lab.mp4"
         kuharski_lab_animation = self.create_media(kuharski_lab_animation_name)
 
         kuharski_lab = models.LabPage(
@@ -208,7 +208,7 @@ class Command(BaseCommand):
         lesni_lab_img_name = "labs/lesni-lab.jpg"
         lesni_lab_img = self.create_image(lesni_lab_img_name)
 
-        lesni_lab_animation_name = "labs/lesni-lab.webm"
+        lesni_lab_animation_name = "labs/lesni-lab.mp4"
         lesni_lab_animation = self.create_media(lesni_lab_animation_name)
 
         lesni_lab = models.LabPage(
