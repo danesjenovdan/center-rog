@@ -97,7 +97,7 @@
       <ul class="navbar-nav">
         {% for item in secondary_navigation %}
         <li class="nav-item color-scheme-{{ item.color_scheme }} mx-2 {% if item.slug == request.GET.category %}active{% endif %}">
-          <a class="nav-link" href="{{ request.path }}?category={{ item.slug }}">
+          <a class="nav-link" href="{{ request.path }}{% if item.slug != request.GET.category %}?category={{ item.slug }}{% endif %}">
               {{ item }}
           </a>
         </li>
