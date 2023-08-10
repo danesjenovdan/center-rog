@@ -43,7 +43,7 @@ footer.container-fluid {
         width: 160px;
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        justify-content: flex-end;
         margin-bottom: 20px;
 
         &:nth-child(odd) {
