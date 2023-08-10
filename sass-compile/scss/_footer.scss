@@ -16,7 +16,7 @@ footer.container-fluid {
     }
 
     .working-hours {
-        max-width: 150px;
+        max-width: fit-content;
 
         p {
             margin-bottom: 0;
@@ -24,7 +24,7 @@ footer.container-fluid {
             justify-content: space-between;
 
             span:first-of-type {
-                padding-right: 10px;
+                padding-right: 16px;
             }
         }
     }
