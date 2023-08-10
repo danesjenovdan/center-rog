@@ -77,7 +77,16 @@ footer.container-fluid {
     }
 
     .random-image {
-        width: 200px;
+        &,
+        &.random-image--portrait {
+            width: 200px;
+            height: 270px;
+        }
+
+        &.random-image--landscape {
+            width: 270px;
+            height: 200px;
+        }
 
         img {
             width: 100%;

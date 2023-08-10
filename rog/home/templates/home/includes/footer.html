@@ -78,21 +78,27 @@
             </form>
         </div>
     </div>
-    {% if settings.home.MetaSettings.footer_images %}
+    {% if settings.home.MetaSettings.footer_logos %}
     <div class="row">
         <div class="col d-flex justify-content-between">
             <div class="footer-logos d-flex">
-                {% for img in settings.home.MetaSettings.footer_images %}
+                {% for logo in settings.home.MetaSettings.footer_logos %}
                 <div class="footer-logo">
-                    <p>{{ img.value.description }}</p>
-                    {% image img.value.image width-320 class="" alt="..." %}
+                    <p>{{ logo.value.description }}</p>
+                    {% image logo.value.image width-320 %}
                 </div>
                 {% endfor %}
             </div>
             {% if random_image %}
-            <div class="random-image d-none d-md-block">
-                {% image random_image fill-400x540 class="" alt="..." %}
-            </div>
+                {% if random_image.is_portrait %}
+                    <div class="random-image random-image--portrait d-none d-md-block">
+                        {% image random_image fill-400x540 %}
+                    </div>
+                {% else %}
+                    <div class="random-image random-image--landscape d-none d-md-block">
+                        {% image random_image fill-540x400 %}
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>
