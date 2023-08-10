@@ -47,6 +47,7 @@ class NewsPage(BasePage):
     hero_image = models.ForeignKey(
         CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Naslovna slika"))
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
+    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
     gallery = StreamField([
         ("image", ImageChooserBlock())
     ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
@@ -59,6 +60,7 @@ class NewsPage(BasePage):
         FieldPanel("category"),
         FieldPanel("hero_image"),
         FieldPanel("body"),
+        FieldPanel("tag"),
         FieldPanel("gallery"),
         FieldPanel("archived"),
         FieldPanel("show_see_more_section")

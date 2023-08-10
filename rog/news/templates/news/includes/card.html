@@ -13,4 +13,9 @@
     <p>{{ news.first_published_at|date:"j. n. Y" }}</p>
     <h4 class="card-title">{{ news.short_title }}</h4>
   </div>
+  {% if news.tag %}
+  <div class="card-tag">
+    <span>{{ news.tag }}</span>
+  </div>
+  {% endif %}
 </a>
