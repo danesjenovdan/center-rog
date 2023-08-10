@@ -216,11 +216,20 @@
 
 #secondary-navigation {
     position: absolute;
-    top: 34px;
-    transform: rotate(3.25deg);
+    top: 80px;
     transition: all 0.35s ease;
     width: 100%;
     background: $cs-light-gray;
+    transform: rotate(-3.5deg);
+
+    @include media-breakpoint-up(md) {
+        top: 32px;
+        transform: rotate(3.25deg);
+    }
+
+    @include media-breakpoint-up(xxl) {
+        transform: rotate(2.25deg);
+    }
 
     .navbar {
         padding-block: 16px;
