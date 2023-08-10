@@ -319,6 +319,22 @@ form {
         }
     }
 
+    .card-tag {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(12%, -6%) rotate(18deg);
+        padding: 12px 16px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9c2a0' preserveAspectRatio='none' viewBox='0 0 114.85 48.2'%3E%3Cpath d='m0 48.19 1.85-1.86L0 44.5l1.86-1.86L0 40.78l1.86-1.86-1.85-1.85 1.84-1.86L0 33.37l1.86-1.86L0 29.66l1.86-1.86-1.85-1.85 1.84-1.86L0 22.25l1.86-1.86L0 18.54l1.86-1.86-1.85-1.85 1.85-1.86-1.85-1.84 1.85-1.86L0 7.42l1.86-1.86L.01 3.71l1.85-1.86L.01.01h89.88L91.04 0h23.8l-1.85 1.86 1.86 1.86-1.86 1.85 1.85 1.85L113 9.27l1.85 1.86-1.85 1.85 1.86 1.86-1.86 1.85 1.85 1.85-1.85 1.85 1.85 1.86L113 24.1l1.85 1.86-1.85 1.85 1.85 1.85L113 31.5l1.85 1.86-1.85 1.85 1.85 1.86-1.85 1.85 1.85 1.85-1.85 1.85 1.85 1.86-1.86 1.85 1.86 1.86H7.93z' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        span {
+            color: $cs-white;
+            font-size: $xxs-font-size;
+        }
+    }
+
     &.card-wide {
         flex-direction: row;
 
@@ -777,12 +793,12 @@ form {
 
             .events-container,
             .news-container {
-                overflow-x: scroll;
-                -ms-overflow-style: none;  /* IE and Edge */
-                scrollbar-width: none;  /* Firefox */
-                &:-webkit-scrollbar {
-                    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
-                }
+                // overflow-x: scroll;
+                // -ms-overflow-style: none;  /* IE and Edge */
+                // scrollbar-width: none;  /* Firefox */
+                // &:-webkit-scrollbar {
+                //     display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+                // }
 
                 .row {
                     padding: 3px 15px;
@@ -803,12 +819,12 @@ form {
 
         &.studios-section {
             .studios-container {
-                overflow-x: scroll;
-                -ms-overflow-style: none;  /* IE and Edge */
-                scrollbar-width: none;  /* Firefox */
-                &:-webkit-scrollbar {
-                    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
-                }
+                // overflow-x: scroll;
+                // -ms-overflow-style: none;  /* IE and Edge */
+                // scrollbar-width: none;  /* Firefox */
+                // &:-webkit-scrollbar {
+                //     display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+                // }
 
                 .row {
                     margin-block: 33px; // needed when cards flip on hover to not create a scrollbar
