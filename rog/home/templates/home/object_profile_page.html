@@ -81,7 +81,7 @@
                     {% for working_hours in page.working_hours %}
                     <p>
                         <span>{{ working_hours.value.day }}</span>
-                        <span>{{ working_hours.value.start_time }} - {{ working_hours.value.end_time }}</span>
+                        <span>{{ working_hours.value.start_time|time:"G:i" }} - {{ working_hours.value.end_time|time:"G:i" }}</span>
                     </p>
                     {% endfor %}
                 </div>

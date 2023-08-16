@@ -16,7 +16,7 @@ footer.container-fluid {
     }
 
     .working-hours {
-        max-width: 150px;
+        max-width: fit-content;
 
         p {
             margin-bottom: 0;
@@ -24,7 +24,7 @@ footer.container-fluid {
             justify-content: space-between;
 
             span:first-of-type {
-                padding-right: 10px;
+                padding-right: 16px;
             }
         }
     }
@@ -43,7 +43,7 @@ footer.container-fluid {
         width: 160px;
         display: flex;
         flex-direction: column;
-        justify-content: end;
+        justify-content: flex-end;
         margin-bottom: 20px;
 
         &:nth-child(odd) {
@@ -77,7 +77,16 @@ footer.container-fluid {
     }
 
     .random-image {
-        width: 200px;
+        &,
+        &.random-image--portrait {
+            width: 200px;
+            height: 270px;
+        }
+
+        &.random-image--landscape {
+            width: 270px;
+            height: 200px;
+        }
 
         img {
             width: 100%;

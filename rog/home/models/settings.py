@@ -26,16 +26,6 @@ from .image import CustomImage
 import random
 
 
-## CUSTOM CONTEXT PROCESSORS
-
-def footer_image_processor(request):
-    random_image = None
-
-    last_20_images = list(CustomImage.objects.filter(show_in_footer=True)[:20])
-    if (last_20_images):
-        random_image = random.choice(last_20_images)
-    return {'random_image': random_image}
-
 # @register_snippet
 # class Infopush(models.Model):
 #     tag = models.TextField(null=True, blank=True, verbose_name='Oznaka')
@@ -165,7 +155,7 @@ class MetaSettings(BaseGenericSetting):
         blank=True
     )
 
-    footer_images = StreamField(
+    footer_logos = StreamField(
         [
             ("logo", blocks.StructBlock([
                 ("image", ImageChooserBlock()),
@@ -180,9 +170,21 @@ class MetaSettings(BaseGenericSetting):
         blank=True
     )
 
+    footer_random_images = StreamField(
+        [
+            ("image", blocks.StructBlock([
+                ("image", ImageChooserBlock()),
+            ], label=_("Slika")))
+        ],
+        verbose_name=_("Naključne slike v nogi"),
+        use_json_field=True,
+        blank=True
+    )
+
     footer_tab_panels = [
         FieldPanel("footer_links"),
-        FieldPanel("footer_images")
+        FieldPanel("footer_logos"),
+        FieldPanel("footer_random_images"),
     ]
 
     # meta_image = models.ForeignKey(
@@ -205,3 +207,18 @@ class MetaSettings(BaseGenericSetting):
 
     class Meta:
         verbose_name = "Nastavitve spletnega mesta"
+
+
+## CUSTOM CONTEXT PROCESSORS
+
+def footer_image_processor(request):
+    meta_settings = MetaSettings.load(request_or_site=request)
+    random_image = None
+
+    images = meta_settings.footer_random_images.raw_data
+    if images:
+        random_choice = random.choice(images)
+        random_image_id = random_choice['value']['image']
+        random_image = CustomImage.objects.get(id=random_image_id)
+
+    return {'random_image': random_image}

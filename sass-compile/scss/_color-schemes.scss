@@ -47,7 +47,7 @@
 @mixin secondary-button($secondary-scheme-color) {
     .secondary-button,
     .radio-square {
-        border-color: $secondary-scheme-color;   
+        border-color: $secondary-scheme-color;
     }
 }
 
@@ -62,6 +62,12 @@
     }
 }
 
+@mixin card-img-bg($secondary-scheme-color) {
+    .card-img {
+        background-color: $secondary-scheme-color;
+    }
+}
+
 /* LIGHT COLORS */
 
 .color-scheme-white {
@@ -71,6 +77,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-dark-gray);
     @include link($cs-dark-gray);
+    @include card-img-bg($cs-dark-gray);
 }
 
 .color-scheme-light-gray {
@@ -80,6 +87,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-dark-gray);
     @include link($cs-dark-gray);
+    @include card-img-bg($cs-dark-gray);
 }
 
 .color-scheme-light-green {
@@ -89,6 +97,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-dark-blue);
     @include link($cs-dark-blue);
+    @include card-img-bg($cs-dark-blue);
 }
 
 .color-scheme-pink {
@@ -98,6 +107,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-brown);
     @include link($cs-brown);
+    @include card-img-bg($cs-brown);
 }
 
 .color-scheme-yellow {
@@ -107,6 +117,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-dark-green);
     @include link($cs-dark-green);
+    @include card-img-bg($cs-dark-green);
 }
 
 .color-scheme-light-purple {
@@ -116,6 +127,7 @@
     @include primary-button-red();
     @include secondary-button($cs-red);
     @include link($cs-red);
+    @include card-img-bg($cs-red);
 }
 
 .color-scheme-beige {
@@ -125,6 +137,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-dark-purple);
     @include link($cs-dark-purple);
+    @include card-img-bg($cs-dark-purple);
 }
 
 .color-scheme-beige-gray {
@@ -134,6 +147,7 @@
     @include primary-button-purple();
     @include secondary-button($cs-dark-purple);
     @include link($cs-dark-purple);
+    @include card-img-bg($cs-dark-purple);
 }
 
 /* --- */
@@ -147,6 +161,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-pink);
     @include link($cs-pink);
+    @include card-img-bg($cs-pink);
 }
 
 .color-scheme-light-blue {
@@ -156,6 +171,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
     @include link($cs-yellow);
+    @include card-img-bg($cs-yellow);
 }
 
 .color-scheme-dark-gray {
@@ -165,6 +181,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-light-gray);
     @include link($cs-light-gray);
+    @include card-img-bg($cs-light-gray);
 }
 
 .color-scheme-dark-purple {
@@ -174,6 +191,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-light-green);
     @include link($cs-light-green);
+    @include card-img-bg($cs-light-green);
 }
 
 .color-scheme-red {
@@ -183,6 +201,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
     @include link($cs-yellow);
+    @include card-img-bg($cs-yellow);
 }
 
 .color-scheme-orange {
@@ -192,6 +211,7 @@
     @include primary-button-blue();
     @include secondary-button($cs-white);
     @include link($cs-white);
+    @include card-img-bg($cs-white);
 }
 
 .color-scheme-dark-blue {
@@ -201,6 +221,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-light-green);
     @include link($cs-light-green);
+    @include card-img-bg($cs-light-green);
 }
 
 .color-scheme-dark-green {
@@ -210,6 +231,7 @@
     @include primary-button-yellow();
     @include secondary-button($cs-yellow);
     @include link($cs-yellow);
+    @include card-img-bg($cs-yellow);
 }
 
 /* --- */

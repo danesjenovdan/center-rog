@@ -216,11 +216,20 @@
 
 #secondary-navigation {
     position: absolute;
-    top: 34px;
-    transform: rotate(3.25deg);
+    top: 80px;
     transition: all 0.35s ease;
     width: 100%;
     background: $cs-light-gray;
+    transform: rotate(-3.5deg);
+
+    @include media-breakpoint-up(md) {
+        top: 32px;
+        transform: rotate(3.25deg);
+    }
+
+    @include media-breakpoint-up(xxl) {
+        transform: rotate(2.25deg);
+    }
 
     .navbar {
         padding-block: 16px;
@@ -232,6 +241,27 @@
         .nav-link {
             color: inherit;
             font-size: $xxs-font-size;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        &.active .nav-link {
+            box-shadow: 1px 1px 5px 0px rgba(255, 255, 255, 0.60) inset, -1px -2px 4px 0px rgba(0, 0, 0, 0.65) inset;
+        }
+
+        &.active .nav-link::after {
+            content: "";
+            display: block;
+            position: absolute;
+            inset: -8px 4px -8px 4px;
+            border: 3px solid $cs-dark-gray;
+            border-radius: 50%;
+            filter: drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.85)) drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.35));
+        }
+
+        .nav-link:focus-visible {
+            outline: 0;
+            box-shadow: 0 0 0 2px $cs-focus-green;
         }
     }
 

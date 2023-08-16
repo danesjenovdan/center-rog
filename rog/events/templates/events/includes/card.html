@@ -9,4 +9,9 @@
   <div class="card-img">
     {% image event.hero_image width-480 %}
   </div>
+  {% if event.tag %}
+  <div class="card-tag">
+    <span>{{ event.tag }}</span>
+  </div>
+  {% endif %}
 </a>

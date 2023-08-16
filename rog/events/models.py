@@ -43,6 +43,7 @@ class EventPage(BasePage):
     category = models.ForeignKey(
         EventCategory, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
+    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
     start_time = models.TimeField(verbose_name=_("Ura začetka"))
     end_time = models.TimeField(verbose_name=_("Ura konca"))
     start_day = models.DateField(verbose_name=_("Datum začetka"))
@@ -56,6 +57,7 @@ class EventPage(BasePage):
         FieldPanel("hero_image"),
         FieldPanel("category"),
         FieldPanel("body"),
+        FieldPanel("tag"),
         FieldPanel("start_day"),
         FieldPanel("end_day"),
         FieldPanel("start_time"),

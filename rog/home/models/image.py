@@ -6,12 +6,10 @@ from wagtail.images.models import Image, AbstractImage, AbstractRendition
 class CustomImage(AbstractImage):
     # Add any extra fields to image here
     alt_description = models.TextField(blank=True)
-    show_in_footer = models.BooleanField(default=False)
 
     admin_form_fields = Image.admin_form_fields + (
         # Then add the field names here to make them appear in the form:
         "alt_description",
-        "show_in_footer"
     )
 
 
