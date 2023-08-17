@@ -40,7 +40,10 @@ class MyProfileView(TemplateView):
         if "group" in request.GET:
             group_id = request.GET.get("group")
 
-        obnovitev_clanarine = current_user.membership.valid_to
+        try:
+            obnovitev_clanarine = current_user.membership.valid_to
+        except:
+            obnovitev_clanarine = None
 
         return render(request, self.template_name, {
             'user': current_user,

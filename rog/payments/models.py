@@ -1,9 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 from wagtail.admin.panels import FieldPanel
 
 from datetime import datetime
+
+from .pantheon import create_ident, create_move
 
 
 class ActiveAtQuerySet(models.QuerySet):
@@ -23,7 +26,7 @@ class ActiveAtQuerySet(models.QuerySet):
             type_of=Token.Type.LAB,
             payment__in=self
         )
-    
+
     def get_available_workshops(self):
         timestamp = datetime.now()
         return Token.objects.filter(
@@ -89,10 +92,12 @@ class Plan(Timestampable):
         blank=True,
         default=0
     )
+    pantheon_ident_id = models.CharField(max_length=100)
+    vat = models.IntegerField(default=22)
 
     def __str__(self):
         return f"{self.name}"
-    
+
     panels = [
         FieldPanel("name"),
         FieldPanel("price"),
@@ -109,6 +114,14 @@ class Plan(Timestampable):
     class Meta:
         verbose_name = _("Plačilni paket")
         verbose_name_plural = _("Plačilni paket")
+
+    def save(self, *args, **kwargs):
+        if self.id == None:
+            self.pantheon_ident_id = slugify(self.name)
+            super().save(*args, **kwargs)
+            create_ident(self)
+        else:
+            super().save(*args, **kwargs)
 
 
 class Payment(Timestampable):
@@ -146,12 +159,42 @@ class Payment(Timestampable):
     )
 
     objects = ActiveAtQuerySet.as_manager()
+    saved_in_pantheon = models.BooleanField(
+        default=False,
+        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
+    )
+
+    panels = [
+        FieldPanel("user"),
+        FieldPanel("amount"),
+        FieldPanel("successed_at"),
+        FieldPanel("errored_at"),
+        FieldPanel("active_to"),
+        FieldPanel("status"),
+        FieldPanel("info"),
+        FieldPanel("plan"),
+        FieldPanel("saved_in_pantheon"),
+    ]
+
+    class Meta:
+        verbose_name = _("Naročil0")
+        verbose_name_plural = _("Naročila")
 
     def __str__(self):
         return f"{self.user} - {self.amount} - {self.created_at}"
-    
+
     def history_name(self):
         return f"{self.plan.name}"
+
+    def save(self, *args, **kwargs):
+        if self.saved_in_pantheon == False:
+            self.saved_in_pantheon = True
+            super().save(*args, **kwargs)
+            print(create_move(self))
+            self.saved_in_pantheon = True
+            super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
 
 
 class Token(Timestampable):

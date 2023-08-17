@@ -14,6 +14,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from home.models import Workshop
 from payments.models import Plan
+from payments.pantheon import create_subject
 
 
 class MembershipType(ClusterableModel):
@@ -162,12 +163,19 @@ class User(AbstractUser):
 
     def has_valid_subscription(self):
         return self.payments.all().is_active_subscription()
-    
+
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()
-    
+
     def get_available_workshops(self):
         return self.payments.all().get_available_workshops()
+
+    def save(self, *args, **kwargs):
+        if self.id == None:
+            super().save(*args, **kwargs)
+            create_subject(self)
+        else:
+            super().save(*args, **kwargs)
 
 
 class BookingToken(models.Model):
