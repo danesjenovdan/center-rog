@@ -49,6 +49,7 @@ spec:
             - python
             - manage.py
             - migrate
+            - --noinput
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: rog.settings.production
