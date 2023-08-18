@@ -119,7 +119,7 @@ class Plan(Timestampable):
         if self.id == None:
             self.pantheon_ident_id = slugify(self.name)
             super().save(*args, **kwargs)
-            create_ident(self)
+            # create_ident(self)
         else:
             super().save(*args, **kwargs)
 
@@ -188,10 +188,10 @@ class Payment(Timestampable):
 
     def save(self, *args, **kwargs):
         if self.saved_in_pantheon == False and self.successed_at:
-            self.saved_in_pantheon = True
-            super().save(*args, **kwargs)
-            print(create_move(self))
-            self.saved_in_pantheon = True
+            # self.saved_in_pantheon = True
+            # super().save(*args, **kwargs)
+            # print(create_move(self))
+            # self.saved_in_pantheon = True
             super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)

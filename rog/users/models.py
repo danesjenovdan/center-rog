@@ -173,7 +173,7 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if self.id == None:
             super().save(*args, **kwargs)
-            create_subject(self)
+            # create_subject(self)
         else:
             super().save(*args, **kwargs)
 
