@@ -146,8 +146,8 @@ USE_TZ = True
 
 # possible values of the language_code field
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
-    ('en', "English"),
     ('sl', "Slovenian"),
+    ('en', "English"),
 ]
 
 

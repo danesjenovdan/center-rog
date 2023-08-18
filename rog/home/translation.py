@@ -1,7 +1,9 @@
 from .models import HomePage, ContentPage
 from .models.pages import (StudioListPage, MarketStoreListPage, ResidenceListPage, LabListPage, LabPage,
-    LibraryPage, StudioPage, ResidencePage, MarketStorePage, ResidenceArchiveListPage, StudioArchiveListPage
+    LibraryPage, StudioPage, ResidencePage, MarketStorePage, ResidenceArchiveListPage, StudioArchiveListPage,
 )
+from .models.base_pages import BasicTextPage
+from .models.workshop import Workshop
 from modeltranslation.translator import TranslationOptions
 from modeltranslation.decorators import register
 
@@ -88,3 +90,17 @@ class ResidencePageTR(ObjectProfilePageTR):
 @register(MarketStorePage)
 class MarketStorePageTR(ObjectProfilePageTR):
     pass
+
+
+@register(BasicTextPage)
+class BasicTextPageTR(TranslationOptions):
+    fields = (
+        'body',
+    )
+
+
+@register(Workshop)
+class HomePageTR(TranslationOptions):
+    fields = (
+        'name',
+    )

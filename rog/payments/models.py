@@ -187,7 +187,7 @@ class Payment(Timestampable):
         return f"{self.plan.name}"
 
     def save(self, *args, **kwargs):
-        if self.saved_in_pantheon == False:
+        if self.saved_in_pantheon == False and self.successed_at:
             self.saved_in_pantheon = True
             super().save(*args, **kwargs)
             print(create_move(self))

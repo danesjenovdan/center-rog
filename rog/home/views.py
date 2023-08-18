@@ -42,7 +42,7 @@ class MyProfileView(TemplateView):
 
         try:
             obnovitev_clanarine = current_user.membership.valid_to
-        except:
+        except AttributeError:
             obnovitev_clanarine = None
 
         return render(request, self.template_name, {

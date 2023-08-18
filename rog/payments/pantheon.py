@@ -214,13 +214,14 @@ def create_ident(item):
         f'{settings.PANTHEON_URL}/api/Ident',
         json=data
     )
+    print(response)
     return response
 
 
 def create_subject(subject):
     print(subject.email)
     data = {
-        "subject": subject.email,
+        "subject": subject.id,
         "buyer": "T",
         "supplier": "F",
         "bank": "F",
@@ -423,6 +424,7 @@ def create_subject(subject):
         f'{settings.PANTHEON_URL}/api/Subject',
         json=data
     )
+    print(response)
     return response
 
 
@@ -454,8 +456,8 @@ def create_move(
     """
     data = {
         "acKey": "",
-        "receiver": payment.user.email,
-        "receiverId": payment.user.email,
+        "receiver": "",
+        "receiverId": payment.user.id,
         "receiverAddress": payment.user.address_1,
         "issuer": "Veleprodajno skladišče",
         "issuerId": "Veleprodajno skladišče",
@@ -555,9 +557,9 @@ def create_move(
             }
         ]
     }
-    print(json.dumps(data))
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Move/insert',
         json=data
     )
+    print(response)
     return response
