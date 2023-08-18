@@ -25,14 +25,15 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Application definition
 
 INSTALLED_APPS = [
+    'wagtail_modeltranslation',
+    'wagtail_modeltranslation.makemigrations',
+    'wagtail_modeltranslation.migrate',
     "home",
     "search",
     "users",
     "events",
     "news",
     "payments",
-    "wagtail_localize",
-    "wagtail_localize.locales",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.contrib.settings",
@@ -145,8 +146,8 @@ USE_TZ = True
 
 # possible values of the language_code field
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
-    ('en', "English"),
     ('sl', "Slovenian"),
+    ('en', "English"),
 ]
 
 
@@ -259,6 +260,7 @@ COLOR_SCHEMES = [
 PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
 PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
 REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
+PANTHEON_URL = os.getenv('PANTHEON_URL', '')
 
 ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
 CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']

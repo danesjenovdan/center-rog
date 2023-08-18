@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.utils import timezone
@@ -10,6 +10,7 @@ from datetime import timedelta
 
 from .models import Payment, Plan, Token
 from .parsers import XMLParser
+from .pantheon import create_move
 
 
 # Create your views here.
@@ -111,6 +112,7 @@ class PaymentSuccessXML(views.APIView):
                 type_of=Token.Type.WORKSHOP
             ) for i in range(payment.plan.workshops)
         ])
+
         return Response({'status': 'OK'})
 
 
@@ -145,3 +147,20 @@ class PaymentHistory(View):
                 'payments': payments
             }
         )
+
+
+class PaymentInvoice(View):
+    def get(self, request, payment_id):
+        user = request.user
+        payment = user.payments.filter(id=payment_id).first()
+        if payment:
+            return render(
+                request,
+                'payment_invoice.html',
+                {
+                    'payment': payment,
+                    'user': payment.user
+                }
+            )
+        else:
+            return HttpResponseNotFound('Računa ni mogoče najti.')

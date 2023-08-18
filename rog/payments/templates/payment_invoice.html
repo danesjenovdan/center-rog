@@ -1,0 +1,84 @@
+<html>
+    <body>
+        <button id="download-button">Download as PDF</button>
+        <div id="invoice">
+            <div id="header">
+                <div id="top-header">
+                    <div id="logo">
+                        <img src="https://www.google.com/images/srpr/logo11w.png" />
+                    </div>
+                    <div id="b-info">
+                        Kreativno središče Center Rog</br>
+                        Trubarjeva cesta 72</br>
+                        1000 Ljubljana</br>
+                        E: renata.zamida@center-rog.si
+                    </div>
+                    <div id="r-info">
+                        Matična št.:8889724000</br>
+                        Davčna št.: 79671977</br>
+                        TRR: 01261-6000002804</br>
+                    </div>
+                </div>
+                </hr>
+                <div id="bottom-header">
+                    <div id="k-info">
+                        {{ user.legal_person_name }}</br>
+                        {{ user.legal_person_address_1 }}</br>
+                        {{ user.legal_person_address_2 }}
+                    </div>
+                    <div id="invoice-date">
+                        <b>Naročilnica:</b>  ???
+                    </div>
+                    <div id="invoice-date">
+                        <b>Dat. pre. dob:</b> {{ payment.created_at }}
+                        <b>Datum valute:</b> {{ payment.successed_at }}
+                        <b>Ljubljana,</b> {{ payment.created_at }}
+                    </div>
+                </div>
+            </div>
+
+            <div id="body">
+                <h2>Račun {{ payment.id }}</h2>
+                </hr>
+                <table>
+                    <tr>
+                        <th>ident</th>
+                        <th>Naziv</th>
+                        <th>Količina</th>
+                        <th>EM</th>
+                        <th>Cena</th>
+                        <th>R. %</th>
+                        <th>DDV %</th>
+                        <th>Vrednost brez DDV</th>
+                    </tr>
+                    <tr>
+                        <th>ident iz pantheona</th>
+                        <th>{{ payment.plan.name }}</th>
+                        <th>1,00</th>
+                        <th>KOS</th>
+                        <th>{{ payment.amount }}</th>
+                        <th>0,00</th>
+                        <th>0,00</th>
+                        <th>{{ payment.amount }}</th>
+                    </tr>
+                </table>
+            </div>
+            <div id="footer">
+                <div id="footer-top">
+                    DDV ni obračunan skladno s 1.odst. 94. čl ZDDV-1.</br></br>
+
+                    Prosimo, da znesek nakažete na naš transakcijski račun številka 01261-6000002804  pri UJP RS in se sklicujete na številko računa.</br>
+
+                    V primeru prekoračitve datuma plačila, bomo zaračunali zakonske zamudne obresti!
+                </div>
+                <div div="izdal">
+                    Račun izdal-a:
+                    Renata Zamida, direktorica
+                </div>
+
+            </div>
+        </div>
+        <script>
+        </script>
+    </body>
+<html>
