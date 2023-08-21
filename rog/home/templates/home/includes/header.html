@@ -1,4 +1,4 @@
-{% load static i18n wagtailcore_tags %}
+{% load static i18n wagtailcore_tags wagtail_modeltranslation %}
 {% wagtail_site as current_site %}
 
 <div id="logo-navigation">
@@ -13,11 +13,15 @@
       <ul class="navbar-nav flex-row align-items-center">
         <!-- prevodi -->
         <li class="nav-item mx-2">
-          {% for translation in page.get_translations.live %}
-              {% get_language_info for translation.locale.language_code as lang %}
-              <a href="{% pageurl translation %}" rel="alternate" hreflang="{{ language_code }}" class="nav-link">
-                  {{ lang.name_local }}
+          {% get_current_language as CURRENT_LANGUAGE %}
+          {% get_available_languages as AVAILABLE_LANGUAGES %}
+          {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+          {% for language in languages %}
+            {% if CURRENT_LANGUAGE != language.code %}
+              <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link">
+                  {{ language.name }}
               </a>
+            {% endif %}
           {% endfor %}
         </li>
         <!-- profile / sign in  -->

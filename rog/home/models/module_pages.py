@@ -6,9 +6,9 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
 
 from .blocks import (ModuleBlock)
-from .base_pages import BasePage
+from .base_pages import BasePage, TranslatablePage
 
-class HomePage(Page):
+class HomePage(TranslatablePage):
     body = StreamField(
         ModuleBlock(),
         verbose_name="Telo",
@@ -44,7 +44,7 @@ class HomePage(Page):
 
 
 
-class ContentPage(Page):
+class ContentPage(TranslatablePage):
     secondary_navigation = models.BooleanField(default=False, verbose_name="Sekundarni meni")
     body = StreamField(
         ModuleBlock(),
