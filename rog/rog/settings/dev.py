@@ -15,3 +15,7 @@ try:
     from .local import *
 except ImportError:
     pass
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+FROM_EMAIL = 'dummy@email.com'

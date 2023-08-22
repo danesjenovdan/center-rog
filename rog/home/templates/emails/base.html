@@ -1,0 +1,20 @@
+{% load i18n %}{% autoescape off %}
+{% load static %}
+<html>
+<body>
+    <div>
+        {% block header %}
+        {% endblock %}
+    </div>
+    <div>
+        {% block body %}
+        {% endblock %}
+    </div>
+    <div>
+        {% block footer %}
+        </br></br>
+        <img src="{% static 'images/Center-Rog-logo.svg' %}" width="100" alt="logo">
+        {% endblock %}
+    </div>
+</body>
+{% endautoescape %}
