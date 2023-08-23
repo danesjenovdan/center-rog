@@ -198,9 +198,8 @@ class RegistrationMembershipView(View):
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
             active = membership_type.plan is None
-            user.membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active)
-            user.membership.save()
-            user.save()
+            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+
 
             return redirect("registration-information")
         else:
