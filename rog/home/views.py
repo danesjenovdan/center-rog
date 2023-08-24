@@ -157,7 +157,7 @@ class RegistrationView(View):
                     prima_id=int(prima_id),
                     is_active=True # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
                 )
-                send_email(user.email, "email/registration.html", _("Registracija na rog je uspela"), {})
+                send_email(user.email, "emails/registration.html", _("Registracija na rog je uspela"), {})
                 print("Novi user", user)
                 login(request, user)
             else:

@@ -16,4 +16,3 @@ def send_email(to_email, template_name, subject, context):
     )
     msg.attach_alternative(html_body, "text/html")
     msg.send()
-

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.utils import timezone
 from django.views import View
+from django.utils.translation import gettext_lazy as _
 
 from rest_framework import  views
 from rest_framework.response import Response
@@ -11,6 +12,7 @@ from datetime import timedelta
 from .models import Payment, Plan, Token
 from .parsers import XMLParser
 from .pantheon import create_move
+from home.email_utils import send_email
 
 
 # Create your views here.
@@ -112,6 +114,23 @@ class PaymentSuccessXML(views.APIView):
                 type_of=Token.Type.WORKSHOP
             ) for i in range(payment.plan.workshops)
         ])
+        items = [
+            {
+                'quantity': 1,
+                'name': payment.plan.name,
+                'price': payment.amount,
+            }
+        ]
+        send_email(
+            payment.user.email,
+            'emails/order.html',
+            _('Naročilo rog'),
+            {
+                'items': items,
+                'date': payment.successed_at
+            }
+        )
+
 
         return Response({'status': 'OK'})
 
