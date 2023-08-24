@@ -16,11 +16,9 @@ from datetime import date
 
 
 class ModuleBlock(blocks.StructBlock):
-    id = blocks.CharBlock(
+    show_link_in_secondary_menu = blocks.BooleanBlock(
         required=False,
-        label=_("ID modula (ime-povezave-v-tem-stilu)"),
-        help_text="Potrebno izpolniti, če naj bo povezava do modula prisotna v sekundarnem meniju.",
-        validators=[validators.validate_slug]
+        label=_("Pokaži povezavo do modula v sekundarnem meniju")
     )
 
     class Meta:

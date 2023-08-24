@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 
-<section class="white-list-section">
+<section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="white-list-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-xxl-10">

@@ -2,7 +2,7 @@
 
 {% image value.image original as background_image %}
 
-<section id="{{ value.id }}" style="background-image: url({{ background_image.url }})" class="container-fluid image-embed px-4 px-md-0">
+<section style="background-image: url({{ background_image.url }})" class="container-fluid image-embed px-4 px-md-0">
     {% if value.text %}
     <div class="container">
         <div class="row justify-content-center">

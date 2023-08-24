@@ -1,6 +1,6 @@
 {% load i18n wagtailcore_tags wagtailimages_tags %}
 
-<section class="color-scheme-light-gray bulletin-board">
+<section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-light-gray bulletin-board">
   <div class="container">
     <div class="row">
       <div class="col-12">
