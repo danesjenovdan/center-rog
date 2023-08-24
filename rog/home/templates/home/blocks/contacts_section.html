@@ -1,6 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
-<section id="{{ value.id }}" class="color-scheme-{{ value.color }} colored-text-section">
+<section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-{{ value.color }} colored-text-section">
 
 <div class="container with-image">
     <div class="row">
