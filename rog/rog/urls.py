@@ -58,6 +58,9 @@ urlpatterns = urlpatterns + i18n_patterns(
     path('prijava/', auth_views.LoginView.as_view(), name='login'),
     path('odjava/', auth_views.LogoutView.as_view(), name='logout'),
     path('pozabljeno-geslo/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path("ponastavi-geslo/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path("geslo-je-ponastavljeno/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete",),
 
     path('registracija/', RegistrationView.as_view(), name='registration'),
     path('registracija/clanarina', RegistrationMembershipView.as_view(), name='registration-membership'),

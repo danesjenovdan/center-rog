@@ -16,7 +16,7 @@ from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInf
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
 from users.tokens import get_token_for_user
-
+from home.email_utils import send_email
 
 from payments.models import Plan
 
@@ -157,6 +157,7 @@ class RegistrationView(View):
                     prima_id=int(prima_id),
                     is_active=True # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
                 )
+                send_email(user.email, "emails/registration.html", _("Registracija na rog je uspela"), {})
                 print("Novi user", user)
                 login(request, user)
             else:
@@ -197,9 +198,8 @@ class RegistrationMembershipView(View):
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
             active = membership_type.plan is None
-            user.membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active)
-            user.membership.save()
-            user.save()
+            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+
 
             return redirect("registration-information")
         else:

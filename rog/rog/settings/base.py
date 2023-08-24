@@ -61,13 +61,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -87,7 +87,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
-                "home.models.footer_image_processor"
+                "home.models.footer_image_processor",
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -150,14 +151,12 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ('en', "English"),
 ]
 
-
 # User settings
 AUTH_USER_MODEL = 'users.User'
 WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = [
     'prima_id',
-    'membership',
     'address_1',
     'address_2',
     'legal_person_name',
@@ -174,7 +173,7 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'contact',
     'workshops_attended',
     'interests',
-    'gallery'
+    'gallery',
 ]
 
 
@@ -220,6 +219,8 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILMODELTRANSLATION_TRANSLATE_SLUGS = True
+
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
@@ -257,15 +258,18 @@ COLOR_SCHEMES = [
     ("white", "Bela"),
 ]
 
+# Payments
 PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
 PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
 REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
 PANTHEON_URL = os.getenv('PANTHEON_URL', '')
 
+# CORS
 ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
 CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
 
+# Logging
 LOGGING = {
    'version': 1,
    'disable_existing_loggers': False,

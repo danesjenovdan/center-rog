@@ -1,6 +1,6 @@
 {% load i18n wagtailcore_tags %}
 
-<section class="color-scheme-dark-gray residents-section">
+<section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-dark-gray residents-section">
     <div class="container">
         <div class="row">
             <div class="col-md-6 order-md-2 mb-4 mb-md-0">

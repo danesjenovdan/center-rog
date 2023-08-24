@@ -40,3 +40,12 @@ try:
     from .local import *
 except ImportError:
     pass
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', '')
+EMAIL_PORT = os.getenv('EMAIL_PORT', '')
+EMAIL_HOST_USER = os.getenv('EMAIL_USERNAME', '')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
+EMAIL_USE_TLS = True
+FROM_EMAIL = os.getenv('FROM_EMAIL', 'dummy@email.com')

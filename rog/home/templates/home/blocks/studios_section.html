@@ -1,6 +1,6 @@
 {% load i18n wagtailcore_tags %}
 
-<section class="color-scheme-yellow studios-section">
+<section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-yellow studios-section">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12">
