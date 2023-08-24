@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +16,8 @@ from wagtail.images.blocks import ImageChooserBlock
 from home.models import Workshop
 from payments.models import Plan
 from payments.pantheon import create_subject
+
+from datetime import datetime
 
 
 class MembershipType(ClusterableModel):
@@ -56,8 +59,9 @@ class MembershipTypeSpecification(Orderable):
         verbose_name_plural = _("Bonitete članstva")
 
 
-class Membership(ClusterableModel):
+class Membership(models.Model):
     type = models.ForeignKey(MembershipType, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True, related_name='memberships')
     valid_from = models.DateTimeField(
         auto_now_add=True,
         null=True,
@@ -137,14 +141,6 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
-    # membership = models.ForeignKey(
-    #     Membership,
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     verbose_name="Članarina",
-    #     related_name="users"
-    # )
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
@@ -173,15 +169,12 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
-    panels = [
-        MultiFieldPanel([
-            InlinePanel('memberships'),
-        ], heading="Članarine"),
-    ]
-
     @property
     def membership(self):
-        return self.memberships.filter(active=True).first()
+        return self.memberships.filter(
+            Q(end_time__gte=datetime.now()) | Q(end_time=None),
+            active=True,
+            valid_from__lte=datetime.now()).first()
 
     def has_valid_subscription(self):
         return self.payments.all().is_active_subscription()

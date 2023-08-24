@@ -2,9 +2,28 @@
 
 {% block extra_fields %}
     <li>{% include "wagtailadmin/shared/field.html" with field=form.prima_id %}</li>
-    <li>{% include "wagtailadmin/shared/field.html" with field=form.membership %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.address_1 %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.address_2 %}</li>
+
+    <label class="w-field__label" for="id_last_name" id="id_last_name-label">
+        Članstva <span class="w-required-mark">*</span>
+    </label>
+    <table>
+        <tr>
+          <th>Ime</th>
+          <th>Veljavno od</th>
+          <th>Veljavno do</th>
+          <th>Je aktivno?</th>
+        </tr>
+      {% for membership in form.memberships %}
+          <tr>
+            <td> {{ membership.type.name }} </td>
+            <td> {{ membership.valid_from }} </td>
+            <td> {{ membership.valid_to }} </td>
+            <td> {{ membership.active }} </td>
+          </tr>
+      {% endfor %}
+    </table>
     <h2>Pravna oseba</h2>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_name %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_address_1 %}</li>

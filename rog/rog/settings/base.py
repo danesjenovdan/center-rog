@@ -157,7 +157,6 @@ WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
 WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = [
     'prima_id',
-    'memberships',
     'address_1',
     'address_2',
     'legal_person_name',
@@ -174,7 +173,7 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'contact',
     'workshops_attended',
     'interests',
-    'gallery'
+    'gallery',
 ]
 
 
