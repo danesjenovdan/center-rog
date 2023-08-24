@@ -1,10 +1,11 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -16,6 +17,8 @@ from home.models import Workshop
 from payments.models import Plan
 from payments.pantheon import create_subject
 
+from datetime import datetime
+
 
 class MembershipType(ClusterableModel):
     name = models.TextField(verbose_name=_("Ime članstva"))
@@ -23,22 +26,22 @@ class MembershipType(ClusterableModel):
 
     def __str__(self):
         return self.name
-    
+
     def price(self):
         if self.plan:
             return self.plan.price
         return 0
-    
+
     panels = [
         FieldPanel("name"),
         FieldPanel("plan"),
         InlinePanel("related_specifications", label=_("Bonitete")),
     ]
-    
+
     class Meta:
         verbose_name = _("Tip članstva")
         verbose_name_plural = _("Tipi članstva")
-    
+
 
 class MembershipTypeSpecification(Orderable):
     name = models.TextField(verbose_name=_("Boniteta"))
@@ -58,6 +61,7 @@ class MembershipTypeSpecification(Orderable):
 
 class Membership(models.Model):
     type = models.ForeignKey(MembershipType, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True, related_name='memberships')
     valid_from = models.DateTimeField(
         auto_now_add=True,
         null=True,
@@ -70,9 +74,14 @@ class Membership(models.Model):
     )
     active = models.BooleanField(default=False)
 
+    notification_30_sent = models.BooleanField(default=False)
+    notification_14_sent = models.BooleanField(default=False)
+    notification_7_sent = models.BooleanField(default=False)
+    notification_1_sent = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"
-    
+
 
 class UserInterest(models.Model):
     name = models.TextField(verbose_name=_("Ime kategorije"))
@@ -132,7 +141,6 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
-    membership = models.ForeignKey(Membership, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="Članarina")
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
@@ -160,6 +168,13 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    @property
+    def membership(self):
+        return self.memberships.filter(
+            Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
+            active=True,
+            valid_from__lte=datetime.now()).first()
 
     def has_valid_subscription(self):
         return self.payments.all().is_active_subscription()
