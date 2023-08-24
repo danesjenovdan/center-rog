@@ -172,7 +172,7 @@ class User(AbstractUser):
     @property
     def membership(self):
         return self.memberships.filter(
-            Q(end_time__gte=datetime.now()) | Q(end_time=None),
+            Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
             active=True,
             valid_from__lte=datetime.now()).first()
 
