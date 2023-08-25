@@ -19,6 +19,8 @@ from payments.pantheon import create_subject
 
 from datetime import datetime
 
+import uuid
+
 
 class MembershipType(ClusterableModel):
     name = models.TextField(verbose_name=_("Ime članstva"))
@@ -160,6 +162,7 @@ class User(AbstractUser):
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images
     workshops_attended = models.ManyToManyField(Workshop, verbose_name="Opravljena usposabljanja")
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     gallery = StreamField([
         ("image", ImageChooserBlock())
     ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
