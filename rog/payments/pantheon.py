@@ -12,7 +12,7 @@ def create_ident(item):
     vat = item.vat
     total_price = price + (price * vat / 100)
     data = {
-        "ident": pantheon_ident_id,
+        "ident": pantheon_ident_id.replace('-', ' '),
         "name": name,
         "classif": "",
         "subClassif": 0,
@@ -221,7 +221,7 @@ def create_ident(item):
 def create_subject(subject):
     print(subject.email)
     data = {
-        "subject": subject.id,
+        "subject": str(subject.uuid).replace('-', ' '),
         "buyer": "T",
         "supplier": "F",
         "bank": "F",
@@ -457,7 +457,7 @@ def create_move(
     data = {
         "acKey": "",
         "receiver": "",
-        "receiverId": payment.user.id,
+        "receiverId": payment.user.uuid.replace('-', ' '),
         "receiverAddress": payment.user.address_1,
         "issuer": "Veleprodajno skladišče",
         "issuerId": "Veleprodajno skladišče",
@@ -518,7 +518,7 @@ def create_move(
         "invoiceItems": [
             {
                 "acKey": "",
-                "ident": payment.plan.pantheon_ident_id,
+                "ident": payment.plan.pantheon_ident_id.replace('-', ' '),
                 "name": payment.plan.name,
                 "anNo": 1,
                 "quantity": 1,

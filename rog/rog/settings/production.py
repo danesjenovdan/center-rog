@@ -47,5 +47,6 @@ EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 EMAIL_PORT = os.getenv('EMAIL_PORT', '')
 EMAIL_HOST_USER = os.getenv('EMAIL_USERNAME', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = bool(os.getenv('EMAIL_USE_TLS', ''))
+EMAIL_USE_SSL = bool(os.getenv('EMAIL_USE_SSL', ''))
 FROM_EMAIL = os.getenv('FROM_EMAIL', 'dummy@email.com')
