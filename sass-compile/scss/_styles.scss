@@ -78,9 +78,13 @@ a.secondary-button {
     line-height: 1;
 
     &:disabled,
+    &.disabled,
     &:disabled:focus,
+    &.disabled:focus,
     &:disabled:active,
-    &:disabled:hover {
+    &.disabled:active,
+    &:disabled:hover,
+    &.disabled:hover {
         background-color: $cs-disabled;
         color: $cs-white;
         box-shadow: none;
@@ -504,6 +508,22 @@ form {
     p {
         margin-bottom: 5px;
         font-size: $xxs-font-size;
+    }
+
+    .specifications p {
+        margin-bottom: 10px;
+
+        span:last-child {
+            font-size: $xs-font-size;
+        }
+    }
+
+    .more-information {
+        margin-bottom: 10px;
+
+        a.link {
+            font-size: $xxs-font-size;
+        }
     }
 }
 
