@@ -82,8 +82,6 @@ class TranslatablePage(Page):
                     page_path = reverse(
                         "wagtail_serve", args=(self.url_path[len(root_path) :],)
                     )
-                    print(translation.get_language())
-                    print(language_code, '____________', page_path, self.url_path)
             else:
                 page_path = reverse(
                     "wagtail_serve", args=(self.url_path[len(root_path) :],)
