@@ -198,8 +198,8 @@ class ObjectProfilePage(BasePage):
             heading=_("Slika")
         ),
         FieldPanel("gallery"),
-        FieldPanel("archived"),
         FieldPanel("show_see_more_section"),
+        FieldPanel("archived")
     ]
 
     subpage_types = []
