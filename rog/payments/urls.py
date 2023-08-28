@@ -15,6 +15,6 @@ urlpatterns = [
     path('uspesno/', PaymentSuccess.as_view()),
     path('neuspesno/', PaymentFailure .as_view()),
     path('potrditev/', PaymentSuccessXML.as_view()),
-    path('zgodovina/', PaymentHistory.as_view()),
-    path('racun/<int:payment_id>/', PaymentInvoice.as_view())
+    path('zgodovina/', PaymentHistory.as_view(), name='history'),
+    path('racun/<int:payment_id>/', PaymentInvoice.as_view(), name='invoice')
 ]
