@@ -77,6 +77,8 @@ footer.container-fluid {
     }
 
     .random-image {
+        overflow: hidden;
+
         &,
         &.random-image--portrait {
             width: 200px;
