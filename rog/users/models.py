@@ -188,10 +188,13 @@ class User(AbstractUser):
     def get_available_workshops(self):
         return self.payments.all().get_available_workshops()
 
+    def get_pantheon_subject_id(self):
+        return str(self.uuid).replace('-', '')[:30]
+
     def save(self, *args, **kwargs):
         if self.id == None:
             super().save(*args, **kwargs)
-            # create_subject(self)
+            create_subject(self)
         else:
             super().save(*args, **kwargs)
 

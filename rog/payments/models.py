@@ -92,11 +92,18 @@ class Plan(Timestampable):
         blank=True,
         default=0
     )
-    pantheon_ident_id = models.CharField(max_length=100)
+    pantheon_ident_id = models.CharField(
+        max_length=16,
+        unique=True,
+        help_text=_("Unique ident id for Pantheon without dashes and spaces")
+    )
     vat = models.IntegerField(default=22)
 
     def __str__(self):
         return f"{self.name}"
+
+    def get_pantheon_ident_id(self):
+        return self.pantheon_ident_id.replace('-', ' ')
 
     panels = [
         FieldPanel("name"),
@@ -109,6 +116,7 @@ class Plan(Timestampable):
         FieldPanel("month_token_limit"),
         FieldPanel("year_token_limit"),
         FieldPanel("workshops"),
+        FieldPanel("pantheon_ident_id"),
     ]
 
     class Meta:
@@ -117,9 +125,11 @@ class Plan(Timestampable):
 
     def save(self, *args, **kwargs):
         if self.id == None:
-            self.pantheon_ident_id = slugify(self.name)
+            # create ident by name
+            if self.pantheon_ident_id == None:
+                self.pantheon_ident_id = slugify(self.name)[:16]
             super().save(*args, **kwargs)
-            # create_ident(self)
+            create_ident(self)
         else:
             super().save(*args, **kwargs)
 
@@ -188,10 +198,9 @@ class Payment(Timestampable):
 
     def save(self, *args, **kwargs):
         if self.saved_in_pantheon == False and self.successed_at:
-            # self.saved_in_pantheon = True
-            # super().save(*args, **kwargs)
-            # print(create_move(self))
-            # self.saved_in_pantheon = True
+            super().save(*args, **kwargs)
+            print(create_move(self))
+            self.saved_in_pantheon = True
             super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
