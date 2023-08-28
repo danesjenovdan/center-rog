@@ -48,28 +48,44 @@
       </button>
     </div>
     {% if settings.home.MetaSettings.header_marquee %}
-    <div class="header-marquee">
-      <div class="header-marquee-text">
-        {{ settings.home.MetaSettings.header_marquee }}
+    <div class="header-marquee color-scheme-dark-purple">
+      <div class="d-flex align-items-center">
+        <span class="header-marquee-text">{{ settings.home.MetaSettings.header_marquee }}</span>
       </div>
     </div>
     <script>
-      (function() {
-        var element = document.querySelector(".header-marquee-text");
-        animateMarquee(element);
-        function animateMarquee(element) {
-          let elementWidth = element.offsetWidth;
-          let parentWidth = element.parentElement.offsetWidth;
-          let flag = 0;
-          requestAnimationFrame(function frame() {
-            flag -= 1;
-            element.style.transform = `translateX(${flag}px)`;
-            if (flag < -elementWidth) {
-                flag = parentWidth;
+      (() => {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelectorAll(".header-marquee").forEach((banner) => {
+            const content = banner.querySelector(".header-marquee-text");
+            if (!content) {
+              return;
             }
-            requestAnimationFrame(frame);
+
+            let originalText = "";
+            if (content.hasAttribute("original-text")) {
+              originalText = content.getAttribute("original-text");
+            } else {
+              content.setAttribute("original-text", content.textContent);
+              originalText = content.textContent;
+            }
+            originalText = originalText.trim() + "&nbsp;";
+
+            const factor = Math.ceil(window.innerWidth / content.offsetWidth);
+            content.innerHTML = originalText.repeat(factor);
+
+            const clone = content.parentElement.cloneNode(true);
+            clone.classList.add("header-marquee-clone");
+            banner.appendChild(clone);
+
+            // Wait for fonts to load before starting the animation otherwise chrome shows a gap sometimes
+            document.fonts.ready.then(() => {
+              requestAnimationFrame(() => {
+                banner.classList.add("spin");
+              });
+            });
           });
-        }
+        });
       })();
     </script>
     {% endif %}

@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static wagtailimages_tags wagtailcore_tags %}
+{% load i18n static wagtailimages_tags wagtailcore_tags %}
 
 {% block body_class %}template-profile template-event-list-page{% endblock %}
 
@@ -18,25 +18,36 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-5">
             <div class="contact-information color-scheme-white">
                 <span class="pin"></span>
                 <span class="pin"></span>
                 <span class="pin"></span>
                 <span class="pin"></span>
                 <span class="pin"></span>
-                <div class="notice text-center">
-                    <p>{{ page.start_day|date:"j. n. Y" }}</p>
-                    {% if page.end_day %}
-                    <p>{{ page.end_day|date:"j. n. Y" }}</p>
+                <div class="notice">
+                    {% if page.start_day and page.end_day %}
+                    <p>
+                        <small>{% translate 'začetek' %}</small><br>
+                        {{ page.start_day|date:"j. n. Y" }}<br>
+                        <small>{% translate 'konec' %}</small><br>
+                        {{ page.end_day|date:"j. n. Y" }}
+                    </p>
+                    {% elif page.start_day %}
+                    <p>
+                        <small>{{ page.start_day|date:"l" }}</small><br>
+                        {{ page.start_day|date:"j. n. Y" }}
+                    </p>
                     {% endif %}
-                    <p><span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span></p>
+                    <p>
+                        <span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span>
+                    </p>
                     <p>{{ page.location }}</p>
                     <!-- <button class="primary-button button-small">Prijava na dogodek</button> -->
                 </div>
             </div>
         </div>
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-7">
             {% image page.hero_image original class="hero-image" alt="..." %}
         </div>
     </div>

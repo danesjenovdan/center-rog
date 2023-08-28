@@ -6,7 +6,14 @@ function labsHoverAnimations() {
   });
 }
 
-function onLabEnter(event) {
+function onVideoError(error, video, img) {
+  console.log('video error', error);
+  window.__LABS_WEBM_ERROR__ = true;
+  video.remove();
+  img.style.opacity = "1";
+}
+
+async function onLabEnter(event) {
   const img = event.currentTarget.querySelector("img");
   const video = event.currentTarget.querySelector("video");
 
@@ -14,8 +21,17 @@ function onLabEnter(event) {
     return;
   }
 
+  video.addEventListener('error', (error) => {
+    onVideoError(error, video, img);
+  });
+
   video.loop = true;
-  video.play();
+  try {
+    await video.play();
+  } catch (error) {
+    onVideoError(error, video, img);
+    return;
+  }
 
   img.style.opacity = "0";
 }
@@ -76,8 +92,8 @@ function carousel() {
 }
 
 function scrollingDots(section, container) {
-  const eventsSectionDots = document.querySelectorAll(`.${section} .scrolling-dots span`);
-  const eventsSectionScrollable = document.querySelector(`.${section} .${container}`);
+  const eventsSectionDots = document.querySelectorAll(`${section} .scrolling-dots span`);
+  const eventsSectionScrollable = document.querySelector(`${section} ${container}`);
 
   eventsSectionDots[0].addEventListener("click", () => {
     eventsSectionScrollable.scrollTo({
@@ -148,15 +164,15 @@ document.addEventListener("DOMContentLoaded", () => {
   carousel();
 
   if (document.querySelector(".events-section")) {
-    scrollingDots("events-section", "events-container");
+    scrollingDots(".events-section", ".events-container .row");
   }
 
   if (document.querySelector(".studios-section")) {
-    scrollingDots("studios-section", "studios-container");
+    scrollingDots(".studios-section", ".studios-container .row");
   }
 
   if (document.querySelector(".news-section")) {
-    scrollingDots("news-section", "news-container");
+    scrollingDots(".news-section", ".news-container .row");
   }
 
   copyEmailButton();
