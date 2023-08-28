@@ -160,7 +160,7 @@ class ObjectProfilePage(BasePage):
     instagram = models.URLField(blank=True, verbose_name=_("Instagram"))
     facebook = models.URLField(blank=True, verbose_name=_("Facebook"))
     website = models.URLField(blank=True, verbose_name=_("Spletna stran"))
-    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"))
+    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"), max_length=50)
     # working hours
     working_hours = StreamField([
         ("time", blocks.StructBlock([

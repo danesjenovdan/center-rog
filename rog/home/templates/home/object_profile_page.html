@@ -24,16 +24,17 @@
     {% block profile_page_body %}
 
     {% block profile_page_intro %}
-    <div class="row mb-4">
+    <div class="row object-info">
 
         {% block profile_page_desc %}
-        <div class="col-md-6 intro-text">
+        <div class="{% if page.email or page.phone or page.link_1 or page.link_2 or page.link_3 or page.contact_description or page.working_hours %}col-md-6{% else %}col-12{% endif %} intro-text">
             <p>{{ page.description }}</p>
         </div>
         {% endblock profile_page_desc %}
 
         {% block profile_page_contact_information %}
-        <div class="col-md-6">
+        {% if page.email or page.phone or page.link_1 or page.link_2 or page.link_3 or page.contact_description or page.working_hours %}
+        <div class="col-md-6 d-flex flex-column align-items-center">
             {% if page.email or page.phone or page.link_1 or page.link_2 or page.link_3 or page.contact_description %}
             <div class="contact-information color-scheme-white">
                 <div class="tape"></div>
@@ -88,7 +89,7 @@
             {% endif %}
 
         </div>
-
+        {% endif %}
         {% endblock profile_page_contact_information %}
 
     </div>
@@ -99,7 +100,7 @@
 
 {% if page.image %}
 <div class="container">
-    <div class="row">
+    <div class="row main-image">
         <div class="col-12">
             {% image page.image original class="img-fluid" %}
             {% if page.image_description %}
