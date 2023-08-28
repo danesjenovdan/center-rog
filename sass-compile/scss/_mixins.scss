@@ -15,3 +15,11 @@
     @include underline-text();
   }
 }
+
+@mixin underline-text-not-on-hover() {
+  @include prepare-for-underlined-text();
+
+  &:not(:hover) {
+    @include underline-text();
+  }
+}

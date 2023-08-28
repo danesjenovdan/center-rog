@@ -66,7 +66,7 @@ class BulletinBoardBlock(blocks.StructBlock):
                 if event.category not in used_categories:
                     events.append(event)
                     used_categories.add(event.category)
-                if len(events) >= 3:
+                if len(events) >= 1:
                     break
             context["events"] = events
         # link to all events
@@ -76,7 +76,7 @@ class BulletinBoardBlock(blocks.StructBlock):
         if value["news"] is not None:
             context["news"] = [value["news"]]
         else:
-            news = NewsPage.objects.live().order_by("-first_published_at")[:3]
+            news = NewsPage.objects.live().order_by("-first_published_at")[:1]
             context["news"] = news
         # link to news
         context["news_list"] = NewsListPage.objects.live().first()
