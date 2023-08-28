@@ -7,9 +7,12 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
+import datetime
+
 from .image import CustomImage
 from .pages import LabPage
 from .workshop import Workshop
+from events.models import EventPage
 
 
 class Tool(Orderable, ClusterableModel):
@@ -19,6 +22,7 @@ class Tool(Orderable, ClusterableModel):
     lab = ParentalKey(LabPage, on_delete=models.CASCADE, related_name="related_tools")
     required_workshop = models.ForeignKey(
         Workshop, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Zahteva usposabljanje?"))
+    more_information_link = models.URLField(null=True, blank=True, verbose_name=_("Povezava za več informacij"))
     prima_location_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima location id"))
     prima_group_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima group id"))
 
@@ -27,12 +31,23 @@ class Tool(Orderable, ClusterableModel):
         FieldPanel("image"),
         InlinePanel("related_tool_specifications", max_num=4, label=_("Specifikacija")),
         FieldPanel("required_workshop"),
+        FieldPanel("more_information_link"),
         FieldPanel("prima_location_id"),
         FieldPanel("prima_group_id"),
     ]
 
     def __str__(self):
         return self.name
+    
+
+    def workshop_event(self):
+        today = datetime.datetime.today()
+        events = EventPage.objects.filter(event_is_workshop=self.required_workshop, start_day__gte=today).order_by("start_day")
+        print(events)
+        if len(events) > 0:
+            return events.first()
+        else:
+            return None
 
     class Meta:
         verbose_name = _("Orodje")

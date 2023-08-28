@@ -1,5 +1,5 @@
 {% extends "home/object_profile_page.html" %}
-{% load static wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}{{ block.super }} template-lab{% endblock %}
 
@@ -58,28 +58,53 @@
                 {% if tool.related_tool_specifications.all %}
                 <div class="specifications">
                     {% for spec in tool.related_tool_specifications.all %}
-                    <p class="d-flex justify-content-between">
-                        <span>{{ spec.name }}</span>
+                    <p>
+                        <span>{{ spec.name }}</span><br/>
                         <span>{{ spec.value }}</span>
                     </p>
                     {% endfor %}
                 </div>
                 {% endif %}
+                {% if tool.more_information_link %}
+                <div class="more-information">
+                    <p>
+                        <a class="link" href="{{ tool.more_information_link }}">
+                            <span class="link-text">več informacij</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
+                </div>
+                {% endif %}
                 {% if user.is_authenticated %}
+                    {% if tool.required_workshop %}
+                        {% if tool.required_workshop in user.workshops_attended.all %}
+                        <div class="text-center">
+                            <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="primary-button button-medium">rezerviraj</a>
+                        </div>
+                        <p>Usposabljanje je opravljeno!</p>
+                        {% else %}
+                        <div class="text-center">
+                            <a class="primary-button button-medium disabled">rezerviraj</a>
+                        </div>
+                        <p>Za rezervacijo potrebuješ usposabljanje.</p>
+                        <p class="more-information">
+                            <a class="link" href="{% pageurl tool.workshop_event %}">
+                                <span class="link-text">Prijava na usposabljanje</span>
+                                <span class="link-icon"></span>
+                            </a>
+                        </p>
+                        {% endif %}
+                    {% else %}
                     <div class="text-center">
                         <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="primary-button button-medium">rezerviraj</a>
                     </div>
-                    {% if tool.required_workshop %}
-                        {% if tool.required_workshop in user.workshops_attended.all %}
-                        <p>Usposabljanje je opravljeno!</p>
-                        {% else %}
-                        <p>Za rezervacijo potrebuješ usposabljanje.</p>
-                        <p>Prijava na usposabljanje. {{ tool.required_workshop.name }}</p>
-                        {% endif %}
                     {% endif %}
                 {% else %}
+                <div class="text-center">
+                    <a class="primary-button button-medium disabled">rezerviraj</a>
+                </div>
                 <p class="bulletin-board-link">
-                    Za rezervacijo orodje se je potrebno <a href="/prijava"><span>prijaviti</span></a>.
+                    Za rezervacijo orodja se je potrebno <a href="/prijava"><span>prijaviti</span></a>
                 </p>
                 {% endif %}
             </div>
@@ -87,5 +112,27 @@
         {% endfor %}
     </div>
 </div>
+
+{% if page.gallery %}
+<div class="container-fluid">
+    <div class="row mb-5 mt-3">
+        <div class="col-12">
+            <div class="glide">
+                <div class="glide__arrows" data-glide-el="controls">
+                  <button class="glide__arrow glide__arrow--left" data-glide-dir="<">‹</button>
+                  <button class="glide__arrow glide__arrow--right" data-glide-dir=">">›</button>
+                </div>
+                <div class="glide__track" data-glide-el="track">
+                  <ul class="glide__slides">
+                    {% for element in page.gallery %}
+                    <li class="glide__slide">{% image element.value original class="img-fluid" %}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% endblock profile_page_content %}
