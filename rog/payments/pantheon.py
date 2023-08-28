@@ -1,18 +1,16 @@
 from django.conf import settings
-from django.utils.text import slugify
 
 import requests
 import json
 
 
 def create_ident(item):
-    pantheon_ident_id = item.pantheon_ident_id
     name = item.name
     price = item.price
     vat = item.vat
     total_price = price + (price * vat / 100)
     data = {
-        "ident": pantheon_ident_id.replace('-', ' '),
+        "ident": item.get_pantheon_ident_id(),
         "name": name,
         "classif": "",
         "subClassif": 0,
@@ -221,7 +219,7 @@ def create_ident(item):
 def create_subject(subject):
     print(subject.email)
     data = {
-        "subject": str(subject.uuid).replace('-', ' '),
+        "subject": subject.get_pantheon_subject_id(),
         "buyer": "T",
         "supplier": "F",
         "bank": "F",
@@ -457,7 +455,7 @@ def create_move(
     data = {
         "acKey": "",
         "receiver": "",
-        "receiverId": payment.user.uuid.replace('-', ' '),
+        "receiverId": payment.user.get_pantheon_subject_id(),
         "receiverAddress": payment.user.address_1,
         "issuer": "Veleprodajno skladišče",
         "issuerId": "Veleprodajno skladišče",
@@ -518,7 +516,7 @@ def create_move(
         "invoiceItems": [
             {
                 "acKey": "",
-                "ident": payment.plan.pantheon_ident_id.replace('-', ' '),
+                "ident": payment.plan.get_pantheon_ident_id(),
                 "name": payment.plan.name,
                 "anNo": 1,
                 "quantity": 1,
