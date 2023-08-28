@@ -153,7 +153,7 @@ class ObjectProfilePage(BasePage):
         related_name="+",
         verbose_name=_("Slika")
     )
-    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"))
+    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"), max_length=250)
     # contact information
     email = models.EmailField(blank=True, verbose_name=_("Elektronski naslov"))
     phone = models.CharField(max_length=12, blank=True, verbose_name=_("Telefonska številka"))
