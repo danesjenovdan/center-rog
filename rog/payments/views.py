@@ -4,6 +4,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.views import View
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from rest_framework import  views
 from rest_framework.response import Response
@@ -18,7 +20,7 @@ from home.email_utils import send_email
 # Create your views here.
 
 # payments
-# TODO views.APIView zamenjaj z django.views.View
+@method_decorator(login_required, name='dispatch')
 class Pay(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
@@ -153,6 +155,7 @@ class PaymentFailure(views.APIView):
         return render(request, 'payment_failed.html', {})
 
 
+@method_decorator(login_required, name='dispatch')
 class PaymentHistory(View):
     def get(self, request):
         user = request.user
@@ -168,6 +171,7 @@ class PaymentHistory(View):
         )
 
 
+@method_decorator(login_required, name='dispatch')
 class PaymentInvoice(View):
     def get(self, request, payment_id):
         user = request.user

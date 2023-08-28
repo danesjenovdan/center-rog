@@ -19,7 +19,7 @@
                 <td>{{ payment.successed_at }}</td>
                 <td>{{ payment.history_name }}</td>
                 <td>{{ payment.amount }}€</td>
-                <td><div>Izvozi račun</div></td>
+                <td><a href="{% url 'invoice' payment_id=payment.id %}"><div>Izvozi račun</div></a></td>
             </tr>
         {% endfor %}
 
