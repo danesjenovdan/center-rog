@@ -20,16 +20,16 @@ import random
 def add_see_more_fields(context):
     # random event
     events = list(EventPage.objects.live())
-    context["event"] = random.choice(events)
+    context["event"] = random.choice(events) if events else None
     # random news
     news = list(NewsPage.objects.live())
-    context["news"] = random.choice(news)
+    context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
-    context["lab"] = random.choice(labs)
+    context["lab"] = random.choice(labs) if labs else None
     # random studio
     studios = list(StudioPage.objects.live())
-    context["studio"] = random.choice(studios)
+    context["studio"] = random.choice(studios) if studios else None
 
     return context
 
