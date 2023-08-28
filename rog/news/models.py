@@ -116,7 +116,7 @@ class NewsListPage(BasePage):
         context["archive_page"] = NewsListArchivePage.objects.live().first()
 
         # pagination
-        paginator = Paginator(all_news_page_objects, 14)
+        paginator = Paginator(all_news_page_objects, 11)
         page = request.GET.get("page")
         try:
             news_pages = paginator.page(page)

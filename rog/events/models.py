@@ -118,7 +118,7 @@ class EventListPage(BasePage):
         context["archive_page"] = EventListArchivePage.objects.live().first()
 
         # pagination
-        paginator = Paginator(all_event_page_objects, 14)
+        paginator = Paginator(all_event_page_objects, 11)
         page = request.GET.get("page")
         try:
             event_pages = paginator.page(page)
