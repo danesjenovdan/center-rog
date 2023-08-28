@@ -90,13 +90,13 @@ class PageLinkBlock(blocks.StructBlock):
 
 @register_setting(icon="cog")
 class MetaSettings(BaseGenericSetting):
-    organization_name = models.TextField(verbose_name=_("Ime"))
-    organization_address = models.TextField(verbose_name=_("Ulica in hišna številka"))
-    organization_postal_number = models.IntegerField(verbose_name=_("Poštna številka"), validators=[MinValueValidator(1000), MaxValueValidator(9999)])
-    organization_post = models.TextField(verbose_name=_("Pošta"))
-    organization_country = models.TextField(verbose_name=_("Država"))
-    organization_email = models.EmailField(verbose_name=_("E-pošta"))
-    organization_phone_number = models.CharField(verbose_name=_("Telefonska številka"), max_length=20)
+    organization_name = models.TextField(verbose_name=_("Ime"), blank=True, null=True)
+    organization_address = models.TextField(verbose_name=_("Ulica in hišna številka"), blank=True, null=True)
+    organization_postal_number = models.IntegerField(verbose_name=_("Poštna številka"), validators=[MinValueValidator(1000), MaxValueValidator(9999)], blank=True, null=True)
+    organization_post = models.TextField(verbose_name=_("Pošta"), blank=True, null=True)
+    organization_country = models.TextField(verbose_name=_("Država"), blank=True, null=True)
+    organization_email = models.EmailField(verbose_name=_("E-pošta"), blank=True, null=True)
+    organization_phone_number = models.CharField(verbose_name=_("Telefonska številka"), max_length=20, blank=True, null=True)
     organization_working_hours = StreamField([
         ('time', blocks.StructBlock([
             ('day', blocks.CharBlock(label=_('Dan'))),
