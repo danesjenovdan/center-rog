@@ -56,13 +56,13 @@
                     {% if page.link_1 or page.link_2 or page.link_3 %}
                     <div class="mb-2">
                         {% if page.link_1 %}
-                        <a href="{{ page.link_1 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ page.link_1 }}" target="_blank" class="secondary-button button-medium">{{ page.link_1_name }}</a>
                         {% endif %}
                         {% if page.link_2 %}
-                        <a href="{{ page.link_2 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ page.link_2 }}" target="_blank" class="secondary-button button-medium">{{ page.link_2_name }}</a>
                         {% endif %}
                         {% if page.link_3 %}
-                        <a href="{{ page.link_3 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ page.link_3 }}" target="_blank" class="secondary-button button-medium">{{ page.link_3_name }}</a>
                         {% endif %}
                     </div>
                     {% endif %}

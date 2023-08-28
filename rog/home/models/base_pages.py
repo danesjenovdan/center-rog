@@ -157,9 +157,12 @@ class ObjectProfilePage(BasePage):
     # contact information
     email = models.EmailField(blank=True, verbose_name=_("Elektronski naslov"))
     phone = models.CharField(max_length=12, blank=True, verbose_name=_("Telefonska številka"))
-    link_1 = models.URLField(blank=True, verbose_name=_("Povezava"))
-    link_2 = models.URLField(blank=True, verbose_name=_("Povezava"))
-    link_3 = models.URLField(blank=True, verbose_name=_("Povezava"))
+    link_1_name = models.TextField(blank=True, verbose_name=_("Ime povezave"))
+    link_1 = models.URLField(blank=True, verbose_name=_("URL"))
+    link_2_name = models.TextField(blank=True, verbose_name=_("Ime povezave"))
+    link_2 = models.URLField(blank=True, verbose_name=_("URL"))
+    link_3_name = models.TextField(blank=True, verbose_name=_("Ime povezave"))
+    link_3 = models.URLField(blank=True, verbose_name=_("URL"))
     contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"))
     # working hours
     working_hours = StreamField([
@@ -182,9 +185,18 @@ class ObjectProfilePage(BasePage):
             [
                 FieldPanel("email"),
                 FieldPanel("phone"),
-                FieldPanel("link_1"),
-                FieldPanel("link_2"),
-                FieldPanel("link_3"),
+                MultiFieldPanel([
+                    FieldPanel("link_1_name"),
+                    FieldPanel("link_1"),
+                ], heading=_("Povezava 1")),
+                MultiFieldPanel([
+                    FieldPanel("link_2_name"),
+                    FieldPanel("link_2"),
+                ], heading=_("Povezava 2")),
+                MultiFieldPanel([
+                    FieldPanel("link_3_name"),
+                    FieldPanel("link_3"),
+                ], heading=_("Povezava 3")),
                 FieldPanel("contact_description"),
             ],
             heading=_("Kontaktni podatki")

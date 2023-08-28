@@ -1285,6 +1285,10 @@ section.image-embed {
             justify-content: center;
             transform: rotate(3deg);
 
+            .secondary-button {
+                border-color: $cs-dark-gray;
+            }
+
             .notice {
                 padding: 20px;
                 font-size: $xs-font-size;
