@@ -214,22 +214,41 @@
     }
 }
 
-#secondary-navigation {
+#secondary-navigation,
+.header-marquee {
     position: absolute;
     top: 80px;
+    left: -10px;
+    width: calc(100% + 20px);
     transition: all 0.35s ease;
-    width: 100%;
-    background: $cs-light-gray;
     transform: rotate(-3.5deg);
 
     @include media-breakpoint-up(md) {
-        top: 32px;
-        transform: rotate(3.25deg);
+        top: 30px;
+        transform: rotate(4.6deg);
+    }
+
+    @include media-breakpoint-up(lg) {
+        top: 30px;
+        transform: rotate(3.6deg);
+    }
+
+    @include media-breakpoint-up(xl) {
+        top: 30px;
+        transform: rotate(3.0deg);
     }
 
     @include media-breakpoint-up(xxl) {
-        transform: rotate(2.25deg);
+        transform: rotate(2.3deg);
     }
+
+    @include media-breakpoint-up(xxxl) {
+        transform: rotate(1.8deg);
+    }
+}
+
+#secondary-navigation {
+    background: $cs-light-gray;
 
     .navbar {
         padding-block: 16px;
@@ -256,7 +275,7 @@
             inset: -8px 4px -8px 4px;
             border: 3px solid $cs-dark-gray;
             border-radius: 50%;
-            filter: drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.85)) drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.35));
+            filter: drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.85)) drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.50));
         }
 
         .nav-link:focus-visible {
@@ -271,18 +290,36 @@
     }
 }
 
-.header-marquee {
-    width: calc(100% + 20px);
-    background-color: $cs-dark-green;
-    overflow: hidden;
-    transform: translateX(-10px) translateY(-10px) rotate(4.4deg);
+@keyframes spin {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
 
-    @include media-breakpoint-down(md) {
-        transform: translateX(-10px) translateY(35px) rotate(-7deg);
+.header-marquee {
+    overflow: hidden;
+    height: 32px;
+
+    &.spin > div {
+        animation: spin 30s linear infinite;
+    }
+
+    & > div {
+        position: absolute;
+        min-width: 100%;
+        height: 100%;
+        white-space: nowrap;
+
+        &:last-child {
+            transform: translateX(100%);
+            animation-delay: -15s;
+        }
     }
 
     .header-marquee-text {
-        width: max-content;
-        white-space: nowrap;
+        display: inline;
     }
 }

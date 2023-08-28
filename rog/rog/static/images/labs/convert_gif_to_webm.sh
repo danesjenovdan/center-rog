@@ -6,7 +6,7 @@ for filename in *.gif; do
     if test -f "${filename%.*}.webm"; then
         echo "File \"${filename%.*}.webm\" already exists, skipping."
     else
-        ffmpeg -hide_banner -loglevel error -stats -i "$filename" -c vp9 -b:v 0 -crf 40 "${filename%.*}.webm"
+        ffmpeg -hide_banner -loglevel error -stats -i "$filename" -c:v libvpx-vp9 -pix_fmt yuva420p "${filename%.*}.webm"
         echo "Converting \"${filename%.*}.webm\" done."
     fi
 

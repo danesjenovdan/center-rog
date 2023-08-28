@@ -52,7 +52,7 @@
             {% if markets %}
             <div class="market-section my-4">
               <div class="markets-container">
-                <div class="color-scheme-brown card-hover">
+                <div class="color-scheme-{{ markets.0.card_color_scheme }} card-hover">
                   <a
                     href="{% pageurl markets.0.localized %}"
                     class="text-center p-3 d-block"
@@ -60,7 +60,7 @@
                     <h4 class="m-0">{{ markets.0.localized }}</h4>
                   </a>
                 </div>
-                <div class="color-scheme-light-blue card-hover">
+                <div class="color-scheme-{{ markets.1.card_color_scheme }} card-hover">
                   <a
                     href="{% pageurl markets.1.localized %}"
                     class="text-center p-3 d-block"
@@ -87,8 +87,6 @@
               <div class="notice text-center">{{ value.notice }}</div>
               <div class="tape"></div>
             </div>
-          </div>
-          <div class="col-12">
             <div class="residents-section">
               <div class="doorbell">
                 <a href="{% pageurl residents_list %}" class="resident">
