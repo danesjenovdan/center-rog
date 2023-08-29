@@ -1478,19 +1478,14 @@ section.image-embed {
                     font-size: $xs-font-size;
                 }
 
-                ul, ol {
-                    li {
-
-                    }
-                }
-
                 hr {
                     opacity: 1;
                     border-top-width: 1.5px;
                 }
 
                 a {
-                    @include underline-text-on-hover();
+                    color: inherit;
+                    @include underline-text-not-on-hover();
                 }
             }
         }
