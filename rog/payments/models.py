@@ -51,9 +51,9 @@ class Timestampable(models.Model):
 
 # payments
 class Plan(Timestampable):
-    name = models.CharField(max_length=100)
-    price = models.IntegerField()
-    is_subscription = models.BooleanField(default=False)
+    name = models.CharField(max_length=100, verbose_name=_("Ime paketa"), help_text=_("Npr. letna uporabnina"),)
+    price = models.IntegerField(verbose_name=_("Cena"))
+    is_subscription = models.BooleanField(default=False, verbose_name=_("Je naročnina?"))
     valid_from = models.DateTimeField(
         auto_now_add=True, help_text=_("When the plan starts"),
         null=True,
@@ -65,29 +65,35 @@ class Plan(Timestampable):
         blank=True
     )
     duration = models.IntegerField(
-        help_text=_("How many days the plan items lasts")
+        verbose_name=_("Koliko dni traja paket?"),
+        # help_text=_("How many days the plan items lasts")
     )
     tokens = models.IntegerField(
-        help_text=_("How many tokens a user gets"),
+        verbose_name=_("Koliko žetonov dobi uporabnik?"),
+        # help_text=_("How many tokens a user gets"),
         default=0
     )
     week_token_limit = models.IntegerField(
-        help_text=_("How many tokens a user can use in a week"),
+        verbose_name=_("Tedenska omejitev porabe žetonov"),
+        # help_text=_("How many tokens a user can use in a week"),
         null=True,
         blank=True
     )
     month_token_limit = models.IntegerField(
-        help_text=_("How many tokens a user can use in a month"),
+        verbose_name=_("Mesečna omejitev porabe žetonov"),
+        # help_text=_("How many tokens a user can use in a month"),
         null=True,
         blank=True
     )
     year_token_limit = models.IntegerField(
-        help_text=_("How many tokens a user can use in a year"),
+        verbose_name=_("Letna omejitev porabe žetonov"),
+        # help_text=_("How many tokens a user can use in a year"),
         null=True,
         blank=True
     )
     workshops = models.IntegerField(
-        help_text=_("How many workshops the user receives"),
+        verbose_name=_("Koliko delavnic dobi uporabnik v paketu?"),
+        # help_text=_("How many workshops the user receives"),
         null=True,
         blank=True,
         default=0
@@ -109,7 +115,7 @@ class Plan(Timestampable):
         FieldPanel("name"),
         FieldPanel("price"),
         FieldPanel("is_subscription"),
-        FieldPanel("valid_to"),
+        # FieldPanel("valid_to"),
         FieldPanel("duration"),
         FieldPanel("tokens"),
         FieldPanel("week_token_limit"),
@@ -121,7 +127,7 @@ class Plan(Timestampable):
 
     class Meta:
         verbose_name = _("Plačilni paket")
-        verbose_name_plural = _("Plačilni paket")
+        verbose_name_plural = _("Uporabniki - plačilni paketi")
 
     def save(self, *args, **kwargs):
         if self.id == None:

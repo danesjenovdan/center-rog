@@ -42,7 +42,7 @@ class MembershipType(ClusterableModel):
 
     class Meta:
         verbose_name = _("Tip članstva")
-        verbose_name_plural = _("Tipi članstva")
+        verbose_name_plural = _("Uporabniki - tipi članstev")
 
 
 class MembershipTypeSpecification(Orderable):
@@ -96,8 +96,8 @@ class UserInterest(models.Model):
     ]
 
     class Meta:
-        verbose_name = _("Kategorija zanimanj")
-        verbose_name_plural = _("Kategorije zanimanj")
+        verbose_name = _("Kategorija zanimanj uporabnikov")
+        verbose_name_plural = _("Uporabniki - kategorije zanimanj")
 
 
 class UserManager(BaseUserManager):

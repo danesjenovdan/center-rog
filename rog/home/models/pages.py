@@ -83,8 +83,8 @@ class ResidencePage(ObjectProfilePage):
         return context
 
     class Meta:
-        verbose_name = _("Rezidenca")
-        verbose_name_plural = _("Rezidence")
+        verbose_name = _("Rezident")
+        verbose_name_plural = _("Rezidenti")
 
 ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -222,8 +222,8 @@ class ResidenceArchiveListPage(ObjectArchiveListPage):
         return context
 
     class Meta:
-        verbose_name = _("Arhiv rezidenc")
-        verbose_name_plural = _("Arhivi rezidenc")
+        verbose_name = _("Arhiv rezidentov")
+        verbose_name_plural = _("Arhivi rezidentov")
 
 ResidenceArchiveListPage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -247,8 +247,8 @@ class StudioListPage(ObjectListPage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam studiev")
-        verbose_name_plural = _("Seznami studiev")
+        verbose_name = _("Studii")
+        verbose_name_plural = _("Studii")
 
 StudioListPage._meta.get_field("color_scheme").default = "yellow"
 
@@ -269,8 +269,8 @@ class MarketStoreListPage(ObjectListPage):
         return context
 
     class Meta:
-        verbose_name = _("Tržnica")
-        verbose_name_plural = _("Tržnice")
+        verbose_name = _("Market")
+        verbose_name_plural = _("Market")
 
 MarketStoreListPage._meta.get_field("color_scheme").default = "brown"
 
@@ -292,8 +292,8 @@ class ResidenceListPage(ObjectListPage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam rezidenc")
-        verbose_name_plural = _("Seznami rezidenc")
+        verbose_name = _("Rezidenti")
+        verbose_name_plural = _("Rezidenti")
 
 ResidenceListPage._meta.get_field("color_scheme").default = "dark-gray"
 
@@ -314,7 +314,7 @@ class LabListPage(ObjectListPage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam laboratorijev")
-        verbose_name_plural = _("Seznami laboratorijev")
+        verbose_name = _("Laboratoriji")
+        verbose_name_plural = _("Laboratoriji")
 
 LabListPage._meta.get_field("color_scheme").default = "light-green"

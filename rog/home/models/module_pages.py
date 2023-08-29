@@ -30,7 +30,7 @@ class HomePage(TranslatablePage):
         'home.ResidenceArchiveListPage',
         'home.LabListPage',
         'home.LibraryPage',
-        'home.BasicTextPage',
+        # 'home.BasicTextPage',
         'home.ContentPage',
         'events.EventListPage',
         'events.EventListArchivePage',
@@ -72,5 +72,5 @@ class ContentPage(TranslatablePage):
         return context
 
     class Meta:
-        verbose_name = _("Osnovna stran z moduli")
-        verbose_name_plural = _("Osnovne strani z moduli")
+        verbose_name = _("Generična stran")
+        verbose_name_plural = _("Generične strani")
