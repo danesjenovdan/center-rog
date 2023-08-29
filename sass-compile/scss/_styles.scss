@@ -1230,7 +1230,8 @@ section.image-embed {
     }
 
     .list-element {
-        display: block;
+        display: flex;
+        justify-content: space-between;
         padding: 10px 25px;
         margin-bottom: 15px;
         font-size: $sm-font-size;

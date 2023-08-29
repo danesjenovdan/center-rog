@@ -174,6 +174,8 @@ class ObjectProfilePage(BasePage):
         ("image", ImageChooserBlock(label=_("Slika")))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
+    archived_from = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval od"))
+    archived_to = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval do"))
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -199,7 +201,11 @@ class ObjectProfilePage(BasePage):
         ),
         FieldPanel("gallery"),
         FieldPanel("show_see_more_section"),
-        FieldPanel("archived")
+        MultiFieldPanel([
+            FieldPanel("archived"),
+            FieldPanel("archived_from"),
+            FieldPanel("archived_to")
+        ], heading=_("Arhivacija"))
     ]
 
     subpage_types = []
