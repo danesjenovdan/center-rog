@@ -1,51 +1,81 @@
-function labsHoverAnimations() {
-  const labs = document.querySelectorAll(".labs-section .lab");
-  labs.forEach((lab) => {
-    lab.addEventListener("mouseenter", onLabEnter);
-    lab.addEventListener("mouseleave", onLabLeave);
+function debounce(func, wait = 50) {
+  let timeout;
+  return function debounced() {
+    const context = this;
+    const args = arguments;
+    const later = function () {
+      timeout = null;
+      func.apply(context, args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    return timeout;
+  };
+}
+
+function rotateNavbar() {
+  const collapsable_menu = document.getElementById("navbar-collapsable-menu");
+  const logo = document.getElementById("logo-navigation");
+  const primary_navigation = document.getElementById("primary-navigation");
+
+  collapsable_menu.addEventListener("show.bs.collapse", (event) => {
+    logo.classList.add("custom-navigation-show");
+    primary_navigation.classList.add("custom-navigation-show");
+    updateNavBarAngle();
   });
-}
 
-function onVideoError(error, video, img) {
-  console.log('video error', error);
-  window.__LABS_WEBM_ERROR__ = true;
-  video.remove();
-  img.style.opacity = "1";
-}
-
-async function onLabEnter(event) {
-  const img = event.currentTarget.querySelector("img");
-  const video = event.currentTarget.querySelector("video");
-
-  if (!video) {
-    return;
-  }
-
-  video.addEventListener('error', (error) => {
-    onVideoError(error, video, img);
+  collapsable_menu.addEventListener("hide.bs.collapse", (event) => {
+    logo.classList.remove("custom-navigation-show");
+    primary_navigation.classList.remove("custom-navigation-show");
+    updateNavBarAngle();
   });
 
-  video.loop = true;
-  try {
-    await video.play();
-  } catch (error) {
-    onVideoError(error, video, img);
-    return;
-  }
-
-  img.style.opacity = "0";
+  window.addEventListener("resize", debounce(updateNavBarAngle));
+  updateNavBarAngle();
 }
 
-function onLabLeave(event) {
-  const img = event.currentTarget.querySelector("img");
-  const video = event.currentTarget.querySelector("video");
+function updateNavBarAngle() {
+  const nav_bg = document.getElementById("primary-navigation-background");
+  const menu_open = nav_bg.parentElement.classList.contains("custom-navigation-show");
 
-  if (!video) {
-    return;
+  let left_height = 0;
+  let right_height = 0;
+  if (menu_open) {
+    left_height = 1;
+    right_height = 0.9;
+    if (window.innerWidth < 768) {
+      left_height = 1;
+      right_height = 1;
+    }
+  } else {
+    left_height = 0;
+    right_height = 0.5;
+    if (window.innerWidth < 768) {
+      left_height = 0.85;
+    }
   }
 
-  video.pause();
-  // img.style.opacity = "1";
+  const nav_bg_left_height = left_height * nav_bg.offsetHeight;
+  const nav_bg_right_height = right_height * nav_bg.offsetHeight;
+
+  const x1 = 0;
+  const y1 = nav_bg_left_height;
+  const x2 = nav_bg.offsetWidth;
+  const y2 = nav_bg_right_height;
+  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+  const secondary_navigation = document.getElementById("secondary-navigation");
+  const header_marquee = document.querySelector(".header-marquee");
+  if (secondary_navigation) {
+    secondary_navigation.style.transform = `rotate(${angle}deg)`;
+    secondary_navigation.style.top = `${nav_bg_left_height - 2}px`;
+  }
+  if (header_marquee) {
+    header_marquee.style.transform = `rotate(${angle}deg)`;
+    header_marquee.style.top = secondary_navigation
+      ? `${secondary_navigation.offsetHeight + nav_bg_left_height - 4}px`
+      : `${nav_bg_left_height - 2}px`;
+  }
 }
 
 function carousel() {
@@ -138,28 +168,7 @@ function copyEmailButton() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const collapsable_menu = document.getElementById("navbar-collapsable-menu");
-  const secondary_navigation = document.getElementById("secondary-navigation");
-
-  collapsable_menu.addEventListener("hide.bs.collapse", (event) => {
-    document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
-    document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
-
-    if (secondary_navigation) {
-      secondary_navigation.classList.toggle("custom-navigation-show");
-    }
-  });
-
-  collapsable_menu.addEventListener("show.bs.collapse", (event) => {
-    document.getElementById("primary-navigation").classList.toggle("custom-navigation-show");
-    document.getElementById("logo-navigation").classList.toggle("custom-navigation-show");
-
-    if (secondary_navigation) {
-      secondary_navigation.classList.toggle("custom-navigation-show");
-    }
-  });
-
-  labsHoverAnimations();
+  rotateNavbar();
 
   carousel();
 

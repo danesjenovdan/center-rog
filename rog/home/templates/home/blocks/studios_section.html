@@ -1,4 +1,4 @@
-{% load i18n wagtailcore_tags %}
+{% load i18n wagtailcore_tags news_and_events_tags %}
 
 <section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-yellow studios-section">
     <div class="container">
@@ -11,7 +11,7 @@
     </div>
     <div class="container-fluid studios-container">
         <div class="row">
-            {% for studio in value.studios %}
+            {% for studio in value.studios|with_up_to_15_random_studios %}
             <div class="col studio-card-col">
                 {% include "home/includes/studio_card.html" with studio=studio %}
             </div>
