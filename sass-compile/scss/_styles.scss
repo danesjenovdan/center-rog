@@ -983,6 +983,26 @@ form {
             grid-column: 1 / 1;
             grid-row: 1 / 1;
             width: 100%;
+
+            &:first-child {
+                opacity: 1;
+            }
+
+            &:not(:first-child) {
+                opacity: 0;
+            }
+        }
+
+        &:hover {
+            img, video {
+                &:first-child {
+                    opacity: 0;
+                }
+
+                &:not(:first-child) {
+                    opacity: 1;
+                }
+            }
         }
 
         h6 {

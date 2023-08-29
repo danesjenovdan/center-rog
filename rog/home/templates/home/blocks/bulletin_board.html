@@ -38,11 +38,8 @@
             {% if lab %}
             <div class="labs-section">
               <a href="{% pageurl lab %}" class="lab">
-                {% if lab.thumbnail_animation %}
-                  {% image lab.thumbnail original as lab_thumbnail %}
-                  <video class="img-fluid" muted playsinline preload="auto" src="{{ lab.thumbnail_animation.url }}" poster="{{ lab_thumbnail.url }}"></video>
-                {% endif %}
-                {% image lab.thumbnail original class="img-fluid" alt=lab.alt_description %}
+                {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
+                {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
               </a>
               <div class="bulletin-board-link mb-4">
                 <a href="{% pageurl labs_list %}"><span>{% translate 'Poglej vse laboratorije' %}</span></a>

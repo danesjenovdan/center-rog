@@ -160,7 +160,7 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=three_d_lab_img,
-            thumbnail_animation=three_d_lab_animation,
+            # thumbnail_animation=three_d_lab_animation,
             image=stock_img
         )
 
@@ -180,7 +180,7 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=kovinarski_lab_img,
-            thumbnail_animation=kovinarski_lab_animation,
+            # thumbnail_animation=kovinarski_lab_animation,
             image=stock_img
         )
 
@@ -200,7 +200,7 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=kuharski_lab_img,
-            thumbnail_animation=kuharski_lab_animation,
+            # thumbnail_animation=kuharski_lab_animation,
             image=stock_img
         )
 
@@ -220,7 +220,7 @@ class Command(BaseCommand):
             link_2="https://www.dolor-sit-amet.com",
             contact_description="Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             thumbnail=lesni_lab_img,
-            thumbnail_animation=lesni_lab_animation,
+            # thumbnail_animation=lesni_lab_animation,
             image=stock_img
         )
 

@@ -129,14 +129,14 @@ class LabPage(ObjectProfilePage):
         related_name="+",
         verbose_name=_("Predogledna slika")
     )
-    thumbnail_animation = models.ForeignKey(
-        "wagtailmedia.Media",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        verbose_name=_("Animacija predogledne slike")
-    )
+    # thumbnail_animation = models.ForeignKey(
+    #     "wagtailmedia.Media",
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name="+",
+    #     verbose_name=_("Animacija predogledne slike")
+    # )
     lab_lead = models.CharField(
         max_length=255,
         blank=True,
@@ -146,7 +146,7 @@ class LabPage(ObjectProfilePage):
     content_panels = ObjectProfilePage.content_panels + [
         FieldPanel("lab_lead"),
         FieldPanel("thumbnail"),
-        MediaChooserPanel("thumbnail_animation"),
+        # MediaChooserPanel("thumbnail_animation"),
         InlinePanel("related_tools", label="Orodja"),
     ]
 

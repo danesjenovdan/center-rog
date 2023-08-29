@@ -1,53 +1,3 @@
-function labsHoverAnimations() {
-  const labs = document.querySelectorAll(".labs-section .lab");
-  labs.forEach((lab) => {
-    lab.addEventListener("mouseenter", onLabEnter);
-    lab.addEventListener("mouseleave", onLabLeave);
-  });
-}
-
-function onVideoError(error, video, img) {
-  console.log('video error', error);
-  window.__LABS_WEBM_ERROR__ = true;
-  video.remove();
-  img.style.opacity = "1";
-}
-
-async function onLabEnter(event) {
-  const img = event.currentTarget.querySelector("img");
-  const video = event.currentTarget.querySelector("video");
-
-  if (!video) {
-    return;
-  }
-
-  video.addEventListener('error', (error) => {
-    onVideoError(error, video, img);
-  });
-
-  video.loop = true;
-  try {
-    await video.play();
-  } catch (error) {
-    onVideoError(error, video, img);
-    return;
-  }
-
-  img.style.opacity = "0";
-}
-
-function onLabLeave(event) {
-  const img = event.currentTarget.querySelector("img");
-  const video = event.currentTarget.querySelector("video");
-
-  if (!video) {
-    return;
-  }
-
-  video.pause();
-  // img.style.opacity = "1";
-}
-
 function carousel() {
   const elements = document.querySelectorAll(".glide");
   elements.forEach((element, i) => {
@@ -158,8 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
       secondary_navigation.classList.toggle("custom-navigation-show");
     }
   });
-
-  labsHoverAnimations();
 
   carousel();
 
