@@ -229,34 +229,13 @@
 #secondary-navigation,
 .header-marquee {
     position: absolute;
-    top: 80px;
+    top: -2px;
     left: -10px;
     width: calc(100% + 20px);
+    z-index: 99999;
     transition: all 0.35s ease;
-    transform: rotate(-3.5deg);
-
-    @include media-breakpoint-up(md) {
-        top: 30px;
-        transform: rotate(4.6deg);
-    }
-
-    @include media-breakpoint-up(lg) {
-        top: 30px;
-        transform: rotate(3.6deg);
-    }
-
-    @include media-breakpoint-up(xl) {
-        top: 30px;
-        transform: rotate(3.0deg);
-    }
-
-    @include media-breakpoint-up(xxl) {
-        transform: rotate(2.3deg);
-    }
-
-    @include media-breakpoint-up(xxxl) {
-        transform: rotate(1.8deg);
-    }
+    transform-origin: top left;
+    transform: rotate(0deg);
 }
 
 #secondary-navigation {
@@ -294,11 +273,6 @@
             outline: 0;
             box-shadow: 0 0 0 2px $cs-focus-green;
         }
-    }
-
-    &.custom-navigation-show {
-        transform: rotate(-0.7deg);
-        top: 132px;
     }
 }
 
