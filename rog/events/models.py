@@ -51,7 +51,7 @@ class EventPage(BasePage):
     location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
