@@ -18,7 +18,7 @@
           {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
           {% for language in languages %}
             {% if CURRENT_LANGUAGE != language.code %}
-              <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link">
+              <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link lang-link">
                   {{ language.name }}
               </a>
             {% endif %}

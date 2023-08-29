@@ -63,6 +63,10 @@
     .nav-link {
         color: $cs-dark-gray;
 
+        &.lang-link {
+            margin-right: 0.7rem;
+        }
+
         &:hover {
             color: $cs-light-blue;
         }
@@ -71,12 +75,20 @@
     @include media-breakpoint-up(xl) {
         .nav-link {
             font-size: $xs-font-size;
+
+            &.lang-link {
+                font-size: $xxs-font-size;
+            }
         }
     }
 
     @include media-breakpoint-up(xxl) {
         .nav-link {
             font-size: $sm-font-size;
+
+            &.lang-link {
+                font-size: $xs-font-size;
+            }
         }
     }
 
@@ -217,34 +229,13 @@
 #secondary-navigation,
 .header-marquee {
     position: absolute;
-    top: 80px;
+    top: -2px;
     left: -10px;
     width: calc(100% + 20px);
+    z-index: 99999;
     transition: all 0.35s ease;
-    transform: rotate(-3.5deg);
-
-    @include media-breakpoint-up(md) {
-        top: 30px;
-        transform: rotate(4.6deg);
-    }
-
-    @include media-breakpoint-up(lg) {
-        top: 30px;
-        transform: rotate(3.6deg);
-    }
-
-    @include media-breakpoint-up(xl) {
-        top: 30px;
-        transform: rotate(3.0deg);
-    }
-
-    @include media-breakpoint-up(xxl) {
-        transform: rotate(2.3deg);
-    }
-
-    @include media-breakpoint-up(xxxl) {
-        transform: rotate(1.8deg);
-    }
+    transform-origin: top left;
+    transform: rotate(0deg);
 }
 
 #secondary-navigation {
@@ -273,20 +264,15 @@
             display: block;
             position: absolute;
             inset: -8px 4px -8px 4px;
-            border: 3px solid $cs-dark-gray;
+            border: 2px solid $cs-dark-gray;
             border-radius: 50%;
-            filter: drop-shadow(-1px -1px 1px rgba(255, 255, 255, 0.85)) drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.50));
+            filter: drop-shadow(4px 4px 2px rgba(0, 0, 0, 0.50));
         }
 
         .nav-link:focus-visible {
             outline: 0;
             box-shadow: 0 0 0 2px $cs-focus-green;
         }
-    }
-
-    &.custom-navigation-show {
-        transform: rotate(-0.7deg);
-        top: 132px;
     }
 }
 

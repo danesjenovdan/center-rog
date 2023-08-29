@@ -115,7 +115,7 @@ class NewsBlock(blocks.StructBlock):
     exposed_news = blocks.StreamBlock([
         ("news_page", blocks.PageChooserBlock(
             label=_("Novica"), page_type="news.NewsPage"))
-    ], label=_("Novice"))
+    ], max_num=5, label=_("Novice"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -132,7 +132,7 @@ class EventsBlock(blocks.StructBlock):
     exposed_events = blocks.StreamBlock([
         ("event", blocks.PageChooserBlock(
             label=_("Dogodek"), page_type="events.EventPage"))
-    ], label=_("Dogodki"))
+    ], max_num=5, label=_("Dogodki"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -194,7 +194,7 @@ def get_studios():
 class StudiosBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    studios = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.StudioPage"), label=_("Izpostavljeni studii"))
+    studios = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.StudioPage"), max_num=5, label=_("Izpostavljeni studii"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
