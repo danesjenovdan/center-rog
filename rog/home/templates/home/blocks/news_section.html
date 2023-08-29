@@ -1,4 +1,4 @@
-{% load i18n wagtailcore_tags %}
+{% load i18n wagtailcore_tags news_and_events_tags %}
 
 <section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-light-gray news-section">
     <div class="container">
@@ -10,8 +10,8 @@
     </div>
     <div class="container-fluid news-container">
         <div class="row">
-            {% for news_page in value.exposed_news %}
-                {% include "news/includes/card.html" with news=news_page.value %}
+            {% for news_page in value.exposed_news|with_up_to_15_recent_news %}
+                {% include "news/includes/card.html" with news=news_page %}
             {% endfor %}
         </div>
     </div>

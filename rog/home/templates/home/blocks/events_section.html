@@ -1,4 +1,4 @@
-{% load i18n wagtailcore_tags %}
+{% load i18n wagtailcore_tags news_and_events_tags %}
 
 <section {% if value.title and value.show_link_in_secondary_menu %}id="{{ value.title|slugify }}"{% endif %} class="color-scheme-light-gray events-section position-relative">
     <div class="container">
@@ -10,8 +10,8 @@
     </div>
     <div class="container-fluid events-container">
         <div class="row">
-            {% for event in value.exposed_events %}
-                {% include "events/includes/card.html" with event=event.value %}
+            {% for event in value.exposed_events|with_up_to_15_upcoming_events %}
+                {% include "events/includes/card.html" with event=event %}
             {% endfor %}
         </div>
     </div>
