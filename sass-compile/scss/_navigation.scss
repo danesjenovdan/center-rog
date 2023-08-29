@@ -63,6 +63,10 @@
     .nav-link {
         color: $cs-dark-gray;
 
+        &.lang-link {
+            margin-right: 0.7rem;
+        }
+
         &:hover {
             color: $cs-light-blue;
         }
@@ -71,12 +75,20 @@
     @include media-breakpoint-up(xl) {
         .nav-link {
             font-size: $xs-font-size;
+
+            &.lang-link {
+                font-size: $xxs-font-size;
+            }
         }
     }
 
     @include media-breakpoint-up(xxl) {
         .nav-link {
             font-size: $sm-font-size;
+
+            &.lang-link {
+                font-size: $xs-font-size;
+            }
         }
     }
 
