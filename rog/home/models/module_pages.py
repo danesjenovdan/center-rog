@@ -8,6 +8,8 @@ from wagtail.fields import StreamField
 from .blocks import (ModuleBlock)
 from .base_pages import BasePage, TranslatablePage
 
+from .pages import add_see_more_fields
+
 class HomePage(TranslatablePage):
     body = StreamField(
         ModuleBlock(),
@@ -51,13 +53,23 @@ class ContentPage(TranslatablePage):
         verbose_name="Telo",
         use_json_field=True
     )
+    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel('secondary_navigation'),
         FieldPanel('body'),
+        FieldPanel('show_see_more_section')
     ]
 
     subpage_types = []
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
 
     class Meta:
         verbose_name = _("Osnovna stran z moduli")

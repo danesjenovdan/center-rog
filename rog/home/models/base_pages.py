@@ -153,14 +153,14 @@ class ObjectProfilePage(BasePage):
         related_name="+",
         verbose_name=_("Slika")
     )
-    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"))
+    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"), max_length=250)
     # contact information
     email = models.EmailField(blank=True, verbose_name=_("Elektronski naslov"))
     phone = models.CharField(max_length=12, blank=True, verbose_name=_("Telefonska številka"))
-    link_1 = models.URLField(blank=True, verbose_name=_("Povezava"))
-    link_2 = models.URLField(blank=True, verbose_name=_("Povezava"))
-    link_3 = models.URLField(blank=True, verbose_name=_("Povezava"))
-    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"))
+    instagram = models.URLField(blank=True, verbose_name=_("Instagram"))
+    facebook = models.URLField(blank=True, verbose_name=_("Facebook"))
+    website = models.URLField(blank=True, verbose_name=_("Spletna stran"))
+    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"), max_length=50)
     # working hours
     working_hours = StreamField([
         ("time", blocks.StructBlock([
@@ -174,6 +174,8 @@ class ObjectProfilePage(BasePage):
         ("image", ImageChooserBlock(label=_("Slika")))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
+    archived_from = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval od"))
+    archived_to = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval do"))
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -182,9 +184,9 @@ class ObjectProfilePage(BasePage):
             [
                 FieldPanel("email"),
                 FieldPanel("phone"),
-                FieldPanel("link_1"),
-                FieldPanel("link_2"),
-                FieldPanel("link_3"),
+                FieldPanel("instagram"),
+                FieldPanel("facebook"),
+                FieldPanel("website"),
                 FieldPanel("contact_description"),
             ],
             heading=_("Kontaktni podatki")
@@ -198,8 +200,12 @@ class ObjectProfilePage(BasePage):
             heading=_("Slika")
         ),
         FieldPanel("gallery"),
-        FieldPanel("archived"),
         FieldPanel("show_see_more_section"),
+        MultiFieldPanel([
+            FieldPanel("archived"),
+            FieldPanel("archived_from"),
+            FieldPanel("archived_to")
+        ], heading=_("Arhivacija"))
     ]
 
     subpage_types = []

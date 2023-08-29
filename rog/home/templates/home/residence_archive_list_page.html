@@ -6,7 +6,8 @@
     <div class="col-12">
         {% for element in list %}
         <a href="{{ element.url }}" class="color-scheme-light-gray list-element">
-            {{ element }}
+            <span>{{ element }}</span>
+            <span>{{ element.archived_from }}{% if element.archived_to %} - {{ element.archived_to }}{% endif %}</span>
         </a>
         {% endfor %}
     </div>
