@@ -87,12 +87,14 @@
                             <a class="primary-button button-medium disabled">rezerviraj</a>
                         </div>
                         <p>Za rezervacijo potrebuješ usposabljanje.</p>
+                        {% if tool.workshop_event %}
                         <p class="more-information">
                             <a class="link" href="{% pageurl tool.workshop_event %}">
                                 <span class="link-text">Prijava na usposabljanje</span>
                                 <span class="link-icon"></span>
                             </a>
                         </p>
+                        {% endif %}
                         {% endif %}
                     {% else %}
                     <div class="text-center">
