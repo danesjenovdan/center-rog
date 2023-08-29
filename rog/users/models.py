@@ -176,7 +176,6 @@ class User(AbstractUser):
     def membership(self):
         return self.memberships.filter(
             Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
-            active=True,
             valid_from__lte=datetime.now()).first()
 
     def has_valid_subscription(self):
