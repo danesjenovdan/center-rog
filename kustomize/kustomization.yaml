@@ -6,6 +6,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+  - cronjobs/publish_scheduled.yaml
 images:
   - name: rog
     newName: rg.fr-par.scw.cloud/djnd/rog
