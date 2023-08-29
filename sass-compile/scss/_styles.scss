@@ -1368,7 +1368,6 @@ section.image-embed {
             .notice {
                 padding: 30px 10px;
                 font-size: $xs-font-size;
-                color: $cs-dark-gray;
                 flex-grow: 1;
 
                 p {
@@ -1575,14 +1574,6 @@ section.image-embed {
     .margin-bottom {
         display: block;
         margin: 30px 0;
-    }
-
-    &.template-studio {
-        .object-profile-container {
-            .working-hours.color-scheme-pink .notice {
-                color: $cs-brown;
-            }
-        }
     }
 
     .user-profile-container {
