@@ -1458,9 +1458,13 @@ section.image-embed {
             .rich-text-page {
                 font-size: $xs-font-size;
 
-                p, h2, h3, h4, ul {
-                    margin: 30px 0;
+                p, h2, h3, h4, ul, ol, hr, img, iframe {
+                    margin-bottom: 30px;
                     line-height: 1.2;
+                }
+
+                p:empty {
+                    display: none;
                 }
 
                 h2 {
