@@ -20,16 +20,16 @@ import random
 def add_see_more_fields(context):
     # random event
     events = list(EventPage.objects.live())
-    context["event"] = random.choice(events)
+    context["event"] = random.choice(events) if events else None
     # random news
     news = list(NewsPage.objects.live())
-    context["news"] = random.choice(news)
+    context["news"] = random.choice(news) if news else None
     # random lab
-    labs = list(LabPage.objects.live())
-    context["lab"] = random.choice(labs)
+    labs = list(LabPage.objects.live().filter(archived=False))
+    context["lab"] = random.choice(labs) if labs else None
     # random studio
-    studios = list(StudioPage.objects.live())
-    context["studio"] = random.choice(studios)
+    studios = list(StudioPage.objects.live().filter(archived=False))
+    context["studio"] = random.choice(studios) if studios else None
 
     return context
 
@@ -238,7 +238,7 @@ class StudioListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["studios"] = StudioPage.objects.child_of(self).live()
+        context["studios"] = StudioPage.objects.child_of(self).live().filter(archived=False)
         context["archive_page"] = StudioArchiveListPage.objects.live().first()
 
         # see more
@@ -261,7 +261,7 @@ class MarketStoreListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["markets"] = MarketStorePage.objects.child_of(self).live()
+        context["markets"] = MarketStorePage.objects.child_of(self).live().filter(archived=False)
 
         # see more
         context = add_see_more_fields(context)
@@ -306,7 +306,7 @@ class LabListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["labs"] = LabPage.objects.child_of(self).live()
+        context["labs"] = LabPage.objects.child_of(self).live().filter(archived=False)
 
        # see more
         context = add_see_more_fields(context)

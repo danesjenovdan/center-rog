@@ -16,7 +16,7 @@
 {% block list_page_list %}
 <div class="row my-5">
     {% for market in markets %}
-    <a href="{% pageurl market.localized %}" class="col-6 col-md-4 col-xxl-3 market-card color-scheme-{{ market.card_color_scheme }} card-hover">
+    <a href="{% pageurl market.localized %}" class="col-6 col-md-4 col-xl-3 market-card color-scheme-{{ market.card_color_scheme }} card-hover">
         <h4 class="m-0">{{ market.localized }}</h4>
     </a>
     {% endfor %}

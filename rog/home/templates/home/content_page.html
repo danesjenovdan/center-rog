@@ -13,4 +13,10 @@
     {% include_block block %}
 {% endfor %}
 
+{% if page.show_see_more_section %}
+{% block profile_page_see_more %}
+{% include "home/includes/see_more.html" %}
+{% endblock profile_page_see_more %}
+{% endif %}
+
 {% endblock page_body %}
