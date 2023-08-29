@@ -60,7 +60,9 @@
     {% if page.body %}
     <div class="row">
         <div class="col-12 rich-text-page">
-            {{ page.body|richtext }}
+            <div class="max-800">
+                {{ page.body|richtext }}
+            </div>
         </div>
     </div>
     {% endif %}
