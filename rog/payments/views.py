@@ -29,13 +29,16 @@ class Pay(views.APIView):
     def post(self, request):
         print('INIT PAY')
         data = request.data
+        user = request.user
         payment = Payment(
-            user=request.user,
+            user=user,
         )
+
         if 'plan' in data.keys():
             plan = Plan.objects.get(id=data['plan'])
             payment.plan = plan
-            payment.amount = plan.price
+            payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
+            payment.amount = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
         payment.save()
 
         ids = settings.PAYMENT_IDS

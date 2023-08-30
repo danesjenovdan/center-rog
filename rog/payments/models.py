@@ -52,8 +52,12 @@ class Timestampable(models.Model):
 # payments
 class Plan(Timestampable):
     name = models.CharField(max_length=100, verbose_name=_("Ime paketa"), help_text=_("Npr. letna uporabnina"),)
+    discounted_price = models.IntegerField(
+        verbose_name=_("Discounted price"),
+        help_text=_("Price for younger than 26 years old and older than 65")
+    )
+    is_subscription = models.BooleanField(default=False)
     price = models.IntegerField(verbose_name=_("Cena"))
-    is_subscription = models.BooleanField(default=False, verbose_name=_("Je naročnina?"))
     valid_from = models.DateTimeField(
         auto_now_add=True, help_text=_("When the plan starts"),
         null=True,
@@ -114,6 +118,7 @@ class Plan(Timestampable):
     panels = [
         FieldPanel("name"),
         FieldPanel("price"),
+        FieldPanel("discounted_price"),
         FieldPanel("is_subscription"),
         # FieldPanel("valid_to"),
         FieldPanel("duration"),
@@ -173,6 +178,7 @@ class Payment(Timestampable):
         on_delete=models.PROTECT,
         help_text="Select a plan",
     )
+    user_was_eligible_to_discount = models.BooleanField(default=False)
 
     objects = ActiveAtQuerySet.as_manager()
     saved_in_pantheon = models.BooleanField(
@@ -189,6 +195,7 @@ class Payment(Timestampable):
         FieldPanel("status"),
         FieldPanel("info"),
         FieldPanel("plan"),
+        FieldPanel("user_was_eligible_to_discount"),
         FieldPanel("saved_in_pantheon"),
     ]
 
