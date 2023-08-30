@@ -32,15 +32,6 @@ a.link {
     }
 }
 
-ul {
-    padding-left: 2.122rem;
-
-    li::marker {
-        content: "\25CF" "   ";
-        white-space: pre;
-    }
-}
-
 .flex-page-height {
     display: flex;
     flex-direction: column;
@@ -612,6 +603,15 @@ form {
 .rich-text-module {
     p, li {
         font-size: $xs-font-size;
+    }
+
+    ul {
+        padding-left: 2.122rem;
+
+        li::marker {
+            content: "\25CF" "   ";
+            white-space: pre;
+        }
     }
 
     h4 {
@@ -1522,6 +1522,15 @@ section.image-embed {
 
                 h4 {
                     font-size: $xs-font-size;
+                }
+
+                ul {
+                    padding-left: 2.122rem;
+
+                    li::marker {
+                        content: "\25CF" "   ";
+                        white-space: pre;
+                    }
                 }
 
                 hr {
