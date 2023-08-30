@@ -636,14 +636,20 @@ form {
 
 // home and content page
 .template-module-page {
+    section:first-of-type {
+        h1, h2 {
+            margin-top: 36px;
+        }
+    }
+
+    a[name] + section:first-of-type {
+        h1, h2 {
+            margin-top: 100px;
+        }
+    }
+
     section {
         padding: 60px 0;
-
-        &:first-child {
-            h1, h2 {
-                margin-top: 40px;
-            }
-        }
 
         h2 {
             font-size: $lg-font-size;
