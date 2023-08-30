@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: rog-membership_expiration_reminder
+spec:
+  schedule: "0 6 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+            - name: rog-membership_expiration_reminder
+              image: rog
+              command:
+                - python
+                - manage.py
+                - membership_expiration_reminder
+              env:
+                - name: DJANGO_SETTINGS_MODULE
+                  value: rog.settings.production
+              envFrom:
+                - secretRef:
+                    name: rog-credentials
+          restartPolicy: Never
