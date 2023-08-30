@@ -15,6 +15,12 @@ footer.container-fluid {
         }
     }
 
+    form {
+        .secondary-button {
+            border-color: $cs-dark-gray;
+        }
+    }
+
     .working-hours {
         max-width: fit-content;
 

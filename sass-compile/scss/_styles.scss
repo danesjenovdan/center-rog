@@ -1312,6 +1312,8 @@ section.image-embed {
             display: flex;
             justify-content: center;
             transform: rotate(3deg);
+            max-width: 100%;
+            min-width: 60%;
 
             .secondary-button {
                 border-color: $cs-dark-gray;
@@ -1467,6 +1469,10 @@ section.image-embed {
                     display: none;
                 }
 
+                p:last-child {
+                    margin-bottom: 0;
+                }
+
                 h2 {
                     font-size: $md-font-size;
                 }
@@ -1571,9 +1577,9 @@ section.image-embed {
         margin-bottom: 30px;
     }
 
-    .margin-bottom {
+    .bottom-margin {
         display: block;
-        margin: 30px 0;
+        margin-top: 60px;
     }
 
     .user-profile-container {
