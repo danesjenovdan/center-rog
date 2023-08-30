@@ -32,18 +32,12 @@ a.link {
     }
 }
 
-a.email-link {
-    text-decoration: none;
-    font-size: $xs-font-size;
+ul {
+    padding-left: 2.122rem;
 
-    .email-text {
-        @include prepare-for-underlined-text();
-    }
-
-    &:hover {
-        .email-text {
-            @include underline-text();
-        }
+    li::marker {
+        content: "\25CF" "   ";
+        white-space: pre;
     }
 }
 
@@ -64,9 +58,16 @@ a.email-link {
     }
 }
 
+.max-650 {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .max-800 {
     max-width: 800px;
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* BUTTONS */
@@ -468,15 +469,9 @@ form {
     }
 }
 
-.market-card {
-    height: 300px;
-    padding: 10px;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: $sm-font-size;
+.market-card-col {
+    padding-left: 0;
+    padding-right: 0;
 
     &:nth-child(1n) {
         transform: rotate(-3deg);
@@ -498,6 +493,27 @@ form {
     }
     &:nth-child(7n) {
         transform: rotate(-4deg);
+    }
+
+    .market-card {
+        display: block;
+        width: 100%;
+        border-radius: 2px;
+        // aspect-ratio: 250/320;
+        padding-top: 130%;
+        position: relative;
+
+        .card-inner {
+            position: absolute;
+            inset: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: $sm-font-size;
+            text-align: center;
+        }
     }
 }
 
@@ -532,6 +548,7 @@ form {
 
         a.link {
             font-size: $xxs-font-size;
+            color: inherit;
         }
     }
 }
@@ -539,7 +556,7 @@ form {
 .scrolling-dots {
     span {
         display: inline-block;
-        border: 1px solid $cs-dark-gray;
+        border: 1.5px solid $cs-dark-gray;
         border-radius: 50%;
         width: 18px;
         height: 18px;
@@ -619,14 +636,20 @@ form {
 
 // home and content page
 .template-module-page {
+    section:first-of-type {
+        h1, h2 {
+            margin-top: 36px;
+        }
+    }
+
+    a[name] + section:first-of-type {
+        h1, h2 {
+            margin-top: 100px;
+        }
+    }
+
     section {
         padding: 60px 0;
-
-        &:first-child {
-            h1, h2 {
-                margin-top: 40px;
-            }
-        }
 
         h2 {
             font-size: $lg-font-size;
@@ -911,12 +934,6 @@ form {
         }
 
         &.colored-text-section {
-            .with-image.wider-container {
-                @include media-breakpoint-between(xl, xxl) {
-                    max-width: 1000px;
-                }
-            }
-
             .with-image {
                 p {
                     font-size: $xs-font-size;
@@ -944,6 +961,16 @@ form {
                 }
             }
         }
+
+        &.newsletter-section {
+            form {
+                a {
+                    font-size: inherit;
+
+                    @include underline-text-on-hover();
+                }
+            }
+        }
     }
 
     .market-section {
@@ -966,6 +993,20 @@ form {
         .bulletin-board-link a {
             color: inherit;
             font-size: $xs-font-size;
+        }
+    }
+
+    .contacts-section {
+        .link {
+            @include underline-text-not-on-hover();
+        }
+
+        .copy-email-button {
+            display: inline;
+            padding: 0;
+            background: none;
+            border: none;
+            color: inherit;
         }
     }
 }
@@ -1310,6 +1351,8 @@ section.image-embed {
             display: flex;
             justify-content: center;
             transform: rotate(3deg);
+            max-width: 100%;
+            min-width: 60%;
 
             .secondary-button {
                 border-color: $cs-dark-gray;
@@ -1366,7 +1409,6 @@ section.image-embed {
             .notice {
                 padding: 30px 10px;
                 font-size: $xs-font-size;
-                color: $cs-dark-gray;
                 flex-grow: 1;
 
                 p {
@@ -1434,10 +1476,6 @@ section.image-embed {
             padding-bottom: 0;
         }
 
-        &.news-page-profile-container {
-            max-width: 800px;
-        }
-
         &.news-page-profile-container,
         &.event-page-container {
             padding-bottom: 60px;
@@ -1454,16 +1492,24 @@ section.image-embed {
             .intro-text {
                 p {
                     font-size: $sm-font-size;
-                    margin: 30px 0;
+                    margin-block: 30px;
                 }
             }
 
             .rich-text-page {
                 font-size: $xs-font-size;
 
-                p, h2, h3, h4, ul {
-                    margin: 30px 0;
+                p, h2, h3, h4, ul, ol, hr, img, iframe {
+                    margin-bottom: 30px;
                     line-height: 1.2;
+                }
+
+                p:empty {
+                    display: none;
+                }
+
+                p:last-child {
+                    margin-bottom: 0;
                 }
 
                 h2 {
@@ -1486,6 +1532,16 @@ section.image-embed {
                 a {
                     color: inherit;
                     @include underline-text-not-on-hover();
+                }
+
+                img, iframe {
+                    width: 100%;
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                iframe {
+                    aspect-ratio: 16/9;
                 }
             }
         }
@@ -1560,17 +1616,9 @@ section.image-embed {
         margin-bottom: 30px;
     }
 
-    .margin-bottom {
+    .bottom-margin {
         display: block;
-        margin: 30px 0;
-    }
-
-    &.template-studio {
-        .object-profile-container {
-            .working-hours.color-scheme-pink .notice {
-                color: $cs-brown;
-            }
-        }
+        margin-top: 60px;
     }
 
     .user-profile-container {
