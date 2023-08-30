@@ -11,7 +11,9 @@
     </div>
     <div class="row">
         <div class="col-12 rich-text-module">
-            {{ value.rich_text|safe }}
+            <div class="max-800">
+                {{ value.rich_text|richtext }}
+            </div>
         </div>
     </div>
     {% if value.link %}

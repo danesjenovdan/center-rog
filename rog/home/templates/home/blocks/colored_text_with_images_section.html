@@ -7,9 +7,11 @@
     <div class="row">
         <div class="col-12">
             <h2 class="text-center">{{ value.title }}</h2>
-            {% if value.text %}
-            <p>{{ value.text }}</p>
-            {% endif %}
+            <div class="max-800">
+                {% if value.text %}
+                <p>{{ value.text }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 

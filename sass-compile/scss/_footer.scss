@@ -19,6 +19,12 @@ footer.container-fluid {
         .secondary-button {
             border-color: $cs-dark-gray;
         }
+
+        a {
+            font-size: inherit;
+
+            @include underline-text-on-hover();
+        }
     }
 
     .working-hours {

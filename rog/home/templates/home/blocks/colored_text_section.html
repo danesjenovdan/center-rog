@@ -4,17 +4,18 @@
 <section  class="color-scheme-{{ value.color }} colored-text-section">
 
 {% if value.image %}
-    <div class="container with-image wider-container">
+    <div class="container with-image">
         <div class="row">
             <div class="col-12">
                 <h2 class="text-center">{{ value.title }}</h2>
             </div>
-
             {% if value.image_position == 'align-bottom' %}
             <div class="col-12">
-                <p>{{ value.text }}</p>
-                <div>
-                    {% image value.image original class="img-fluid" alt=value.image.alt_description %}
+                <div class="max-800">
+                    <p>{{ value.text }}</p>
+                </div>
+                <div class="max-800">
+                    {% image value.image original class="w-100 img-fluid" alt=value.image.alt_description %}
                     <p class="image-description">{{ value.image.title }}</p>
                 </div>
             </div>
@@ -24,7 +25,7 @@
             </div>
             <div class="col-md-6">
                 <div>
-                    {% image value.image original class="img-fluid mb-4 mb-md-0" alt=value.image.alt_description %}
+                    {% image value.image original class="w-100 img-fluid mb-4 mb-md-0" alt=value.image.alt_description %}
                     <p class="image-description">{{ value.image.title }}</p>
                 </div>
             </div>
@@ -40,7 +41,6 @@
         </div>
         {% endif %}
     </div>
-
 {% else %}
     <div class="container no-image">
         <div class="row justify-content-center">

@@ -2,23 +2,23 @@
 
 {% image value.background_image original as background_image %}
 
-<section style="background-image: url({{ background_image.url }})" class="container-fluid image-embed px-4 px-md-0">
-    <div class="container color-scheme-white p-4">
+<section style="background-image: url({{ background_image.url }})" class="container-fluid image-embed px-4 px-md-0 newsletter-section">
+    <div class="container color-scheme-white p-4 max-650">
         <div class="row">
             <div class="col-12">
                 <form>
                     <div class="form-field-wrapper">
-                        <label for="newsletter-input-footer">Input label</label>
+                        <label for="newsletter-input-footer">Prijavi se na naš novičnik</label>
                         <input type="text" id="newsletter-input-footer">
                     </div>
-    
+
                     <div class="form-field-wrapper one-line rog-check">
                         <input type="checkbox" id="newsletter-checkbox-footer">
                         <label for="newsletter-checkbox-footer">
-                            <span>checkbox s tekstom</span>
+                            <span>Strinjam se s <a href="/pogoji-uporabe/">pogoji uporabe</a></span>
                         </label>
                     </div>
-    
+
                     <div class="my-3">
                         <button type="submit" class="secondary-button button-medium">pošlji</button>
                     </div>

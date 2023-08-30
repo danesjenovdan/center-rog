@@ -32,21 +32,6 @@ a.link {
     }
 }
 
-a.email-link {
-    text-decoration: none;
-    font-size: $xs-font-size;
-
-    .email-text {
-        @include prepare-for-underlined-text();
-    }
-
-    &:hover {
-        .email-text {
-            @include underline-text();
-        }
-    }
-}
-
 .flex-page-height {
     display: flex;
     flex-direction: column;
@@ -62,6 +47,12 @@ a.email-link {
         border: 2px solid black;
         padding: 20px;
     }
+}
+
+.max-650 {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .max-800 {
@@ -556,7 +547,7 @@ form {
 .scrolling-dots {
     span {
         display: inline-block;
-        border: 1px solid $cs-dark-gray;
+        border: 1.5px solid $cs-dark-gray;
         border-radius: 50%;
         width: 18px;
         height: 18px;
@@ -934,12 +925,6 @@ form {
         }
 
         &.colored-text-section {
-            .with-image.wider-container {
-                @include media-breakpoint-between(xl, xxl) {
-                    max-width: 1000px;
-                }
-            }
-
             .with-image {
                 p {
                     font-size: $xs-font-size;
@@ -967,6 +952,16 @@ form {
                 }
             }
         }
+
+        &.newsletter-section {
+            form {
+                a {
+                    font-size: inherit;
+
+                    @include underline-text-on-hover();
+                }
+            }
+        }
     }
 
     .market-section {
@@ -989,6 +984,20 @@ form {
         .bulletin-board-link a {
             color: inherit;
             font-size: $xs-font-size;
+        }
+    }
+
+    .contacts-section {
+        .link {
+            @include underline-text-not-on-hover();
+        }
+
+        .copy-email-button {
+            display: inline;
+            padding: 0;
+            background: none;
+            border: none;
+            color: inherit;
         }
     }
 }
