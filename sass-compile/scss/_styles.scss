@@ -32,6 +32,15 @@ a.link {
     }
 }
 
+ul {
+    padding-left: 2.122rem;
+
+    li::marker {
+        content: "\25CF" "   ";
+        white-space: pre;
+    }
+}
+
 .flex-page-height {
     display: flex;
     flex-direction: column;

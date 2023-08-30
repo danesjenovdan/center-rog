@@ -1,0 +1,83 @@
+.cookie-notice {
+  position: fixed;
+  width: 250px;
+  bottom: 4rem;
+  right: 4rem;
+  z-index: 9999999;
+  background: rgba($cs-white, 0.2);
+  transform: rotate(6.55deg);
+
+  .binder-holes {
+    svg {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .binder-bg {
+    padding: 25px 15px 1px 15px;
+
+    .binder-content {
+      padding: 15px;
+      background: $cs-white;
+      font-size: $xxs-font-size;
+      text-align: center;
+      color: $cs-dark-gray;
+
+      p {
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      a {
+        font-size: inherit;
+        color: inherit;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 15px;
+
+        .secondary-button.button-small {
+          padding-inline: 20px !important;
+        }
+      }
+    }
+  }
+
+  .tape {
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    &::after {
+      content: "";
+      display: block;
+      background-color: #d9c4a4f2;
+      width: 65px;
+      height: 20px;
+      margin-inline: auto;
+    }
+
+    &:first-child {
+      top: -7px;
+
+      &::after {
+        transform: rotate(-3deg);
+      }
+    }
+
+    &:last-child {
+      bottom: -10px;
+
+      &::after {
+        transform: rotate(1deg);
+      }
+    }
+  }
+}
