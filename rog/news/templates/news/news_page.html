@@ -24,14 +24,14 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="information">
+            <div class="information max-800">
                 <span>{{ page.category.name }}</span>
                 <span>{{ page.first_published_at|date:"j. n. Y" }}</span>
             </div>
         </div>
         {% if page.hero_image %}
         <div class="col-12">
-            <div class="mt-4">
+            <div class="mt-4 max-800">
                 {% image page.hero_image original class="d-block w-100 img-fluid" %}
             </div>
         </div>
@@ -39,14 +39,16 @@
     </div>
     <div class="row">
         <div class="col-12 intro-text">
-            <p>{{ page.short_description }}</p>
+            <p class="max-800">{{ page.short_description }}</p>
         </div>
     </div>
 
     {% if page.body %}
     <div class="row">
         <div class="col-12 rich-text-page">
-            {{ page.body|richtext }}
+            <div class="max-800">
+                {{ page.body|richtext }}
+            </div>
         </div>
     </div>
     {% endif %}

@@ -15,6 +15,18 @@ footer.container-fluid {
         }
     }
 
+    form {
+        .secondary-button {
+            border-color: $cs-dark-gray;
+        }
+
+        a {
+            font-size: inherit;
+
+            @include underline-text-on-hover();
+        }
+    }
+
     .working-hours {
         max-width: fit-content;
 

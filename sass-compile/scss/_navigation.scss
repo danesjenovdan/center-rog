@@ -252,6 +252,7 @@
             color: inherit;
             font-size: $xxs-font-size;
             position: relative;
+            cursor: pointer;
         }
 
         .nav-link:hover,
@@ -308,4 +309,9 @@
     .header-marquee-text {
         display: inline;
     }
+}
+
+.scroll-anchor {
+    position: relative;
+    top: -100px;
 }

@@ -9,7 +9,7 @@
 
 {% block page_body %}
 
-<div class="container object-profile-container event-page-container mb-5">
+<div class="container object-profile-container event-page-container">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">
@@ -60,7 +60,9 @@
     {% if page.body %}
     <div class="row">
         <div class="col-12 rich-text-page">
-            {{ page.body|richtext }}
+            <div class="max-800">
+                {{ page.body|richtext }}
+            </div>
         </div>
     </div>
     {% endif %}
