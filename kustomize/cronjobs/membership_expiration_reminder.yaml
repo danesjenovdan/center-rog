@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: rog-membership_expiration_reminder
+  name: rog-membership-expiration-reminder
 spec:
   schedule: "0 6 * * *"
   successfulJobsHistoryLimit: 1
@@ -12,7 +12,7 @@ spec:
       template:
         spec:
           containers:
-            - name: rog-membership_expiration_reminder
+            - name: rog-membership-expiration-reminder
               image: rog
               command:
                 - python
