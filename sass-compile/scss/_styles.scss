@@ -469,15 +469,9 @@ form {
     }
 }
 
-.market-card {
-    height: 300px;
-    padding: 10px;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: $sm-font-size;
+.market-card-col {
+    padding-left: 0;
+    padding-right: 0;
 
     &:nth-child(1n) {
         transform: rotate(-3deg);
@@ -499,6 +493,27 @@ form {
     }
     &:nth-child(7n) {
         transform: rotate(-4deg);
+    }
+
+    .market-card {
+        display: block;
+        width: 100%;
+        border-radius: 2px;
+        // aspect-ratio: 250/320;
+        padding-top: 130%;
+        position: relative;
+
+        .card-inner {
+            position: absolute;
+            inset: 0;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: $sm-font-size;
+            text-align: center;
+        }
     }
 }
 
