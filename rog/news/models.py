@@ -53,7 +53,7 @@ class NewsPage(BasePage):
         ("image", ImageChooserBlock())
     ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),

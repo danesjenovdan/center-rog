@@ -117,7 +117,7 @@ class BasePage(TranslatablePage):
 
 class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True, verbose_name=_("Opis"))
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Poglej več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Poglej več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),
@@ -133,7 +133,7 @@ class ObjectListPage(BasePage):
 
 
 class ObjectArchiveListPage(BasePage):
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Poglej več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Poglej več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("show_see_more_section"),
@@ -176,7 +176,7 @@ class ObjectProfilePage(BasePage):
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     archived_from = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval od"))
     archived_to = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval do"))
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
