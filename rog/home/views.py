@@ -197,9 +197,9 @@ class RegistrationMembershipView(View):
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
-            active = membership_type.plan is None
+            # active will set on payment success
+            active = False
             Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
-
 
             return redirect("registration-information")
         else:

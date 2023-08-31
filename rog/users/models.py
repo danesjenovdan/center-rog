@@ -158,7 +158,7 @@ class User(AbstractUser):
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
-    birth_date = models.DateField(null=True, blank=True, verbose_name="Datum rojstva")
+    birth_date = models.DateField(verbose_name="Datum rojstva", null=True, blank=True)
     # categories
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images

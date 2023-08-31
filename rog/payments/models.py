@@ -13,8 +13,9 @@ class ActiveAtQuerySet(models.QuerySet):
     def is_active_subscription(self):
         now = datetime.now()
         return True if self.filter(
-            plan__is_subscription=True,
+            items__is_subscription=True,
             active_to__gte=now,
+            items__item_type__name="Uporabnina"
         ) else False
 
     def get_valid_tokens(self):
@@ -48,6 +49,12 @@ class Timestampable(models.Model):
     class Meta:
         abstract = True
 
+
+class ItemType(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.name}"
 
 # payments
 class Plan(Timestampable):
@@ -107,6 +114,7 @@ class Plan(Timestampable):
         unique=True,
         help_text=_("Unique ident id for Pantheon without dashes and spaces")
     )
+    item_type = models.ForeignKey('ItemType', blank=True, null=True, on_delete=models.SET_NULL)
     vat = models.IntegerField(default=22)
 
     def __str__(self):
@@ -128,6 +136,7 @@ class Plan(Timestampable):
         FieldPanel("year_token_limit"),
         FieldPanel("workshops"),
         FieldPanel("pantheon_ident_id"),
+        FieldPanel("item_type"),
     ]
 
     class Meta:
@@ -144,6 +153,10 @@ class Plan(Timestampable):
         else:
             super().save(*args, **kwargs)
 
+class PaymentPlan(models.Model):
+    payment=models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
+    plan=models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
+    price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
 
 class Payment(Timestampable):
     class Status(models.TextChoices):
@@ -171,15 +184,13 @@ class Payment(Timestampable):
         default=Status.PENDING,
     )
     info = models.TextField(blank=True, null=True)
-    plan = models.ForeignKey(
-        "Plan",
-        null=True,
-        blank=True,
-        on_delete=models.PROTECT,
-        help_text="Select a plan",
+    items = models.ManyToManyField(
+        'Plan',
+        help_text="Items in payment",
+        related_name="payments",
+        through=PaymentPlan,
     )
     user_was_eligible_to_discount = models.BooleanField(default=False)
-
     objects = ActiveAtQuerySet.as_manager()
     saved_in_pantheon = models.BooleanField(
         default=False,
@@ -194,8 +205,8 @@ class Payment(Timestampable):
         FieldPanel("active_to"),
         FieldPanel("status"),
         FieldPanel("info"),
-        FieldPanel("plan"),
         FieldPanel("user_was_eligible_to_discount"),
+        FieldPanel("items"),
         FieldPanel("saved_in_pantheon"),
     ]
 
@@ -207,7 +218,7 @@ class Payment(Timestampable):
         return f"{self.user} - {self.amount} - {self.created_at}"
 
     def history_name(self):
-        return f"{self.plan.name}"
+        return f"{self.items.first().name}"
 
     def save(self, *args, **kwargs):
         if self.saved_in_pantheon == False and self.successed_at:
