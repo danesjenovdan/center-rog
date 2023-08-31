@@ -38,7 +38,7 @@ class PaymentPreview(views.APIView):
         PaymentPlan(plan=plan, payment=payment, price=price).save()
 
         membership = user.membership
-        if not (membership and membership.type and membership.type.plan):
+        if not (membership and membership.type and membership.type.plan and membership.active):
             paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
             plan = paid_membership.plan
             payment.amount += plan.price
@@ -139,7 +139,7 @@ class PaymentSuccessXML(views.APIView):
                 payment.active_to = timezone.now() + timedelta(days=plan.duration)
             payment.save()
             # create tokens
-            if plan.item_type and plan.item_type.name == 'Uporabnina':
+            if plan.item_type and plan.item_type.name == 'uporabnina':
                 Token.objects.bulk_create([
                     Token(
                         payment=payment,
