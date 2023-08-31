@@ -26,10 +26,8 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-12 text-center bulletin-board-link">
-                <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
-            </div>
-        </div>
+        {% if value.link %}
+        {% include "home/includes/bottom_button.html" with value_link=value.link %}
+        {% endif %}
     </div>
 </section>

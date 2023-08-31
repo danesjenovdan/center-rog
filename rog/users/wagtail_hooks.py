@@ -29,6 +29,6 @@ class UserInterestAdmin(ModelAdmin):
     add_to_admin_menu = False
 
 
-modeladmin_register(BookingTokenAdmin)
+# modeladmin_register(BookingTokenAdmin)
 modeladmin_register(MembershipTypeAdmin)
 modeladmin_register(UserInterestAdmin)

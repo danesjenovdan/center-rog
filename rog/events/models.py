@@ -12,9 +12,10 @@ from home.models import BasePage, CustomImage, Workshop
 
 
 class EventCategory(models.Model):
-    name = models.TextField()
+    name = models.TextField(verbose_name=_("Ime kategorije"),)
     slug = models.SlugField()
     color_scheme = models.CharField(
+        verbose_name=_("Barvna shema"),
         max_length=20,
         choices=settings.COLOR_SCHEMES,
         default="light-gray",
@@ -34,7 +35,7 @@ class EventCategory(models.Model):
 
     class Meta:
         verbose_name = _("Kategorija dogodkov")
-        verbose_name_plural = _("Kategorije dogodkov")
+        verbose_name_plural = _("Dogodki - kategorije")
 
 
 class EventPage(BasePage):
@@ -91,8 +92,8 @@ class EventListArchivePage(BasePage):
         return context
 
     class Meta:
-        verbose_name = _("Arhiv dogodkov")
-        verbose_name_plural = _("Arhivi dogodkov")
+        verbose_name = _("Arhiv programa")
+        verbose_name_plural = _("Arhivi programov")
 
 
 class EventListPage(BasePage):
@@ -132,8 +133,8 @@ class EventListPage(BasePage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam dogodkov")
-        verbose_name_plural = _("Seznami dogodkov")
+        verbose_name = _("Program")
+        verbose_name_plural = _("Programi")
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

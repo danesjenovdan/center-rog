@@ -62,7 +62,8 @@ class ExternalLinkBlock(blocks.StructBlock):
     name = blocks.CharBlock(label="Ime")
     url = blocks.URLBlock(label="URL")
     link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
-        ("button", "Gumb"),
+        ("primary_button", "Primarni gumb"),
+        ("secondary_button", "Sekundarni gumb"),
         ("link", "Povezava s puščico")
     ], default="button")
 
@@ -79,7 +80,8 @@ class PageLinkBlock(blocks.StructBlock):
     )
     page = blocks.PageChooserBlock(label="Stran")
     link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
-        ("button", "Gumb"),
+        ("primary_button", "Primarni gumb"),
+        ("secondary_button", "Sekundarni gumb"),
         ("link", "Povezava s puščico")
     ], default="button")
 

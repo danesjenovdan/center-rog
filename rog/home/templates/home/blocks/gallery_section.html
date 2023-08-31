@@ -20,12 +20,8 @@
         </div>
       </div>
     </div>
-    {% if value.button %}
-    <div class="row mt-4">
-      <div class="col-12 text-center">
-        <a href="{% pageurl value.button %}" class="primary-button button-medium">{{ value.button }}</a>
-      </div>
-    </div>
+    {% if value.link %}
+    {% include "home/includes/bottom_button.html" with value_link=value.link %}
     {% endif %}
   </div>
 </section>

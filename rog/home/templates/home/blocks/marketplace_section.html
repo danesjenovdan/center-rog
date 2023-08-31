@@ -20,10 +20,8 @@
         {% endfor %}
     </div>
     <div class="container">
-        <div class="row mt-4">
-            <div class="col-12 text-center bulletin-board-link">
-                <a href="{% pageurl markets_list %}"><span>{% translate 'Poglej celotno tržnico' %}</span></a>
-            </div>
-        </div>
+        {% if value.link %}
+        {% include "home/includes/bottom_button.html" with value_link=value.link %}
+        {% endif %}
     </div>
 </section>
