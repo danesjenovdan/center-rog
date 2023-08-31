@@ -30,19 +30,13 @@ class ColoredStructBlock(ModuleBlock):
         choices=settings.COLOR_SCHEMES,
         label=_("Barva"),
     )
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
 
     class Meta:
         abstract = True
-
-
-class ButtonBlock(blocks.StructBlock):
-    button = blocks.PageChooserBlock(label=_("Povezava"))
-    button_text = blocks.TextBlock(label=_("Ime gumba"))
-
-
-class LinkBlock(blocks.StructBlock):
-    link = blocks.URLBlock(label=_("Povezava"))
-    link_text = blocks.TextBlock(label=_("Ime povezave"))
 
 
 class BulletinBoardBlock(blocks.StructBlock):
@@ -116,6 +110,10 @@ class NewsBlock(blocks.StructBlock):
         ("news_page", blocks.PageChooserBlock(
             label=_("Novica"), page_type="news.NewsPage"))
     ], max_num=5, label=_("Novice"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -133,11 +131,10 @@ class EventsBlock(blocks.StructBlock):
         ("event", blocks.PageChooserBlock(
             label=_("Dogodek"), page_type="events.EventPage"))
     ], max_num=5, label=_("Dogodki"))
-
-    def get_context(self, value, parent_context=None):
-        context = super().get_context(value, parent_context=parent_context)
-        context["events_list"] = EventListPage.objects.live().first()
-        return context
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     class Meta:
         label = _("Izpostavljeni dogodki")
@@ -151,6 +148,10 @@ class LabsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     labs = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.LabPage"), label=_("Izpostavljeni laboratoriji"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -181,7 +182,6 @@ class WhiteListBlock(blocks.StructBlock):
 class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
-    button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
 
     class Meta:
         label = _("Galerija")
@@ -195,6 +195,10 @@ class StudiosBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     studios = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.StudioPage"), max_num=5, label=_("Izpostavljeni studii"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -210,6 +214,10 @@ class MarketplaceBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     markets = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor")), label=_("Izpostavljeni prostori"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -224,10 +232,7 @@ class MarketplaceBlock(blocks.StructBlock):
 class FullWidthImageBlock(ColoredStructBlock):
     image = ImageChooserBlock(label=_("Slika"))
     text = blocks.TextBlock(label=_("Besedilo (opcijsko)"), blank=True, required=False)
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
+
 
     class Meta:
         label = _("Slika")
@@ -237,10 +242,6 @@ class FullWidthImageBlock(ColoredStructBlock):
 class ColoredTextBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     text = blocks.TextBlock(label=_("Besedilo"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, required=False, label=_("Povezava pod besedilom"))
     image = ImageChooserBlock(label=_("Slika"), required=False)
     image_position = blocks.ChoiceBlock(choices=[
         ("align-left", "Levo"),
@@ -275,10 +276,6 @@ class ColoredTextCardsBlock(ColoredStructBlock):
         ("link", blocks.URLBlock(label=_("Povezava"))),
         ("link_text", blocks.TextBlock(label=_("Ime povezave"))),
     ]), label=_("Kartice"), min_num=1, max_num=4)
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     class Meta:
         label = _("Barvno besedilo s karticami")
@@ -288,10 +285,6 @@ class ColoredTextCardsBlock(ColoredStructBlock):
 class ColoredRichTextBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     rich_text = blocks.RichTextBlock(label=_("Besedilo"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     class Meta:
         label = _("Barvno obogateno besedilo")
@@ -319,6 +312,10 @@ class ResidentsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     residents = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.ResidencePage"), min_num=1, max_num=5, label=_("Rezidenti"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -340,10 +337,6 @@ class NewsletterBlock(blocks.StructBlock):
 
 class MembershipsBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], required=False, min_num=0, max_num=1, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
