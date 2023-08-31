@@ -37,13 +37,15 @@ class PaymentPreview(views.APIView):
         payment.save()
         PaymentPlan(plan=plan, payment=payment, price=price).save()
 
-        membership = user.membership
-        if not (membership and membership.type and membership.type.plan and membership.active):
-            paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
-            plan = paid_membership.plan
-            payment.amount += plan.price
-            payment.save()
-            PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
+        if plan.item_type == 'uporabnina':
+            # if plan is uporabnina add clanarina to payment
+            membership = user.membership
+            if not (membership and membership.type and membership.type.plan and membership.active):
+                paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
+                plan = paid_membership.plan
+                payment.amount += plan.price
+                payment.save()
+                PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
 
         return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
 
