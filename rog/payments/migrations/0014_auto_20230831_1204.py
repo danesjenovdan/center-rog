@@ -9,7 +9,7 @@ def migrate_plans(apps, schema_editor):
     payments = Payment.objects.all()
     for payment in payments:
         if payment.plan:
-            plan = PaymentPlan
+            plan = payment.plan
             PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
 
 
