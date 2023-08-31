@@ -223,10 +223,12 @@ class RegistrationInformationView(View):
             last_name = form.cleaned_data["last_name"]
             address_1 = form.cleaned_data["address_1"]
             address_2 = form.cleaned_data["address_2"]
+            birth_date = form.cleaned_data["birth_date"]
 
             user.first_name = first_name
             user.last_name = last_name
             user.address_1 = address_1
+            user.birth_date = birth_date
             if address_2:
                 user.address_2 = address_2
 
