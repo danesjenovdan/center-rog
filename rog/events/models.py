@@ -44,12 +44,13 @@ class EventPage(BasePage):
     category = models.ForeignKey(
         EventCategory, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
-    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
+    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka na kartici"))
     start_time = models.TimeField(verbose_name=_("Ura začetka"))
     end_time = models.TimeField(verbose_name=_("Ura konca"))
     start_day = models.DateField(verbose_name=_("Datum začetka"))
     end_day = models.DateField(blank=True, null=True, verbose_name=_("Datum konca (če gre za večdneven dogodek)"))
     location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
+    notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
@@ -64,6 +65,7 @@ class EventPage(BasePage):
         FieldPanel("start_time"),
         FieldPanel("end_time"),
         FieldPanel("location"),
+        FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
         FieldPanel("archived"),
         FieldPanel("show_see_more_section")
