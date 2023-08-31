@@ -158,6 +158,7 @@ class User(AbstractUser):
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
+    birth_date = models.DateField(verbose_name="Datum rojstva", null=True, blank=True)
     # categories
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images
@@ -189,6 +190,13 @@ class User(AbstractUser):
 
     def get_pantheon_subject_id(self):
         return str(self.uuid).replace('-', '')[:30]
+
+    def is_eligible_to_discount(self):
+        # user is eligible to discount if he is younger than 26 and older than 65
+        now = datetime.now()
+        lower_limit = now.replace(year=now.year-26)
+        upper_limit = now.replace(year=now.year-65)
+        return not(lower_limit.date() > self.birth_date > upper_limit.date())
 
     def save(self, *args, **kwargs):
         if self.id == None:

@@ -15,14 +15,14 @@
 
     function initPayment()  {
         console.log("INIT PAYMENT")
-        fetch("/placilo/?wizard=wizard", {
+        fetch("/placilo/izvedi/?wizard=wizard", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               "X-CSRFTOKEN": "{{ csrf_token }}"
             },
             body: JSON.stringify({
-                plan: "{{ plan_id }}"
+                id: "{{ id }}"
             })
         })
         .then(data => {

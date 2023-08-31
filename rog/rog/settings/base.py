@@ -173,6 +173,7 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'contact',
     'workshops_attended',
     'interests',
+    'birth_date',
     'gallery',
 ]
 

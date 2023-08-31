@@ -59,4 +59,10 @@ class Migration(migrations.Migration):
             name='year_token_limit',
             field=models.IntegerField(blank=True, null=True, verbose_name='Letna omejitev porabe žetonov'),
         ),
+        migrations.AddField(
+            model_name='plan',
+            name='discounted_price',
+            field=models.IntegerField(default=10, help_text='Price for younger than 26 years old and older than 65', verbose_name='Discounted price'),
+            preserve_default=False,
+        ),
     ]

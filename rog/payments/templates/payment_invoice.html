@@ -61,16 +61,18 @@
                         <th>DDV %</th>
                         <th>Vrednost brez DDV</th>
                     </tr>
+                    {% for plan in payment.items.all %}
                     <tr>
-                        <th>ident iz pantheona</th>
-                        <th>{{ payment.plan.name }}</th>
+                        <th>{{ plan.pantheon_ident_id }}</th>
+                        <th>{{ plan.name }}</th>
                         <th>1,00</th>
                         <th>KOS</th>
-                        <th>{{ payment.amount }}</th>
+                        <th>{{ plan.price }}</th>
                         <th>0,00</th>
                         <th>0,00</th>
-                        <th>{{ payment.amount }}</th>
+                        <th>{{ plan.price }}</th>
                     </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div id="footer">

@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
 from django.utils import timezone
 from django.views import View
@@ -9,9 +9,11 @@ from django.utils.decorators import method_decorator
 
 from rest_framework import  views
 from rest_framework.response import Response
-from datetime import timedelta
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
-from .models import Payment, Plan, Token
+from .models import Payment, Plan, Token, PaymentPlan
+from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
 from home.email_utils import send_email
@@ -20,23 +22,42 @@ from home.email_utils import send_email
 # Create your views here.
 
 # payments
+class PaymentPreview(views.APIView):
+    def get(self, request):
+        plan_id = request.GET.get('plan_id', False)
+        user = request.user
+        payment = Payment(
+            user=user,
+        )
+
+        plan = Plan.objects.get(id=plan_id)
+        payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
+        price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+        payment.amount = price
+        payment.save()
+        PaymentPlan(plan=plan, payment=payment, price=price).save()
+
+        membership = user.membership
+        if not (membership and membership.type and membership.type.plan):
+            paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
+            plan = paid_membership.plan
+            payment.amount += plan.price
+            payment.save()
+            PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
+
+        return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
+
+
 @method_decorator(login_required, name='dispatch')
 class Pay(views.APIView):
     def get(self, request):
-        plan_id = request.GET.get('plan_id', False)
-        return render(request, 'payment.html', { "plan_id": plan_id })
+        payment_id = request.GET.get('id', False)
+        return render(request, 'payment.html', { "id": payment_id })
 
     def post(self, request):
         print('INIT PAY')
         data = request.data
-        payment = Payment(
-            user=request.user,
-        )
-        if 'plan' in data.keys():
-            plan = Plan.objects.get(id=data['plan'])
-            payment.plan = plan
-            payment.amount = plan.price
-        payment.save()
+        payment = get_object_or_404(Payment, id=data['id'])
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
@@ -97,32 +118,48 @@ class PaymentSuccessXML(views.APIView):
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.successed_at = timezone.now()
+
+        # membership
+        membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
+        if membership_fee:
+            membership = request.user.membership
+            if not membership:
+                membership_type = MembershipType.objects.filter(plan=membership_fee).first()
+                today = datetime.now()
+                one_year_from_now = today + relativedelta(years=1)
+                Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=True, user=request.user).save()
+            else:
+                membership.active = True
+                membership.save()
+
         # set active_to if plan is subscription
-        if payment.plan and payment.plan.is_subscription:
-            payment.active_to = timezone.now() + timedelta(days=payment.plan.duration)
-        payment.save()
-        # create tokens
-        Token.objects.bulk_create([
-            Token(
-                payment=payment,
-                valid_from=timezone.now(),
-                valid_to=timezone.now() + timedelta(days=payment.plan.duration)
-            ) for i in range(payment.plan.tokens)
-        ] + [
-            Token(
-                payment=payment,
-                valid_from=timezone.now(),
-                valid_to=timezone.now() + timedelta(days=payment.plan.duration),
-                type_of=Token.Type.WORKSHOP
-            ) for i in range(payment.plan.workshops)
-        ])
-        items = [
-            {
+        items = []
+        for plan in payment.items.all():
+            if plan and plan.is_subscription:
+                payment.active_to = timezone.now() + timedelta(days=plan.duration)
+            payment.save()
+            # create tokens
+            if plan.item_type and plan.item_type.name == 'Uporabnina':
+                Token.objects.bulk_create([
+                    Token(
+                        payment=payment,
+                        valid_from=timezone.now(),
+                        valid_to=timezone.now() + timedelta(days=plan.duration)
+                    ) for i in range(plan.tokens)
+                ] + [
+                    Token(
+                        payment=payment,
+                        valid_from=timezone.now(),
+                        valid_to=timezone.now() + timedelta(days=plan.duration),
+                        type_of=Token.Type.WORKSHOP
+                    ) for i in range(plan.workshops)
+                ])
+            items.append({
                 'quantity': 1,
-                'name': payment.plan.name,
-                'price': payment.amount,
-            }
-        ]
+                'name': plan.name,
+                'price': plan.price,
+            })
+
         send_email(
             payment.user.email,
             'emails/order.html',

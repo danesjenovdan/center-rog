@@ -7,10 +7,12 @@ from .views import (
     PaymentSuccessXML,
     PaymentHistory,
     PaymentInvoice,
+    PaymentPreview
 )
 
 urlpatterns = [
-    path('', Pay.as_view()),
+    path('', PaymentPreview.as_view(), name='preview'),
+    path('izvedi/', Pay.as_view(), name='pay'),
     path('narocilo/', PaymentDataXML.as_view()),
     path('uspesno/', PaymentSuccess.as_view()),
     path('neuspesno/', PaymentFailure .as_view()),

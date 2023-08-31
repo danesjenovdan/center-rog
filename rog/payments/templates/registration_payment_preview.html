@@ -1,0 +1,35 @@
+{% extends "registration/registration_wrapper.html" %}
+{% load static %}
+
+{% block title %}Registracija{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block page_body %}
+<div class="container register-container color-scheme-light-gray">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-xxl-6">
+            <h4 class="my-5">Za plačilo</h4>
+
+            {% for item in payment.payment_plans.all %}
+                <div class="line">
+                    <div class="name">{{ item.plan.name }}</div> <div class="price">€{{ item.price }}</div>
+                </hr>
+                </div>
+            {% endfor %}
+
+            {% if payment.user_was_eligible_to_discount %}
+                Pupust za osebe mlajše od 26 in starejše od 65<br>
+            {% endif %}
+
+            <div class="line">
+                <div class="name">skupaj</div> <div class="price">€{{ payment.amount }}</div>
+            </hr>
+            </div>
+            <div class="d-flex justify-content-end my-4">
+                <a href="/placilo/izvedi/?id={{payment.id}}"><button class="secondary-button button-medium">naprej</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock page_body %}

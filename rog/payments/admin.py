@@ -13,7 +13,7 @@ class PlanAdmin(admin.ModelAdmin):
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'status', 'plan', 'amount', 'created_at']
-    list_filter = ('status', 'plan')
+    list_display = ['user', 'status', 'amount', 'created_at']
+    list_filter = ('status', 'items')
 
     readonly_fields = ['created_at', 'updated_at']
