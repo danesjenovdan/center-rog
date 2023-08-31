@@ -38,7 +38,7 @@ class PaymentPreview(views.APIView):
             payment.save()
             PaymentPlan(plan=plan, payment=payment, price=price).save()
 
-            if plan.item_type == 'uporabnina':
+            if plan.item_type.name == 'uporabnina':
                 # if plan is uporabnina add clanarina to payment
                 membership = user.membership
                 if not (membership and membership.type and membership.type.plan and membership.active):
