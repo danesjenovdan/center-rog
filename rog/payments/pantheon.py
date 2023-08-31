@@ -516,11 +516,11 @@ def create_move(
         "invoiceItems": [
             {
                 "acKey": "",
-                "ident": item.get_pantheon_ident_id(),
-                "name": item.name,
+                "ident": item.plan.get_pantheon_ident_id(),
+                "name": item.plan.name,
                 "anNo": 1,
                 "quantity": 1,
-                "price": item.amount,
+                "price": item.price,
                 "priceCurrency": 0,
                 "rabate": 0,
                 "vat": vat,
@@ -552,7 +552,7 @@ def create_move(
                 "turnoverQuantity": 0,
                 "isSerialNo": True,
                 "author": ""
-            } for item in payment.items.all()
+            } for item in payment.payment_plans.all()
         ]
     }
     response = requests.post(
