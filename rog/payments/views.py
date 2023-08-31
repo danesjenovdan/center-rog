@@ -30,24 +30,28 @@ class PaymentPreview(views.APIView):
             user=user,
         )
 
-        plan = Plan.objects.get(id=plan_id)
-        payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
-        price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
-        payment.amount = price
-        payment.save()
-        PaymentPlan(plan=plan, payment=payment, price=price).save()
+        plan = Plan.objects.filter(id=plan_id).first()
+        if plan:
+            payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
+            price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+            payment.amount = price
+            payment.save()
+            PaymentPlan(plan=plan, payment=payment, price=price).save()
 
-        if plan.item_type == 'uporabnina':
-            # if plan is uporabnina add clanarina to payment
-            membership = user.membership
-            if not (membership and membership.type and membership.type.plan and membership.active):
-                paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
-                plan = paid_membership.plan
-                payment.amount += plan.price
-                payment.save()
-                PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
+            if plan.item_type == 'uporabnina':
+                # if plan is uporabnina add clanarina to payment
+                membership = user.membership
+                if not (membership and membership.type and membership.type.plan and membership.active):
+                    paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
+                    plan = paid_membership.plan
+                    payment.amount += plan.price
+                    payment.save()
+                    PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
 
-        return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
+            return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
+        else:
+            return render(request, 'payment.html', { "id": None })
+
 
 
 @method_decorator(login_required, name='dispatch')
