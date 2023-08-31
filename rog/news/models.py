@@ -13,9 +13,10 @@ from home.models import BasePage, CustomImage
 
 
 class NewsCategory(models.Model):
-    name = models.TextField()
+    name = models.TextField(verbose_name=_("Ime kategorije"))
     slug = models.SlugField()
     color_scheme = models.CharField(
+        verbose_name=_("Barvna shema"),
         max_length=20,
         choices=settings.COLOR_SCHEMES,
         default="light-gray",
@@ -35,7 +36,7 @@ class NewsCategory(models.Model):
 
     class Meta:
         verbose_name = _("Kategorija novic")
-        verbose_name_plural = _("Kategorije novic")
+        verbose_name_plural = _("Novice - kategorije")
 
 
 class NewsPage(BasePage):
@@ -52,7 +53,7 @@ class NewsPage(BasePage):
         ("image", ImageChooserBlock())
     ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),
@@ -130,8 +131,8 @@ class NewsListPage(BasePage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam novic")
-        verbose_name_plural = _("Seznami novic")
+        verbose_name = _("Novice")
+        verbose_name_plural = _("Novice")
 
 
 NewsPage._meta.get_field("color_scheme").default = "light-gray"

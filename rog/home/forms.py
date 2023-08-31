@@ -80,6 +80,10 @@ class RegistrationInformationForm(forms.ModelForm):
         label=_("Priimek"),
         label_suffix="",
     )
+    birth_date = forms.DateField(
+        label=_("Datum rojstva"),
+        label_suffix="",
+    )
     address_1 = forms.CharField(
         label=_("Naslov 1"),
         label_suffix="",

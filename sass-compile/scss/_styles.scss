@@ -1617,6 +1617,10 @@ section.image-embed {
                 height: 100%;
                 object-fit: cover;
             }
+
+            .row:nth-child(2) {
+                margin-bottom: 30px;
+            }
         }
     }
 

@@ -26,10 +26,8 @@
                 <p class="max-800">{{ value.intro_text }}</p>
             </div>
         </div>
-        <div class="row mt-4">
-            <div class="col-12 text-center bulletin-board-link">
-                <a href="{% pageurl residents_list %}"><span>{% translate 'Poglej vse rezidente' %}</span></a>
-            </div>
-        </div>
+        {% if value.link %}
+        {% include "home/includes/bottom_button.html" with value_link=value.link %}
+        {% endif %}
     </div>
 </section>

@@ -15,5 +15,5 @@ class Workshop(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _("Usposabljanje")
-        verbose_name_plural = _("Usposabljanja")
+        verbose_name = _("Usposabljanje za orodje")
+        verbose_name_plural = _("Orodja - usposabljanja")

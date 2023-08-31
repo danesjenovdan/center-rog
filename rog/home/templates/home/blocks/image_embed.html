@@ -10,11 +10,7 @@
                 <div class="image-embed-text-box color-scheme-{{ value.color }} p-4">
                     <p>{{ value.text }}</p>
                     {% if value.link %}
-                    <div class="bulletin-board-link">
-                        {% for link in value.link %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}"><span>{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</span></a>
-                        {% endfor %}
-                    </div>
+                    {% include "home/includes/bottom_button.html" with value_link=value.link %}
                     {% endif %}
                 </div>
             </div>

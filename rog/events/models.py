@@ -12,9 +12,10 @@ from home.models import BasePage, CustomImage, Workshop
 
 
 class EventCategory(models.Model):
-    name = models.TextField()
+    name = models.TextField(verbose_name=_("Ime kategorije"),)
     slug = models.SlugField()
     color_scheme = models.CharField(
+        verbose_name=_("Barvna shema"),
         max_length=20,
         choices=settings.COLOR_SCHEMES,
         default="light-gray",
@@ -34,7 +35,7 @@ class EventCategory(models.Model):
 
     class Meta:
         verbose_name = _("Kategorija dogodkov")
-        verbose_name_plural = _("Kategorije dogodkov")
+        verbose_name_plural = _("Dogodki - kategorije")
 
 
 class EventPage(BasePage):
@@ -43,12 +44,13 @@ class EventPage(BasePage):
     category = models.ForeignKey(
         EventCategory, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
-    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
+    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka na kartici"))
     start_time = models.TimeField(verbose_name=_("Ura začetka"))
     end_time = models.TimeField(verbose_name=_("Ura konca"))
     start_day = models.DateField(verbose_name=_("Datum začetka"))
     end_day = models.DateField(blank=True, null=True, verbose_name=_("Datum konca (če gre za večdneven dogodek)"))
     location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
+    notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
@@ -63,6 +65,7 @@ class EventPage(BasePage):
         FieldPanel("start_time"),
         FieldPanel("end_time"),
         FieldPanel("location"),
+        FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
         FieldPanel("archived"),
         FieldPanel("show_see_more_section")
@@ -91,8 +94,8 @@ class EventListArchivePage(BasePage):
         return context
 
     class Meta:
-        verbose_name = _("Arhiv dogodkov")
-        verbose_name_plural = _("Arhivi dogodkov")
+        verbose_name = _("Arhiv programa")
+        verbose_name_plural = _("Arhivi programov")
 
 
 class EventListPage(BasePage):
@@ -132,8 +135,8 @@ class EventListPage(BasePage):
         return context
 
     class Meta:
-        verbose_name = _("Seznam dogodkov")
-        verbose_name_plural = _("Seznami dogodkov")
+        verbose_name = _("Program")
+        verbose_name_plural = _("Programi")
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

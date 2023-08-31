@@ -28,6 +28,10 @@
         </div>
         {% endfor %}
     </div>
+
+    {% if value.link %}
+    {% include "home/includes/bottom_button.html" with value_link=value.link %}
+    {% endif %}
 </div>
 
 </section>

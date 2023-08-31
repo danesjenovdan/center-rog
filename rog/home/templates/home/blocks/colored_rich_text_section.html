@@ -17,22 +17,7 @@
         </div>
     </div>
     {% if value.link %}
-    <div class="row mt-3">
-        <div class="col-12 d-flex justify-content-center">
-            {% for link in value.link %}
-            {% if link.value.link_type == "button" %}
-            <a class="secondary-button button-medium" href="{% if link.block_type == 'page_link' %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}">
-                {% if link.value.name %}{{ link.value.name }}{% else %}{{ link.value.page.title }}{% endif %}
-            </a>
-            {% else %}
-            <a class="link" href="{% if link.block_type == 'page_link' %}{% pageurl link.value.page %}{% else %}{{ link.value.url }}{% endif %}">
-                <span class="link-text">{% if link.value.name %}{{ link.value.name }}{% else %}{{ link.value.page.title }}{% endif %}</span>
-                <span class="link-icon"></span>
-            </a>
-            {% endif %}
-            {% endfor %}
-        </div>
-    </div>
+    {% include "home/includes/bottom_button.html" with value_link=value.link %}
     {% endif %}
 </div>
 
