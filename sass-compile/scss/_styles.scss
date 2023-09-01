@@ -49,6 +49,10 @@ a.link {
     }
 }
 
+.mb-30 {
+    margin-bottom: 30px;
+}
+
 .max-650 {
     max-width: 650px;
     margin-left: auto;
@@ -601,6 +605,8 @@ form {
 }
 
 .rich-text-module {
+    margin-bottom: 30px;
+
     p, li {
         font-size: $xs-font-size;
     }
@@ -978,7 +984,7 @@ form {
             margin-bottom: 2rem;
         }
 
-        .markets-container {
+        .markets-container {            
             a {
                 color: inherit;
                 text-decoration: none;
@@ -997,6 +1003,10 @@ form {
     }
 
     .contacts-section {
+        .row:nth-child(2) {
+            margin-bottom: 30px;
+        }
+
         .link {
             @include underline-text-not-on-hover();
         }
@@ -1962,6 +1972,8 @@ section.image-embed {
 }
 
 .link-card {
+    margin-bottom: 30px;
+
     img {
         width: 100%;
         height: 220px;

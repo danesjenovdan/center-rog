@@ -273,9 +273,9 @@ class ColoredTextCardsBlock(ColoredStructBlock):
     cards = blocks.ListBlock(blocks.StructBlock([
         ("image", ImageChooserBlock()),
         ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
-        ("link", blocks.URLBlock(label=_("Povezava"))),
-        ("link_text", blocks.TextBlock(label=_("Ime povezave"))),
-    ]), label=_("Kartice"), min_num=1, max_num=4)
+        ("link", blocks.URLBlock(label=_("Povezava"), required=False)),
+        ("link_text", blocks.TextBlock(label=_("Ime povezave"), required=False)),
+    ]), label=_("Kartice"), min_num=1)
 
     class Meta:
         label = _("Barvno besedilo s karticami")

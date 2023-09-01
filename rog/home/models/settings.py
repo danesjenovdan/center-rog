@@ -65,7 +65,7 @@ class ExternalLinkBlock(blocks.StructBlock):
         ("primary_button", "Primarni gumb"),
         ("secondary_button", "Sekundarni gumb"),
         ("link", "Povezava s puščico")
-    ], default="button")
+    ], default="primary_button")
 
     class Meta:
         label = "Zunanja povezava"
@@ -83,7 +83,7 @@ class PageLinkBlock(blocks.StructBlock):
         ("primary_button", "Primarni gumb"),
         ("secondary_button", "Sekundarni gumb"),
         ("link", "Povezava s puščico")
-    ], default="button")
+    ], default="primary_button")
 
     class Meta:
         label = "Povezava do strani"

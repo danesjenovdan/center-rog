@@ -10,7 +10,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid markets-container">
+    <div class="container-fluid markets-container mb-30">
         {% for market in value.markets %}
         <div class="row color-scheme-{{ market.card_color_scheme }} card-hover">
             <a href="{% pageurl market.localized %}" class="col-12 text-center py-3">
