@@ -13,7 +13,10 @@
           <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
               {% for element in value.gallery %}
-              <li class="glide__slide">{% image element original class="img-fluid" %}</li>
+              <li class="glide__slide">
+                {% image element.image original class="img-fluid" %}
+                <p>{{ element.image_description }}</p>
+              </li>
               {% endfor %}
             </ul>
           </div>

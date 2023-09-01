@@ -139,7 +139,10 @@ class LabPage(BasePage):
         verbose_name=_("Predogledna slika")
     )
     gallery = StreamField([
-        ("image", ImageChooserBlock(label=_("Slika")))
+        ("image", blocks.StructBlock([
+            ("image", ImageChooserBlock(label=_("Slika"))),
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+        ]))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     lab_lead = models.CharField(
         max_length=255,

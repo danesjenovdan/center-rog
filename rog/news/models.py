@@ -4,6 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
+from wagtail import blocks
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField, StreamField
@@ -50,8 +51,11 @@ class NewsPage(BasePage):
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
     tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
     gallery = StreamField([
-        ("image", ImageChooserBlock())
-    ], use_json_field=True, null=True, blank=True, verbose_name=_("Galerija"))
+        ("image", blocks.StructBlock([
+            ("image", ImageChooserBlock(label=_("Slika"))),
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+        ]))
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 

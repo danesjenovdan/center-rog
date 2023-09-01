@@ -181,7 +181,10 @@ class WhiteListBlock(blocks.StructBlock):
 
 class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
-    gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
+    gallery = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock(label=_("Slika"))),
+        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+    ]), label=_("Galerija"))
 
     class Meta:
         label = _("Galerija")
