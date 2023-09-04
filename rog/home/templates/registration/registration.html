@@ -1,5 +1,5 @@
 {% extends "registration/registration_wrapper.html" %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}Registracija{% endblock %}
 
@@ -14,15 +14,10 @@
 <form action="{% url 'registration' %}" autocomplete="off" method="post">
     {% csrf_token %}
 
-    <div class="form-field-wrapper">
+    <div class="form-field-wrapper {% if form.email.errors %}form-field-error{% endif %}">
         {{ form.email.label_tag }} {{ form.email }}
-        <!--
-        {% if field.help_text %}
-        <p class="help">{{ field.help_text|safe }}</p>
-        {% endif %}
-        -->
         {% if form.email.errors %}
-        <p class="error">{{ form.email.errors }}</p>
+        {{ form.email.errors }}
         {% endif %}
     </div>
 
@@ -31,17 +26,17 @@
         {{ form.newsletter }} {{ form.newsletter.label_tag }}
     </div> -->
 
-    <div class="form-field-wrapper">
+    <div class="form-field-wrapper {% if form.password.errors %}form-field-error{% endif %}">
         {{ form.password.label_tag }} {{ form.password }}
         {% if form.password.errors %}
-        <p class="error">{{ form.password.errors }}</p>
+        {{ form.password.errors }}
         {% endif %}
     </div>
 
-    <div class="form-field-wrapper">
+    <div class="form-field-wrapper {% if form.password_check.errors %}form-field-error{% endif %}">
         {{ form.password_check.label_tag }} {{ form.password_check }}
         {% if form.password_check.errors %}
-        <p class="error">{{ form.password_check.errors }}</p>
+        {{ form.password_check.errors }}
         {% endif %}
     </div>
 

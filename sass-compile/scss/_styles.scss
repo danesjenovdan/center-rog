@@ -184,6 +184,14 @@ a.primary-button {
 
 /* FORMS */
 
+.error {
+    color: $cs-red;
+}
+
+.input-error {
+    border-color: $cs-red;
+}
+
 .form-field-wrapper {
     margin-bottom: 10px;
 
@@ -197,6 +205,16 @@ a.primary-button {
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
+        outline: none;
+        box-shadow: none;
+
+        &:active {
+            border-color: $cs-light-blue;
+        }
+
+        &:focus-visible {
+            border-color: $cs-focus-green;
+        }
     }
 
     input[type=text],
@@ -219,6 +237,12 @@ a.primary-button {
 
     .errorlist {
         color: $cs-red;
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    &.form-field-error input {
+        border-color: $cs-red;
     }
 }
 
@@ -253,7 +277,9 @@ a.primary-button {
 
 form {
     .radio-square-wrapper {
-        .radio-square {
+        .radio-square.btn {
+            border-color: $cs-dark-gray;
+
             &:hover {
                 box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
             }
@@ -268,6 +294,11 @@ form {
         input:checked + .btn {
             color: #fff;
             background-color: $cs-dark-gray;
+        }
+
+        input:focus-visible + .btn {
+            border-color: $cs-focus-green;
+            outline: 1.5px solid $cs-focus-green;
         }
     }
 }

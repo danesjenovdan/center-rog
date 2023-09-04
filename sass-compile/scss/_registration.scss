@@ -111,6 +111,13 @@
 }
 
 #legal-information-wrapper.hide {
-    opacity: 80%;
     pointer-events: none;
+
+    label {
+        color: $cs-disabled;
+    }
+
+    input {
+        border-color: $cs-disabled;
+    }
 }
