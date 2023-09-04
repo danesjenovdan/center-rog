@@ -154,7 +154,6 @@ class EventListPage(BasePage):
 
         today = date.today()
 
-        # TODO: FILTRIRAJ ARHIVIRANE
         all_event_page_objects = EventPage.objects.live().filter(start_day__gte=today).order_by("start_day", "start_time")
 
         # filtering
