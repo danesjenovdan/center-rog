@@ -33,8 +33,11 @@
 
     {% if archive_page %}
     <div class="row">
-        <div class="col-12 text-end bulletin-board-link">
-            <a href="{{ archive_page.url }}"><span>{% translate 'arhiv' %}</span></a>
+        <div class="col-12 text-end">
+            <a class="link" href="{{ archive_page.url }}">
+                <span class="link-text">{% translate 'arhiv' %}</span>
+                <span class="link-icon"></span>
+            </a>
         </div>
     </div>
     {% endif %}
@@ -44,6 +47,12 @@
     {% endif %}
 
 </div>
+
+{% if page.show_see_more_section %}
+{% block profile_page_see_more %}
+{% include "home/includes/see_more.html" %}
+{% endblock profile_page_see_more %}
+{% endif %}
 
 
 {% endblock page_body %}

@@ -12,6 +12,27 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from home.models import BasePage, CustomImage
 
+import random
+
+
+def add_see_more_fields(context):
+    from home.models import LabPage, StudioPage
+    from events.models import EventPage
+    # random event
+    events = list(EventPage.objects.live())
+    context["event"] = random.choice(events) if events else None
+    # random news
+    news = list(NewsPage.objects.live())
+    context["news"] = random.choice(news) if news else None
+    # random lab
+    labs = list(LabPage.objects.live())
+    context["lab"] = random.choice(labs) if labs else None
+    # random studio
+    studios = list(StudioPage.objects.live().filter(archived=False))
+    context["studio"] = random.choice(studios) if studios else None
+
+    return context
+
 
 class NewsCategory(models.Model):
     name = models.TextField(verbose_name=_("Ime kategorije"))
@@ -75,12 +96,25 @@ class NewsPage(BasePage):
         "news.NewsListPage"
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
     class Meta:
         verbose_name = _("Novica")
         verbose_name_plural = _("Novice")
 
 
 class NewsListArchivePage(BasePage):
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section")
+    ]
+
     subpage_types = []
 
     def get_context(self, request, *args, **kwargs):
@@ -89,7 +123,7 @@ class NewsListArchivePage(BasePage):
         context["list"] = NewsPage.objects.live().filter(archived=True)
 
         # see more
-        # context = add_see_more_fields(context)
+        context = add_see_more_fields(context)
 
         return context
 
@@ -99,6 +133,12 @@ class NewsListArchivePage(BasePage):
 
 
 class NewsListPage(BasePage):
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section")
+    ]
+
     subpage_types = [
         "news.NewsPage",
     ]
@@ -131,6 +171,9 @@ class NewsListPage(BasePage):
             news_pages = paginator.page(paginator.num_pages)
 
         context["news_pages"] = news_pages
+
+        # see more
+        context = add_see_more_fields(context)
 
         return context
 
