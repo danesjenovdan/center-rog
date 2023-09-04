@@ -147,18 +147,6 @@ a.primary-button {
     }
 }
 
-// .primary-button-blue {
-//     background-color: $cs-light-blue;
-//     border-color: $cs-light-blue;
-//     color: $cs-white;
-// }
-
-// .primary-button-yellow {
-//     background-color: $cs-yellow;
-//     border-color: $cs-yellow;
-//     color: $cs-dark-gray;
-// }
-
 .button-small {
     height: 30px !important;
     font-size: $xxs-font-size !important;
@@ -174,6 +162,19 @@ a.primary-button {
     height: 70px !important;
     font-size: $sm-font-size !important;
     padding: 22.5px 35px !important;
+}
+
+.user-btn {
+    width: 60px;
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px 0px rgba(255, 255, 255, 0.60) inset, -1px -2px 4px 0px rgba(0, 0, 0, 0.65) inset;
+
+    &+span {
+        display: block;
+        font-size: $md-font-size;
+    }
 }
 
 /* FORMS */
@@ -237,6 +238,10 @@ a.primary-button {
 
         h4 {
             font-size: $sm-font-size;
+        }
+
+        &.tag {
+            padding: 5px;
         }
     }
 }
@@ -360,11 +365,6 @@ form {
             font-size: $sm-font-size;
         }
     }
-}
-
-.events-card:hover,
-.news-card:hover {
-    // color: inherit;
 }
 
 .events-card {
@@ -1653,6 +1653,12 @@ section.image-embed {
             margin-bottom: 0;
         }
 
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-size: $md-font-size;
+        }
+
         p, a {
             font-size: $xxs-font-size;
         }
@@ -1707,10 +1713,6 @@ section.image-embed {
         .radio-square-wrapper {
             display: inline-block;
             margin-right: 5px;
-
-            .radio-square {
-                padding: 10px;
-            }
         }
     }
 }

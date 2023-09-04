@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -18,7 +19,7 @@ from payments.models import Plan
 from payments.pantheon import create_subject
 
 from datetime import datetime
-
+import random
 import uuid
 
 
@@ -197,6 +198,9 @@ class User(AbstractUser):
         lower_limit = now.replace(year=now.year-26)
         upper_limit = now.replace(year=now.year-65)
         return not(lower_limit.date() > self.birth_date > upper_limit.date())
+    
+    def random_color(self):
+        return random.choice(settings.COLOR_SCHEMES)[0]
 
     def save(self, *args, **kwargs):
         if self.id == None:
