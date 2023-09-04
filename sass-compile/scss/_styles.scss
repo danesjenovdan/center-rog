@@ -1989,3 +1989,21 @@ section.image-embed {
         font-size: $xxs-font-size;
     }
 }
+
+.payment-history {
+    .payment {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        column-gap: 20px;
+        border-bottom: 1.5px solid $cs-dark-gray;
+        padding: 10px 0;
+
+        div {
+            display: flex;
+            align-items: center;
+            font-size: $xxs-font-size;
+        }
+    }
+    
+}

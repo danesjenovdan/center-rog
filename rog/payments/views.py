@@ -206,7 +206,7 @@ class PaymentHistory(View):
 
         return render(
             request,
-            'payment_hystory.html',
+            'payment_history.html',
             {
                 'username': user.email.split('@')[0],
                 'payments': payments

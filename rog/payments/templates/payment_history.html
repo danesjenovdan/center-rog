@@ -1,0 +1,36 @@
+{% extends "home/wrapper_page.html" %}
+{% load i18n static %}
+
+{% block title %}Plačilo{% endblock %}
+
+{% block body_class %}template-profile{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block page_body %}
+
+<div class="container user-profile-container">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="text-center mb-5">{% translate 'Živjo,' %} {{ user.first_name }}!</h1>
+        </div>
+    </div>
+    <div class="payment-history">
+        {% for payment in payments %}
+            <div class="payment">
+                <div class="date">{{ payment.successed_at }}</div>
+                <div class="name">{{ payment.history_name }}</div>
+                <div class="amount">{{ payment.amount }}€</div>
+                <div class="export-button">
+                    <a class="secondary-button button-small w-100" href="{% url 'invoice' payment_id=payment.id %}">{% translate 'Izvozi račun' %}</a>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock page_body %}
