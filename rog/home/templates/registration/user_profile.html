@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static wagtailimages_tags %}
+{% load i18n static wagtailimages_tags %}
 
 {% block body_class %}template-profile{% endblock %}
 
@@ -46,7 +46,7 @@
                         <p>Zanimanja:</p>
                         {% for interest in user.interests.all %}
                         <div class="radio-square-wrapper d-inline-block">
-                            <div class="radio-square">
+                            <div class="radio-square tag">
                                 {{ interest.name }}
                             </div>
                         </div>
