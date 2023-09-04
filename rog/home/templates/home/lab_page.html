@@ -1,5 +1,5 @@
 {% extends "home/object_profile_page.html" %}
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load i18n static wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}{{ block.super }} template-lab{% endblock %}
 
@@ -19,31 +19,35 @@
 {% block profile_page_contact_information %}
 <div class="col-md-6 col-xl-4 lab-contact-information">
     <p>
-        Vodja laba:<br />
+        {% translate 'Vodja laba' %}:<br />
         {{ page.lab_lead }}
     </p>
     <p>
-        <a href="mailto:{{ page.email }}" target="_blank">e-pošta</a>
+        <a href="mailto:{{ page.email }}" target="_blank">{% translate 'e-pošta' %}</a>
         <button type="button" class="copy-email-button" data-email="{{ page.email }}">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
                 <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
                 <path stroke="currentColor" stroke-width="1.15" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
             </svg>
         </button>
-        <span class="copy-email-confirmation small d-none">kopirano!</span>
+        <span class="copy-email-confirmation small d-none">{% translate 'kopirano!' %}</span>
     </p>
+    {% if page.training_dates_link %}
     <p>
-        <a href="">termini usposabljanj</a>
+        <a href="{{ page.training_dates_link }}">{% translate 'termini usposabljanj' %}</a>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="17" height="21">
             <path fill="#1C1463" d="M8.76 15.43c.16 0 .31-.06.42-.18l3.87-3.84c.28-.29.28-.59 0-.86L9.18 6.68a.6.6 0 0 0-.42-.17.6.6 0 0 0-.6.6c0 .16.07.31.18.42l2.83 2.84h-6.8a.6.6 0 0 0-.6.6c0 .33.28.6.6.6h6.8l-2.83 2.84a.6.6 0 0 0-.18.42c0 .33.27.6.6.6Z"/>
         </svg>
     </p>
+    {% endif %}
+    {% if page.online_trainings_link %}
     <p>
-        <a href="">spletna usposabljanja</a>
+        <a href="{{ page.online_trainings_link }}">{% translate 'spletna usposabljanja' %}</a>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="17" height="21">
             <path fill="#1C1463" d="M8.76 15.43c.16 0 .31-.06.42-.18l3.87-3.84c.28-.29.28-.59 0-.86L9.18 6.68a.6.6 0 0 0-.42-.17.6.6 0 0 0-.6.6c0 .16.07.31.18.42l2.83 2.84h-6.8a.6.6 0 0 0-.6.6c0 .33.28.6.6.6h6.8l-2.83 2.84a.6.6 0 0 0-.18.42c0 .33.27.6.6.6Z"/>
         </svg>
     </p>
+    {% endif %}
 </div>
 {% endblock profile_page_contact_information %}
 
@@ -69,7 +73,7 @@
                 <div class="more-information">
                     <p>
                         <a class="link" href="{{ tool.more_information_link }}">
-                            <span class="link-text">več informacij</span>
+                            <span class="link-text">{% translate 'več informacij' %}</span>
                             <span class="link-icon"></span>
                         </a>
                     </p>
@@ -79,18 +83,18 @@
                     {% if tool.required_workshop %}
                         {% if tool.required_workshop in user.workshops_attended.all %}
                         <div class="text-center">
-                            <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="primary-button button-medium">rezerviraj</a>
+                            <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                         </div>
-                        <p>Usposabljanje je opravljeno!</p>
+                        <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
                         {% else %}
                         <div class="text-center">
-                            <a class="primary-button button-medium disabled">rezerviraj</a>
+                            <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
                         </div>
-                        <p>Za rezervacijo potrebuješ usposabljanje.</p>
+                        <p>{% translate 'Za rezervacijo potrebuješ usposabljanje.' %}</p>
                         {% if tool.workshop_event %}
                         <p class="more-information">
                             <a class="link" href="{% pageurl tool.workshop_event %}">
-                                <span class="link-text">Prijava na usposabljanje</span>
+                                <span class="link-text">{% translate 'Prijava na usposabljanje' %}</span>
                                 <span class="link-icon"></span>
                             </a>
                         </p>
@@ -98,15 +102,15 @@
                         {% endif %}
                     {% else %}
                     <div class="text-center">
-                        <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="primary-button button-medium">rezerviraj</a>
+                        <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                     </div>
                     {% endif %}
                 {% else %}
                 <div class="text-center">
-                    <a class="primary-button button-medium disabled">rezerviraj</a>
+                    <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
                 </div>
                 <p class="bulletin-board-link">
-                    Za rezervacijo orodja se je potrebno <a href="/prijava"><span>prijaviti</span></a>
+                    {% translate 'Za rezervacijo orodja se je potrebno <a href="/prijava"><span>prijaviti</span></a>' %}
                 </p>
                 {% endif %}
             </div>

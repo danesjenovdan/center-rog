@@ -89,8 +89,13 @@ a.secondary-button {
     &:disabled:hover,
     &.disabled:hover {
         background-color: $cs-disabled;
+        border-color: $cs-disabled;
         color: $cs-white;
         box-shadow: none;
+
+        &::before {
+            display: none;
+        }
     }
 }
 
