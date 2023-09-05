@@ -125,6 +125,17 @@ function scrollingDots(section, container) {
   const eventsSectionDots = document.querySelectorAll(`${section} .scrolling-dots span`);
   const eventsSectionScrollable = document.querySelector(`${section} ${container}`);
 
+  const scrollbarHider = document.querySelector(`${section} .scrollbar-hider`);
+  if (scrollbarHider) {
+    function fixHiddenScrollbars() {
+      const scrollbarWidth = eventsSectionScrollable.offsetHeight - eventsSectionScrollable.clientHeight;
+      scrollbarHider.style.height = `${eventsSectionScrollable.offsetHeight - scrollbarWidth}px`;
+    }
+
+    window.addEventListener("resize", debounce(fixHiddenScrollbars));
+    fixHiddenScrollbars();
+  }
+
   eventsSectionDots[0].addEventListener("click", () => {
     eventsSectionScrollable.scrollTo({
       left: 0,

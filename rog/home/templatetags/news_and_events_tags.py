@@ -9,7 +9,7 @@ register = template.Library()
 
 @register.filter
 def with_up_to_15_upcoming_events(field):
-    if not field:
+    if field is None:
         return []
 
     event_ids = set()
@@ -36,7 +36,7 @@ def with_up_to_15_upcoming_events(field):
 
 @register.filter
 def with_up_to_15_recent_news(field):
-    if not field:
+    if field is None:
         return []
 
     news_ids = set()
@@ -61,7 +61,7 @@ def with_up_to_15_recent_news(field):
 
 @register.filter
 def with_up_to_15_random_studios(field):
-    if not field:
+    if field is None:
         return []
 
     studio_ids = set()

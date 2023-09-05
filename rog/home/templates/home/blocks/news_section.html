@@ -9,15 +9,17 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid news-container">
-        <div class="row">
-            {% for news_page in value.exposed_news|with_up_to_15_recent_news %}
-                {% include "news/includes/card.html" with news=news_page %}
-            {% endfor %}
+    <div class="scrollbar-hider">
+        <div class="container-fluid news-container">
+            <div class="row">
+                {% for news_page in value.exposed_news|with_up_to_15_recent_news %}
+                    {% include "news/includes/card.html" with news=news_page %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="container">
-        <div class="row mt-4 mb-30">
+        <div class="row mb-30">
             <div class="col-12 text-center">
                 <div class="scrolling-dots">
                     <span></span>

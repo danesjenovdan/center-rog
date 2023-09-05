@@ -9,15 +9,17 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid events-container">
-        <div class="row">
-            {% for event in value.exposed_events|with_up_to_15_upcoming_events %}
-                {% include "events/includes/card.html" with event=event %}
-            {% endfor %}
+    <div class="scrollbar-hider">
+        <div class="container-fluid events-container">
+            <div class="row">
+                {% for event in value.exposed_events|with_up_to_15_upcoming_events %}
+                    {% include "events/includes/card.html" with event=event %}
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="container">
-        <div class="row mt-4 mb-30">
+        <div class="row mb-30">
             <div class="col-12 text-center">
                 <div class="scrolling-dots">
                     <span></span>

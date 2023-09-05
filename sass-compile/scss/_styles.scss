@@ -901,13 +901,17 @@ form {
                 margin-bottom: 40px;
             }
 
+            .scrollbar-hider {
+                overflow: hidden;
+            }
+
             .events-container,
             .news-container {
                 .row {
                     padding-block: 33px; // needed when for tags to not get cut-off
                     padding-inline: 15px;
                     flex-wrap: nowrap;
-                    overflow-x: hidden;
+                    overflow-x: scroll;
                 }
 
                 .card {
@@ -923,12 +927,16 @@ form {
         }
 
         &.studios-section {
+            .scrollbar-hider {
+                overflow: hidden;
+            }
+
             .studios-container {
                 .row {
                     padding-block: 33px; // needed when cards flip on hover to not create a scrollbar
                     padding-inline: 15px;
                     flex-wrap: nowrap;
-                    overflow-x: hidden;
+                    overflow-x: scroll;
                 }
 
                 .studio-card-col {

@@ -10,17 +10,19 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid studios-container">
-        <div class="row">
-            {% for studio in value.studios|with_up_to_15_random_studios %}
-            <div class="col studio-card-col">
-                {% include "home/includes/studio_card.html" with studio=studio %}
+    <div class="scrollbar-hider">
+        <div class="container-fluid studios-container">
+            <div class="row">
+                {% for studio in value.studios|with_up_to_15_random_studios %}
+                <div class="col studio-card-col">
+                    {% include "home/includes/studio_card.html" with studio=studio %}
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
     <div class="container">
-        <div class="row mt-4 mb-30">
+        <div class="row mb-30">
             <div class="col-12 text-center">
                 <div class="scrolling-dots">
                     <span></span>
