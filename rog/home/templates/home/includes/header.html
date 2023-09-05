@@ -19,7 +19,13 @@
           {% for language in languages %}
             {% if CURRENT_LANGUAGE != language.code %}
               <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link lang-link">
-                  {{ language.name }}
+                {% if language.code == 'en' %}
+                eng
+                {% elif language.code == 'sl' %}
+                slo
+                {% else %}
+                {{ language.name }}
+                {% endif %}
               </a>
             {% endif %}
           {% endfor %}

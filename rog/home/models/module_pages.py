@@ -35,7 +35,7 @@ class HomePage(TranslatablePage):
         'events.EventListPage',
         'events.EventListArchivePage',
         'news.NewsListPage',
-        'news.NewsListArchivePage'
+        # 'news.NewsListArchivePage'
     ]
 
     # def get_context(self, request, *args, **kwargs):

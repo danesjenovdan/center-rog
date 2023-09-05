@@ -1,24 +1,28 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 <section class="color-scheme-{{ value.color }}">
-  <div class="container-fluid">
+  <div class="container">
     <div class="row justify-content-center mb-30">
       <div class="col-12">
         <h2 class="text-center gallery-title">{{ value.title }}</h2>
-        <div class="glide">
-          <div class="glide__arrows" data-glide-el="controls">
-            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">‹</button>
-            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">›</button>
-          </div>
-          <div class="glide__track" data-glide-el="track">
-            <ul class="glide__slides">
+        <div class="custom-gallery">
+          <div class="custom-gallery-content">
+            <button type="button" class="custom-gallery-navigation prev" tabindex="0"></button>
+            <ul class="custom-gallery-list">
               {% for element in value.gallery %}
-              <li class="glide__slide">
-                {% image element.image original class="img-fluid" %}
-                <p>{{ element.image_description }}</p>
+              <li class="custom-gallery-item">
+                <div class="custom-gallery-image">
+                  {% image element.image original %}
+                </div>
+                <div class="custom-gallery-caption">
+                  <div class="max-800">
+                    {{ element.image_description }}
+                  </div>
+                </div>
               </li>
               {% endfor %}
             </ul>
+            <button type="button" class="custom-gallery-navigation next" tabindex="0"></button>
           </div>
         </div>
       </div>

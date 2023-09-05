@@ -14,13 +14,13 @@
             <h1 class="text-center">{{ user.public_username }}</h1>
         </div>
     </div>
-    
+
     <div class="row mb-4">
-        
+
         <div class="col-md-6 intro-text">
             <p>{{ user.description }}</p>
         </div>
-        
+
         <div class="col-md-6">
             <div class="contact-information color-scheme-white">
                 <div class="tape"></div>
@@ -74,21 +74,27 @@
 {% endif %} -->
 
 {% if user.gallery %}
-<div class="container-fluid">
-    <div class="row mb-5 mt-3">
+<div class="container">
+    <div class="row">
         <div class="col-12">
-            <h2 class="text-center">Moja galerija</h2>
-            <div class="glide">
-                <div class="glide__arrows" data-glide-el="controls">
-                  <button class="glide__arrow glide__arrow--left" data-glide-dir="<">‹</button>
-                  <button class="glide__arrow glide__arrow--right" data-glide-dir=">">›</button>
-                </div>
-                <div class="glide__track" data-glide-el="track">
-                  <ul class="glide__slides">
-                    {% for element in user.gallery %}
-                    <li class="glide__slide">{% image element.value original class="img-fluid" %}</li>
-                    {% endfor %}
-                  </ul>
+            <div class="custom-gallery">
+                <div class="custom-gallery-content">
+                    <button type="button" class="custom-gallery-navigation prev" tabindex="0"></button>
+                    <ul class="custom-gallery-list">
+                        {% for element in user.gallery %}
+                        <li class="custom-gallery-item">
+                            <div class="custom-gallery-image">
+                                {% image element.value original %}
+                            </div>
+                            <div class="custom-gallery-caption">
+                                <div class="max-800">
+                                {% comment %} {{ element.value.image_description }} {% endcomment %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <button type="button" class="custom-gallery-navigation next" tabindex="0"></button>
                 </div>
             </div>
         </div>
