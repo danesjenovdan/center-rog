@@ -1,7 +1,7 @@
 {% load wagtailcore_tags %}
 
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
-<section  class="white-list-section">
+<section  class="white-list-section color-scheme-white">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-xxl-10">
@@ -9,7 +9,7 @@
                 <p class="intro-text">{{ value.intro_text }}</p>
             </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mb-4">
             <div class="col-12 col-xxl-10">
                 <ul class="row">
                     {% for link in value.links %}
@@ -22,14 +22,8 @@
                 </ul>
             </div>
         </div>
-        {% if value.button %}
-        <div class="row mt-4">
-            <div class="col-12 text-center color-scheme-white">
-                <a href="{% pageurl value.button %}" class="primary-button button-medium">
-                    {{ value.button }}
-                </a>
-            </div>
-        </div>
+        {% if value.link %}
+        {% include "home/includes/bottom_button.html" with value_link=value.link %}
         {% endif %}
     </div>
 </section>

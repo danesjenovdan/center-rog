@@ -249,7 +249,7 @@ a.primary-button {
         padding-left: 0;
     }
 
-    &.form-field-error input {
+    &.form-field-error input, textarea {
         border-color: $cs-red;
     }
 }
@@ -559,6 +559,8 @@ form {
 .tool-card {
     padding: 20px 30px;
     margin-bottom: var(--bs-gutter-x);
+    border-radius: 2px;
+    border: none;
 
     h4 {
         font-size: $xs-font-size;
@@ -782,6 +784,7 @@ form {
                 font-size: $xs-font-size;
                 text-decoration: none;
                 text-align: center;
+                border-radius: 3px;
 
                 &:hover {
                     background-color: #FFFFFF;
@@ -1021,6 +1024,10 @@ form {
         }
 
         &.newsletter-section {
+            .container {
+                border-radius: 3px;
+            }
+
             form {
                 a {
                     font-size: inherit;
@@ -1364,6 +1371,7 @@ section.image-embed {
         margin-bottom: 15px;
         font-size: $sm-font-size;
         text-decoration: none;
+        border-radius: 2px;
         // border: 1px solid $cs-dark-green;
 
         &:hover {
