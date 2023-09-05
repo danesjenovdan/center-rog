@@ -344,7 +344,7 @@ form {
     flex-direction: column;
     justify-content: space-between;
     gap: 16px;
-    border-radius: 2px;
+    border-radius: 3px;
     border: none;
 
     .card-body {
@@ -427,7 +427,7 @@ form {
     // overflow: hidden;
     text-decoration: none;
     border: none;
-    border-radius: 2px;
+    border-radius: 3px;
     margin-inline: 5px;
 
     .card-inner {
@@ -457,7 +457,7 @@ form {
         .show-normal,
         .show-hover {
             backface-visibility: hidden;
-            border-radius: 2px;
+            border-radius: 3px;
         }
 
         .show-hover {
@@ -537,7 +537,7 @@ form {
     .market-card {
         display: block;
         width: 100%;
-        border-radius: 2px;
+        border-radius: 3px;
         // aspect-ratio: 250/320;
         padding-top: 130%;
         position: relative;
@@ -559,7 +559,7 @@ form {
 .tool-card {
     padding: 20px 30px;
     margin-bottom: var(--bs-gutter-x);
-    border-radius: 2px;
+    border-radius: 3px;
     border: none;
 
     h4 {
@@ -764,6 +764,8 @@ form {
             .labs-section {
                 .lab {
                     margin-bottom: 0;
+                    border-radius: 3px;
+                    overflow: hidden;
                 }
             }
 
@@ -1371,7 +1373,7 @@ section.image-embed {
         margin-bottom: 15px;
         font-size: $sm-font-size;
         text-decoration: none;
-        border-radius: 2px;
+        border-radius: 3px;
         // border: 1px solid $cs-dark-green;
 
         &:hover {
@@ -1872,7 +1874,7 @@ section.image-embed {
             width: 42px;
             height: 42px;
             cursor: pointer;
-            border-radius: 2px;
+            border-radius: 3px;
 
             &::before {
                 content: "▶";
@@ -2035,7 +2037,7 @@ section.image-embed {
     &.page-next {
         > a,
         > span {
-            border-radius: 2px;
+            border-radius: 3px;
         }
     }
 
