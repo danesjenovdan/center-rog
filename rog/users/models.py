@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
@@ -18,7 +19,7 @@ from payments.models import Plan
 from payments.pantheon import create_subject
 
 from datetime import datetime
-
+import random
 import uuid
 
 
@@ -153,7 +154,7 @@ class User(AbstractUser):
     legal_person_vat = models.CharField(max_length=200, blank=True, verbose_name="Zavezanec za DDV")
     public_profile = models.BooleanField(default=False, verbose_name="Profil naj bo javno viden")
     public_username = models.CharField(max_length=20, blank=True, verbose_name="Uporabniško ime")
-    description = models.TextField(blank=True, verbose_name="Opis")
+    description = models.CharField(max_length=600, blank=True, verbose_name="Opis")
     link_1 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
@@ -197,6 +198,9 @@ class User(AbstractUser):
         lower_limit = now.replace(year=now.year-26)
         upper_limit = now.replace(year=now.year-65)
         return not(lower_limit.date() > self.birth_date > upper_limit.date())
+    
+    def random_color(self):
+        return random.choice(settings.COLOR_SCHEMES)[0]
 
     def save(self, *args, **kwargs):
         if self.id == None:

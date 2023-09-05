@@ -43,7 +43,7 @@
                         <span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span>
                     </p>
                     <p>{{ page.location }}</p>
-                    <button class="primary-button button-medium">{% translate 'prijava na dogodek' %}</button>
+                    <button class="primary-button button-medium" disabled>{% translate 'prijava na dogodek' %}</button>
                     <p><small>{{ page.notice }}</small></p>
                 </div>
             </div>
@@ -69,5 +69,11 @@
     {% endif %}
 
 </div>
+
+{% if page.show_see_more_section %}
+{% block profile_page_see_more %}
+{% include "home/includes/see_more.html" %}
+{% endblock profile_page_see_more %}
+{% endif %}
 
 {% endblock page_body %}

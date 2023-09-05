@@ -1,13 +1,13 @@
-{% load static wagtailimages_tags usergallery_tags jsonify %}
+{% load i18n static wagtailimages_tags usergallery_tags jsonify %}
 
 <form action="" method="post" class="edit-profile-form">
     {% csrf_token %}
 
     <p>
-        Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...
+        {% translate 'Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...' %}
     </p>
 
-    <div class="form-field-wrapper one-line mb-5 rog-check">
+    <div class="form-field-wrapper one-line mb-40 rog-check">
         {{ form.public_profile }} {{ form.public_profile.label_tag }}
     </div>
 
@@ -83,12 +83,12 @@
         {% endif %}
     </div>
 
-    <h2>Izberi kategorije, ki te zanimajo:</h2>
+    <h2>{% translate 'Izberi kategorije, ki te zanimajo' %}:</h2>
 
         {% for interest in form.interests %}
         <div class="radio-square-wrapper d-inline-block mb-2">
             {{ interest.tag }}
-            <label for="{{ interest.id_for_label }}" class="radio-square btn">
+            <label for="{{ interest.id_for_label }}" class="radio-square btn tag">
                 {{ interest.choice_label }}
             </label>
         </div>
@@ -98,21 +98,20 @@
         <p class="error">{{ form.interests.errors }}</p>
         {% endif %}
 
-    <h2>Dodaj slike svojih izdelkov:</h2>
+    <h2>{% translate 'Dodaj slike svojih izdelkov' %}:</h2>
 
     <div class="form-field-wrapper">
         <p>
-            Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne
-            datoteke je 5MB. Dovoljena formata sta .jpg in .png.
+            {% translate 'Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne datoteke je 5MB. Dovoljena formata sta .jpg in .png.' %}
         </p>
         <p>
-            <button type="button" class="secondary-button button-small">naloži</button>
+            <button type="button" class="secondary-button button-small">{% translate 'naloži' %}</button>
         </p>
         <div class="user-gallery">
             <template>
                 <div class="user-image">
                     <img src="https://placehold.co/200" alt="">
-                    <button type="button" class="btn btn-link">odstrani</button>
+                    <button type="button" class="btn btn-link">{% translate 'odstrani' %}</button>
                 </div>
             </template>
         </div>

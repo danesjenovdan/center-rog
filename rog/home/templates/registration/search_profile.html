@@ -23,7 +23,7 @@
                 {% for interest in form.interests %}
                 <div class="radio-square-wrapper">
                     {{ interest.tag }}
-                    <label for="{{ interest.id_for_label }}" class="radio-square btn">
+                    <label for="{{ interest.id_for_label }}" class="radio-square btn tag">
                         {{ interest.choice_label }}
                     </label>
                 </div>
@@ -41,9 +41,10 @@
             <h2>{% translate 'Uporabniki s temi zanimanji:' %}</h2>
             <div>
                 {% for user in users %}
-                <p>
-                    <a href="/profil/{{user.id}}">{{ user.public_username }}</a>
-                </p>
+                <div class="d-flex align-items-center">
+                    <a href="/profil/{{ user.id }}" class="user-btn color-scheme-{{ user.random_color }}"></a>
+                    <span class="ms-4">{{ user.public_username }}</span>
+                </div>
                 {% endfor %}
             </div>
         </div>

@@ -49,6 +49,14 @@ a.link {
     }
 }
 
+.mb-30 {
+    margin-bottom: 30px !important;
+}
+
+.mb-40 {
+    margin-bottom: 40px !important;
+}
+
 .max-650 {
     max-width: 650px;
     margin-left: auto;
@@ -85,8 +93,13 @@ a.secondary-button {
     &:disabled:hover,
     &.disabled:hover {
         background-color: $cs-disabled;
+        border-color: $cs-disabled;
         color: $cs-white;
         box-shadow: none;
+
+        &::before {
+            display: none;
+        }
     }
 }
 
@@ -143,18 +156,6 @@ a.primary-button {
     }
 }
 
-// .primary-button-blue {
-//     background-color: $cs-light-blue;
-//     border-color: $cs-light-blue;
-//     color: $cs-white;
-// }
-
-// .primary-button-yellow {
-//     background-color: $cs-yellow;
-//     border-color: $cs-yellow;
-//     color: $cs-dark-gray;
-// }
-
 .button-small {
     height: 30px !important;
     font-size: $xxs-font-size !important;
@@ -172,10 +173,31 @@ a.primary-button {
     padding: 22.5px 35px !important;
 }
 
+.user-btn {
+    width: 60px;
+    height: 80px;
+    margin-bottom: 15px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px 0px rgba(255, 255, 255, 0.60) inset, -1px -2px 4px 0px rgba(0, 0, 0, 0.65) inset;
+
+    &+span {
+        display: block;
+        font-size: $md-font-size;
+    }
+}
+
 /* FORMS */
 
+.error {
+    color: $cs-red;
+}
+
+.input-error {
+    border-color: $cs-red;
+}
+
 .form-field-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     label {
         display: block;
@@ -187,6 +209,16 @@ a.primary-button {
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
+        outline: none !important;
+        box-shadow: none !important;
+
+        &:active {
+            border-color: $cs-light-blue;
+        }
+
+        &:focus-visible {
+            border-color: $cs-focus-green;
+        }
     }
 
     input[type=text],
@@ -209,6 +241,12 @@ a.primary-button {
 
     .errorlist {
         color: $cs-red;
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    &.form-field-error input {
+        border-color: $cs-red;
     }
 }
 
@@ -234,12 +272,18 @@ a.primary-button {
         h4 {
             font-size: $sm-font-size;
         }
+
+        &.tag {
+            padding: 5px;
+        }
     }
 }
 
 form {
     .radio-square-wrapper {
-        .radio-square {
+        .radio-square.btn {
+            border-color: $cs-dark-gray;
+
             &:hover {
                 box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
             }
@@ -254,6 +298,11 @@ form {
         input:checked + .btn {
             color: #fff;
             background-color: $cs-dark-gray;
+        }
+
+        input:focus-visible + .btn {
+            border-color: $cs-focus-green;
+            outline: 1.5px solid $cs-focus-green;
         }
     }
 }
@@ -356,11 +405,6 @@ form {
             font-size: $sm-font-size;
         }
     }
-}
-
-.events-card:hover,
-.news-card:hover {
-    // color: inherit;
 }
 
 .events-card {
@@ -601,6 +645,8 @@ form {
 }
 
 .rich-text-module {
+    margin-bottom: 30px;
+
     p, li {
         font-size: $xs-font-size;
     }
@@ -978,7 +1024,7 @@ form {
             margin-bottom: 2rem;
         }
 
-        .markets-container {
+        .markets-container {            
             a {
                 color: inherit;
                 text-decoration: none;
@@ -997,6 +1043,10 @@ form {
     }
 
     .contacts-section {
+        .row:nth-child(2) {
+            margin-bottom: 30px;
+        }
+
         .link {
             @include underline-text-not-on-hover();
         }
@@ -1643,6 +1693,12 @@ section.image-embed {
             margin-bottom: 0;
         }
 
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-size: $md-font-size;
+        }
+
         p, a {
             font-size: $xxs-font-size;
         }
@@ -1697,10 +1753,6 @@ section.image-embed {
         .radio-square-wrapper {
             display: inline-block;
             margin-right: 5px;
-
-            .radio-square {
-                padding: 10px;
-            }
         }
     }
 }
@@ -1710,6 +1762,10 @@ section.image-embed {
     &.template-event-list-page {
         .list-container {
             padding-top: 80px;
+        }
+
+        .link-text {
+            font-size: $xs-font-size;
         }
     }
 }
@@ -1890,7 +1946,7 @@ section.image-embed {
 .edit-profile-form {
     h2 {
         font-size: $sm-font-size;
-        margin-top: 50px;
+        margin-top: 40px;
         margin-bottom: 20px;
     }
 }
@@ -1962,6 +2018,8 @@ section.image-embed {
 }
 
 .link-card {
+    margin-bottom: 30px;
+
     img {
         width: 100%;
         height: 220px;
@@ -1972,4 +2030,22 @@ section.image-embed {
     .link span {
         font-size: $xxs-font-size;
     }
+}
+
+.payment-history {
+    .payment {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 1fr;
+        column-gap: 20px;
+        border-bottom: 1.5px solid $cs-dark-gray;
+        padding: 10px 0;
+
+        div {
+            display: flex;
+            align-items: center;
+            font-size: $xxs-font-size;
+        }
+    }
+    
 }

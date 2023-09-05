@@ -181,7 +181,10 @@ class WhiteListBlock(blocks.StructBlock):
 
 class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
-    gallery = blocks.ListBlock(ImageChooserBlock(), label=_("Slike"))
+    gallery = blocks.ListBlock(blocks.StructBlock([
+        ("image", ImageChooserBlock(label=_("Slika"))),
+        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+    ]), label=_("Galerija"))
 
     class Meta:
         label = _("Galerija")
@@ -273,9 +276,9 @@ class ColoredTextCardsBlock(ColoredStructBlock):
     cards = blocks.ListBlock(blocks.StructBlock([
         ("image", ImageChooserBlock()),
         ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
-        ("link", blocks.URLBlock(label=_("Povezava"))),
-        ("link_text", blocks.TextBlock(label=_("Ime povezave"))),
-    ]), label=_("Kartice"), min_num=1, max_num=4)
+        ("link", blocks.URLBlock(label=_("Povezava"), required=False)),
+        ("link_text", blocks.TextBlock(label=_("Ime povezave"), required=False)),
+    ]), label=_("Kartice"), min_num=1)
 
     class Meta:
         label = _("Barvno besedilo s karticami")

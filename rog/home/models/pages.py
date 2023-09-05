@@ -9,7 +9,7 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.edit_handlers import MediaChooserPanel
 
-from .base_pages import ObjectProfilePage, ObjectListPage, ObjectArchiveListPage
+from .base_pages import BasePage, ObjectProfilePage, ObjectListPage, ObjectArchiveListPage
 from .image import CustomImage
 from news.models import NewsPage
 from events.models import EventPage
@@ -25,7 +25,7 @@ def add_see_more_fields(context):
     news = list(NewsPage.objects.live())
     context["news"] = random.choice(news) if news else None
     # random lab
-    labs = list(LabPage.objects.live().filter(archived=False))
+    labs = list(LabPage.objects.live())
     context["lab"] = random.choice(labs) if labs else None
     # random studio
     studios = list(StudioPage.objects.live().filter(archived=False))
@@ -120,7 +120,16 @@ class MarketStorePage(ObjectProfilePage):
 MarketStorePage._meta.get_field("color_scheme").default = "brown"
 
 
-class LabPage(ObjectProfilePage):
+class LabPage(BasePage):
+    description = models.TextField(blank=True, verbose_name=_("Opis"))
+    image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Slika")
+    )
     thumbnail = models.ForeignKey(
         CustomImage,
         null=True,
@@ -129,33 +138,48 @@ class LabPage(ObjectProfilePage):
         related_name="+",
         verbose_name=_("Predogledna slika")
     )
-    # thumbnail_animation = models.ForeignKey(
-    #     "wagtailmedia.Media",
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     related_name="+",
-    #     verbose_name=_("Animacija predogledne slike")
-    # )
+    gallery = StreamField([
+        ("image", blocks.StructBlock([
+            ("image", ImageChooserBlock(label=_("Slika"))),
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+        ]))
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     lab_lead = models.CharField(
         max_length=255,
         blank=True,
         verbose_name=_("Vodja laboratorija")
     )
+    training_dates_link = models.URLField(blank=True, verbose_name=_("Termini usposabljanj"))
+    online_trainings_link = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
-    content_panels = ObjectProfilePage.content_panels + [
-        FieldPanel("lab_lead"),
+    content_panels = Page.content_panels + [
+        FieldPanel("description"),
+        FieldPanel("image"),
         FieldPanel("thumbnail"),
-        # MediaChooserPanel("thumbnail_animation"),
+        FieldPanel("gallery"),
+        FieldPanel("lab_lead"),
+        FieldPanel("training_dates_link"),
+        FieldPanel("online_trainings_link"),        
         InlinePanel("related_tools", label="Orodja"),
+        FieldPanel("show_see_more_section")
     ]
 
     parent_page_types = [
         "home.LabListPage"
     ]
 
+    subpage_types = []
+
+    def short_description(self):
+        if len(self.description) > 240:
+            return self.description[:237] + "..."
+        else:
+            return self.description
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
+        context["object_profile_page_type"] = self.__class__.__name__
 
         # see more
         context = add_see_more_fields(context)
@@ -306,7 +330,7 @@ class LabListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["labs"] = LabPage.objects.child_of(self).live().filter(archived=False)
+        context["labs"] = LabPage.objects.child_of(self).live()
 
        # see more
         context = add_see_more_fields(context)

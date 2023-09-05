@@ -13,15 +13,17 @@
         </div>
     </div>
 
-    <div class="row my-4 justify-content-center">
+    <div class="row mt-4 justify-content-center">
         {% for element in value.cards %}
-        <div class="col-6 mb-4 col-md-3 mb-md-0 link-card">
+        <div class="col-6 col-md-3 link-card">
             {% image element.image original class="img-fluid" alt=value.image.alt_description %}
             <p>{{ element.description }}</p>
+            {% if element.link and element.link_text %}
             <a href="{{ element.link }}" target="_blank" class="link">
                 <span class="link-text">{{ element.link_text }}</span>
                 <span class="link-icon"></span>
             </a>
+            {% endif %}
         </div>
         {% endfor %}
     </div>

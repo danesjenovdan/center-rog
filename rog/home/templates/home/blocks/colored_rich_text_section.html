@@ -3,7 +3,7 @@
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
 <section  class="color-scheme-{{ value.color }} colored-text-section">
 
-<div class="container with-image">
+<div class="container with-image max-800">
     <div class="row">
         <div class="col-12">
             <h2 class="text-center">{{ value.title }}</h2>
@@ -11,9 +11,7 @@
     </div>
     <div class="row">
         <div class="col-12 rich-text-module">
-            <div class="max-800">
-                {{ value.rich_text|richtext }}
-            </div>
+            {{ value.rich_text|richtext }}
         </div>
     </div>
     {% if value.link %}

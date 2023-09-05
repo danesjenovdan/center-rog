@@ -171,11 +171,16 @@ class ObjectProfilePage(BasePage):
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas"))
     # gallery
     gallery = StreamField([
-        ("image", ImageChooserBlock(label=_("Slika")))
+        ("image", blocks.StructBlock([
+            ("image", ImageChooserBlock(label=_("Slika"))),
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+        ]))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
+    # archived
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     archived_from = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval od"))
     archived_to = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval do"))
+    # see more
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [

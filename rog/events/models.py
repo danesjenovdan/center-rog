@@ -8,7 +8,30 @@ from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField, StreamField
 
+from datetime import date
+
 from home.models import BasePage, CustomImage, Workshop
+
+import random
+
+
+def add_see_more_fields(context):
+    from home.models import LabPage, StudioPage
+    from news.models import NewsPage
+    # random event
+    events = list(EventPage.objects.live())
+    context["event"] = random.choice(events) if events else None
+    # random news
+    news = list(NewsPage.objects.live())
+    context["news"] = random.choice(news) if news else None
+    # random lab
+    labs = list(LabPage.objects.live())
+    context["lab"] = random.choice(labs) if labs else None
+    # random studio
+    studios = list(StudioPage.objects.live().filter(archived=False))
+    context["studio"] = random.choice(studios) if studios else None
+
+    return context
 
 
 class EventCategory(models.Model):
@@ -52,7 +75,6 @@ class EventPage(BasePage):
     location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
     notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
-    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -67,7 +89,6 @@ class EventPage(BasePage):
         FieldPanel("location"),
         FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
-        FieldPanel("archived"),
         FieldPanel("show_see_more_section")
     ]
 
@@ -75,21 +96,36 @@ class EventPage(BasePage):
         "events.EventListPage"
     ]
 
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        # see more
+        context = add_see_more_fields(context)
+
+        return context
+
     class Meta:
         verbose_name = _("Dogodek")
         verbose_name = _("Dogodki")
 
 
 class EventListArchivePage(BasePage):
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section")
+    ]
+
     subpage_types = []
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["list"] = EventPage.objects.live().filter(archived=True)
+        today = date.today()
+
+        context["list"] = EventPage.objects.live().filter(start_day__lt=today).order_by("-start_day")
 
         # see more
-        # context = add_see_more_fields(context)
+        context = add_see_more_fields(context)
 
         return context
 
@@ -99,6 +135,12 @@ class EventListArchivePage(BasePage):
 
 
 class EventListPage(BasePage):
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+
+    content_panels = Page.content_panels + [
+        FieldPanel("show_see_more_section")
+    ]
+
     subpage_types = [
         "events.EventPage",
     ]
@@ -110,7 +152,9 @@ class EventListPage(BasePage):
         categories = EventCategory.objects.all()
         context["secondary_navigation"] = categories
 
-        all_event_page_objects = EventPage.objects.live().filter(archived=False).order_by("-first_published_at")
+        today = date.today()
+
+        all_event_page_objects = EventPage.objects.live().filter(start_day__gte=today).order_by("start_day", "start_time")
 
         # filtering
         chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
@@ -131,6 +175,9 @@ class EventListPage(BasePage):
             event_pages = paginator.page(paginator.num_pages)
 
         context["event_pages"] = event_pages
+
+        # see more
+        context = add_see_more_fields(context)
 
         return context
 

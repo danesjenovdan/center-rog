@@ -68,8 +68,10 @@ class ObjectProfilePageTR(TranslationOptions):
 
 
 @register(LabPage)
-class LabPageTR(ObjectProfilePageTR):
-    pass
+class LabPageTR(TranslationOptions):
+    fields = (
+        'description',
+    )
 
 
 @register(LibraryPage)
