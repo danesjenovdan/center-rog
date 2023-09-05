@@ -8,6 +8,8 @@ from datetime import datetime
 
 from .pantheon import create_ident, create_move
 
+import random
+from string import ascii_uppercase
 
 class ActiveAtQuerySet(models.QuerySet):
     def is_active_subscription(self):
@@ -196,6 +198,14 @@ class Payment(Timestampable):
         default=False,
         help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
     )
+    promo_code = models.ForeignKey(
+        "PromoCode",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="payments",
+        help_text="The promo code used for this payment",
+    )
 
     panels = [
         FieldPanel("user"),
@@ -211,7 +221,7 @@ class Payment(Timestampable):
     ]
 
     class Meta:
-        verbose_name = _("Naročil0")
+        verbose_name = _("Naročilo")
         verbose_name_plural = _("Naročila")
 
     def __str__(self):
@@ -255,3 +265,51 @@ class Token(Timestampable):
 
     def __str__(self):
         return f"{self.type_of} - {self.is_used}"
+
+def generate_promo_code(length: int = 10) -> str:
+        characters = ascii_uppercase + '0123456789'
+        return ''.join(random.choice(characters) for i in range(length))
+
+class PromoCode(Timestampable):
+    code = models.CharField(max_length=100, null=False, blank=False, default=generate_promo_code)
+    valid_to = models.DateTimeField(
+        help_text=_("When does the code expire?"),
+        null=False,
+        blank=False,
+    )
+    percent_discount = models.IntegerField(null=False, blank=False)
+    item_type = models.ForeignKey(
+        "ItemType", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    single_use = models.BooleanField(blank=False, null=False)
+    number_of_uses = models.IntegerField(null=False, blank=False, default=0)
+
+    def __str__(self):
+        return f"{self.code}"
+
+    @staticmethod
+    def check_code_validity(code_string: str, item_type: ItemType) -> bool:
+        code_filter = PromoCode.objects.filter(code=code_string)
+
+        if code_filter.count() == 1:
+            code = code_filter.first()
+
+            if code.valid_to > datetime.now():
+                return False
+
+            if code.single_use and code.number_of_uses > 0:
+                return False
+
+            if code.item_type != item_type:
+                return False
+
+            return True
+
+        if code_filter.count() == 0:
+            return False
+
+        raise Exception(f"Weird number of codes: {code}.")
+
+    def use_code(self) -> None:
+        self.number_of_uses += 1
+        self.save()
