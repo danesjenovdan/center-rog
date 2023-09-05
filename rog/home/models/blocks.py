@@ -172,7 +172,10 @@ class WhiteListBlock(blocks.StructBlock):
             ("text", blocks.TextBlock(label=_("Ime povezave"))),
         ], label=_("Povezava")))
     ], label=_("Seznam povezav"))
-    button = blocks.PageChooserBlock(required=False, label=_("Gumb na dnu sekcije"))
+    link = blocks.StreamBlock([
+        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
 
     class Meta:
         label = _("Seznam povezav")
