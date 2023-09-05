@@ -186,7 +186,7 @@ class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     gallery = blocks.ListBlock(blocks.StructBlock([
         ("image", ImageChooserBlock(label=_("Slika"))),
-        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), required=False))
     ]), label=_("Galerija"))
 
     class Meta:

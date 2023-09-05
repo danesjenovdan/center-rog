@@ -74,7 +74,7 @@ class NewsPage(BasePage):
     gallery = StreamField([
         ("image", blocks.StructBlock([
             ("image", ImageChooserBlock(label=_("Slika"))),
-            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki")))
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), required=False))
         ]))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     # archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
