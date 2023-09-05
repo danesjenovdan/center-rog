@@ -31,7 +31,7 @@
         {% endfor %}
     </div>
 
-    {% if archive_page %}
+    <!-- {% if archive_page %}
     <div class="row">
         <div class="col-12 text-end">
             <a class="link" href="{{ archive_page.url }}">
@@ -40,7 +40,7 @@
             </a>
         </div>
     </div>
-    {% endif %}
+    {% endif %} -->
 
     {% if news_pages.paginator.num_pages > 1 %}
         {% include "home/includes/pagination.html" with objects=news_pages %}
