@@ -154,7 +154,7 @@ class User(AbstractUser):
     legal_person_vat = models.CharField(max_length=200, blank=True, verbose_name="Zavezanec za DDV")
     public_profile = models.BooleanField(default=False, verbose_name="Profil naj bo javno viden")
     public_username = models.CharField(max_length=20, blank=True, verbose_name="Uporabniško ime")
-    description = models.TextField(blank=True, verbose_name="Opis")
+    description = models.CharField(max_length=600, blank=True, verbose_name="Opis")
     link_1 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")

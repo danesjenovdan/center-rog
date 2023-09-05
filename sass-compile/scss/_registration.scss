@@ -110,14 +110,20 @@
     }
 }
 
-#legal-information-wrapper.hide {
-    pointer-events: none;
+#legal-information-wrapper {
+    margin-top: 30px;
 
-    label {
-        color: $cs-disabled;
-    }
+    &.hide {
+        display: none;
 
-    input {
-        border-color: $cs-disabled;
+        // pointer-events: none;
+
+        // label {
+        //     color: $cs-disabled;
+        // }
+
+        // input {
+        //     border-color: $cs-disabled;
+        // }
     }
 }

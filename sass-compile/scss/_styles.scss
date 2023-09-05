@@ -50,7 +50,11 @@ a.link {
 }
 
 .mb-30 {
-    margin-bottom: 30px;
+    margin-bottom: 30px !important;
+}
+
+.mb-40 {
+    margin-bottom: 40px !important;
 }
 
 .max-650 {
@@ -193,7 +197,7 @@ a.primary-button {
 }
 
 .form-field-wrapper {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 
     label {
         display: block;
@@ -205,8 +209,8 @@ a.primary-button {
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
-        outline: none;
-        box-shadow: none;
+        outline: none !important;
+        box-shadow: none !important;
 
         &:active {
             border-color: $cs-light-blue;
@@ -1942,7 +1946,7 @@ section.image-embed {
 .edit-profile-form {
     h2 {
         font-size: $sm-font-size;
-        margin-top: 50px;
+        margin-top: 40px;
         margin-bottom: 20px;
     }
 }
