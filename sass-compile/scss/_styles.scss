@@ -245,7 +245,7 @@ a.primary-button {
         padding-left: 0;
     }
 
-    &.form-field-error input {
+    &.form-field-error input, textarea {
         border-color: $cs-red;
     }
 }
