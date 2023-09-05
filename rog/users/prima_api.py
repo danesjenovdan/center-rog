@@ -75,7 +75,7 @@ class PrimaApi(object):
 
     ### USERS CRUD
     
-    def readUsers(self, user_id=None):
+    def readUsers(self, user_id=None, user_login_name=None):
         """
         Returns user data:
         { 'user': {
@@ -100,6 +100,15 @@ class PrimaApi(object):
                 'Request': 'ReadUsers', 
                 'Range': 'UsrID',
                 'UsrID': user_id
+            }
+
+        elif user_login_name: # filter users by login name
+
+            payload = {
+                'Request': 'ReadUsers',
+                'Range': 'All-preview',
+                'FilterFields': 'UsrEmail,UsrLoginName',
+                'Filter': user_login_name,
             }
         
         else: # read all users
@@ -132,19 +141,16 @@ class PrimaApi(object):
 
         data, message = self.primaRequest(payload)
 
-        # TODO WARNING this code contains unsafe assumptions
+        # WARNING this code contains assumptions
         if message == 'User exists':
-            all_users = self.readUsers()
-            the_user = next(filter(lambda user: user.get('@UsrLoginName', '') == email, all_users[0]['user']))
+            existing_user = self.readUsers(user_login_name=email)
             
-            original_data, message = self.readUsers(the_user['@UsrID'])
-
             # finally, remove all the @ signs from the beginning of keys
-            data = {key[1:]: value for key, value in original_data.get('user', {}).items()}
+            data = {key[1:]: value for key, value in existing_user[0].get('user', {}).items()}
 
         return data, message
     
-    def updateUser(self, user_id):
+    def updateUser(self, user_id, name, last_name):
         """ 
         TODO
         """
@@ -152,6 +158,8 @@ class PrimaApi(object):
         payload = {
             'Request': 'UpdateUser', 
             'UsrID': user_id,
+            'UsrName': name,
+            'UsrLastName': last_name,
         }
 
         data, message = self.primaRequest(payload)
