@@ -78,46 +78,131 @@ function updateNavBarAngle() {
   }
 }
 
-function carousel() {
-  const elements = document.querySelectorAll(".glide");
-  elements.forEach((element, i) => {
-    const count = element.querySelectorAll(".glide__slide").length;
-    if (count > 0) {
-      const startIndex = count >= 5 ? 2 : Math.floor(count / 2);
-      const glide = new Glide(element, {
-        startAt: startIndex,
-        perView: 5,
-        focusAt: "center",
-        rewind: false,
-        gap: 0,
-        animationDuration: 150,
-        breakpoints: {
-          600: {
-            perView: 3,
-          },
-        },
+function gallery() {
+  const galleries = document.querySelectorAll(".custom-gallery");
+
+  galleries.forEach((gallery) => {
+    const items = Array.from(gallery.querySelectorAll(".custom-gallery-item"));
+    const navArrows = Array.from(gallery.querySelectorAll(".custom-gallery-navigation"));
+    const count = items.length;
+    const startIndex = count >= 5 ? 2 : Math.floor(count / 2);
+    let activeIndex = startIndex;
+
+    function resizeImages() {
+      const maxWidth = gallery.offsetWidth * 0.66;
+      const maxHeight = gallery.querySelector(".custom-gallery-image").offsetHeight;
+
+      navArrows.forEach((nav) => {
+        nav.style.top = `${maxHeight / 2}px`;
       });
-      glide.on(["mount.after", "resize"], () => {
-        const track = glide.selector.querySelector(".glide__track");
-        track.style.aspectRatio = `${glide.settings.perView} / 2`;
+
+      items.forEach((item, i) => {
+        const image = item.querySelector(".custom-gallery-image img");
+        const imageWidth = image.naturalWidth;
+        const imageHeight = image.naturalHeight;
+        const imageRatio = imageWidth / imageHeight;
+        const containerRatio = maxWidth / maxHeight;
+
+        if (imageRatio > containerRatio) {
+          image.style.width = `${maxWidth}px`;
+          image.style.height = "auto";
+        } else {
+          image.style.width = "auto";
+          image.style.height = `${maxHeight}px`;
+        }
+
+        image.style.top = `${(maxHeight - image.offsetHeight) / 2}px`;
+        image.style.bottom = "auto";
+        if (i === activeIndex && item.classList.contains("active")) {
+          image.setAttribute("tabindex", "0");
+          image.style.transformOrigin = "center center";
+          image.style.left = `${(gallery.offsetWidth - image.offsetWidth) / 2}px`;
+          image.style.right = "auto";
+        } else if (i < activeIndex) {
+          image.removeAttribute("tabindex");
+          image.style.transformOrigin = "center left";
+          if (item.classList.contains("prev1")) {
+            image.style.left = "8.25%";
+            image.style.right = "auto";
+          } else if (item.classList.contains("prev2")) {
+            image.style.left = "0";
+            image.style.right = "auto";
+          } else {
+            image.style.left = `${-gallery.offsetWidth}px`;
+            image.style.right = "auto";
+          }
+        } else if (i > activeIndex) {
+          image.removeAttribute("tabindex");
+          image.style.transformOrigin = "center right";
+          if (item.classList.contains("next1")) {
+            image.style.left = "auto";
+            image.style.right = "8.25%";
+          } else if (item.classList.contains("next2")) {
+            image.style.left = "auto";
+            image.style.right = "0";
+          } else {
+            image.style.left = "auto";
+            image.style.right = `${-gallery.offsetWidth}px`;
+          }
+        }
       });
-      glide.on(["mount.after", "run.after"], () => {
-        const items = glide.selector.querySelectorAll(".glide__slide");
-        items.forEach((item) => {
-          item.classList.remove(
-            "glide__slide--active-prev2",
-            "glide__slide--active-prev1",
-            "glide__slide--active-next1",
-            "glide__slide--active-next2"
-          );
-        });
-        items[glide.index - 2]?.classList.add("glide__slide--active-prev2");
-        items[glide.index - 1]?.classList.add("glide__slide--active-prev1");
-        items[glide.index + 1]?.classList.add("glide__slide--active-next1");
-        items[glide.index + 2]?.classList.add("glide__slide--active-next2");
-      });
-      glide.mount();
     }
+
+    function setActiveItem(index, focus = true) {
+      if (index < 0 || index >= count) {
+        return;
+      }
+
+      items.forEach((item) => {
+        item.classList.remove("prev2", "prev1", "active", "next1", "next2");
+      });
+      items[index].classList.add("active");
+      items[index - 2]?.classList.add("prev2");
+      items[index - 1]?.classList.add("prev1");
+      items[index + 1]?.classList.add("next1");
+      items[index + 2]?.classList.add("next2");
+
+      activeIndex = index;
+      resizeImages();
+
+      if (focus) {
+        items[index].querySelector(".custom-gallery-image img").focus();
+      }
+    }
+
+    window.addEventListener("resize", debounce(resizeImages));
+    setActiveItem(startIndex, false);
+
+    items.forEach((item) => {
+      const image = item.querySelector(".custom-gallery-image img");
+      image.addEventListener("click", () => {
+        setActiveItem(items.indexOf(item));
+      });
+    });
+
+    navArrows.forEach((nav) => {
+      nav.addEventListener("click", (event) => {
+        event.preventDefault();
+        if (nav.classList.contains("prev")) {
+          setActiveItem(activeIndex - 1);
+        } else if (nav.classList.contains("next")) {
+          setActiveItem(activeIndex + 1);
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!gallery.contains(document.activeElement)) {
+        return;
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setActiveItem(activeIndex - 1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setActiveItem(activeIndex + 1);
+      }
+    });
   });
 }
 
@@ -181,7 +266,7 @@ function copyEmailButton() {
 document.addEventListener("DOMContentLoaded", () => {
   rotateNavbar();
 
-  carousel();
+  gallery();
 
   if (document.querySelector(".events-section")) {
     scrollingDots(".events-section", ".events-container .row");
