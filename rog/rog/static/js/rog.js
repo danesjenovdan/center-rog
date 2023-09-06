@@ -286,3 +286,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   copyEmailButton();
 });
+
+window.addEventListener("message", function (event) {
+  if (event.origin === "https://oembed.jotform.com") {
+    if (typeof event.data === "string") {
+      if (event.data.startsWith("setHeight:")) {
+        const [, height, jotformId] = event.data.split(":");
+        const iframe = document.querySelector(`iframe[src*="jotform.com"][src*="${jotformId}"]`);
+        if (iframe) {
+          iframe.style.height = `${height}px`;
+          return;
+        }
+      }
+    }
+    console.log("Message from jotform:", event.data);
+  }
+});
