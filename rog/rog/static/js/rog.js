@@ -69,12 +69,16 @@ function updateNavBarAngle() {
   if (secondary_navigation) {
     secondary_navigation.style.transform = `rotate(${angle}deg)`;
     secondary_navigation.style.top = `${nav_bg_left_height - 2}px`;
+    secondary_navigation.offsetWidth; // force layout before adding class to prevent animation
+    secondary_navigation.classList.add("shown");
   }
   if (header_marquee) {
     header_marquee.style.transform = `rotate(${angle}deg)`;
     header_marquee.style.top = secondary_navigation
       ? `${secondary_navigation.offsetHeight + nav_bg_left_height - 4}px`
       : `${nav_bg_left_height - 2}px`;
+    header_marquee.offsetWidth; // force layout before adding class to prevent animation
+    header_marquee.classList.add("shown");
   }
 }
 
