@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
 from datetime import datetime
 
@@ -65,6 +65,12 @@ class Plan(Timestampable):
     )
     is_subscription = models.BooleanField(default=False)
     price = models.IntegerField(verbose_name=_("Cena"))
+    description = models.CharField(max_length=300, verbose_name=_("Opis"))
+    description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"))
+    description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"))
+    description_item_3 = models.CharField(max_length=300, verbose_name=_("Postavka 3"))
+    description_item_4 = models.CharField(max_length=300, verbose_name=_("Postavka 4"))
+    description_item_5 = models.CharField(max_length=300, verbose_name=_("Postavka 5"))
     valid_from = models.DateTimeField(
         auto_now_add=True, help_text=_("When the plan starts"),
         null=True,
@@ -129,6 +135,17 @@ class Plan(Timestampable):
         FieldPanel("discounted_price"),
         FieldPanel("is_subscription"),
         # FieldPanel("valid_to"),
+        MultiFieldPanel(
+            [
+                FieldPanel("description"),
+                FieldPanel("description_item_1"),
+                FieldPanel("description_item_2"),
+                FieldPanel("description_item_3"),
+                FieldPanel("description_item_4"),
+                FieldPanel("description_item_5"),
+            ],
+            heading=_("Opis paketa")
+        ),
         FieldPanel("duration"),
         FieldPanel("tokens"),
         FieldPanel("week_token_limit"),

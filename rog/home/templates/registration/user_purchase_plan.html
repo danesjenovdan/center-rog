@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load i18n static %}
 
 {% block title %}Registracija{% endblock %}
 
@@ -20,32 +20,51 @@
         <div class="col-md-10 col-xxl-6">
 
             <div class="registration-progress">
-                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>izbira uporabnine</span></div>
-                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 1 %} done{% endif %}"><span>plačilo</span></div>
+                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>{% translate 'izbira uporabnine' %}</span></div>
+                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'plačilo' %}</span></div>
             </div>
 
-            <h1>Izberi uporabnino:</h1>
+            <h1>{% translate 'Izberi uporabnino' %}:</h1>
 
-            <form action="" method="post">
+            <p>{% translate 'Še enkrat informacije o plačilu. Zaračunali vam bomo tok pa tok, enkrat na leto. Lahko skenslate v svojem profilu ipd. Za izbiiro paketov je potrebna aktivna članarina. Če članarine nimate, vam jo bomo prišteli v naslednjem koraku.' %}</p>
+
+        </div>
+
+        <div class="col-md-12 col-xxl-8">
+            <form action="" method="post" class="user-purchase-plan">
                 {% csrf_token %}
-                <div class="row radio-square-wrapper">
-            
-                    {% for plan in form.plans %}
-                    <div class="col-12 col-md-6">
-                        {{ plan.tag }}
-                        <label for="{{ plan.id_for_label }}" class="radio-square btn">
-                            <h4>{{ plan.choice_label }}</h4>
-                            <h3>{{ plan.price }}</h3>
+                <div class="row justify-content-center radio-square-wrapper">
+
+                    {% for plan in form.plans.field.queryset %}
+                    <div class="col-12 col-md-6 col-xl-4 my-4">
+                        <input type="radio" name="plans" value="{{ plan.id }}" class="btn-check" id="id_plans_{{ plan.id }}" required="">
+                        <label for="id_plans_{{ plan.id }}" class="radio-square btn">
+                            <h3>{{ plan.name }}</h3>
+                            <p>cena</p>
+                            {% if user.is_eligible_to_discount %}
+                            <p class="price">{{ plan.discounted_price }}€</p>
+                            {% else %}
+                            <p class="price">{{ plan.price }}€</p>
+                            {% endif %}
+                            <hr />
+                            <p class="small">{{ plan.description }}</p>
+                            <hr />
+                            <ul>
+                                <li>{{ plan.description_item_1 }}</li>
+                                <li>{{ plan.description_item_2 }}</li>
+                                <li>{{ plan.description_item_3 }}</li>
+                                <li>{{ plan.description_item_4 }}</li>
+                                <li>{{ plan.description_item_5 }}</li>
+                            </ul>
                         </label>
                     </div>
                     {% endfor %}
                 </div>
 
                 <div class="d-flex justify-content-end my-4">
-                    <button type="submit" class="secondary-button button-medium">naprej</button>
+                    <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
                 </div>
             </form>
-
         </div>
 
     </div>
