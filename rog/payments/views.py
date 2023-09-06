@@ -35,6 +35,8 @@ class PaymentPreview(views.APIView):
             payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
+            # TODO add promo code to payment
+            # payment.promo_code = ???
             payment.save()
             PaymentPlan(plan=plan, payment=payment, price=price).save()
 
