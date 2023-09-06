@@ -14,6 +14,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 import sys
 
+from wagtail.embeds.oembed_providers import all_providers
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
@@ -234,6 +236,36 @@ WAGTAILMEDIA = {
     "AUDIO_EXTENSIONS": [],
     "VIDEO_EXTENSIONS": ["mp4", "webm"],
 }
+
+
+# Add extra embed providers
+datawrapper = {
+    "endpoint": "https://api.datawrapper.de/v3/oembed",
+    "urls": [
+        r'^https?://datawrapper.dwcdn.net/.+$',
+        r'^https?://www.datawrapper.de/.+$',
+    ],
+}
+
+jotform = {
+    "endpoint": "https://www.jotform.com/oembed",
+    "urls": [
+        r'^https?://form.jotform.com/.+$',
+        r'^https?://www.jotform.com/.+$',
+    ],
+}
+
+WAGTAILEMBEDS_FINDERS = [
+    {
+        "class": "rog.embeds.canonical_oembed",
+        "providers": [jotform],
+    },
+    {
+        "class": "wagtail.embeds.finders.oembed",
+        "providers": [*all_providers, datawrapper, jotform],
+    },
+]
+
 
 # Prima settings
 PRIMA_API_KEY = os.getenv('PRIMA_API_KEY', 'example')

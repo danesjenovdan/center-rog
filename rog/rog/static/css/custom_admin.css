@@ -5,3 +5,23 @@
 .w-panel__heading .c-sf-block__type {
   display: inline !important;
 }
+
+/* Fix displayed tags in admin/images index view */
+.image-search fieldset.tagfilter legend {
+  float: none;
+  width: 100%;
+  padding-inline-end: 0;
+  visibility: hidden;
+  position: relative;
+}
+.image-search fieldset.tagfilter legend::after {
+  content: "Oznake:";
+  display: block;
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.image-search fieldset.tagfilter .button {
+  margin-inline-start: 0;
+}
