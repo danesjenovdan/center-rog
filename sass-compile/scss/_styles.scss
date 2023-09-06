@@ -658,11 +658,45 @@ form {
     }
 
     ul {
-        padding-left: 2.122rem;
+        list-style: none;
+        padding-left: 0;
 
-        li::marker {
-            content: "\25CF" "   ";
-            white-space: pre;
+        li {
+            padding-left: 2rem;
+            position: relative;
+
+            &::before {
+                position: absolute;
+                top: 0.1em;
+                left: calc(2rem - 1.2em);
+                content: "\25CF";
+                line-height: 1;
+            }
+        }
+    }
+
+    // unify nested ordered lists with how it's presented in admin
+    ol {
+        list-style: decimal;
+
+        & ol {
+            list-style: lower-alpha;
+
+            & ol {
+                list-style: lower-roman;
+
+                & ol {
+                    list-style: decimal;
+
+                    & ol {
+                        list-style: lower-alpha;
+
+                        & ol {
+                            list-style: lower-roman;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1574,6 +1608,10 @@ section.image-embed {
                 p, h2, h3, h4, ul, ol, hr, img, iframe {
                     margin-bottom: 30px;
                     line-height: 1.2;
+
+                    ol, ul {
+                        margin-bottom: 0;
+                    }
                 }
 
                 p:empty {
@@ -1597,11 +1635,45 @@ section.image-embed {
                 }
 
                 ul {
-                    padding-left: 2.122rem;
+                    list-style: none;
+                    padding-left: 0;
 
-                    li::marker {
-                        content: "\25CF" "   ";
-                        white-space: pre;
+                    li {
+                        padding-left: 2rem;
+                        position: relative;
+
+                        &::before {
+                            position: absolute;
+                            top: 0.1em;
+                            left: calc(2rem - 1.2em);
+                            content: "\25CF";
+                            line-height: 1;
+                        }
+                    }
+                }
+
+                // unify nested ordered lists with how it's presented in admin
+                ol {
+                    list-style: decimal;
+
+                    & ol {
+                        list-style: lower-alpha;
+
+                        & ol {
+                            list-style: lower-roman;
+
+                            & ol {
+                                list-style: decimal;
+
+                                & ol {
+                                    list-style: lower-alpha;
+
+                                    & ol {
+                                        list-style: lower-roman;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
