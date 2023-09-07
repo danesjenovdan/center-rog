@@ -104,6 +104,27 @@
 
     }
 
+    .payment-preview {
+        .line,
+        .sum-line {
+            padding: 20px 0;
+            border-bottom: 0.5px solid $cs-dark-gray;
+
+            .price {
+                font-size: $xs-font-size;
+            }
+        }
+
+        .sum-line {
+            border-top: 1px solid $cs-dark-gray;
+            border-bottom: 1.5px solid $cs-dark-gray;
+            
+            .price {
+                font-size: $md-font-size;
+            }
+        }
+    }
+
     // h4 {
     //     font-size: $sm-font-size;
     //     margin: 50px 0;

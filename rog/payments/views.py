@@ -17,6 +17,7 @@ from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
 from home.email_utils import send_email
+from .forms import PromoCodeForm
 
 
 # Create your views here.
@@ -24,6 +25,7 @@ from home.email_utils import send_email
 # payments
 class PaymentPreview(views.APIView):
     def get(self, request):
+        print("GET")
         plan_id = request.GET.get('plan_id', False)
         user = request.user
         payment = Payment(
@@ -49,11 +51,22 @@ class PaymentPreview(views.APIView):
                     payment.amount += plan.price
                     payment.save()
                     PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
+            
+            promo_code_form = PromoCodeForm()
 
-            return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
+            return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment, "promo_code_form": promo_code_form })
         else:
             return render(request, 'payment.html', { "id": None })
-
+    
+    def post(self, request):
+        print("POST")
+        print(request.POST)
+        if "promo_code" in request.POST:
+            print("Promo code")
+        elif "finish_payment" in request.POST:
+            print("finish_payment")
+        # promo_code_form = PromoCodeForm(request.POST)
+        # return render(request,'registration_payment_preview.html', { })
 
 
 @method_decorator(login_required, name='dispatch')

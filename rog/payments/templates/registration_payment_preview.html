@@ -1,7 +1,16 @@
-{% extends "registration/registration_wrapper.html" %}
-{% load static %}
+{% extends "home/wrapper_page.html" %}
+{% load i18n static %}
 
-{% block title %}Registracija{% endblock %}
+{% block title %}{% translate 'Povzetek plačila' %}{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById("apply-promo-code").addEventListener("click", () => {
+        const code = document.getElementById("promo-code-input").value
+        console.log(code)
+    })
+</script>
+{% endblock extra_js %}
 
 {% block body_class %}template-register{% endblock %}
 
@@ -9,26 +18,54 @@
 <div class="container register-container color-scheme-light-gray">
     <div class="row justify-content-center">
         <div class="col-md-10 col-xxl-6">
-            <h4 class="my-5">Za plačilo</h4>
+            <div class="registration-progress">
+                <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
+                <div class="point active"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+            <h1>{% translate 'Za plačilo' %}</h1>
+        </div>
+
+        <div class="col-md-10 col-xxl-6 payment-preview">
 
             {% for item in payment.payment_plans.all %}
-                <div class="line">
-                    <div class="name">{{ item.plan.name }}</div> <div class="price">€{{ item.price }}</div>
-                </hr>
+                <div class="line d-flex justify-content-between">
+                    <div class="name">{{ item.plan.name }}</div>
+                    <div class="price">€{{ item.price }}</div>
                 </div>
             {% endfor %}
 
-            {% if payment.user_was_eligible_to_discount %}
+            <!-- {% if payment.user_was_eligible_to_discount %}
                 Pupust za osebe mlajše od 26 in starejše od 65<br>
-            {% endif %}
+            {% endif %} -->
 
-            <div class="line">
-                <div class="name">skupaj</div> <div class="price">€{{ payment.amount }}</div>
-            </hr>
+            <div class="sum-line d-flex justify-content-between">
+                <div class="name">{% translate 'skupaj' %}</div>
+                <div class="price">€{{ payment.amount }}</div>
             </div>
-            <div class="d-flex justify-content-end my-4">
-                <a href="/placilo/izvedi/?id={{payment.id}}"><button class="secondary-button button-medium">naprej</button>
-            </div>
+
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <div class="row mt-4">
+                    <div class="form-field-wrapper col-6">
+                        <label>{% translate 'Vnesi kodo za popust' %}</label>
+                        <div class="d-flex align-items-center">
+                            <!-- <input id="promo-code-input" type="text" class="p-2 me-3" /> -->
+                            {{ promo_code_form.promo_code }}
+                            <button class="secondary-button button-small" name="promo_code">{% translate 'pošlji' %}</button>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="row mt-4">
+                    <div class="d-flex flex-column align-items-end my-4">
+                        <button class="primary-button button-medium" name="finish_payment">{% translate 'naprej' %}</button>
+                        <!-- <a href="/placilo/izvedi/?id={{payment.id}}" class="primary-button button-medium">{% translate 'naprej' %}</a> -->
+                        <p class="button-notice">{% translate '*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart' %}</p>
+                    </div>
+                </div>
+            </form>
+            
         </div>
     </div>
 </div>
