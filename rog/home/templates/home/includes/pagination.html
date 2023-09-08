@@ -3,7 +3,7 @@
         <div class="d-flex">
             {% if objects.has_previous %}
             <div class="page-num page-prev">
-                <a href="?page={{ objects.previous_page_number }}">
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.previous_page_number }}">
                     <span>▷</span>
                 </a>
             </div>
@@ -17,7 +17,7 @@
 
             {% if objects.number > 2 %}
             <div class="page-num">
-                <a href="?page=1">1</a>
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page=1">1</a>
             </div>
             {% endif %}
 
@@ -29,17 +29,17 @@
 
             {% if objects.number|add:"-1" > 0 %}
             <div class="page-num">
-                <a href="?page={{ objects.number|add:"-1" }}">{{ objects.number|add:"-1" }}</a>
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.number|add:"-1" }}">{{ objects.number|add:"-1" }}</a>
             </div>
             {% endif %}
 
             <div class="page-num active">
-                <a href="?page={{ objects.number }}">{{ objects.number }}</a>
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.number }}">{{ objects.number }}</a>
             </div>
 
             {% if objects.number|add:"1" < objects.paginator.num_pages %}
             <div class="page-num">
-                <a href="?page={{ objects.number|add:"1" }}">{{ objects.number|add:"1" }}</a>
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.number|add:"1" }}">{{ objects.number|add:"1" }}</a>
             </div>
             {% endif %}
 
@@ -51,7 +51,7 @@
 
             {% if objects.number < objects.paginator.num_pages %}
             <div class="page-num">
-                <a href="?page={{ objects.paginator.num_pages }}">
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.paginator.num_pages }}">
                 {{ objects.paginator.num_pages }}
                 </a>
             </div>
@@ -59,7 +59,7 @@
 
             {% if objects.has_next %}
             <div class="page-num page-next">
-                <a href="?page={{ objects.next_page_number }}">
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}&{% endif %}page={{ objects.next_page_number }}">
                     <span>▷</span>
                 </a>
             </div>
