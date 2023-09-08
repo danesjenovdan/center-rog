@@ -141,7 +141,7 @@ class LabPage(BasePage):
     gallery = StreamField([
         ("image", blocks.StructBlock([
             ("image", ImageChooserBlock(label=_("Slika"))),
-            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), required=False))
+            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
         ]))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
     lab_lead = models.CharField(
@@ -160,7 +160,7 @@ class LabPage(BasePage):
         FieldPanel("gallery"),
         FieldPanel("lab_lead"),
         FieldPanel("training_dates_link"),
-        FieldPanel("online_trainings_link"),        
+        FieldPanel("online_trainings_link"),
         InlinePanel("related_tools", label="Orodja"),
         FieldPanel("show_see_more_section")
     ]
