@@ -14,9 +14,13 @@
                 <ul class="row">
                     {% for link in value.links %}
                         <li class="col-12 col-md-4">
+                            {% if link.value.url %}
                             <a href="{{ link.value.url }}">
                                 {{ link.value.text }}
                             </a>
+                            {% else %}
+                            <span>{{ link.value.text }}</span>
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

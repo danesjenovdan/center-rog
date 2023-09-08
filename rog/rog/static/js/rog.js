@@ -107,6 +107,8 @@ function gallery() {
         const imageRatio = imageWidth / imageHeight;
         const containerRatio = maxWidth / maxHeight;
 
+        item.style.zIndex = `${count + Math.abs(i - activeIndex) * -1}`;
+
         if (imageRatio > containerRatio) {
           image.style.width = `${maxWidth}px`;
           image.style.height = "auto";
@@ -117,36 +119,30 @@ function gallery() {
 
         image.style.top = `${(maxHeight - image.offsetHeight) / 2}px`;
         image.style.bottom = "auto";
+        image.style.right = "auto";
         if (i === activeIndex && item.classList.contains("active")) {
           image.setAttribute("tabindex", "0");
           image.style.transformOrigin = "center center";
           image.style.left = `${(gallery.offsetWidth - image.offsetWidth) / 2}px`;
-          image.style.right = "auto";
         } else if (i < activeIndex) {
           image.removeAttribute("tabindex");
           image.style.transformOrigin = "center left";
           if (item.classList.contains("prev1")) {
-            image.style.left = "8.25%";
-            image.style.right = "auto";
+            image.style.left = `${gallery.offsetWidth * 0.0825}px`;
           } else if (item.classList.contains("prev2")) {
             image.style.left = "0";
-            image.style.right = "auto";
           } else {
-            image.style.left = `${-gallery.offsetWidth}px`;
-            image.style.right = "auto";
+            image.style.left = "0";
           }
         } else if (i > activeIndex) {
           image.removeAttribute("tabindex");
           image.style.transformOrigin = "center right";
           if (item.classList.contains("next1")) {
-            image.style.left = "auto";
-            image.style.right = "8.25%";
+            image.style.left = `${gallery.offsetWidth - image.offsetWidth - gallery.offsetWidth * 0.0825}px`;
           } else if (item.classList.contains("next2")) {
-            image.style.left = "auto";
-            image.style.right = "0";
+            image.style.left = `${gallery.offsetWidth - image.offsetWidth}px`;
           } else {
-            image.style.left = "auto";
-            image.style.right = `${-gallery.offsetWidth}px`;
+            image.style.left = `${gallery.offsetWidth - image.offsetWidth}px`;
           }
         }
       });
