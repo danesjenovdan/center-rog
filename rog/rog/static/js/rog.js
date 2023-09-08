@@ -217,8 +217,12 @@ function scrollingDots(section, container) {
   const scrollbarHider = document.querySelector(`${section} .scrollbar-hider`);
   if (scrollbarHider) {
     function fixHiddenScrollbars() {
-      const scrollbarWidth = eventsSectionScrollable.offsetHeight - eventsSectionScrollable.clientHeight;
-      scrollbarHider.style.height = `${eventsSectionScrollable.offsetHeight - scrollbarWidth}px`;
+      eventsSectionScrollable.style.paddingBottom = "";
+      const detectedScrollbarWidth = eventsSectionScrollable.offsetHeight - eventsSectionScrollable.clientHeight;
+      const scrollbarWidth = Math.max(detectedScrollbarWidth, 24); // account for macOS overlay scrollbars
+      scrollbarHider.style.height = `${eventsSectionScrollable.offsetHeight - detectedScrollbarWidth}px`;
+      const scrollablePadding = parseFloat(getComputedStyle(eventsSectionScrollable).paddingBottom);
+      eventsSectionScrollable.style.paddingBottom = `${scrollablePadding + scrollbarWidth}px`;
     }
 
     window.addEventListener("resize", debounce(fixHiddenScrollbars));
