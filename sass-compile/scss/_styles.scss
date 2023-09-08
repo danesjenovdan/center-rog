@@ -1583,10 +1583,20 @@ section.image-embed {
 
             h1 {
                 margin-top: 30px;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
+            }
+
+            .intro-text {
+                margin-bottom: 30px;
+
+                p:last-child {
+                    margin-bottom: 0;
+                }
             }
 
             .lab-contact-information {
+                margin-bottom: 30px;
+
                 p {
                     margin-bottom: 0;
 
