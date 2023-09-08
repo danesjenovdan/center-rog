@@ -40,7 +40,7 @@
         </li> -->
         {% else %}
         <li class="nav-item color-scheme-white">
-          <a class="primary-button button-small" href="/prijava">Prijava</a>
+          <a class="primary-button button-small" href="/prijava">prijava</a>
         </li>
         {% endif %}
       </ul>
@@ -95,7 +95,7 @@
       })();
     </script>
     {% endif %}
-    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start pt-3" id="navbar-collapsable-menu">
+    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start pt-3" id="navbar-collapsable-menu" style="opacity: 0;">
       {% for navigation_link in settings.home.MetaSettings.header_links %}
         {% if forloop.counter0|divisibleby:3 %}
           <ul class="col-3 navbar-nav">

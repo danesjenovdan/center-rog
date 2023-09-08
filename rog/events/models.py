@@ -175,6 +175,7 @@ class EventListPage(BasePage):
             event_pages = paginator.page(paginator.num_pages)
 
         context["event_pages"] = event_pages
+        context["chosen_category"] = chosen_category
 
         # see more
         context = add_see_more_fields(context)
