@@ -19,6 +19,7 @@ function rotateNavbar() {
   const primary_navigation = document.getElementById("primary-navigation");
 
   collapsable_menu.addEventListener("show.bs.collapse", (event) => {
+    collapsable_menu.style.opacity = '';
     logo.classList.add("custom-navigation-show");
     primary_navigation.classList.add("custom-navigation-show");
     updateNavBarAngle();
