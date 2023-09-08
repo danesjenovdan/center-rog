@@ -5,7 +5,7 @@
 
 {% if value.image %}
     <div class="container with-image">
-        <div class="row mb-30">
+        <div class="row">
             <div class="col-12">
                 <h2 class="text-center">{{ value.title }}</h2>
             </div>
@@ -18,10 +18,18 @@
                     {% image value.image original class="w-100 img-fluid" alt=value.image.alt_description %}
                     <p class="image-description">{{ value.image.title }}</p>
                 </div>
+                {% if value.link %}
+                <div class="mt-30">
+                {% include "home/includes/bottom_button.html" with value_link=value.link %}
+                </div>
+                {% endif %}
             </div>
             {% else %}
             <div class="col-md-6 {% if value.image_position == 'align-left' %}order-2{% endif %}">
                 <p>{{ value.text }}</p>
+                {% if value.link %}
+                {% include "home/includes/bottom_button.html" with value_link=value.link align="left" %}
+                {% endif %}
             </div>
             <div class="col-md-6">
                 <div>
@@ -31,9 +39,6 @@
             </div>
             {% endif %}
         </div>
-        {% if value.link %}
-        {% include "home/includes/bottom_button.html" with value_link=value.link %}
-        {% endif %}
     </div>
 {% else %}
     <div class="container no-image">
@@ -42,7 +47,9 @@
                 <!-- <h2 class="text-center">{{ value.title }}</h2> -->
                 <p>{{ value.text }}</p>
                 {% if value.link %}
+                <div class="mt-30">
                 {% include "home/includes/bottom_button.html" with value_link=value.link %}
+                </div>
                 {% endif %}
             </div>
         </div>

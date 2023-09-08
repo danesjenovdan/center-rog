@@ -171,6 +171,7 @@ class NewsListPage(BasePage):
             news_pages = paginator.page(paginator.num_pages)
 
         context["news_pages"] = news_pages
+        context["chosen_category"] = chosen_category
 
         # see more
         context = add_see_more_fields(context)

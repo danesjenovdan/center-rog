@@ -4,7 +4,7 @@
   bottom: 4rem;
   right: 4rem;
   z-index: 9999999;
-  background: rgba($cs-white, 0.2);
+  background: rgba(153, 153, 153, 0.2);
   transform: rotate(6.55deg);
 
   .binder-holes {
@@ -19,7 +19,7 @@
 
     .binder-content {
       padding: 15px;
-      background: $cs-white;
+      background: #f8f8f8;
       font-size: $xxs-font-size;
       text-align: center;
       color: $cs-dark-gray;
