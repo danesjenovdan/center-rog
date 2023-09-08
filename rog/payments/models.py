@@ -4,7 +4,7 @@ from django.utils.text import slugify
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .pantheon import create_ident, create_move
 
@@ -310,8 +310,9 @@ class PromoCode(Timestampable):
 
         if code_filter.count() == 1:
             code = code_filter.first()
+            now = datetime.now().replace(tzinfo=timezone.utc)
 
-            if code.valid_to > datetime.now():
+            if code.valid_to < now:
                 return False
 
             if code.single_use and code.number_of_uses > 0:

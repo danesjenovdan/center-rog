@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from .models import Payment, Plan, Token, PaymentPlan
+from .models import Payment, Plan, Token, PaymentPlan, PromoCode
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
@@ -25,20 +25,17 @@ from .forms import PromoCodeForm
 # payments
 class PaymentPreview(views.APIView):
     def get(self, request):
-        print("GET")
         plan_id = request.GET.get('plan_id', False)
-        user = request.user
-        payment = Payment(
-            user=user,
-        )
-
         plan = Plan.objects.filter(id=plan_id).first()
-        if plan:
+        user = request.user
+
+        if plan and user:
+            payment = Payment(
+                user=user,
+            )
             payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
-            # TODO add promo code to payment
-            # payment.promo_code = ???
             payment.save()
             PaymentPlan(plan=plan, payment=payment, price=price).save()
 
@@ -48,25 +45,56 @@ class PaymentPreview(views.APIView):
                 if not (membership and membership.type and membership.type.plan and membership.active):
                     paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
                     plan = paid_membership.plan
-                    payment.amount += plan.price
+                    price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+                    payment.amount += price
                     payment.save()
-                    PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
-            
-            promo_code_form = PromoCodeForm()
+                    PaymentPlan(plan=plan, payment=payment, price=price).save()
+                        
+            promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
-            return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment, "promo_code_form": promo_code_form })
+            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form })
         else:
             return render(request, 'payment.html', { "id": None })
     
     def post(self, request):
-        print("POST")
-        print(request.POST)
-        if "promo_code" in request.POST:
-            print("Promo code")
-        elif "finish_payment" in request.POST:
-            print("finish_payment")
-        # promo_code_form = PromoCodeForm(request.POST)
-        # return render(request,'registration_payment_preview.html', { })
+        user = request.user
+        
+        promo_code_form = PromoCodeForm(request.POST)
+        promo_code_error = False
+        promo_code_success = False
+        discounts = []
+
+        if promo_code_form.is_valid():
+            payment = Payment.objects.get(id=promo_code_form.cleaned_data["payment_id"])
+            related_payment_plans = PaymentPlan.objects.filter(payment=payment).values("plan")
+            related_plans = Plan.objects.filter(id__in=related_payment_plans)
+            # check for promo code
+            promo_code = promo_code_form.cleaned_data["promo_code"]
+            if promo_code:
+                promo_code_error = True
+                for plan in related_plans:
+                    if PromoCode.check_code_validity(promo_code, plan.item_type):
+                        valid_promo_code = PromoCode.objects.get(code=promo_code)
+                        payment.promo_code = valid_promo_code
+                        plan_price = plan.discounted_price if user.is_eligible_to_discount() else plan.price
+                        payment.amount -= plan_price * (valid_promo_code.percent_discount / 100)
+                        discounts.append({
+                            "discount_name": f"{plan.name} -{valid_promo_code.percent_discount}%",
+                            "discount_value": plan_price * (valid_promo_code.percent_discount / 100)
+                        })
+                        promo_code_error = False
+                        promo_code_success = True
+            
+            return render(request,'registration_payment_preview.html', { 
+                "payment": payment, 
+                "promo_code_form": promo_code_form, 
+                "promo_code_error": promo_code_error, 
+                "promo_code_success": promo_code_success,
+                "discounts": discounts
+            })
+        
+        else:
+            return render(request, 'payment.html', { "id": None })
 
 
 @method_decorator(login_required, name='dispatch')

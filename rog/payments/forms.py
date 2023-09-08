@@ -9,3 +9,4 @@ class PromoCodeForm(forms.Form):
         label_suffix="",
         required=False
     )
+    payment_id = forms.CharField()
