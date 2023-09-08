@@ -948,6 +948,11 @@ form {
                     @include underline-text-on-hover();
                 }
 
+                span {
+                    font-size: $md-font-size;
+                    color: $cs-dark-blue;
+                }
+
                 &:before {
                     content: "";
                     border-color: transparent $cs-dark-blue;

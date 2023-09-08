@@ -168,7 +168,7 @@ class WhiteListBlock(blocks.StructBlock):
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     links = blocks.StreamBlock([
         ("link", blocks.StructBlock([
-            ("url", blocks.URLBlock(label=_("URL"))),
+            ("url", blocks.URLBlock(label=_("URL"), required=False)),
             ("text", blocks.TextBlock(label=_("Ime povezave"))),
         ], label=_("Povezava")))
     ], label=_("Seznam povezav"))
