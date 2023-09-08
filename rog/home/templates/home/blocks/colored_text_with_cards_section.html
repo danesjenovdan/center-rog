@@ -13,13 +13,13 @@
         </div>
     </div>
 
-    <div class="row mt-4 justify-content-center">
+    <div class="row justify-content-center">
         {% for element in value.cards %}
         <div class="col-6 col-md-3 link-card">
             <div class="card-img">
                 {% image element.image original class="img-fluid" alt=value.image.alt_description %}
             </div>
-            <p>{{ element.description }}</p>
+            <div>{{ element.description }}</div>
             {% if element.link and element.link_text %}
             <a href="{{ element.link }}" target="_blank" class="link">
                 <span class="link-text">{{ element.link_text }}</span>
