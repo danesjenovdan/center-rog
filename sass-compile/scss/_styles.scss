@@ -178,17 +178,18 @@ a.primary-button {
     font-size: $sm-font-size !important;
 }
 
-@media (-webkit-min-device-pixel-ratio: 2) {
+// safari only
+body.safari {
     .button-small {
-        padding-bottom: 1px !important;
+        padding-bottom: 3px !important;
     }
 
     .button-medium {
-        padding-bottom: 2px !important;
+        padding-bottom: 4px !important;
     }
 
     .button-large {
-        padding-bottom: 3px !important;
+        padding-bottom: 5px !important;
     }
 }
 

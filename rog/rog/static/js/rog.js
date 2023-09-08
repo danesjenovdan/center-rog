@@ -19,7 +19,7 @@ function rotateNavbar() {
   const primary_navigation = document.getElementById("primary-navigation");
 
   collapsable_menu.addEventListener("show.bs.collapse", (event) => {
-    collapsable_menu.style.opacity = '';
+    collapsable_menu.style.opacity = "";
     logo.classList.add("custom-navigation-show");
     primary_navigation.classList.add("custom-navigation-show");
     updateNavBarAngle();
@@ -303,3 +303,7 @@ window.addEventListener("message", function (event) {
     console.log("Message from jotform:", event.data);
   }
 });
+
+if (navigator.userAgent.includes("AppleWebKit") && !navigator.userAgent.includes("Chrome")) {
+  document.body.classList.add("safari");
+}
