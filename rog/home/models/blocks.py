@@ -109,7 +109,7 @@ class NewsBlock(blocks.StructBlock):
     exposed_news = blocks.StreamBlock([
         ("news_page", blocks.PageChooserBlock(
             label=_("Novica"), page_type="news.NewsPage"))
-    ], max_num=5, blank=True, required=False, label=_("Novice"))
+    ], max_num=10, blank=True, required=False, label=_("Novice"))
     link = blocks.StreamBlock([
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
@@ -130,7 +130,7 @@ class EventsBlock(blocks.StructBlock):
     exposed_events = blocks.StreamBlock([
         ("event", blocks.PageChooserBlock(
             label=_("Dogodek"), page_type="events.EventPage"))
-    ], max_num=5, blank=True, required=False, label=_("Dogodki"))
+    ], max_num=10, blank=True, required=False, label=_("Dogodki"))
     link = blocks.StreamBlock([
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
@@ -200,7 +200,9 @@ def get_studios():
 class StudiosBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    studios = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.StudioPage"), max_num=5, label=_("Izpostavljeni studii"))
+    studios = blocks.ListBlock(
+        blocks.PageChooserBlock(page_type="home.StudioPage"),
+        max_num=10, label=_("Izpostavljeni studii"))
     link = blocks.StreamBlock([
         ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
         ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),

@@ -161,20 +161,35 @@ a.primary-button {
 }
 
 .button-small {
+    padding: 0 20px !important;
     height: 30px !important;
     font-size: $xxs-font-size !important;
-    padding: 8px 20px 12px !important;
 }
 
 .button-medium {
+    padding: 0 30px !important;
+    height: 40px !important;
     font-size: $xs-font-size !important;
-    padding: 8px 30px 12px;
 }
 
 .button-large {
+    padding: 0 35px !important;
     height: 70px !important;
     font-size: $sm-font-size !important;
-    padding: 22.5px 35px !important;
+}
+
+@media (-webkit-min-device-pixel-ratio: 2) {
+    .button-small {
+        padding-bottom: 1px !important;
+    }
+
+    .button-medium {
+        padding-bottom: 2px !important;
+    }
+
+    .button-large {
+        padding-bottom: 3px !important;
+    }
 }
 
 .user-btn {
