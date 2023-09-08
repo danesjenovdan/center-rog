@@ -168,7 +168,7 @@ class WhiteListBlock(blocks.StructBlock):
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     links = blocks.StreamBlock([
         ("link", blocks.StructBlock([
-            ("url", blocks.URLBlock(label=_("URL"))),
+            ("url", blocks.URLBlock(label=_("URL"), required=False)),
             ("text", blocks.TextBlock(label=_("Ime povezave"))),
         ], label=_("Povezava")))
     ], label=_("Seznam povezav"))
@@ -186,7 +186,7 @@ class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     gallery = blocks.ListBlock(blocks.StructBlock([
         ("image", ImageChooserBlock(label=_("Slika"))),
-        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), required=False))
+        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
     ]), label=_("Galerija"))
 
     class Meta:

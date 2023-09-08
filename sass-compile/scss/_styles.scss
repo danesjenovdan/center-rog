@@ -948,6 +948,11 @@ form {
                     @include underline-text-on-hover();
                 }
 
+                span {
+                    font-size: $md-font-size;
+                    color: $cs-dark-blue;
+                }
+
                 &:before {
                     content: "";
                     border-color: transparent $cs-dark-blue;
@@ -2009,7 +2014,8 @@ section.image-embed {
 
             &:hover,
             &:active {
-                color: $cs-black;
+                color: $cs-white;
+                mix-blend-mode: difference;
             }
 
             &:focus-visible {
@@ -2038,12 +2044,14 @@ section.image-embed {
                 pointer-events: all;
                 cursor: pointer;
                 filter: blur(10px);
+                will-change: filter, transform, left;
+                transform: scale(0.70);
                 transform-origin: center center;
-                transition: filter 0.15s ease-in-out,
-                         transform 0.15s ease-in-out,
-                  transform-origin 0.15s ease-in-out,
-                              left 0.15s ease-in-out,
-                             right 0.15s ease-in-out;
+                transition: filter 0.3s ease-in-out,
+                         transform 0.3s ease-in-out,
+                  transform-origin 0.3s ease-in-out,
+                              left 0.3s ease-in-out,
+                             right 0.3s ease-in-out;
 
                 &:focus {
                     outline: none;
@@ -2056,7 +2064,7 @@ section.image-embed {
             font-size: $xs-font-size;
             text-align: center;
             opacity: 0;
-            transition: opacity 0.15s linear;
+            transition: opacity 0.3s linear;
         }
 
         &.active {
@@ -2066,6 +2074,8 @@ section.image-embed {
                 img {
                     cursor: default;
                     filter: none;
+                    transform-origin: center center;
+                    transform: scale(1);
                 }
             }
 
