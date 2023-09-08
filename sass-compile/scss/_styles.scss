@@ -2014,7 +2014,8 @@ section.image-embed {
 
             &:hover,
             &:active {
-                color: $cs-black;
+                color: $cs-white;
+                mix-blend-mode: difference;
             }
 
             &:focus-visible {
