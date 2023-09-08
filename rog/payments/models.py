@@ -173,9 +173,17 @@ class Plan(Timestampable):
             super().save(*args, **kwargs)
 
 class PaymentPlan(models.Model):
-    payment=models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
-    plan=models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
+    payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
+    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    promo_code = models.ForeignKey(
+        "PromoCode",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="payment_plans",
+        help_text="The promo code used for this payment plan",
+    )
 
 class Payment(Timestampable):
     class Status(models.TextChoices):
@@ -214,14 +222,6 @@ class Payment(Timestampable):
     saved_in_pantheon = models.BooleanField(
         default=False,
         help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
-    )
-    promo_code = models.ForeignKey(
-        "PromoCode",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="payments",
-        help_text="The promo code used for this payment",
     )
 
     panels = [
@@ -305,7 +305,7 @@ class PromoCode(Timestampable):
         return f"{self.code}"
 
     @staticmethod
-    def check_code_validity(code_string: str, item_type: ItemType) -> bool:
+    def check_code_validity(code_string: str, payment_plan: PaymentPlan) -> bool:
         code_filter = PromoCode.objects.filter(code=code_string)
 
         if code_filter.count() == 1:
@@ -318,7 +318,10 @@ class PromoCode(Timestampable):
             if code.single_use and code.number_of_uses > 0:
                 return False
 
-            if code.item_type != item_type:
+            if code.item_type != payment_plan.plan.item_type:
+                return False
+            
+            if payment_plan.promo_code == code:
                 return False
 
             return True

@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load i18n static %}
+{% load i18n static percentage %}
 
 {% block title %}{% translate 'Povzetek plačila' %}{% endblock %}
 
@@ -32,13 +32,12 @@
                     <div class="name">{{ item.plan.name }}</div>
                     <div class="price">€{{ item.price }}</div>
                 </div>
-            {% endfor %}
-
-            {% for discount in discounts %}
+                {% if item.promo_code %}
                 <div class="line d-flex justify-content-between">
-                    <div class="name">{{ discount.discount_name }}</div>
-                    <div class="price">- €{{ discount.discount_value }}</div>
+                    <div class="name">{{ item.promo_code }}</div>
+                    <div class="price">- €{{ item.price|percentage:item.promo_code.percent_discount }}</div>
                 </div>
+                {% endif %}
             {% endfor %}
 
             <div class="sum-line d-flex justify-content-between">
@@ -53,7 +52,6 @@
                     <div class="form-field-wrapper col-6">
                         <label>{% translate 'Vnesi kodo za popust' %}</label>
                         <div class="d-flex align-items-center">
-
                             {{ promo_code_form.payment_id.as_hidden }}
                             {{ promo_code_form.promo_code }}
                             <button type="submit" class="secondary-button button-small">{% translate 'pošlji' %}</button>

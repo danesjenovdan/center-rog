@@ -66,31 +66,30 @@ class PaymentPreview(views.APIView):
 
         if promo_code_form.is_valid():
             payment = Payment.objects.get(id=promo_code_form.cleaned_data["payment_id"])
-            related_payment_plans = PaymentPlan.objects.filter(payment=payment).values("plan")
-            related_plans = Plan.objects.filter(id__in=related_payment_plans)
+            related_payment_plans = PaymentPlan.objects.filter(payment=payment)
             # check for promo code
             promo_code = promo_code_form.cleaned_data["promo_code"]
             if promo_code:
                 promo_code_error = True
-                for plan in related_plans:
-                    if PromoCode.check_code_validity(promo_code, plan.item_type):
+                for payment_plan in related_payment_plans:
+                    if PromoCode.check_code_validity(promo_code, payment_plan):
                         valid_promo_code = PromoCode.objects.get(code=promo_code)
-                        payment.promo_code = valid_promo_code
+                        payment_plan.promo_code = valid_promo_code
+                        payment_plan.save()
+                        plan = payment_plan.plan
                         plan_price = plan.discounted_price if user.is_eligible_to_discount() else plan.price
                         payment.amount -= plan_price * (valid_promo_code.percent_discount / 100)
-                        discounts.append({
-                            "discount_name": f"{plan.name} -{valid_promo_code.percent_discount}%",
-                            "discount_value": plan_price * (valid_promo_code.percent_discount / 100)
-                        })
+                        payment.save()
                         promo_code_error = False
                         promo_code_success = True
+                        
+                        break
             
             return render(request,'registration_payment_preview.html', { 
                 "payment": payment, 
                 "promo_code_form": promo_code_form, 
                 "promo_code_error": promo_code_error, 
                 "promo_code_success": promo_code_success,
-                "discounts": discounts
             })
         
         else:
@@ -208,6 +207,11 @@ class PaymentSuccessXML(views.APIView):
                 'name': plan.name,
                 'price': plan.price,
             })
+
+        payment_plans = PaymentPlan.objects.filter(payment=payment)
+        for payment_plan in payment_plans:
+            if payment_plan.promo_code:
+                payment_plan.promo_code.use_code()
 
         send_email(
             payment.user.email,
