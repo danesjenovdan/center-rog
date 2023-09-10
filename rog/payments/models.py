@@ -2,12 +2,14 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .pantheon import create_ident, create_move
 
+import random
+from string import ascii_uppercase
 
 class ActiveAtQuerySet(models.QuerySet):
     def is_active_subscription(self):
@@ -65,6 +67,12 @@ class Plan(Timestampable):
     )
     is_subscription = models.BooleanField(default=False)
     price = models.IntegerField(verbose_name=_("Cena"))
+    description = models.CharField(max_length=300, verbose_name=_("Opis"))
+    description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"))
+    description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"))
+    description_item_3 = models.CharField(max_length=300, verbose_name=_("Postavka 3"))
+    description_item_4 = models.CharField(max_length=300, verbose_name=_("Postavka 4"))
+    description_item_5 = models.CharField(max_length=300, verbose_name=_("Postavka 5"))
     valid_from = models.DateTimeField(
         auto_now_add=True, help_text=_("When the plan starts"),
         null=True,
@@ -129,6 +137,17 @@ class Plan(Timestampable):
         FieldPanel("discounted_price"),
         FieldPanel("is_subscription"),
         # FieldPanel("valid_to"),
+        MultiFieldPanel(
+            [
+                FieldPanel("description"),
+                FieldPanel("description_item_1"),
+                FieldPanel("description_item_2"),
+                FieldPanel("description_item_3"),
+                FieldPanel("description_item_4"),
+                FieldPanel("description_item_5"),
+            ],
+            heading=_("Opis paketa")
+        ),
         FieldPanel("duration"),
         FieldPanel("tokens"),
         FieldPanel("week_token_limit"),
@@ -154,9 +173,17 @@ class Plan(Timestampable):
             super().save(*args, **kwargs)
 
 class PaymentPlan(models.Model):
-    payment=models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
-    plan=models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
+    payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
+    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    promo_code = models.ForeignKey(
+        "PromoCode",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="payment_plans",
+        help_text="The promo code used for this payment plan",
+    )
 
 class Payment(Timestampable):
     class Status(models.TextChoices):
@@ -211,7 +238,7 @@ class Payment(Timestampable):
     ]
 
     class Meta:
-        verbose_name = _("Naročil0")
+        verbose_name = _("Naročilo")
         verbose_name_plural = _("Naročila")
 
     def __str__(self):
@@ -255,3 +282,55 @@ class Token(Timestampable):
 
     def __str__(self):
         return f"{self.type_of} - {self.is_used}"
+
+def generate_promo_code(length: int = 10) -> str:
+        characters = ascii_uppercase + '0123456789'
+        return ''.join(random.choice(characters) for i in range(length))
+
+class PromoCode(Timestampable):
+    code = models.CharField(max_length=100, null=False, blank=False, default=generate_promo_code)
+    valid_to = models.DateTimeField(
+        help_text=_("When does the code expire?"),
+        null=False,
+        blank=False,
+    )
+    percent_discount = models.IntegerField(null=False, blank=False)
+    item_type = models.ForeignKey(
+        "ItemType", blank=True, null=True, on_delete=models.SET_NULL
+    )
+    single_use = models.BooleanField(blank=False, null=False)
+    number_of_uses = models.IntegerField(null=False, blank=False, default=0)
+
+    def __str__(self):
+        return f"{self.code}"
+
+    @staticmethod
+    def check_code_validity(code_string: str, payment_plan: PaymentPlan) -> bool:
+        code_filter = PromoCode.objects.filter(code=code_string)
+
+        if code_filter.count() == 1:
+            code = code_filter.first()
+            now = datetime.now().replace(tzinfo=timezone.utc)
+
+            if code.valid_to < now:
+                return False
+
+            if code.single_use and code.number_of_uses > 0:
+                return False
+
+            if code.item_type != payment_plan.plan.item_type:
+                return False
+            
+            if payment_plan.promo_code == code:
+                return False
+
+            return True
+
+        if code_filter.count() == 0:
+            return False
+
+        raise Exception(f"Weird number of codes: {code}.")
+
+    def use_code(self) -> None:
+        self.number_of_uses += 1
+        self.save()

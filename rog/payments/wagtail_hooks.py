@@ -1,6 +1,7 @@
 from wagtail.contrib.modeladmin.options import (
     ModelAdmin, modeladmin_register)
-from .models import Plan, Payment, ItemType
+from wagtail.admin.panels import FieldPanel
+from .models import Plan, Payment, ItemType, PromoCode
 
 
 class PlanAdmin(ModelAdmin):
@@ -22,7 +23,14 @@ class PaymentAdmin(ModelAdmin):
 class ItemTypeAdmin(ModelAdmin):
     model = ItemType
     menu_icon = "form"
-    menu_order = 201
+    menu_order = 202
+    add_to_settings_menu = True
+    add_to_admin_menu = False
+
+class PromoCodeAdmin(ModelAdmin):
+    model = PromoCode
+    menu_icon = "form"
+    menu_order = 203
     add_to_settings_menu = True
     add_to_admin_menu = False
 
@@ -30,3 +38,4 @@ class ItemTypeAdmin(ModelAdmin):
 modeladmin_register(PlanAdmin)
 modeladmin_register(PaymentAdmin)
 modeladmin_register(ItemTypeAdmin)
+modeladmin_register(PromoCodeAdmin)

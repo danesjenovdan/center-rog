@@ -319,6 +319,10 @@ form {
         input:checked + .btn {
             color: #fff;
             background-color: $cs-dark-gray;
+
+            hr {
+                border-color: #fff;
+            }
         }
 
         input:focus-visible + .btn {
