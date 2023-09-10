@@ -12,11 +12,12 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from .models import Payment, Plan, Token, PaymentPlan
+from .models import Payment, Plan, Token, PaymentPlan, PromoCode
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
 from home.email_utils import send_email
+from .forms import PromoCodeForm
 
 
 # Create your views here.
@@ -25,13 +26,13 @@ from home.email_utils import send_email
 class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
-        user = request.user
-        payment = Payment(
-            user=user,
-        )
-
         plan = Plan.objects.filter(id=plan_id).first()
-        if plan:
+        user = request.user
+
+        if plan and user:
+            payment = Payment(
+                user=user,
+            )
             payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
@@ -44,14 +45,55 @@ class PaymentPreview(views.APIView):
                 if not (membership and membership.type and membership.type.plan and membership.active):
                     paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
                     plan = paid_membership.plan
-                    payment.amount += plan.price
+                    price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+                    payment.amount += price
                     payment.save()
-                    PaymentPlan(plan=plan, payment=payment, price=plan.price).save()
+                    PaymentPlan(plan=plan, payment=payment, price=price).save()
+                        
+            promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
-            return render(request,'registration_payment_preview.html', { "registration_step": 5, "payment": payment })
+            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form })
         else:
             return render(request, 'payment.html', { "id": None })
+    
+    def post(self, request):
+        user = request.user
+        
+        promo_code_form = PromoCodeForm(request.POST)
+        promo_code_error = False
+        promo_code_success = False
+        discounts = []
 
+        if promo_code_form.is_valid():
+            payment = Payment.objects.get(id=promo_code_form.cleaned_data["payment_id"])
+            related_payment_plans = PaymentPlan.objects.filter(payment=payment)
+            # check for promo code
+            promo_code = promo_code_form.cleaned_data["promo_code"]
+            if promo_code:
+                promo_code_error = True
+                for payment_plan in related_payment_plans:
+                    if PromoCode.check_code_validity(promo_code, payment_plan):
+                        valid_promo_code = PromoCode.objects.get(code=promo_code)
+                        payment_plan.promo_code = valid_promo_code
+                        payment_plan.save()
+                        plan = payment_plan.plan
+                        plan_price = plan.discounted_price if user.is_eligible_to_discount() else plan.price
+                        payment.amount -= plan_price * (valid_promo_code.percent_discount / 100)
+                        payment.save()
+                        promo_code_error = False
+                        promo_code_success = True
+                        
+                        break
+            
+            return render(request,'registration_payment_preview.html', { 
+                "payment": payment, 
+                "promo_code_form": promo_code_form, 
+                "promo_code_error": promo_code_error, 
+                "promo_code_success": promo_code_success,
+            })
+        
+        else:
+            return render(request, 'payment.html', { "id": None })
 
 
 @method_decorator(login_required, name='dispatch')
@@ -165,6 +207,11 @@ class PaymentSuccessXML(views.APIView):
                 'name': plan.name,
                 'price': plan.price,
             })
+
+        payment_plans = PaymentPlan.objects.filter(payment=payment)
+        for payment_plan in payment_plans:
+            if payment_plan.promo_code:
+                payment_plan.promo_code.use_code()
 
         send_email(
             payment.user.email,
