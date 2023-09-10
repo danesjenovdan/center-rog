@@ -112,8 +112,9 @@ button.primary-button,
 a.primary-button {
     border: none;
 
-    &:focus {
+    &:focus-visible {
         outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
     }
 
     &:hover {
@@ -150,9 +151,10 @@ a.primary-button {
         }
     }
 
-    &:focus {
-        border-color: $cs-focus-green;
-        outline: none;
+    &:focus-visible {
+        border-color: $cs-focus-green !important;
+        outline: 1px solid $cs-focus-green;
+        outline-offset: 0;
     }
 
     &:active {
