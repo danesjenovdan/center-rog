@@ -32,6 +32,12 @@ a.link {
     }
 }
 
+a:focus-visible {
+    outline: 2px solid $cs-focus-green;
+    outline-offset: 0;
+    border-radius: 2px;
+}
+
 .flex-page-height {
     display: flex;
     flex-direction: column;
@@ -112,8 +118,9 @@ button.primary-button,
 a.primary-button {
     border: none;
 
-    &:focus {
+    &:focus-visible {
         outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
     }
 
     &:hover {
@@ -150,9 +157,10 @@ a.primary-button {
         }
     }
 
-    &:focus {
-        border-color: $cs-focus-green;
-        outline: none;
+    &:focus-visible {
+        border-color: $cs-focus-green !important;
+        outline: 1px solid $cs-focus-green;
+        outline-offset: 0;
     }
 
     &:active {
@@ -231,13 +239,15 @@ body.safari {
         padding: 10px;
         outline: none !important;
         box-shadow: none !important;
+        background: $cs-white;
 
-        &:active {
+        &:focus {
             border-color: $cs-light-blue;
         }
 
-        &:focus-visible {
-            border-color: $cs-focus-green;
+        &.tab-focused:focus-visible {
+            border-color: $cs-focus-green !important;
+            box-shadow: 0 0 0 1px $cs-focus-green !important;
         }
     }
 
@@ -316,6 +326,10 @@ form {
             pointer-events: none;
         }
 
+        input + .btn {
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+        }
+
         input:checked + .btn {
             color: #fff;
             background-color: $cs-dark-gray;
@@ -351,6 +365,12 @@ form {
             padding: 0;
             font-size: 15px;
             color: inherit;
+            box-shadow: none !important;
+
+            &:focus-visible {
+                outline: 2px solid $cs-focus-green;
+                outline-offset: 0;
+            }
         }
     }
 }
@@ -452,6 +472,7 @@ form {
     margin-inline: 5px;
 
     .card-inner {
+        border-radius: 3px;
         // aspect-ratio: 250/320;
         padding-top: 130%;
         position: relative;
@@ -486,12 +507,18 @@ form {
         }
     }
 
-    &:hover {
+    &:hover,
+    &:focus-within {
         .card-inner {
             transform: rotateY(180deg);
         }
     }
     // END FLIP EFFECT
+
+    &:focus-within .card-inner {
+        outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
+    }
 
     .card-body {
         padding: 0;
@@ -839,8 +866,6 @@ form {
             .labs-section {
                 .lab {
                     margin-bottom: 0;
-                    border-radius: 3px;
-                    overflow: hidden;
                 }
             }
 
@@ -1127,6 +1152,13 @@ form {
         }
 
         .markets-container {
+            .card-hover {
+                > a:focus-visible {
+                    outline: 2px solid $cs-focus-green;
+                    outline-offset: 0;
+                }
+            }
+
             a {
                 color: inherit;
                 text-decoration: none;
@@ -1171,6 +1203,8 @@ form {
         color: $cs-dark-blue;
         text-decoration: none;
         margin-bottom: 20px;
+        border-radius: 3px;
+        overflow: hidden;
 
         img, video {
             grid-column: 1 / 1;
@@ -1196,6 +1230,11 @@ form {
                     opacity: 1;
                 }
             }
+        }
+
+        &:focus-visible {
+            outline: 2px solid $cs-focus-green;
+            outline-offset: 0;
         }
 
         h6 {
@@ -1282,6 +1321,7 @@ form {
             &:focus-visible .doorbell-button,
             &:focus-visible .doorbell-button + .resident-name {
                 outline: 2px solid $cs-focus-green;
+                outline-offset: 0;
             }
 
             &:not(:last-child) {
@@ -2226,8 +2266,9 @@ section.image-embed {
         box-shadow: 0px 0px 10px 0px rgba(59, 67, 82, 0.25);
     }
 
-    &:focus {
-        outline: 3px solid $cs-focus-green;
+    &:focus-visible {
+        outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
     }
 }
 
@@ -2246,7 +2287,7 @@ section.image-embed {
         height: 23px;
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
 
         &.disabled,
         &:disabled {
@@ -2261,9 +2302,9 @@ section.image-embed {
             cursor: pointer;
 
             &:focus-visible {
-                outline: none;
                 border-color: $cs-focus-green;
-                box-shadow: 0 0 0 2px $cs-focus-green;
+                outline: 1px solid $cs-focus-green !important;
+                outline-offset: 0;
             }
 
             &:hover {

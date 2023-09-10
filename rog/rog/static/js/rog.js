@@ -304,6 +304,46 @@ window.addEventListener("message", function (event) {
   }
 });
 
+// Detect Safari
 if (navigator.userAgent.includes("AppleWebKit") && !navigator.userAgent.includes("Chrome")) {
   document.body.classList.add("safari");
 }
+
+// Handle tab focus on input elements
+(function () {
+  let tabDown = false;
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      tabDown = true;
+    }
+  });
+
+  window.addEventListener("keyup", (event) => {
+    if (event.key === "Tab") {
+      tabDown = false;
+    }
+  });
+
+  window.addEventListener("blur", (event) => {
+    tabDown = false;
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      tabDown = false;
+    }
+  });
+
+  document.addEventListener("focusin", (event) => {
+    if (tabDown) {
+      event.target.classList.add("tab-focused");
+      event.target.addEventListener(
+        "blur",
+        (event) => {
+          event.target.classList.remove("tab-focused");
+        },
+        { once: true }
+      );
+    }
+  });
+})();
