@@ -2,6 +2,7 @@ from django import forms
 from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.db import ProgrammingError
+from django.utils import timezone
 
 from users.models import User, MembershipType, Membership, UserInterest
 from payments.models import Plan
@@ -83,6 +84,7 @@ class RegistrationInformationForm(forms.ModelForm):
     birth_date = forms.DateField(
         label=_("Datum rojstva"),
         label_suffix="",
+        widget=forms.SelectDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
     )
     address_1 = forms.CharField(
         label=_("Naslov 1"),

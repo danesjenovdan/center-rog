@@ -3,30 +3,32 @@
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
 <section  class="color-scheme-{{ value.color }} colored-text-section contacts-section">
 
-<div class="container max-800">
+<div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="text-center">{{ value.title }}</h2>
+            <h2 class="text-center max-800">{{ value.title }}</h2>
         </div>
     </div>
 
     {% for contact in value.contacts %}
-    <div class="row">
-        <div class="col-4">
-            <p class="mb-2">{{ contact.name }}</p>
-        </div>
-        <div class="col-6">
-            <p class="mb-2">{{ contact.position }}</p>
-        </div>
-        <div class="col-2 text-end">
-            <a href="mailto:{{ contact.email }}" class="link">email</a>
-            <button type="button" class="copy-email-button" data-email="{{ contact.email }}">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
-                    <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
-                    <path stroke="currentColor" stroke-width="1.15" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
-                </svg>
-            </button>
-            <span class="copy-email-confirmation small d-none">kopirano!</span>
+    <div class="max-800">
+        <div class="row">
+            <div class="col-4">
+                <p class="mb-2">{{ contact.name }}</p>
+            </div>
+            <div class="col-6">
+                <p class="mb-2">{{ contact.position }}</p>
+            </div>
+            <div class="col-2 text-end">
+                <a href="mailto:{{ contact.email }}" class="link">email</a>
+                <button type="button" class="copy-email-button" data-email="{{ contact.email }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
+                        <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
+                        <path stroke="currentColor" stroke-width="1.15" d="M4.62 12.16h-.56a1.1 1.1 0 0 1-1.1-1.1v-5a1.1 1.1 0 0 1 1.1-1.1h5a1.1 1.1 0 0 1 1.1 1.1v.56"/>
+                    </svg>
+                </button>
+                <span class="copy-email-confirmation small d-none">kopirano!</span>
+            </div>
         </div>
     </div>
     {% endfor %}
