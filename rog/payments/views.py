@@ -26,6 +26,7 @@ from .forms import PromoCodeForm
 class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
+        registration = True if 'registracija' in request.GET else False
         plan = Plan.objects.filter(id=plan_id).first()
         user = request.user
 
@@ -52,7 +53,7 @@ class PaymentPreview(views.APIView):
                         
             promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
-            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form })
+            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "registration": registration })
         else:
             return render(request, 'payment.html', { "id": None })
     
@@ -62,9 +63,9 @@ class PaymentPreview(views.APIView):
         promo_code_form = PromoCodeForm(request.POST)
         promo_code_error = False
         promo_code_success = False
-        discounts = []
 
         if promo_code_form.is_valid():
+            registration = promo_code_form.cleaned_data["registration"]
             payment = Payment.objects.get(id=promo_code_form.cleaned_data["payment_id"])
             related_payment_plans = PaymentPlan.objects.filter(payment=payment)
             # check for promo code
@@ -90,6 +91,7 @@ class PaymentPreview(views.APIView):
                 "promo_code_form": promo_code_form, 
                 "promo_code_error": promo_code_error, 
                 "promo_code_success": promo_code_success,
+                "registration": registration
             })
         
         else:

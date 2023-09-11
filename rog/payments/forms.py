@@ -10,3 +10,4 @@ class PromoCodeForm(forms.Form):
         required=False
     )
     payment_id = forms.CharField()
+    registration = forms.BooleanField(required=False)

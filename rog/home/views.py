@@ -312,7 +312,7 @@ class RegistrationProfileView(View):
             user.save()
 
             if payment_needed:
-                return redirect(f"/placilo?plan_id={plan_id}")
+                return redirect(f"/placilo?plan_id={plan_id}&registracija")
             else:
                 return redirect("profile-my")
         else:

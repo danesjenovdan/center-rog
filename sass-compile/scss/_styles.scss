@@ -276,7 +276,8 @@ body.safari {
         margin-top: 5px;
     }
 
-    &.form-field-error input, textarea {
+    &.form-field-error input, 
+    &.form-field-error textarea {
         border-color: $cs-red;
     }
 }
