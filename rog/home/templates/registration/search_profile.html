@@ -36,22 +36,24 @@
         </div>
     </div>
 
+    <div class="d-flex flex-column align-items-start my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'išči' %}</button>
+    </div>
+
     <div class="row my-4">
         <div class="col-12">
             <h2>{% translate 'Uporabniki s temi zanimanji:' %}</h2>
             <div>
                 {% for user in users %}
-                <div class="d-flex align-items-center">
-                    <a href="/profil/{{ user.id }}" class="user-btn color-scheme-{{ user.random_color }}"></a>
-                    <span class="ms-4">{{ user.public_username }}</span>
+                <div class="d-flex align-items-center mb-3">
+                    <a href="/profil/{{ user.id }}" class="user-btn mb-0 color-scheme-{{ user.random_color }}"></a>
+                    <a href="/profil/{{ user.id }}" class="">
+                        <span class="ms-4">{{ user.public_username }}</span>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
         </div>
-    </div>
-
-    <div class="d-flex flex-column align-items-end my-4">
-        <button type="submit" class="secondary-button button-medium">{% translate 'išči' %}</button>
     </div>
 
 </form>
