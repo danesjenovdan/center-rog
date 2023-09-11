@@ -20,42 +20,70 @@
     </div>
 
     <div class="row my-4">
-        <div class="col-12 col-md-6">
-            <p class="mb-1">{% translate 'denarnica' %}</p>
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
-                <div class="">
-                    <p>{% translate 'točke na računu' %}</p>
-                    <p class="balance">{{ user.get_valid_tokens.count }}</p>
+        <div class="col-12 col-lg-4">
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
+                <div>
+                    <p class="mb-1">{% translate 'tip članstva' %}</p>
+                    <h6>{{ user.membership.type }}</h6>
+                    <p class="subtitle">
+                        {% translate 'veljavnost članarine do:' %} <br />
+                        {{ obnovitev_clanarine|date:"j. n. Y" }}
+                    </p>
                 </div>
-                <div class="d-flex align-items-end justify-content-between">
-                    <div>
-                        <a href="/profil/nakup" class="secondary-button button-medium">{% translate 'dodaj sredstva' %}</a>
-                    </div>
-                    <div>
-                        <a href="{% url 'history' %}">{% translate 'pretekla poraba →' %}</a>
-                    </div>
+                <div>
+                    <a href="{% url 'profile-purchase' %}" class="secondary-button button-medium">{% translate 'uredi članstvo' %}</a>
                 </div>
             </section>
         </div>
 
-        <div class="col-12 col-md-6">
-            <p class="mb-1">{% translate 'članstvo' %}</p>
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
-                <div class="">
-                    <h6>{{ user.membership.type }}</h6>
+        <div class="col-12 col-lg-4">
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+                <div>
+                    <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
+                    <h6>{{ user.get_active_subscription_plan.name }}</h6>
                     <p class="subtitle">
-                        {% translate 'Članarina se avtomatsko obnovi:' %} <br />
-                        {{ obnovitev_clanarine }}
-                    </p>
-                    <p class="mb-2">
-                        <a href="/profil/uredi" class="secondary-button button-small">{% translate 'uredi profil' %}</a>
-                    </p>
-                    <p class="mb-2">
-                        <a href="{% url 'logout' %}" class="secondary-button button-small">{% translate 'odjava' %}</a>
+                        {% translate 'veljavnost paketa do:' %} <br />
+                        {{ user.get_active_subscription.active_to|date:"j. n. Y" }}
                     </p>
                 </div>
                 <div>
-                    <a href="/profil/isci" class="primary-button button-medium">{% translate 'poišči druge uporabnike' %}</a>
+                    <a href="{% url 'profile-purchase' %}" class="secondary-button button-medium">{% translate 'izberi uporabnino' %}</a>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-12 col-lg-4">
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+                <div>
+                    <p>
+                        <a class="link" href="{% url 'history' %}">
+                            <span class="link-text">{% translate 'pretekla poraba' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a class="link" href="{% url 'profile-edit' %}">
+                            <span class="link-text">{% translate 'uredi profil' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
+                    <p>
+                        <a class="link" href="/profil/{{ user.id }}">
+                            <span class="link-text">{% translate 'poglej svoj profil' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
+                    <p class="mb-2">
+                        <a class="link" href="{% url 'logout' %}">
+                            <span class="link-text">{% translate 'odjava' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between">
+                    <div>
+                        <a href="{% url 'profile-search' %}" class="secondary-button button-medium">{% translate 'drugi uporabniki' %}</a>
+                    </div>
                 </div>
             </section>
         </div>

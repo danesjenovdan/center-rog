@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "taggit",
     "jsonify",
     "wagtailmedia",
+    "wkhtmltopdf",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -266,6 +267,19 @@ WAGTAILEMBEDS_FINDERS = [
     },
 ]
 
+WKHTMLTOPDF_CMD_OPTIONS = {
+    'quiet': False,
+    'enable-local-file-access': True,
+    'disable-smart-shrinking': True,
+    'print-media-type': True,
+    'page-size': 'A4',
+    'margin-top': '0',
+    'margin-bottom': '0',
+    'margin-left': '0',
+    'margin-right': '0',
+}
+
+WKHTMLTOPDF_CMD = 'xvfb-run -a wkhtmltopdf'
 
 # Prima settings
 PRIMA_API_KEY = os.getenv('PRIMA_API_KEY', 'example')

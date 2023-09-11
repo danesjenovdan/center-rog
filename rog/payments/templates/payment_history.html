@@ -24,7 +24,7 @@
                 <div class="name">{{ payment.history_name }}</div>
                 <div class="amount">{{ payment.amount }}€</div>
                 <div class="export-button">
-                    <a class="secondary-button button-small w-100" href="{% url 'invoice' payment_id=payment.id %}">{% translate 'Izvozi račun' %}</a>
+                    <a class="secondary-button button-small" href="{% url 'invoice-pdf' payment_id=payment.id %}">{% translate 'prenesi PDF računa' %}</a>
                 </div>
             </div>
         {% endfor %}

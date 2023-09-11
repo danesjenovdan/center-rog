@@ -522,7 +522,7 @@ def create_move(
                 "quantity": 1,
                 "price": item.price,
                 "priceCurrency": 0,
-                "rabate": payment.promo_code.percent_discount, # TODO: seštej vse promo kode
+                "rabate": item.promo_code.percent_discount if item.promo_code else 0,
                 "vat": vat,
                 "vatCode": "2S",
                 "vatCodeTR": "2S",

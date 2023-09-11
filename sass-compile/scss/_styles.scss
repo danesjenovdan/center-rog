@@ -208,9 +208,10 @@ body.safari {
     border-radius: 50%;
     box-shadow: 1px 1px 5px 0px rgba(255, 255, 255, 0.60) inset, -1px -2px 4px 0px rgba(0, 0, 0, 0.65) inset;
 
-    &+span {
+    &+a {
         display: block;
-        font-size: $md-font-size;
+        font-size: $sm-font-size !important;
+        border-bottom: none !important;
     }
 }
 
@@ -233,7 +234,7 @@ body.safari {
         margin-bottom: 2px;
     }
 
-    input, textarea {
+    input, textarea, select {
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
@@ -249,6 +250,10 @@ body.safari {
             border-color: $cs-focus-green !important;
             box-shadow: 0 0 0 1px $cs-focus-green !important;
         }
+    }
+
+    select + select {
+        margin-left: 12px;
     }
 
     input[type=text],
@@ -276,7 +281,8 @@ body.safari {
         margin-top: 5px;
     }
 
-    &.form-field-error input, textarea {
+    &.form-field-error input,
+    &.form-field-error textarea {
         border-color: $cs-red;
     }
 }
@@ -1680,7 +1686,8 @@ section.image-embed {
         }
 
         &.news-page-profile-container,
-        &.event-page-container {
+        &.event-page-container,
+        &.basic-page-container {
             padding-bottom: 60px;
 
             h1 {
@@ -1895,14 +1902,15 @@ section.image-embed {
             font-size: $xxs-font-size;
         }
 
-        a:not(.primary-button, .secondary-button) {
-            color: inherit;
-            @include underline-text-not-on-hover();
-        }
+        // a:not(.primary-button, .secondary-button) {
+        //     color: inherit;
+        //     @include underline-text-not-on-hover();
+        // }
 
         section {
             padding: 10px;
-            height: 270px;
+            height: 100%;
+            min-height: 200px;
 
             .balance {
                 font-size: $xl-font-size;
@@ -1945,6 +1953,12 @@ section.image-embed {
         .radio-square-wrapper {
             display: inline-block;
             margin-right: 5px;
+        }
+
+        .membership {
+            .subtitle {
+                margin-top: 15px;
+            }
         }
     }
 }
@@ -2239,15 +2253,6 @@ section.image-embed {
     }
 }
 
-.container-basic-page {
-    padding-top: 60px;
-    padding-bottom: 60px;
-
-    h1 {
-        margin-bottom: 50px;
-    }
-}
-
 .edit-profile-form {
     h2 {
         font-size: $sm-font-size;
@@ -2359,7 +2364,11 @@ section.image-embed {
         div {
             display: flex;
             align-items: center;
-            font-size: $xxs-font-size;
+            font-size: $xs-font-size;
+
+            &.export-button {
+                justify-content: flex-end;
+            }
         }
     }
 
