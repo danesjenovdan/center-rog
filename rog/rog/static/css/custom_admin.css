@@ -25,3 +25,23 @@
 .image-search fieldset.tagfilter .button {
   margin-inline-start: 0;
 }
+
+.c-memberships-table {
+  width: 100%;
+  table-layout: fixed;
+}
+.c-memberships-table tr {
+  border-bottom: 1px solid var(--w-color-grey-100);
+}
+.c-memberships-table th,
+.c-memberships-table td {
+  padding: 0.5rem 0.5em 0.5em 0;
+  text-align: left;
+  vertical-align: top;
+  font-size: .875rem;
+}
+.c-memberships-table th {
+  padding-top: 0;
+  color: var(--w-color-primary);
+  font-weight: 500;
+}
