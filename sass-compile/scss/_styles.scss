@@ -1897,14 +1897,15 @@ section.image-embed {
             font-size: $xxs-font-size;
         }
 
-        a:not(.primary-button, .secondary-button) {
-            color: inherit;
-            @include underline-text-not-on-hover();
-        }
+        // a:not(.primary-button, .secondary-button) {
+        //     color: inherit;
+        //     @include underline-text-not-on-hover();
+        // }
 
         section {
             padding: 10px;
-            height: 270px;
+            height: 100%;
+            min-height: 200px;
 
             .balance {
                 font-size: $xl-font-size;
@@ -1947,6 +1948,12 @@ section.image-embed {
         .radio-square-wrapper {
             display: inline-block;
             margin-right: 5px;
+        }
+
+        .membership {
+            .subtitle {
+                margin-top: 15px;
+            }
         }
     }
 }

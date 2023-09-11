@@ -179,9 +179,14 @@ class User(AbstractUser):
         return self.memberships.filter(
             Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
             valid_from__lte=datetime.now()).first()
-
-    def has_valid_subscription(self):
-        return self.payments.all().is_active_subscription()
+    
+    @property
+    def get_active_subscription_plan(self):
+        return self.payments.all().get_active_subscription_plan()
+    
+    @property
+    def get_active_subscription(self):
+        return self.payments.all().get_active_subscription()
 
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()

@@ -12,13 +12,26 @@ import random
 from string import ascii_uppercase
 
 class ActiveAtQuerySet(models.QuerySet):
-    def is_active_subscription(self):
+    def get_active_subscription(self):
         now = datetime.now()
-        return True if self.filter(
-            items__is_subscription=True,
+        active_payments = self.filter(
             active_to__gte=now,
-            items__item_type__name="Uporabnina"
-        ) else False
+            items__item_type__name="uporabnina"
+        )
+        if active_payments:
+            return active_payments.last()
+        return None
+    
+    def get_active_subscription_plan(self):
+        now = datetime.now()
+        active_payments = self.filter(
+            active_to__gte=now,
+            items__item_type__name="uporabnina"
+        )
+    
+        if active_payments:
+            return active_payments.last().items.all().filter(item_type__name="uporabnina").last()
+        return None
 
     def get_valid_tokens(self):
         timestamp = datetime.now()
