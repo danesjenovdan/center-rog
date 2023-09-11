@@ -234,7 +234,7 @@ body.safari {
         margin-bottom: 2px;
     }
 
-    input, textarea {
+    input, textarea, select {
         border: 1.5px solid $cs-dark-gray;
         border-radius: 3px;
         padding: 10px;
@@ -250,6 +250,10 @@ body.safari {
             border-color: $cs-focus-green !important;
             box-shadow: 0 0 0 1px $cs-focus-green !important;
         }
+    }
+
+    select + select {
+        margin-left: 12px;
     }
 
     input[type=text],
