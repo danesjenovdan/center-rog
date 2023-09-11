@@ -277,7 +277,7 @@ body.safari {
         margin-top: 5px;
     }
 
-    &.form-field-error input, 
+    &.form-field-error input,
     &.form-field-error textarea {
         border-color: $cs-red;
     }
@@ -2371,7 +2371,7 @@ section.image-embed {
             font-size: $xs-font-size;
 
             &.export-button {
-                justify-content: end;
+                justify-content: flex-end;
             }
         }
     }
