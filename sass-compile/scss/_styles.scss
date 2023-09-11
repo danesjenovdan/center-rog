@@ -1682,7 +1682,8 @@ section.image-embed {
         }
 
         &.news-page-profile-container,
-        &.event-page-container {
+        &.event-page-container,
+        &.basic-page-container {
             padding-bottom: 60px;
 
             h1 {
@@ -2245,15 +2246,6 @@ section.image-embed {
 .template-profile {
     .payment-notice {
         font-size: $sm-font-size;
-    }
-}
-
-.container-basic-page {
-    padding-top: 60px;
-    padding-bottom: 60px;
-
-    h1 {
-        margin-bottom: 50px;
     }
 }
 

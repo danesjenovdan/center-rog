@@ -1,13 +1,15 @@
 {% extends "home/wrapper_page.html" %}
 {% load static wagtailimages_tags wagtailcore_tags %}
 
+{% block body_class %}template-profile template-basic-text-page{% endblock %}
+
 {% block extra_css %}
 
 {% endblock extra_css %}
 
 {% block page_body %}
 
-<div class="container container-basic-page">
+<div class="container object-profile-container basic-page-container color-scheme-light-gray">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">
@@ -16,8 +18,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12 body">
-            {{ page.body|richtext }}
+        <div class="col-12 rich-text-page">
+            <div class="max-800">
+                {{ page.body|richtext }}
+            </div>
         </div>
     </div>
 </div>
