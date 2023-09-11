@@ -20,7 +20,7 @@ RUN npm run css
 # ---
 # wagtail image
 # ---
-FROM python:3.8.1-slim-buster
+FROM python:3.11.5-slim-bookworm
 
 # Add user that will be used in the container.
 RUN useradd wagtail
@@ -35,20 +35,34 @@ EXPOSE 8000
 ENV PYTHONUNBUFFERED=1 \
     PORT=8000
 
+# Add contrib repository to apt sources
+RUN sed -i "s/ main/ main contrib/g" /etc/apt/sources.list.d/debian.sources
+
 # Install system packages required by Wagtail and Django.
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     gettext -y \
     build-essential \
     libpq-dev \
-    libmariadbclient-dev \
+    libmariadb-dev \
     libjpeg62-turbo-dev \
     zlib1g-dev \
     libwebp-dev \
     libmagickwand-dev \
+    wkhtmltopdf \
+    xfonts-75dpi \
+    xfonts-base \
+    ttf-mscorefonts-installer \
+    xauth \
+    xvfb \
  && rm -rf /var/lib/apt/lists/*
 
+# Install wkhtmltopdf from deb package (patched version)
+RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+RUN dpkg -i wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+RUN rm wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
+
 # Install the application server.
-RUN pip install "gunicorn==20.0.4"
+RUN pip install "gunicorn==21.2.0"
 
 # Install the project requirements.
 COPY ./rog/requirements.txt /

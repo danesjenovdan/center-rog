@@ -2,95 +2,213 @@
 <!DOCTYPE html>
 <html lang="sl">
     <head>
+        <meta charset="utf-8" />
         <style>
-            img { /* svg on an img tag */
-                -webkit-filter: invert(.75); /* safari 6.0 - 9.0 */
-                        filter: invert(.75);
-              }
+            *, *::before, *::after {
+                box-sizing: border-box;
+            }
+
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #invoice {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 14px;
+                line-height: 1.4;
+                width: 210mm;
+                min-height: 297mm;
+                margin: 25px auto;
+                border: 1px #D3D3D3 solid;
+                padding: 50px;
+                background: white;
+            }
+
+            @media print {
+                #invoice {
+                    margin: 0;
+                    border: none;
+                }
+            }
+
+            @page {
+                size: 210mm 297mm;
+                margin: 0;
+            }
+
+            #top-header {
+                float: right;
+                text-align: right;
+            }
+
+            #top-header #logo svg {
+                display: block;
+                margin-left: auto;
+                margin-right: 0;
+                width: 100px;
+                height: 100px;
+            }
+
+            #top-header #b-info {
+                margin-top: 15px;
+            }
+
+            #top-header #r-info {
+                margin-top: 15px;
+            }
+
+            #bottom-header {
+                float: left;
+                text-align: left;
+            }
+
+            #bottom-header #k-info {
+                margin-top: 115px;
+                margin-bottom: 76px;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            #bottom-header #invoice-date {
+                margin-top: 18px;
+            }
+
+            #body {
+                margin: 25px 0;
+            }
+
+            #body h1 {
+                margin: 0 0 25px 0;
+            }
+
+            #body table {
+                border-collapse: collapse;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            #body table th,
+            #body table td {
+                border: 1px solid #D3D3D3;
+                padding: 5px;
+            }
+
+            #body table .t-price {
+                width: 85px;
+                text-align: right;
+            }
+
+            #body table .t-vat {
+                width: 65px;
+                text-align: right;
+            }
+
+            #body table .t-em {
+                width: 45px;
+                text-align: right;
+            }
+
+            #body table .t-amount {
+                width: 45px;
+                text-align: right;
+            }
+
+            #body table .t-name {
+                width: 225px;
+                text-align: left;
+            }
+
+            #body table .t-ident {
+                width: 75px;
+                text-align: left;
+            }
+
+            #footer #footer-top {
+                font-size: 10px;
+            }
+
+            #footer #izdal {
+                float: right;
+                text-align: right;
+                margin-top: 25px;
+            }
         </style>
-    </head
+    </head>
     <body>
-        <button id="download-button">Download as PDF</button>
         <div id="invoice">
             <div id="header">
                 <div id="top-header">
                     <div id="logo">
-                        <img src="{% static 'images/Center-Rog-logo.svg' %}"  width=100px />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 204 189.9">
+                            <path d="m168.7 84.9 3.3-28.6L45.6 31.5 0 163.7l46.5 3.2L45 81.8l29.6 108.1 22.9-16.5c-10.3-8.3-13.6-28.1-7.3-48.6.2-.8.5-1.5.7-2.3L63.1 84.9h105.6zM98.6 50.8c18.7 0 33.8 5.7 33.8 12.6 0 7-15.1 12.6-33.8 12.6-18.7 0-33.8-5.7-33.8-12.6 0-6.9 15.1-12.6 33.8-12.6zM204 132V43.5l-58.1 87.2v48.9l47.1-.1v-40.7l-22.4-.1v11.9h15.6v10h-25.8L165 132z"/>
+                            <path d="M130.2 89.6c-14.3-4.4-31.5 10.2-39.3 32.9l26.8 36.3-20.2 14.6c1.8 1.4 3.7 2.5 5.9 3.2 14.7 4.6 32.7-11.2 40.1-35.2 7.4-24 1.4-47.2-13.3-51.8zm-2.5 46.8h-18v-18h18v18zM52.8 11.6C54.3 3.8 60.5-1.3 68.2.2c5 1 8.2 4.5 8.8 8.7v.5c-.2.8-.9 1.3-1.7 1.1-.6-.1-1.1-.7-1.2-1.3-.4-3.1-2.5-5.4-6.5-6.2-6.1-1.2-10.7 2.5-12 9.1-1.3 6.5 1.6 11.7 7.5 12.9 3.9.8 7.4-.7 9.3-4.7.3-.6.9-1 1.6-.8.8.2 1.3.9 1.1 1.7 0 .1 0 .2-.1.4a11.1 11.1 0 0 1-12.5 6.3c-7.4-1.4-11.3-8.5-9.7-16.3zM78.1 29l4.7-23.8c.2-1 .8-1.4 1.7-1.2l15.4 3c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-14-2.7-1.6 8.3L97 18.1c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-13.2-2.6-1.9 9.8 14.3 2.8c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-15.7-3.1c-1-.1-1.4-.7-1.2-1.6zm22.6 4.4 4.7-23.8c.2-.9.7-1.3 1.4-1.2h.1c.7.1 1.2.5 1.5 1.2l10.7 22.9 3.8-19.5c.2-.8.9-1.3 1.7-1.1.8.2 1.3.9 1.1 1.7L121 37.4c-.2.9-.7 1.3-1.4 1.2-.7-.1-1.2-.5-1.5-1.2l-10.7-23.1-3.9 19.6c-.2.8-.9 1.3-1.7 1.1-.7-.1-1.2-.8-1.1-1.6zm32.7 6.4 4.4-22.4-7.5-1.5c-.8-.2-1.3-.9-1.1-1.7.2-.8.9-1.3 1.7-1.1l17.8 3.5c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-7.5-1.5-4.4 22.4c-.2.8-.9 1.3-1.7 1.1-.8-.1-1.3-.8-1.1-1.6zm15 2.9 4.7-23.8c.2-.9.8-1.3 1.7-1.1l15.4 3c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-14-2.7-1.6 8.3 13.2 2.6c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1L153.4 32l-1.9 9.8 14.3 2.8c.8.2 1.3.9 1.1 1.7-.2.8-.9 1.3-1.7 1.1l-15.7-3.1c-.9 0-1.3-.6-1.1-1.6zm22.7 4.5 4.7-23.8c.2-.9.8-1.3 1.7-1.1l9 1.8c5.9 1.2 8.5 4.7 7.6 9.3-.5 2.6-2 4.5-4.3 5.4 1.3 1.3 2 3.2 1.5 5.9l-.5 3.3c-.2 1-.2 1.9-.1 2.5 0 .2.1.4 0 .7-.2.8-.9 1.3-1.7 1.1-.6-.1-1-.5-1.1-1.1-.3-1-.2-2.6 0-3.7l.5-3.3c.6-3.4-1-4.4-4.9-5.1l-7.6-1.5-2 10.2c-.2.8-.9 1.3-1.7 1.1-.8-.2-1.3-.9-1.1-1.7zm13-11c4.5.9 6.5-.3 7.2-3.4.6-3.2-.9-5-5.3-5.9l-7.6-1.5-1.8 9.3 7.5 1.5z"/>
+                        </svg>
                     </div>
                     <div id="b-info">
-                        Kreativno središče Center Rog</br>
-                        Trubarjeva cesta 72</br>
-                        1000 Ljubljana</br>
-                        E: renata.zamida@center-rog.si
+                        Kreativno središče Center Rog<br>
+                        Trubarjeva cesta 72<br>
+                        1000 Ljubljana<br>
+                        renata.zamida@center-rog.si
                     </div>
                     <div id="r-info">
-                        Matična št.:8889724000</br>
-                        Davčna št.: 79671977</br>
-                        TRR: 01261-6000002804</br>
+                        Matična št.: 8889724000<br>
+                        Davčna št.: 79671977<br>
+                        TRR: 01261-6000002804
                     </div>
                 </div>
-                </hr>
                 <div id="bottom-header">
                     <div id="k-info">
-                        {{ user.legal_person_name }}</br>
-                        {{ user.legal_person_address_1 }}</br>
+                        {{ user.legal_person_name }}<br>
+                        {{ user.legal_person_address_1 }}<br>
                         {{ user.legal_person_address_2 }}
                     </div>
                     <div id="invoice-date">
-                        <b>Naročilnica:</b>  ???
-                    </div>
-                    <div id="invoice-date">
-                        <b>Dat. pre. dob:</b> {{ payment.created_at }}
-                        <b>Datum valute:</b> {{ payment.successed_at }}
-                        <b>Ljubljana,</b> {{ payment.created_at }}
+                        <b>Naročilnica:</b> ???<br>
+                        <b>Dat. pre. dob:</b> {{ payment.created_at|date:"d. m. Y H:i" }}<br>
+                        <b>Datum valute:</b> {{ payment.successed_at|date:"d. m. Y H:i" }}<br>
                     </div>
                 </div>
             </div>
-
+            <div style="clear: both;"></div>
             <div id="body">
-                <h2>Račun {{ payment.id }}</h2>
+                <h1>Račun {{ payment.id }}</h1>
                 </hr>
                 <table>
                     <tr>
-                        <th>ident</th>
-                        <th>Naziv</th>
-                        <th>Količina</th>
-                        <th>EM</th>
-                        <th>Cena</th>
-                        <th>R. %</th>
-                        <th>DDV %</th>
-                        <th>Vrednost brez DDV</th>
+                        <th class="t-ident">ident</th>
+                        <th class="t-name">Naziv</th>
+                        <th class="t-amount">Kol.</th>
+                        <th class="t-em">EM</th>
+                        <th class="t-price">Cena</th>
+                        <th class="t-vat">R. %</th>
+                        <th class="t-vat">DDV %</th>
+                        <th class="t-price">Vrednost brez DDV</th>
                     </tr>
                     {% for plan in payment.items.all %}
                     <tr>
-                        <th>{{ plan.pantheon_ident_id }}</th>
-                        <th>{{ plan.name }}</th>
-                        <th>1,00</th>
-                        <th>KOS</th>
-                        <th>{{ plan.price }}</th>
-                        <th>0,00</th>
-                        <th>0,00</th>
-                        <th>{{ plan.price }}</th>
+                        <td class="t-ident">{{ plan.pantheon_ident_id }}</td>
+                        <td class="t-name">{{ plan.name }}</td>
+                        <td class="t-amount">1,00</td>
+                        <td class="t-em">KOS</td>
+                        <td class="t-price">{{ plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-vat">0,00</td>
+                        <td class="t-vat">0,00</td>
+                        <td class="t-price">{{ plan.price|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
                     {% endfor %}
                 </table>
             </div>
             <div id="footer">
                 <div id="footer-top">
-                    DDV ni obračunan skladno s 1.odst. 94. čl ZDDV-1.</br></br>
-
-                    Prosimo, da znesek nakažete na naš transakcijski račun številka 01261-6000002804  pri UJP RS in se sklicujete na številko računa.</br>
-
+                    DDV ni obračunan skladno s 1.odst. 94. čl ZDDV-1.<br>
+                    Prosimo, da znesek nakažete na naš transakcijski račun številka 01261-6000002804  pri UJP RS in se sklicujete na številko računa.<br>
                     V primeru prekoračitve datuma plačila, bomo zaračunali zakonske zamudne obresti!
                 </div>
-                <div div="izdal">
-                    Račun izdal-a:
-                    Renata Zamida, direktorica
+                <div id="izdal">
+                    Račun izdala: Renata Zamida, direktorica
                 </div>
-
             </div>
         </div>
-        <script>
-        </script>
     </body>
 <html>

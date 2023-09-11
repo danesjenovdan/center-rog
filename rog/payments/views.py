@@ -11,6 +11,7 @@ from rest_framework import  views
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from wkhtmltopdf.views import PDFTemplateResponse
 
 from .models import Payment, Plan, Token, PaymentPlan, PromoCode
 from users.models import Membership, MembershipType
@@ -50,16 +51,16 @@ class PaymentPreview(views.APIView):
                     payment.amount += price
                     payment.save()
                     PaymentPlan(plan=plan, payment=payment, price=price).save()
-                        
+
             promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
             return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "registration": registration })
         else:
             return render(request, 'payment.html', { "id": None })
-    
+
     def post(self, request):
         user = request.user
-        
+
         promo_code_form = PromoCodeForm(request.POST)
         promo_code_error = False
         promo_code_success = False
@@ -83,17 +84,17 @@ class PaymentPreview(views.APIView):
                         payment.save()
                         promo_code_error = False
                         promo_code_success = True
-                        
+
                         break
-            
-            return render(request,'registration_payment_preview.html', { 
-                "payment": payment, 
-                "promo_code_form": promo_code_form, 
-                "promo_code_error": promo_code_error, 
+
+            return render(request,'registration_payment_preview.html', {
+                "payment": payment,
+                "promo_code_form": promo_code_form,
+                "promo_code_error": promo_code_error,
                 "promo_code_success": promo_code_success,
                 "registration": registration
             })
-        
+
         else:
             return render(request, 'payment.html', { "id": None })
 
@@ -276,6 +277,26 @@ class PaymentInvoice(View):
                     'payment': payment,
                     'user': payment.user
                 }
+            )
+        else:
+            return HttpResponseNotFound('Računa ni mogoče najti.')
+
+
+@method_decorator(login_required, name='dispatch')
+class PaymentInvoicePDF(View):
+    def get(self, request, payment_id):
+        user = request.user
+        payment = user.payments.filter(id=payment_id).first()
+        if payment:
+            return PDFTemplateResponse(
+                request,
+                'payment_invoice.html',
+                {
+                    'payment': payment,
+                    'user': payment.user,
+                },
+                filename=f'rog-racun-{payment.id}.pdf',
+                show_content_in_browser=True,
             )
         else:
             return HttpResponseNotFound('Računa ni mogoče najti.')
