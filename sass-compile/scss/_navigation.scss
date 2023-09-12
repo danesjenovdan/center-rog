@@ -62,33 +62,15 @@
 
     .nav-link {
         color: $cs-dark-gray;
+        @include font-size-sm();
 
         &.lang-link {
             margin-right: 0.7rem;
+            @include font-size-xs();
         }
 
         &:hover {
             color: $cs-light-blue;
-        }
-    }
-
-    @include media-breakpoint-up(xl) {
-        .nav-link {
-            font-size: $xs-font-size;
-
-            &.lang-link {
-                font-size: $xxs-font-size;
-            }
-        }
-    }
-
-    @include media-breakpoint-up(xxl) {
-        .nav-link {
-            font-size: $sm-font-size;
-
-            &.lang-link {
-                font-size: $xs-font-size;
-            }
         }
     }
 
@@ -161,10 +143,8 @@
             overflow: unset;
         }
 
-        @include media-breakpoint-down(md) {
-            a {
-                font-size: $xs-font-size;
-            }
+        a {
+            @include font-size-sm();
         }
 
         @include media-breakpoint-up(xl) {
@@ -172,8 +152,6 @@
         }
 
         @include media-breakpoint-up(xxl) {}
-
-
 
     }
 
@@ -256,7 +234,7 @@
         .nav-link {
             border-radius: 3px;
             color: inherit;
-            font-size: $xxs-font-size;
+            @include font-size-xs();
             position: relative;
             cursor: pointer;
         }
