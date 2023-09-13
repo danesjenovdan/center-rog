@@ -72,6 +72,7 @@ function updateNavBarAngle() {
     secondary_navigation.style.top = `${nav_bg_left_height - 2}px`;
     secondary_navigation.offsetWidth; // force layout before adding class to prevent animation
     secondary_navigation.classList.add("shown");
+    document.body.classList.add("has-secondary-navigation");
   }
   if (header_marquee) {
     header_marquee.style.transform = `rotate(${angle}deg)`;
@@ -80,6 +81,7 @@ function updateNavBarAngle() {
       : `${nav_bg_left_height - 2}px`;
     header_marquee.offsetWidth; // force layout before adding class to prevent animation
     header_marquee.classList.add("shown");
+    document.body.classList.add("has-header-marquee");
   }
 }
 
