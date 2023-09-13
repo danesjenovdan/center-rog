@@ -99,11 +99,20 @@
 
         ul {
             margin-top: 15px;
-            padding-left: 2.122rem;
+            list-style: none;
+            padding-left: 0;
 
-            li::marker {
-                content: "\25CF" "   ";
-                white-space: pre;
+            li {
+                padding-left: 1.5rem;
+                position: relative;
+
+                &::before {
+                    position: absolute;
+                    top: 0.2em;
+                    left: 0;
+                    content: "\25CF";
+                    line-height: 1;
+                }
             }
         }
 
@@ -123,7 +132,7 @@
         .sum-line {
             border-top: 1px solid $cs-dark-gray;
             border-bottom: 1.5px solid $cs-dark-gray;
-            
+
             .price {
                 @include font-size-lg();
             }
@@ -140,6 +149,12 @@
 #legal-information-wrapper {
     margin-top: 30px;
 
+    &.hide {
+        display: none;
+    }
+}
+
+#other-gender-wrapper {
     &.hide {
         display: none;
     }

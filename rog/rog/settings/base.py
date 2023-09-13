@@ -162,6 +162,7 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'prima_id',
     'address_1',
     'address_2',
+    'legal_person_receipt',
     'legal_person_name',
     'legal_person_address_1',
     'legal_person_address_2',
@@ -177,6 +178,8 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     'workshops_attended',
     'interests',
     'birth_date',
+    'gender',
+    'gender_other',
     'gallery',
 ]
 

@@ -50,11 +50,11 @@
                             <p class="small">{{ plan.description }}</p>
                             <hr />
                             <ul>
-                                <li>{{ plan.description_item_1 }}</li>
-                                <li>{{ plan.description_item_2 }}</li>
-                                <li>{{ plan.description_item_3 }}</li>
-                                <li>{{ plan.description_item_4 }}</li>
-                                <li>{{ plan.description_item_5 }}</li>
+                                {% if plan.description_item_1 %}<li>{{ plan.description_item_1 }}</li>{% endif %}
+                                {% if plan.description_item_2 %}<li>{{ plan.description_item_2 }}</li>{% endif %}
+                                {% if plan.description_item_3 %}<li>{{ plan.description_item_3 }}</li>{% endif %}
+                                {% if plan.description_item_4 %}<li>{{ plan.description_item_4 }}</li>{% endif %}
+                                {% if plan.description_item_5 %}<li>{{ plan.description_item_5 }}</li>{% endif %}
                             </ul>
                         </label>
                     </div>

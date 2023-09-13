@@ -289,6 +289,31 @@ body.safari {
     }
 }
 
+.registration-gender-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+
+    .form-field-wrapper {
+        margin-bottom: 0;
+    }
+
+    div.gender-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        height: 40px;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    input[type=text] {
+        width: 200px;
+    }
+}
+
 .radio-square-wrapper {
     .radio-square {
         border-width: 1.5px;
@@ -724,42 +749,59 @@ form {
         display: none;
     }
 
-    ul {
+    ul,
+    ol {
         list-style: none;
         padding-left: 0;
 
         li {
-            padding-left: 2rem;
+            padding-left: 1.5rem;
             position: relative;
 
             &::before {
                 position: absolute;
                 top: 0.1em;
-                left: calc(2rem - 1.2em);
+                left: 0;
                 content: "\25CF";
                 line-height: 1;
             }
         }
     }
 
-    // unify nested ordered lists with how it's presented in admin
     ol {
-        list-style: decimal;
+        counter-reset: item;
 
-        & ol {
-            list-style: lower-alpha;
+        li {
+            &::before {
+                counter-increment: item;
+                content: counter(item, decimal) ".";
+            }
 
-            & ol {
-                list-style: lower-roman;
+            ol li {
+                &::before {
+                    content: counter(item, lower-alpha) ".";
+                }
 
-                & ol {
-                    list-style: decimal;
+                ol li {
+                    &::before {
+                        content: counter(item, lower-roman) ".";
+                    }
 
-                    & ol {
-                        list-style: lower-alpha;
+                    ol li {
+                        &::before {
+                            content: counter(item, decimal) ".";
+                        }
 
-                        & ol {
-                            list-style: lower-roman;
+                        ol li {
+                            &::before {
+                                content: counter(item, lower-alpha) ".";
+                            }
+
+                            ol li {
+                                &::before {
+                                    content: counter(item, lower-roman) ".";
+                                }
+                            }
                         }
                     }
                 }
@@ -1751,42 +1793,59 @@ section.image-embed {
                     @include font-size-sm();
                 }
 
-                ul {
+                ul,
+                ol {
                     list-style: none;
                     padding-left: 0;
 
                     li {
-                        padding-left: 2rem;
+                        padding-left: 1.5rem;
                         position: relative;
 
                         &::before {
                             position: absolute;
                             top: 0.1em;
-                            left: calc(2rem - 1.2em);
+                            left: 0;
                             content: "\25CF";
                             line-height: 1;
                         }
                     }
                 }
 
-                // unify nested ordered lists with how it's presented in admin
                 ol {
-                    list-style: decimal;
+                    counter-reset: item;
 
-                    & ol {
-                        list-style: lower-alpha;
+                    li {
+                        &::before {
+                            counter-increment: item;
+                            content: counter(item, decimal) ".";
+                        }
 
-                        & ol {
-                            list-style: lower-roman;
+                        ol li {
+                            &::before {
+                                content: counter(item, lower-alpha) ".";
+                            }
 
-                            & ol {
-                                list-style: decimal;
+                            ol li {
+                                &::before {
+                                    content: counter(item, lower-roman) ".";
+                                }
 
-                                & ol {
-                                    list-style: lower-alpha;
+                                ol li {
+                                    &::before {
+                                        content: counter(item, decimal) ".";
+                                    }
 
-                                    & ol {
-                                        list-style: lower-roman;
+                                    ol li {
+                                        &::before {
+                                            content: counter(item, lower-alpha) ".";
+                                        }
+
+                                        ol li {
+                                            &::before {
+                                                content: counter(item, lower-roman) ".";
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -2276,6 +2335,45 @@ section.image-embed {
     }
 }
 
+@mixin rog-check-style {
+    position: absolute;
+    left: 0;
+    top: 0;
+    appearance: none;
+    width: 23px;
+    height: 23px;
+    border: 1.5px solid $cs-dark-gray;
+    border-radius: 3px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+
+    &.disabled,
+    &:disabled {
+        border-color: $cs-disabled;
+
+        &:checked {
+            background-color: $cs-disabled;
+        }
+    }
+
+    &:not(.disabled, :disabled) {
+        cursor: pointer;
+
+        &:focus-visible {
+            border-color: $cs-focus-green;
+            outline: 1px solid $cs-focus-green !important;
+            outline-offset: 0;
+        }
+
+        &:hover {
+            background-color: $cs-white;
+        }
+
+        &:checked {
+            background-color: $cs-dark-gray;
+        }
+    }
+}
+
 .rog-check {
     position: relative;
     padding-left: 30px;
@@ -2283,47 +2381,26 @@ section.image-embed {
     margin-bottom: 0.5rem;
 
     input[type="checkbox"] {
-        position: absolute;
-        left: 0;
-        top: 0;
-        appearance: none;
-        width: 23px;
-        height: 23px;
-        border: 1.5px solid $cs-dark-gray;
-        border-radius: 3px;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-
-        &.disabled,
-        &:disabled {
-            border-color: $cs-disabled;
-
-            &:checked {
-                background-color: $cs-disabled;
-            }
-        }
-
-        &:not(.disabled, :disabled) {
-            cursor: pointer;
-
-            &:focus-visible {
-                border-color: $cs-focus-green;
-                outline: 1px solid $cs-focus-green !important;
-                outline-offset: 0;
-            }
-
-            &:hover {
-                background-color: $cs-white;
-            }
-
-            &:checked {
-                background-color: $cs-dark-gray;
-            }
-        }
+        @include rog-check-style();
     }
 
     label {
         padding-top: 3px;
         @include font-size-xs();
+    }
+}
+
+.rog-radios {
+    div > label {
+        position: relative;
+        padding-left: 30px;
+        min-height: 23px;
+        display: flex;
+        align-items: center;
+
+        input[type="radio"] {
+            @include rog-check-style();
+        }
     }
 }
 
@@ -2371,4 +2448,20 @@ section.image-embed {
         }
     }
 
+}
+
+body.has-secondary-navigation .wrapper-page > section:first-child {
+    margin-top: 24px;
+}
+
+body.has-header-marquee .wrapper-page > section:first-child {
+    margin-top: 12px;
+}
+
+body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-child {
+    margin-top: 54px;
+}
+
+body.has-header-marquee .wrapper-page .list-container:first-child {
+    margin-top: 30px;
 }
