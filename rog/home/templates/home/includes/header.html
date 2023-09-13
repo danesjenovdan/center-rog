@@ -139,9 +139,9 @@
   {% if secondary_navigation %}
   <nav id="secondary-navigation">
     <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav flex-wrap justify-content-center">
         {% for item in secondary_navigation %}
-        <li class="nav-item color-scheme-{{ item.color_scheme }} mx-2 {% if item.slug == request.GET.category %}active{% endif %}">
+        <li class="nav-item color-scheme-{{ item.color_scheme }} m-1 {% if item.slug == request.GET.category %}active{% endif %}">
           <a class="nav-link" href="{{ request.path }}{% if item.slug != request.GET.category %}?category={{ item.slug }}{% endif %}">
               {{ item }}
           </a>
@@ -154,10 +154,10 @@
   {% if page.secondary_navigation %}
   <nav id="secondary-navigation">
     <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav flex-wrap justify-content-center">
         {% for item in page.body %}
         {% if item.value.show_link_in_secondary_menu %}
-        <li class="nav-item color-scheme-{{ item.value.color }} mx-2">
+        <li class="nav-item color-scheme-{{ item.value.color }} m-1">
           <a class="nav-link" href="#{{ item.value.title|slugify }}">
             {{ item.value.title }}
           </a>
