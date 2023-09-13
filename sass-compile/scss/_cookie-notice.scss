@@ -20,7 +20,7 @@
     .binder-content {
       padding: 15px;
       background: #f8f8f8;
-      font-size: $xxs-font-size;
+      @include font-size-xs();
       text-align: center;
       color: $cs-dark-gray;
 

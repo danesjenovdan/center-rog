@@ -45,3 +45,88 @@
     src:    url('../fonts/ROGEditionItalic-100.woff2') format('woff2'), /* Super Modern Browsers */
             url('../fonts/ROGEditionItalic-100.woff') format('woff'), /* Pretty Modern Browsers */
 }
+
+@mixin font-size-xxs() {
+    font-size: 13px;
+    font-family: "ROGEdition-80";
+
+    @include media-breakpoint-up(md) {
+        font-size: 11px;
+        font-family: "ROGEdition-80";
+    }
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 13px;
+        font-family: "ROGEdition-80";
+    }
+}
+
+@mixin font-size-xs() {
+    font-size: 15px;
+    font-family: "ROGEdition-80";
+
+    @include media-breakpoint-up(md) {
+        font-size: 13px;
+        font-family: "ROGEdition-80";
+    }
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 15px;
+        font-family: "ROGEdition-80";
+    }
+}
+
+@mixin font-size-sm() {
+    font-size: 17px;
+    font-family: "ROGEdition-70";
+
+    @include media-breakpoint-up(md) {
+        font-size: 18px;
+        font-family: "ROGEdition-70";
+    }
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 20px;
+        font-family: "ROGEdition-70";
+    }
+}
+
+@mixin font-size-md() {
+    font-size: 22px;
+    font-family: "ROGEdition-60";
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 25px;
+        font-family: "ROGEdition-60";
+    }
+}
+
+@mixin font-size-lg() {
+    font-size: 25px;
+    font-family: "ROGEdition-60";
+
+    @include media-breakpoint-up(md) {
+        font-size: 27px;
+        font-family: "ROGEdition-60";
+    }
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 30px;
+        font-family: "ROGEdition-60";
+    }
+}
+
+@mixin font-size-xl() {
+    font-size: 35px;
+    font-family: "ROGEdition-60";
+
+    @include media-breakpoint-up(xxl) {
+        font-size: 40px;
+        font-family: "ROGEdition-60";
+    }
+}
+
+@mixin font-size-xxl() {
+    font-size: 50px;
+    font-family: "ROGEdition-60";
+}

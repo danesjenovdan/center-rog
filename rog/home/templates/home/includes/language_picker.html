@@ -1,0 +1,18 @@
+{% load i18n wagtailcore_tags wagtail_modeltranslation %}
+
+{% get_current_language as CURRENT_LANGUAGE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+{% for language in languages %}
+{% if CURRENT_LANGUAGE != language.code %}
+    <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link lang-link">
+    {% if language.code == 'en' %}
+    eng
+    {% elif language.code == 'sl' %}
+    slo
+    {% else %}
+    {{ language.name }}
+    {% endif %}
+    </a>
+{% endif %}
+{% endfor %}
