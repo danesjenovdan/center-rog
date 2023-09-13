@@ -740,42 +740,59 @@ form {
         display: none;
     }
 
-    ul {
+    ul,
+    ol {
         list-style: none;
         padding-left: 0;
 
         li {
-            padding-left: 2rem;
+            padding-left: 1.5rem;
             position: relative;
 
             &::before {
                 position: absolute;
                 top: 0.1em;
-                left: calc(2rem - 1.2em);
+                left: 0;
                 content: "\25CF";
                 line-height: 1;
             }
         }
     }
 
-    // unify nested ordered lists with how it's presented in admin
     ol {
-        list-style: decimal;
+        counter-reset: item;
 
-        & ol {
-            list-style: lower-alpha;
+        li {
+            &::before {
+                counter-increment: item;
+                content: counter(item, decimal) ".";
+            }
 
-            & ol {
-                list-style: lower-roman;
+            ol li {
+                &::before {
+                    content: counter(item, lower-alpha) ".";
+                }
 
-                & ol {
-                    list-style: decimal;
+                ol li {
+                    &::before {
+                        content: counter(item, lower-roman) ".";
+                    }
 
-                    & ol {
-                        list-style: lower-alpha;
+                    ol li {
+                        &::before {
+                            content: counter(item, decimal) ".";
+                        }
 
-                        & ol {
-                            list-style: lower-roman;
+                        ol li {
+                            &::before {
+                                content: counter(item, lower-alpha) ".";
+                            }
+
+                            ol li {
+                                &::before {
+                                    content: counter(item, lower-roman) ".";
+                                }
+                            }
                         }
                     }
                 }
@@ -1760,42 +1777,59 @@ section.image-embed {
                     @include font-size-sm();
                 }
 
-                ul {
+                ul,
+                ol {
                     list-style: none;
                     padding-left: 0;
 
                     li {
-                        padding-left: 2rem;
+                        padding-left: 1.5rem;
                         position: relative;
 
                         &::before {
                             position: absolute;
                             top: 0.1em;
-                            left: calc(2rem - 1.2em);
+                            left: 0;
                             content: "\25CF";
                             line-height: 1;
                         }
                     }
                 }
 
-                // unify nested ordered lists with how it's presented in admin
                 ol {
-                    list-style: decimal;
+                    counter-reset: item;
 
-                    & ol {
-                        list-style: lower-alpha;
+                    li {
+                        &::before {
+                            counter-increment: item;
+                            content: counter(item, decimal) ".";
+                        }
 
-                        & ol {
-                            list-style: lower-roman;
+                        ol li {
+                            &::before {
+                                content: counter(item, lower-alpha) ".";
+                            }
 
-                            & ol {
-                                list-style: decimal;
+                            ol li {
+                                &::before {
+                                    content: counter(item, lower-roman) ".";
+                                }
 
-                                & ol {
-                                    list-style: lower-alpha;
+                                ol li {
+                                    &::before {
+                                        content: counter(item, decimal) ".";
+                                    }
 
-                                    & ol {
-                                        list-style: lower-roman;
+                                    ol li {
+                                        &::before {
+                                            content: counter(item, lower-alpha) ".";
+                                        }
+
+                                        ol li {
+                                            &::before {
+                                                content: counter(item, lower-roman) ".";
+                                            }
+                                        }
                                     }
                                 }
                             }
