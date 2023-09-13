@@ -21,14 +21,14 @@ class ActiveAtQuerySet(models.QuerySet):
         if active_payments:
             return active_payments.last()
         return None
-    
+
     def get_active_subscription_plan(self):
         now = datetime.now()
         active_payments = self.filter(
             active_to__gte=now,
             items__item_type__name="uporabnina"
         )
-    
+
         if active_payments:
             return active_payments.last().items.all().filter(item_type__name="uporabnina").last()
         return None
@@ -81,11 +81,11 @@ class Plan(Timestampable):
     is_subscription = models.BooleanField(default=False)
     price = models.IntegerField(verbose_name=_("Cena"))
     description = models.CharField(max_length=300, verbose_name=_("Opis"))
-    description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"))
-    description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"))
-    description_item_3 = models.CharField(max_length=300, verbose_name=_("Postavka 3"))
-    description_item_4 = models.CharField(max_length=300, verbose_name=_("Postavka 4"))
-    description_item_5 = models.CharField(max_length=300, verbose_name=_("Postavka 5"))
+    description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"), blank=True, null=True)
+    description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"), blank=True, null=True)
+    description_item_3 = models.CharField(max_length=300, verbose_name=_("Postavka 3"), blank=True, null=True)
+    description_item_4 = models.CharField(max_length=300, verbose_name=_("Postavka 4"), blank=True, null=True)
+    description_item_5 = models.CharField(max_length=300, verbose_name=_("Postavka 5"), blank=True, null=True)
     valid_from = models.DateTimeField(
         auto_now_add=True, help_text=_("When the plan starts"),
         null=True,
@@ -333,7 +333,7 @@ class PromoCode(Timestampable):
 
             if code.item_type != payment_plan.plan.item_type:
                 return False
-            
+
             if payment_plan.promo_code == code:
                 return False
 
