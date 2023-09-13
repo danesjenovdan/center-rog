@@ -14,7 +14,7 @@
 {% endblock list_page_intro %}
 
 {% block list_page_list %}
-<div class="row my-5">
+<div class="row my-5 px-2">
     {% for market in markets %}
     <div class="col-6 col-md-4 col-xl-3 market-card-col">
         <a href="{% pageurl market.localized %}" class="market-card color-scheme-{{ market.card_color_scheme }} card-hover">
