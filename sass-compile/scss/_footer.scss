@@ -2,11 +2,7 @@ footer.container-fluid {
     padding: 30px;
 
     p {
-        font-size: $xxs-font-size;
-
-        @include media-breakpoint-up(md) {
-            font-size: $xs-font-size;
-        }
+        @include font-size-xs();
 
         a {
             font-size: inherit;
@@ -68,7 +64,7 @@ footer.container-fluid {
         }
 
         p {
-            font-size: $xxs-font-size;
+            @include font-size-xs();
             margin-bottom: 5px;
         }
 

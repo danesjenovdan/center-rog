@@ -1,4 +1,4 @@
-{% load static i18n wagtailcore_tags wagtail_modeltranslation %}
+{% load static i18n wagtailcore_tags wagtail_modeltranslation wagtailimages_tags %}
 {% wagtail_site as current_site %}
 
 <div id="logo-navigation">
@@ -10,37 +10,19 @@
   <nav id="primary-navigation" class="position-relative">
     <div id="primary-navigation-background" class="position-absolute"></div>
     <div class="navbar justify-content-end navbar-toggler-container">
-      <ul class="navbar-nav flex-row align-items-center">
+      <ul class="navbar-nav flex-row align-items-center d-none d-md-flex">
         <!-- prevodi -->
         <li class="nav-item mx-2">
-          {% get_current_language as CURRENT_LANGUAGE %}
-          {% get_available_languages as AVAILABLE_LANGUAGES %}
-          {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
-          {% for language in languages %}
-            {% if CURRENT_LANGUAGE != language.code %}
-              <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link lang-link">
-                {% if language.code == 'en' %}
-                eng
-                {% elif language.code == 'sl' %}
-                slo
-                {% else %}
-                {{ language.name }}
-                {% endif %}
-              </a>
-            {% endif %}
-          {% endfor %}
+          {% include "home/includes/language_picker.html" %}
         </li>
         <!-- profile / sign in  -->
         {% if user.is_authenticated %}
         <li class="nav-item mx-2 color-scheme-white">
-          <a class="primary-button button-small" href="/profil">Moj profil</a>
+          <a class="primary-button button-small" href="{% url 'profile-my' %}">{% translate 'Moj profil' %}</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="/odjava">Odjava</a>
-        </li> -->
         {% else %}
         <li class="nav-item color-scheme-white">
-          <a class="primary-button button-small" href="/prijava">prijava</a>
+          <a class="primary-button button-small" href="{% url 'login' %}">{% translate 'prijava' %}</a>
         </li>
         {% endif %}
       </ul>
@@ -95,13 +77,30 @@
       })();
     </script>
     {% endif %}
-    <div class="navbar collapse navbar-collapse position-absolute row justify-content-start align-items-start pt-3" id="navbar-collapsable-menu" style="opacity: 0;">
-      {% for navigation_link in settings.home.MetaSettings.header_links %}
+    <div class="navbar collapse navbar-collapse position-absolute pt-3" id="navbar-collapsable-menu" style="opacity: 0;">
+      <div class="container">
+        <div class="row w-100 mb-2 d-md-none">
+          <div class="col-12">
+            {% include "home/includes/language_picker.html" %}
+          </div>
+        </div>
+      <div class="row w-100 mb-4 d-md-none color-scheme-white">
+        <div class="col-12">
+          <!-- profile / sign in  -->
+          {% if user.is_authenticated %}
+            <a class="primary-button button-medium" href="{% url 'profile-my' %}">{% translate 'Moj profil' %}</a>
+          {% else %}
+            <a class="primary-button button-medium" href="{% url 'login' %}">{% translate 'prijava' %}</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="row w-100 m-0">
+        {% for navigation_link in settings.home.MetaSettings.header_links %}
         {% if forloop.counter0|divisibleby:3 %}
-          <ul class="col-3 navbar-nav">
+          <ul class="col-6 col-md-3 navbar-nav">
         {% endif %}
             <li class="nav-item">
-              <a class="nav-link py-1 {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
+              <a class="nav-link {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
                   href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
                   {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
                 {% if navigation_link.value.name %}
@@ -114,15 +113,35 @@
         {% if forloop.counter|divisibleby:3 %}
           </ul>
         {% endif %}
-      {% endfor %}
+        {% endfor %}
+      </div>
+      </div>
+      
+      {% if random_image %}
+      <div class="container d-md-none">
+        <div class="row">
+        <div class="col-12">
+          {% if random_image.is_portrait %}
+          <div class="random-image random-image--portrait">
+              {% image random_image fill-400x540 %}
+          </div>
+          {% else %}
+          <div class="random-image random-image--landscape">
+              {% image random_image fill-540x400 %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      </div>
+      {% endif %}
     </div>
   </nav>
   {% if secondary_navigation %}
   <nav id="secondary-navigation">
     <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav flex-wrap justify-content-center">
         {% for item in secondary_navigation %}
-        <li class="nav-item color-scheme-{{ item.color_scheme }} mx-2 {% if item.slug == request.GET.category %}active{% endif %}">
+        <li class="nav-item color-scheme-{{ item.color_scheme }} m-1 {% if item.slug == request.GET.category %}active{% endif %}">
           <a class="nav-link" href="{{ request.path }}{% if item.slug != request.GET.category %}?category={{ item.slug }}{% endif %}">
               {{ item }}
           </a>
@@ -135,10 +154,10 @@
   {% if page.secondary_navigation %}
   <nav id="secondary-navigation">
     <div class="navbar navbar-expand justify-content-center" id="navbar-collapsable-secondary-menu">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav flex-wrap justify-content-center">
         {% for item in page.body %}
         {% if item.value.show_link_in_secondary_menu %}
-        <li class="nav-item color-scheme-{{ item.value.color }} mx-2">
+        <li class="nav-item color-scheme-{{ item.value.color }} m-1">
           <a class="nav-link" href="#{{ item.value.title|slugify }}">
             {{ item.value.title }}
           </a>

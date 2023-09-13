@@ -7,6 +7,11 @@
     z-index: 999999;
     mix-blend-mode: difference;
 
+    @include media-breakpoint-down(sm) {
+        top: 5px;
+        left: 5px;
+    }
+
     a {
         display: inline-block;
 
@@ -25,6 +30,14 @@
     &.custom-navigation-show {
         img {
             transform: rotate(-10deg);
+        }
+
+        &+header {
+            #primary-navigation {
+                @include media-breakpoint-down(sm) {
+                    height: 100vh;
+                }
+            }
         }
     }
 }
@@ -49,6 +62,9 @@
         position: relative;
         padding: 10px 24px;
         // z-index: 999999; // to ne sme bit tako, ker potem se ne da klikat na gumbe v navigaciji
+        @include media-breakpoint-down(md) {
+            padding: 25px 5px;
+        }
     }
 
     .navbar-toggler {
@@ -62,9 +78,12 @@
 
     .nav-link {
         color: $cs-dark-gray;
+        padding: 4px;
+        @include font-size-sm();
 
         &.lang-link {
             margin-right: 0.7rem;
+            @include font-size-xs();
         }
 
         &:hover {
@@ -72,23 +91,12 @@
         }
     }
 
-    @include media-breakpoint-up(xl) {
-        .nav-link {
-            font-size: $xs-font-size;
-
-            &.lang-link {
-                font-size: $xxs-font-size;
-            }
-        }
-    }
-
-    @include media-breakpoint-up(xxl) {
-        .nav-link {
-            font-size: $sm-font-size;
-
-            &.lang-link {
-                font-size: $xs-font-size;
-            }
+    @include media-breakpoint-down(sm) {
+        .nav-link,
+        .nav-link.lang-link {
+            @include font-size-lg();
+            padding: 0;
+            margin-bottom: 10px;
         }
     }
 
@@ -161,11 +169,9 @@
             overflow: unset;
         }
 
-        @include media-breakpoint-down(md) {
-            a {
-                font-size: $xs-font-size;
-            }
-        }
+        // a {
+        //     @include font-size-sm();
+        // }
 
         @include media-breakpoint-up(xl) {
             width: 800px;
@@ -173,11 +179,10 @@
 
         @include media-breakpoint-up(xxl) {}
 
-
-
     }
 
     &.custom-navigation-show {
+
         #primary-navigation-background {
             clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 0% 100%);
 
@@ -214,8 +219,10 @@
                 right: 0;
                 width: auto;
                 top: 150px;
+                bottom: 20px;
                 transform: none;
                 margin-inline: 32px;
+                align-content: space-between;
 
                 > ul {
                     flex: 1;
@@ -246,9 +253,9 @@
 #secondary-navigation {
     background: $cs-light-gray;
 
-    .navbar {
-        padding-block: 16px;
-    }
+    // .navbar {
+    //     padding-block: 16px;
+    // }
 
     .nav-item {
         border-radius: 3px;
@@ -256,7 +263,7 @@
         .nav-link {
             border-radius: 3px;
             color: inherit;
-            font-size: $xxs-font-size;
+            @include font-size-xs();
             position: relative;
             cursor: pointer;
         }
