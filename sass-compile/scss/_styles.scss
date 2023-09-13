@@ -445,7 +445,9 @@ form {
     }
 
     &.card-wide {
-        flex-direction: row;
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+        }
 
         > .card-img,
         > .card-body {
@@ -455,6 +457,13 @@ form {
 
         .card-title {
             @include font-size-md();
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        &:not(.card-wide) {
+            height: 240px;
+            flex-direction: row;
         }
     }
 }
@@ -1511,6 +1520,13 @@ section.image-embed {
     .news-list-archive {
         .list-element {
             @include font-size-sm();
+
+            @include media-breakpoint-down(sm) {
+                &>div {
+                    width: 75%;
+                    padding-right: 10px;
+                }
+            }
 
             p:first-child {
                 margin-bottom: 5px;

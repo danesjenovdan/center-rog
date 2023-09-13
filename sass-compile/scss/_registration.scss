@@ -42,13 +42,19 @@
                 transform: translateX(-50%);
                 @include font-size-xs();
                 opacity: 50%;
+                @include media-breakpoint-down(sm) {
+                    display: none;
+                }
             }
 
             &.active {
                 background-color: $cs-dark-gray;
-
+                
                 span {
                     opacity: 100%;
+                    @include media-breakpoint-down(sm) {
+                        display: block;
+                    }
                 }
             }
 
