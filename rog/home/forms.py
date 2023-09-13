@@ -86,6 +86,17 @@ class RegistrationInformationForm(forms.ModelForm):
         label_suffix="",
         widget=forms.SelectDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
     )
+    gender = forms.ChoiceField(
+        label=_("Spol"),
+        label_suffix="",
+        choices=(("F", _("ženski")), ("M", _("moški")), ("O", _("drugo"))),
+        widget=forms.RadioSelect(attrs={"class": "gender-radio"}),
+    )
+    gender_other = forms.CharField(
+        label=_("izpolni"),
+        label_suffix="",
+        required=False
+    )
     address_1 = forms.CharField(
         label=_("Naslov 1"),
         label_suffix="",
@@ -135,6 +146,9 @@ class RegistrationInformationForm(forms.ModelForm):
         fields = [
             "first_name",
             "last_name",
+            "birth_date",
+            "gender",
+            "gender_other",
             "address_1",
             "address_2",
             "legal_person_receipt",

@@ -289,6 +289,31 @@ body.safari {
     }
 }
 
+.registration-gender-row {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 20px;
+
+    .form-field-wrapper {
+        margin-bottom: 0;
+    }
+
+    div.gender-radio {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        height: 40px;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+
+    input[type=text] {
+        width: 200px;
+    }
+}
+
 .radio-square-wrapper {
     .radio-square {
         border-width: 1.5px;
@@ -2260,6 +2285,45 @@ section.image-embed {
     }
 }
 
+@mixin rog-check-style {
+    position: absolute;
+    left: 0;
+    top: 0;
+    appearance: none;
+    width: 23px;
+    height: 23px;
+    border: 1.5px solid $cs-dark-gray;
+    border-radius: 3px;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+
+    &.disabled,
+    &:disabled {
+        border-color: $cs-disabled;
+
+        &:checked {
+            background-color: $cs-disabled;
+        }
+    }
+
+    &:not(.disabled, :disabled) {
+        cursor: pointer;
+
+        &:focus-visible {
+            border-color: $cs-focus-green;
+            outline: 1px solid $cs-focus-green !important;
+            outline-offset: 0;
+        }
+
+        &:hover {
+            background-color: $cs-white;
+        }
+
+        &:checked {
+            background-color: $cs-dark-gray;
+        }
+    }
+}
+
 .rog-check {
     position: relative;
     padding-left: 30px;
@@ -2267,47 +2331,26 @@ section.image-embed {
     margin-bottom: 0.5rem;
 
     input[type="checkbox"] {
-        position: absolute;
-        left: 0;
-        top: 0;
-        appearance: none;
-        width: 23px;
-        height: 23px;
-        border: 1.5px solid $cs-dark-gray;
-        border-radius: 3px;
-        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-
-        &.disabled,
-        &:disabled {
-            border-color: $cs-disabled;
-
-            &:checked {
-                background-color: $cs-disabled;
-            }
-        }
-
-        &:not(.disabled, :disabled) {
-            cursor: pointer;
-
-            &:focus-visible {
-                border-color: $cs-focus-green;
-                outline: 1px solid $cs-focus-green !important;
-                outline-offset: 0;
-            }
-
-            &:hover {
-                background-color: $cs-white;
-            }
-
-            &:checked {
-                background-color: $cs-dark-gray;
-            }
-        }
+        @include rog-check-style();
     }
 
     label {
         padding-top: 3px;
         @include font-size-xs();
+    }
+}
+
+.rog-radios {
+    div > label {
+        position: relative;
+        padding-left: 30px;
+        min-height: 23px;
+        display: flex;
+        align-items: center;
+
+        input[type="radio"] {
+            @include rog-check-style();
+        }
     }
 }
 

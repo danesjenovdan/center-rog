@@ -219,33 +219,33 @@ class RegistrationInformationView(View):
         form = RegistrationInformationForm(request.POST)
 
         if form.is_valid():
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
-            address_1 = form.cleaned_data["address_1"]
-            address_2 = form.cleaned_data["address_2"]
-            birth_date = form.cleaned_data["birth_date"]
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.address_1 = form.cleaned_data["address_1"]
+            user.address_2 = form.cleaned_data["address_2"]
+            user.birth_date = form.cleaned_data["birth_date"]
 
-            user.first_name = first_name
-            user.last_name = last_name
-            user.address_1 = address_1
-            user.birth_date = birth_date
-            if address_2:
-                user.address_2 = address_2
+            gender = form.cleaned_data["gender"]
+            user.gender = gender
+            if gender == "O":
+                user.gender_other = form.cleaned_data["gender_other"]
+            else:
+                user.gender_other = ""
 
             legal_person_receipt = form.cleaned_data["legal_person_receipt"]
+            user.legal_person_receipt = legal_person_receipt
             if legal_person_receipt:
-
-                legal_person_name = form.cleaned_data["legal_person_name"]
-                legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
-                legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
-                legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
-                legal_person_vat = form.cleaned_data["legal_person_vat"]
-
-                user.legal_person_name = legal_person_name
-                user.legal_person_address_1 = legal_person_address_1
-                user.legal_person_address_2 = legal_person_address_2
-                user.legal_person_tax_number = legal_person_tax_number
-                user.legal_person_vat = legal_person_vat
+                user.legal_person_name = form.cleaned_data["legal_person_name"]
+                user.legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
+                user.legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
+                user.legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
+                user.legal_person_vat = form.cleaned_data["legal_person_vat"]
+            else:
+                user.legal_person_name = ""
+                user.legal_person_address_1 = ""
+                user.legal_person_address_2 = ""
+                user.legal_person_tax_number = ""
+                user.legal_person_vat = False
 
             user.save()
 

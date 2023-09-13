@@ -117,7 +117,7 @@
         .sum-line {
             border-top: 1px solid $cs-dark-gray;
             border-bottom: 1.5px solid $cs-dark-gray;
-            
+
             .price {
                 @include font-size-lg();
             }
@@ -134,6 +134,12 @@
 #legal-information-wrapper {
     margin-top: 30px;
 
+    &.hide {
+        display: none;
+    }
+}
+
+#other-gender-wrapper {
     &.hide {
         display: none;
     }
