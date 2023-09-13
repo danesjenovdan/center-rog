@@ -238,7 +238,7 @@ def create_subject(subject):
         "country": "Slovenija",
         "km": 0,
         "vatcodePrefix": "SI",
-        "code": subject.legal_person_vat,
+        "code": subject.legal_person_tax_number,
         "region": "",
         "suprCommune": "",
         "phone": "",

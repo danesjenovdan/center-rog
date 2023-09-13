@@ -147,11 +147,12 @@ class User(AbstractUser):
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
+    legal_person_receipt = models.BooleanField(default=False, verbose_name="Račun za pravno osebo")
     legal_person_name = models.CharField(max_length=200, blank=True, verbose_name="Naziv pravne osebe")
     legal_person_address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     legal_person_address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
     legal_person_tax_number = models.CharField(max_length=200, blank=True, verbose_name="Davčna številka")
-    legal_person_vat = models.CharField(max_length=200, blank=True, verbose_name="Zavezanec za DDV")
+    legal_person_vat = models.BooleanField(default=False, verbose_name="Zavezanec za DDV")
     public_profile = models.BooleanField(default=False, verbose_name="Profil naj bo javno viden")
     public_username = models.CharField(max_length=20, blank=True, verbose_name="Uporabniško ime")
     description = models.CharField(max_length=600, blank=True, verbose_name="Opis")
@@ -159,7 +160,9 @@ class User(AbstractUser):
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
-    birth_date = models.DateField(verbose_name="Datum rojstva", null=True, blank=True)
+    birth_date = models.DateField(verbose_name="Datum rojstva")
+    gender = models.CharField(max_length=1, choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")), default="O", verbose_name="Spol")
+    gender_other = models.CharField(max_length=200, blank=True, verbose_name="Spol (drugo)")
     # categories
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images
@@ -179,11 +182,11 @@ class User(AbstractUser):
         return self.memberships.filter(
             Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
             valid_from__lte=datetime.now()).first()
-    
+
     @property
     def get_active_subscription_plan(self):
         return self.payments.all().get_active_subscription_plan()
-    
+
     @property
     def get_active_subscription(self):
         return self.payments.all().get_active_subscription()
@@ -203,7 +206,7 @@ class User(AbstractUser):
         lower_limit = now.replace(year=now.year-26)
         upper_limit = now.replace(year=now.year-65)
         return not(lower_limit.date() > self.birth_date > upper_limit.date())
-    
+
     def random_color(self):
         return random.choice(settings.COLOR_SCHEMES)[0]
 

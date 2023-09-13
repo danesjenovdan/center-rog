@@ -159,9 +159,15 @@
                 </div>
                 <div id="bottom-header">
                     <div id="k-info">
-                        {{ user.legal_person_name }}<br>
-                        {{ user.legal_person_address_1 }}<br>
-                        {{ user.legal_person_address_2 }}
+                        {% if user.legal_person_receipt %}
+                            {{ user.legal_person_name }}<br>
+                            {{ user.legal_person_address_1 }}<br>
+                            {{ user.legal_person_address_2 }}
+                        {% else %}
+                            &nbsp;<br>
+                            &nbsp;<br>
+                            &nbsp;
+                        {% endif %}
                     </div>
                     <div id="invoice-date">
                         <b>Naročilnica:</b> ???<br>

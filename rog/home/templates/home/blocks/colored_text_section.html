@@ -16,7 +16,7 @@
                 </div>
                 <div class="max-800">
                     {% image value.image original class="w-100 img-fluid" alt=value.image.alt_description %}
-                    <p class="image-description">{{ value.image.title }}</p>
+                    <p class="image-description">{{ value.image_description }}</p>
                 </div>
                 {% if value.link %}
                 <div class="mt-30">
@@ -34,7 +34,7 @@
             <div class="col-md-6">
                 <div>
                     {% image value.image original class="w-100 img-fluid mb-4 mb-md-0" alt=value.image.alt_description %}
-                    <p class="image-description">{{ value.image.title }}</p>
+                    <p class="image-description">{{ value.image_description }}</p>
                 </div>
             </div>
             {% endif %}

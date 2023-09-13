@@ -251,6 +251,7 @@ class ColoredTextBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     text = blocks.TextBlock(label=_("Besedilo"))
     image = ImageChooserBlock(label=_("Slika"), required=False)
+    image_description = blocks.TextBlock(label=_("Opis pod sliko"), blank=True, required=False)
     image_position = blocks.ChoiceBlock(choices=[
         ("align-left", "Levo"),
         ("align-right", "Desno"),

@@ -32,26 +32,14 @@
                 <div class="col-12 col-md-6 col-xxl-5">
                     <p>
                         {% for link in settings.home.MetaSettings.footer_links %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">
-                            {% if link.value.name %}
-                            {{ link.value.name }}
-                            {% elif link.value.page %}
-                            {{ link.value.page.title }}
-                            {% endif %}
-                        </a><br />
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
                         {% endfor %}
                     </p>
                     {% if settings.home.MetaSettings.social_media_links %}
                     <p>
                         sledi nam:<br />
                         {% for link in settings.home.MetaSettings.social_media_links %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}" target="_blank">
-                            {% if link.value.name %}
-                            {{ link.value.name }}
-                            {% elif link.value.page %}
-                            {{ link.value.page.title }}
-                            {% endif %}
-                        </a><br />
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}" target="_blank">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
                         {% endfor %}
                     </p>
                     {% endif %}
@@ -81,7 +69,7 @@
     {% if settings.home.MetaSettings.footer_logos %}
     <div class="row">
         <div class="col d-flex justify-content-between">
-            <div class="footer-logos d-flex">
+            <div class="footer-logos">
                 {% for logo in settings.home.MetaSettings.footer_logos %}
                 <div class="footer-logo">
                     <p>{{ logo.value.description }}</p>
