@@ -74,12 +74,14 @@ class ItemType(models.Model):
 # payments
 class Plan(Timestampable):
     name = models.CharField(max_length=100, verbose_name=_("Ime paketa"), help_text=_("Npr. letna uporabnina"),)
-    discounted_price = models.IntegerField(
+    discounted_price = models.DecimalField(
+        decimal_places=2,
+        max_digits=10,
         verbose_name=_("Discounted price"),
         help_text=_("Price for younger than 26 years old and older than 65")
     )
     is_subscription = models.BooleanField(default=False)
-    price = models.IntegerField(verbose_name=_("Cena"))
+    price = models.DecimalField(decimal_places=2, max_digits=10, verbose_name=_("Cena"))
     description = models.CharField(max_length=300, verbose_name=_("Opis"))
     description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"), blank=True, null=True)
     description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"), blank=True, null=True)
@@ -136,7 +138,7 @@ class Plan(Timestampable):
         help_text=_("Unique ident id for Pantheon without dashes and spaces")
     )
     item_type = models.ForeignKey('ItemType', blank=True, null=True, on_delete=models.SET_NULL)
-    vat = models.IntegerField(default=22)
+    vat = models.IntegerField(default=22) # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
 
     def __str__(self):
         return f"{self.name}"
@@ -210,7 +212,7 @@ class Payment(Timestampable):
         related_name="payments",
         help_text="Select a user",
     )
-    amount = models.IntegerField()
+    amount = models.DecimalField(decimal_places=2, max_digits=10)
     successed_at = models.DateTimeField(null=True, blank=True)
     errored_at = models.DateTimeField(null=True, blank=True)
     active_to = models.DateTimeField(
