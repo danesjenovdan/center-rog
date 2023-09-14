@@ -1,4 +1,4 @@
-{% load i18n static %}
+{% load i18n static percentage %}
 <!DOCTYPE html>
 <html lang="sl">
     <head>
@@ -124,6 +124,24 @@
                 text-align: left;
             }
 
+            #body table td.t-ident {
+                font-family: "Courier New";
+                font-size: 11px;
+                line-height: 1;
+            }
+
+            #body table code {
+                font-family: "Courier New";
+                font-size: 11px;
+                background: #ddd;
+                padding: 2px 4px 1px;
+                border-radius: 3px;
+            }
+
+            #body table .t-sum {
+                font-weight: 700;
+            }
+
             #footer #footer-top {
                 font-size: 10px;
             }
@@ -182,7 +200,7 @@
                 </hr>
                 <table>
                     <tr>
-                        <th class="t-ident">ident</th>
+                        <th class="t-ident">id</th>
                         <th class="t-name">Naziv</th>
                         <th class="t-amount">Kol.</th>
                         <th class="t-em">EM</th>
@@ -191,18 +209,38 @@
                         <th class="t-vat">DDV %</th>
                         <th class="t-price">Vrednost brez DDV</th>
                     </tr>
-                    {% for plan in payment.items.all %}
+                    {% for payment_plan in payment.payment_plans.all %}
                     <tr>
-                        <td class="t-ident">{{ plan.pantheon_ident_id }}</td>
-                        <td class="t-name">{{ plan.name }}</td>
+                        <td class="t-ident">{{ payment_plan.plan.pantheon_ident_id }}</td>
+                        <td class="t-name">{{ payment_plan.plan.name }}</td>
                         <td class="t-amount">1,00</td>
                         <td class="t-em">KOS</td>
-                        <td class="t-price">{{ plan.price|floatformat:"2g" }}&nbsp;€</td>
-                        <td class="t-vat">0,00</td>
-                        <td class="t-vat">0,00</td>
-                        <td class="t-price">{{ plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-vat">
+                            {% if payment_plan.promo_code %}
+                                {{ payment_plan.promo_code.percent_discount|floatformat:"2g" }}
+                            {% else %}
+                                {{ 0|floatformat:"2g" }}
+                            {% endif %}
+                        </td>
+                        <td class="t-vat">{{ 0|floatformat:"2g" }}</td>
+                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
+                    {% if payment_plan.promo_code %}
+                    <tr class="t-promocode">
+                        <td class="t-ident"></td>
+                        <td class="t-name">Koda za popust: <code>{{ payment_plan.promo_code.code }}</code></td>
+                        <td colspan="2"></td>
+                        <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
+                        <td colspan="2"></td>
+                        <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
+                    </tr>
+                    {% endif %}
                     {% endfor %}
+                    <tr class="t-sum">
+                        <td colspan="7">Skupaj</td>
+                        <td class="t-price">{{ payment.amount|floatformat:"2g" }}&nbsp;€</td>
+                    </tr>
                 </table>
             </div>
             <div id="footer">

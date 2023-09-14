@@ -40,19 +40,19 @@
             {% for item in payment.payment_plans.all %}
                 <div class="line d-flex justify-content-between">
                     <div class="name">{{ item.plan.name }}</div>
-                    <div class="price">€{{ item.price }}</div>
+                    <div class="price">€{{ item.price|floatformat:"2g" }}</div>
                 </div>
                 {% if item.promo_code %}
                 <div class="line d-flex justify-content-between">
                     <div class="name">{{ item.promo_code }}</div>
-                    <div class="price">- €{{ item.price|percentage:item.promo_code.percent_discount }}</div>
+                    <div class="price">- €{{ item.price|percentage:item.promo_code.percent_discount|floatformat:"2g" }}</div>
                 </div>
                 {% endif %}
             {% endfor %}
 
             <div class="sum-line d-flex justify-content-between">
                 <div class="name">{% translate 'skupaj' %}</div>
-                <div class="price">€{{ payment.amount }}</div>
+                <div class="price">€{{ payment.amount|floatformat:"2g" }}</div>
             </div>
 
             <form action="" method="post">
@@ -83,7 +83,7 @@
                     <p class="button-notice">{% translate '*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart' %}</p>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>

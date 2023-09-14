@@ -22,7 +22,7 @@
             <div class="payment">
                 <div class="date">{{ payment.successed_at }}</div>
                 <div class="name">{{ payment.history_name }}</div>
-                <div class="amount">{{ payment.amount }}€</div>
+                <div class="amount">{{ payment.amount|floatformat:"2g" }}&nbsp;€</div>
                 <div class="export-button">
                     <a class="secondary-button button-small" href="{% url 'invoice-pdf' payment_id=payment.id %}">{% translate 'prenesi PDF računa' %}</a>
                 </div>

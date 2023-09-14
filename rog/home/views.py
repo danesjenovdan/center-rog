@@ -250,7 +250,7 @@ class RegistrationInformationView(View):
             user.save()
 
             # update PRIMA user
-            data, message = prima_api.updateUser(user_id=user.prima_id, name=first_name, last_name=last_name)
+            data, message = prima_api.updateUser(user_id=user.prima_id, name=user.first_name, last_name=user.last_name)
 
             return redirect("registration-profile")
         else:

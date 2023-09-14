@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from wkhtmltopdf.views import PDFTemplateResponse
+from decimal import Decimal
 
 from .models import Payment, Plan, Token, PaymentPlan, PromoCode
 from users.models import Membership, MembershipType
@@ -80,7 +81,7 @@ class PaymentPreview(views.APIView):
                         payment_plan.save()
                         plan = payment_plan.plan
                         plan_price = plan.discounted_price if user.is_eligible_to_discount() else plan.price
-                        payment.amount -= plan_price * (valid_promo_code.percent_discount / 100)
+                        payment.amount -= plan_price * Decimal(valid_promo_code.percent_discount / 100)
                         payment.save()
                         promo_code_error = False
                         promo_code_success = True
