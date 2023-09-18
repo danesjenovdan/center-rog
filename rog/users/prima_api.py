@@ -107,7 +107,7 @@ class PrimaApi(object):
             payload = {
                 'Request': 'ReadUsers',
                 'Range': 'All-preview',
-                'FilterFields': 'UsrEmail,UsrLoginName',
+                'FilterFields': 'UsrLoginName',
                 'Filter': user_login_name,
             }
         
