@@ -85,6 +85,7 @@ class RegistrationInformationForm(forms.ModelForm):
         label=_("Datum rojstva"),
         label_suffix="",
         widget=forms.SelectDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
+        required=True
     )
     gender = forms.ChoiceField(
         label=_("Spol"),

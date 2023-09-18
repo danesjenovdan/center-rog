@@ -160,7 +160,7 @@ class User(AbstractUser):
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
-    birth_date = models.DateField(verbose_name="Datum rojstva")
+    birth_date = models.DateField(verbose_name="Datum rojstva", null=True)
     gender = models.CharField(max_length=1, choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")), default="O", verbose_name="Spol")
     gender_other = models.CharField(max_length=200, blank=True, verbose_name="Spol (drugo)")
     # categories
