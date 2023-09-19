@@ -166,12 +166,11 @@
                     <div id="b-info">
                         Kreativno središče Center Rog<br>
                         Trubarjeva cesta 72<br>
-                        1000 Ljubljana<br>
-                        renata.zamida@center-rog.si
+                        1000 Ljubljana
                     </div>
                     <div id="r-info">
                         Matična št.: 8889724000<br>
-                        Davčna št.: 79671977<br>
+                        Davčna št.: SI79671977<br>
                         TRR: 01261-6000002804
                     </div>
                 </div>
@@ -188,33 +187,28 @@
                         {% endif %}
                     </div>
                     <div id="invoice-date">
-                        <b>Naročilnica:</b> ???<br>
-                        <b>Dat. pre. dob:</b> {{ payment.created_at|date:"d. m. Y H:i" }}<br>
-                        <b>Datum valute:</b> {{ payment.successed_at|date:"d. m. Y H:i" }}<br>
+                        <b>Datum:</b> {{ payment.successed_at|date:"d. m. Y" }}<br>
                     </div>
                 </div>
             </div>
             <div style="clear: both;"></div>
             <div id="body">
-                <h1>Račun {{ payment.id }}</h1>
+                <h1>Račun št. {{ payment.id }}</h1>
                 </hr>
                 <table>
                     <tr>
-                        <th class="t-ident">id</th>
-                        <th class="t-name">Naziv</th>
+                        <th class="t-name">Artikel</th>
                         <th class="t-amount">Kol.</th>
-                        <th class="t-em">EM</th>
                         <th class="t-price">Cena</th>
-                        <th class="t-vat">R. %</th>
+                        <th class="t-vat">Pop. %</th>
                         <th class="t-vat">DDV %</th>
                         <th class="t-price">Vrednost brez DDV</th>
+                        <th class="t-price">Vrednost z DDV</th>
                     </tr>
                     {% for payment_plan in payment.payment_plans.all %}
                     <tr>
-                        <td class="t-ident">{{ payment_plan.plan.pantheon_ident_id }}</td>
-                        <td class="t-name">{{ payment_plan.plan.name }}</td>
+                        <td class="t-name">{{ payment_plan.plan_name }}</td>
                         <td class="t-amount">1,00</td>
-                        <td class="t-em">KOS</td>
                         <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
                         <td class="t-vat">
                             {% if payment_plan.promo_code %}
@@ -225,6 +219,7 @@
                         </td>
                         <td class="t-vat">{{ 0|floatformat:"2g" }}</td>
                         <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
                     {% if payment_plan.promo_code %}
                     <tr class="t-promocode">
@@ -234,23 +229,20 @@
                         <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
                         <td colspan="2"></td>
                         <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
                     {% endif %}
                     {% endfor %}
                     <tr class="t-sum">
-                        <td colspan="7">Skupaj</td>
+                        <td colspan="6">Skupaj</td>
                         <td class="t-price">{{ payment.amount|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
                 </table>
             </div>
             <div id="footer">
                 <div id="footer-top">
-                    DDV ni obračunan skladno s 1.odst. 94. čl ZDDV-1.<br>
-                    Prosimo, da znesek nakažete na naš transakcijski račun številka 01261-6000002804  pri UJP RS in se sklicujete na številko računa.<br>
-                    V primeru prekoračitve datuma plačila, bomo zaračunali zakonske zamudne obresti!
-                </div>
-                <div id="izdal">
-                    Račun izdala: Renata Zamida, direktorica
+                    Hvala za vaš nakup!<br>
+                    Za reklamacije in informacije smo dosegljivi na: info@center-rog.si
                 </div>
             </div>
         </div>
