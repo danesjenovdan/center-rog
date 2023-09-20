@@ -253,7 +253,7 @@ class PaymentFailure(views.APIView):
 class PaymentHistory(View):
     def get(self, request):
         user = request.user
-        payments = user.payments.all().order_by('-created_at')
+        payments = user.payments.filter(successed_at__isnull=False).order_by('-created_at')
 
         return render(
             request,

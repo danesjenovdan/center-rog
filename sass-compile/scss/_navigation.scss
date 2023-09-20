@@ -34,8 +34,12 @@
 
         &+header {
             #primary-navigation {
-                @include media-breakpoint-down(sm) {
+                @include media-breakpoint-down(md) {
                     height: 100vh;
+
+                    .header-marquee {
+                        display: none;
+                    }
                 }
             }
         }
@@ -49,12 +53,17 @@
         height: 140px;
         width: 100%;
         background-color: #FFFFFF;
-        transition: clip-path 0.35s;
     }
 
     @include media-breakpoint-down(md) {
         #primary-navigation-background {
             clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 85%);
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        #primary-navigation-background {
+            transition: clip-path 0.35s;
         }
     }
 
@@ -91,12 +100,21 @@
         }
     }
 
-    @include media-breakpoint-down(sm) {
-        .nav-link,
-        .nav-link.lang-link {
+    @include media-breakpoint-down(md) {
+        .nav-link {
             @include font-size-lg();
             padding: 0;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        .nav-link.lang-link {
+            @include font-size-md();
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .primary-button {
+            margin-top: 15px;
         }
     }
 
@@ -153,11 +171,14 @@
     #navbar-collapsable-menu {
         top: 0;
         left: 50%;
-        transform: translateX(-50%) translateY(-30px) rotate(3.56deg);
-        transform-origin: bottom right;
-        transition: all 0.35s ease;
         opacity: 0;
         width: 100%;
+
+        @include media-breakpoint-up(lg) {
+            transform: translateX(-50%) translateY(-30px) rotate(3.56deg);
+            transform-origin: bottom right;
+            transition: all 0.35s ease;
+        }
 
         &.collapse:not(.show) {
             display: flex;
@@ -167,6 +188,10 @@
         &.collapsing {
             height: unset;
             overflow: unset;
+
+            @include media-breakpoint-down(md) {
+                transition: none;
+            }
         }
 
         // a {
@@ -215,13 +240,17 @@
             opacity: 1;
 
             @include media-breakpoint-down(md) {
+                &>.container {
+                    width: 50%;
+                }
+
                 left: 0;
                 right: 0;
                 width: auto;
                 top: 150px;
                 bottom: 20px;
                 transform: none;
-                margin-inline: 32px;
+                margin-inline: 8px;
                 align-content: space-between;
 
                 > ul {
@@ -230,6 +259,10 @@
                 }
             }
         }
+    }
+    
+    .random-image {
+        max-width: 50%;
     }
 }
 
@@ -246,7 +279,9 @@
 
     &.shown {
         opacity: 1;
-        transition: transform 0.35s ease, top 0.35s ease;
+        @include media-breakpoint-up(md) {
+            transition: transform 0.35s ease, top 0.35s ease;
+        }
     }
 }
 

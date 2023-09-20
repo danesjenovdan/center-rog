@@ -6,11 +6,11 @@
 {% block list_page_body %}
 
 <div class="row">
-    <div class="col-xl-7">
+    <div class="col-md-6 col-xl-7 mb-4">
         <p class="intro">{{ page.intro_text }}</p>
     </div>
 
-    <div class="col-xl-5 residents-section">
+    <div class="col-md-6 col-xl-5 residents-section d-flex justify-content-center d-md-block">
         <div class="doorbell">
             {% for resident in residents %}
                 <a href="{% pageurl resident.localized %}" class="resident">

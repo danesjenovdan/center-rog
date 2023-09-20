@@ -190,6 +190,7 @@ class Plan(Timestampable):
 class PaymentPlan(models.Model):
     payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
     plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
+    plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     promo_code = models.ForeignKey(
         "PromoCode",
