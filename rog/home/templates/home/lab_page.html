@@ -58,7 +58,9 @@
         <div class="col-12 col-md-4 col-xxl-3">
             <div class="card tool-card color-scheme-white">
                 <h4 class="card-title text-center">{{ tool.name }}</h4>
-                {% image tool.image original class="img-fluid" alt="..." %}
+                <div class="text-center">
+                    {% image tool.image original class="img-fluid" alt="..." %}
+                </div>
                 {% if tool.related_tool_specifications.all %}
                 <div class="specifications">
                     {% for spec in tool.related_tool_specifications.all %}

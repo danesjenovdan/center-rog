@@ -34,7 +34,7 @@
 
         &+header {
             #primary-navigation {
-                @include media-breakpoint-down(sm) {
+                @include media-breakpoint-down(md) {
                     height: 100vh;
 
                     .header-marquee {
@@ -100,7 +100,7 @@
         }
     }
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         .nav-link {
             @include font-size-lg();
             padding: 0;
@@ -174,7 +174,7 @@
         opacity: 0;
         width: 100%;
 
-        @include media-breakpoint-up(md) {
+        @include media-breakpoint-up(lg) {
             transform: translateX(-50%) translateY(-30px) rotate(3.56deg);
             transform-origin: bottom right;
             transition: all 0.35s ease;
@@ -189,7 +189,7 @@
             height: unset;
             overflow: unset;
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 transition: none;
             }
         }
@@ -239,13 +239,11 @@
             transform: translateX(-50%) rotate(0deg);
             opacity: 1;
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 &>.container {
                     width: 50%;
                 }
-            }
 
-            @include media-breakpoint-down(md) {
                 left: 0;
                 right: 0;
                 width: auto;

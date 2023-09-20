@@ -348,6 +348,10 @@ form {
         .radio-square.btn {
             border-color: $cs-dark-gray;
 
+            ul li {
+                line-height: 1.2;
+            }
+
             &:hover {
                 box-shadow: 0px 0px 10px rgba(59, 67, 82, 0.25);
             }
@@ -651,7 +655,7 @@ form {
     border: none;
 
     h4 {
-        @include font-size-sm();
+        @include font-size-md();
         margin-bottom: 15px;
     }
 
@@ -661,14 +665,14 @@ form {
 
     p {
         margin-bottom: 5px;
-        @include font-size-xs();
+        @include font-size-sm();
     }
 
     .specifications p {
         margin-bottom: 10px;
 
         span:last-child {
-            @include font-size-sm();
+            @include font-size-md();
         }
     }
 
@@ -866,10 +870,18 @@ form {
             @include font-size-xl();
             margin-bottom: 20px;
             text-align: center;
+
+            @include media-breakpoint-down(sm) {
+                @include font-size-lg();
+            }
         }
 
         p {
             @include font-size-md();
+
+            @include media-breakpoint-down(sm) {
+                @include font-size-sm();
+            }
         }
 
         &.bulletin-board {
@@ -891,6 +903,10 @@ form {
                     // left: 0;
                     width: 100%;
                     height: 460px;
+
+                    @include media-breakpoint-down(sm) {
+                        height: 200px;
+                    }
 
                     &:nth-child(2) {
                         top: 35px;
@@ -1063,6 +1079,25 @@ form {
                     position: absolute;
                 }
             }
+
+            @include media-breakpoint-down(sm) {
+                p {
+                    @include font-size-sm();
+                }
+
+                li {
+                    padding: 0 8px;
+
+                    a {
+                        @include font-size-sm();
+                    }
+
+                    &:before {
+                        border-width: 9px 0 9px 16px;
+                        top: 2px;
+                    }
+                }
+            }
         }
 
         &.events-section,
@@ -1097,17 +1132,17 @@ form {
         }
 
         &.studios-section {
-            .scrollbar-hider {
-                overflow: hidden;
-            }
+            // .scrollbar-hider {
+            //     overflow: hidden;
+            // }
 
-            .studios-container {
-                .row {
-                    padding-block: 33px; // needed when cards flip on hover to not create a scrollbar
-                    padding-inline: 15px;
-                    flex-wrap: nowrap;
-                    overflow-x: scroll;
-                }
+            // .studios-container {
+            //     .row {
+            //         padding-block: 33px; // needed when cards flip on hover to not create a scrollbar
+            //         padding-inline: 15px;
+            //         flex-wrap: nowrap;
+            //         overflow-x: scroll;
+            //     }
 
                 .studio-card-col {
                     // margin-left: 15px;
@@ -1136,20 +1171,19 @@ form {
                     &:nth-child(7n) {
                         transform: rotate(-4deg);
                     }
-
                 }
-            }
+            // }
 
-            .scrolling-dots {
-                span {
-                    border-color: $cs-dark-green;
+            // .scrolling-dots {
+            //     span {
+            //         border-color: $cs-dark-green;
 
-                    &:hover {
-                        border-color: $cs-dark-gray;
-                        background-color: $cs-dark-green;
-                    }
-                }
-            }
+            //         &:hover {
+            //             border-color: $cs-dark-gray;
+            //             background-color: $cs-dark-green;
+            //         }
+            //     }
+            // }
 
             .bulletin-board-link a {
                 color: inherit;
@@ -1231,6 +1265,10 @@ form {
     }
 
     .contacts-section {
+        p {
+            @include font-size-sm();
+        }
+
         .row:nth-child(2) {
             margin-bottom: 30px;
         }
@@ -1486,9 +1524,13 @@ section.image-embed {
     min-height: 90vh;
     display: flex;
     align-items: center;
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @include media-breakpoint-down(sm) {
+        min-height: 70vh;
+    }
 
     .image-embed-text-box {
         border-radius: 3px;
@@ -2025,10 +2067,6 @@ section.image-embed {
 .template-object-list {
     &.template-news-list-page,
     &.template-event-list-page {
-        .list-container {
-            padding-top: 80px;
-        }
-
         .link-text {
             @include font-size-sm();
         }
@@ -2458,10 +2496,18 @@ body.has-header-marquee .wrapper-page > section:first-child {
     margin-top: 12px;
 }
 
-body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-child {
-    margin-top: 54px;
+body.has-secondary-navigation .wrapper-page .list-container:first-child,
+body.has-secondary-navigation .wrapper-page > section:first-child {
+    @include media-breakpoint-down(sm) {
+        margin-top: 60px;
+    }
 }
 
-body.has-header-marquee .wrapper-page .list-container:first-child {
-    margin-top: 30px;
+body.has-secondary-navigation.has-header-marquee .wrapper-page .list-container:first-child,
+body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-child {
+    margin-top: 54px;
+
+    @include media-breakpoint-down(sm) {
+        margin-top: 100px;
+    }
 }
