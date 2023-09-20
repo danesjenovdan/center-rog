@@ -123,11 +123,11 @@
         <div class="col-12">
           {% if random_image.is_portrait %}
           <div class="random-image random-image--portrait">
-              {% image random_image fill-400x540 %}
+              {% image random_image fill-400x540 class="img-fluid" %}
           </div>
           {% else %}
           <div class="random-image random-image--landscape">
-              {% image random_image fill-540x400 %}
+              {% image random_image fill-540x400 class="img-fluid" %}
           </div>
           {% endif %}
         </div>
