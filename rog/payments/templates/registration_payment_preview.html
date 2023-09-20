@@ -59,7 +59,7 @@
                 {% csrf_token %}
 
                 <div class="row mt-4">
-                    <div class="form-field-wrapper col-6">
+                    <div class="form-field-wrapper col-md-8 col-lg-6">
                         <label>{% translate 'Vnesi kodo za popust' %}</label>
                         <div class="d-flex align-items-center">
                             {{ promo_code_form.payment_id.as_hidden }}
