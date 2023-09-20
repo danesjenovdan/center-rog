@@ -491,7 +491,7 @@ form {
 
     @include media-breakpoint-down(sm) {
         &:not(.card-wide) {
-            height: 240px;
+            height: 200px;
             flex-direction: row;
         }
     }
@@ -1005,7 +1005,7 @@ form {
             @include media-breakpoint-down(md) {
                 .events-card,
                 .news-card {
-                    height: 240px;
+                    height: 200px;
                     flex-direction: row;
 
                     img+.card-body,
@@ -1633,6 +1633,10 @@ section.image-embed {
             margin-top: 40px;
             margin-bottom: 30px;
             @include font-size-xl();
+
+            @include media-breakpoint-down(sm) {
+                @include font-size-lg();
+            }
         }
 
         .intro-text {
