@@ -78,47 +78,47 @@
     </script>
     {% endif %}
     <div class="navbar collapse navbar-collapse position-absolute pt-3" id="navbar-collapsable-menu" style="opacity: 0;">
-      <div class="container">
-        <div class="row w-100 mb-2 d-md-none">
+      <div class="container h-100 align-content-start">
+        <div class="row w-100 d-md-none">
           <div class="col-12">
             {% include "home/includes/language_picker.html" %}
           </div>
         </div>
-      <div class="row w-100 mb-4 d-md-none color-scheme-white">
-        <div class="col-12">
-          <!-- profile / sign in  -->
-          {% if user.is_authenticated %}
-            <a class="primary-button button-medium" href="{% url 'profile-my' %}">{% translate 'Moj profil' %}</a>
-          {% else %}
-            <a class="primary-button button-medium" href="{% url 'login' %}">{% translate 'prijava' %}</a>
+        <div class="row w-100 m-0">
+          {% for navigation_link in settings.home.MetaSettings.header_links %}
+          {% if forloop.counter0|divisibleby:3 %}
+            <ul class="col-12 col-md-3 navbar-nav">
           {% endif %}
+              <li class="nav-item">
+                <a class="nav-link {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
+                    href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
+                    {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
+                  {% if navigation_link.value.name %}
+                    {{ navigation_link.value.name }}
+                  {% elif navigation_link.value.page %}
+                    {{ navigation_link.value.page.title }}
+                  {% endif %}
+                </a>
+              </li>
+          {% if forloop.counter|divisibleby:3 %}
+            </ul>
+          {% endif %}
+          {% endfor %}
         </div>
-      </div>
-      <div class="row w-100 m-0">
-        {% for navigation_link in settings.home.MetaSettings.header_links %}
-        {% if forloop.counter0|divisibleby:3 %}
-          <ul class="col-6 col-md-3 navbar-nav">
-        {% endif %}
-            <li class="nav-item">
-              <a class="nav-link {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
-                  href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
-                  {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
-                {% if navigation_link.value.name %}
-                  {{ navigation_link.value.name }}
-                {% elif navigation_link.value.page %}
-                  {{ navigation_link.value.page.title }}
-                {% endif %}
-              </a>
-            </li>
-        {% if forloop.counter|divisibleby:3 %}
-          </ul>
-        {% endif %}
-        {% endfor %}
-      </div>
+        <div class="row w-100 d-md-none color-scheme-white">
+          <div class="col-12">
+            <!-- profile / sign in  -->
+            {% if user.is_authenticated %}
+              <a class="primary-button button-large" href="{% url 'profile-my' %}">{% translate 'Moj profil' %}</a>
+            {% else %}
+              <a class="primary-button button-large" href="{% url 'login' %}">{% translate 'prijava' %}</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
       
       {% if random_image %}
-      <div class="container d-md-none">
+      <div class="container d-md-none h-100 align-items-end">
         <div class="row">
         <div class="col-12">
           {% if random_image.is_portrait %}
