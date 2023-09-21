@@ -40,7 +40,7 @@ class PaymentPreview(views.APIView):
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
             payment.save()
-            PaymentPlan(plan=plan, payment=payment, price=price).save()
+            PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
 
             if plan.item_type.name == 'uporabnina':
                 # if plan is uporabnina add clanarina to payment
@@ -184,14 +184,18 @@ class PaymentSuccessXML(views.APIView):
                 membership.active = True
                 membership.save()
 
+        user_fee_plan = None # uporabnina
+
         # set active_to if plan is subscription
         items = []
-        for plan in payment.items.all():
+        for payment_plan in payment.payment_plans.all():
+            plan = payment_plan.plan
             if plan and plan.is_subscription:
-                payment.active_to = timezone.now() + timedelta(days=plan.duration)
-            payment.save()
+                payment_plan.valid_to = timezone.now() + timedelta(days=plan.duration)
+                payment_plan.save()
             # create tokens
             if plan.item_type and plan.item_type.name == 'uporabnina':
+                user_fee_plan = plan
                 Token.objects.bulk_create([
                     Token(
                         payment=payment,
@@ -217,15 +221,15 @@ class PaymentSuccessXML(views.APIView):
             if payment_plan.promo_code:
                 payment_plan.promo_code.use_code()
 
-        send_email(
-            payment.user.email,
-            'emails/order.html',
-            _('Naročilo rog'),
-            {
-                'items': items,
-                'date': payment.successed_at
-            }
-        )
+        if user_fee_plan:
+            send_email(
+                payment.user.email,
+                'emails/order_user_fee.html',
+                f'Center Rog – uspešen zakup paketa {user_fee_plan.name} za odprte termine',
+                {
+                    'plan': user_fee_plan
+                }
+            )
 
 
         return Response({'status': 'OK'})
