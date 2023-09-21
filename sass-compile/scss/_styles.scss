@@ -490,6 +490,10 @@ form {
     }
 
     @include media-breakpoint-down(sm) {
+        .card-body {
+            padding: 0;
+        }
+        
         &:not(.card-wide) {
             height: 200px;
             flex-direction: row;
@@ -497,13 +501,13 @@ form {
     }
 }
 
-.events-card {
+.events-card:not(.card-wide) {
     .card-body {
         padding: 0 10px 0 0;
     }
 }
 
-.news-card {
+.news-card:not(.card-wide) {
     .card-body {
         padding: 0 0 0 10px;
     }
