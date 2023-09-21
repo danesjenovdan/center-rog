@@ -50,3 +50,4 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD', '')
 EMAIL_USE_TLS = bool(os.getenv('EMAIL_USE_TLS', ''))
 EMAIL_USE_SSL = bool(os.getenv('EMAIL_USE_SSL', ''))
 FROM_EMAIL = os.getenv('FROM_EMAIL', 'dummy@email.com')
+DEFAULT_FROM_EMAIL = FROM_EMAIL
