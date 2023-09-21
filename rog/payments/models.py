@@ -187,6 +187,7 @@ class Plan(Timestampable):
         else:
             super().save(*args, **kwargs)
 
+
 class PaymentPlan(models.Model):
     payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
     plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
@@ -200,6 +201,15 @@ class PaymentPlan(models.Model):
         related_name="payment_plans",
         help_text="The promo code used for this payment plan",
     )
+    valid_to = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When subscription expires",
+    )
+    notification_30_sent = models.BooleanField(default=False)
+    notification_7_sent = models.BooleanField(default=False)
+    notification_1_sent = models.BooleanField(default=False)
+
 
 class Payment(Timestampable):
     class Status(models.TextChoices):

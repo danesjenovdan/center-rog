@@ -78,7 +78,6 @@ class Membership(models.Model):
     active = models.BooleanField(default=False)
 
     notification_30_sent = models.BooleanField(default=False)
-    notification_14_sent = models.BooleanField(default=False)
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
 
