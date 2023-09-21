@@ -490,6 +490,10 @@ form {
     }
 
     @include media-breakpoint-down(sm) {
+        .card-body {
+            padding: 0;
+        }
+        
         &:not(.card-wide) {
             height: 200px;
             flex-direction: row;
@@ -497,13 +501,13 @@ form {
     }
 }
 
-.events-card {
+.events-card:not(.card-wide) {
     .card-body {
         padding: 0 10px 0 0;
     }
 }
 
-.news-card {
+.news-card:not(.card-wide) {
     .card-body {
         padding: 0 0 0 10px;
     }
@@ -864,7 +868,8 @@ form {
     }
 
     section {
-        padding: 60px 0;
+        padding-top: 60px;
+        padding-bottom: 60px;
 
         h2 {
             @include font-size-xl();
@@ -874,7 +879,12 @@ form {
             @include media-breakpoint-down(sm) {
                 @include font-size-lg();
             }
+
+            &.gallery-title {
+                margin-bottom: 40px;
+            }
         }
+
 
         p {
             @include font-size-md();
@@ -889,6 +899,11 @@ form {
                 @include media-breakpoint-between(xl, xxl) {
                     max-width: 1320px;
                 }
+            }
+
+            @include media-breakpoint-down(sm) {
+                padding-left: 13px;
+                padding-right: 13px;
             }
 
             .events-stack,
@@ -936,6 +951,7 @@ form {
             }
 
             .labs-section {
+
                 .lab {
                     margin-bottom: 0;
                 }
@@ -1081,7 +1097,10 @@ form {
             }
 
             @include media-breakpoint-down(sm) {
-                p {
+                padding-left: 13px;
+                padding-right: 13px;
+
+                p, li {
                     @include font-size-sm();
                 }
 
@@ -1132,6 +1151,10 @@ form {
         }
 
         &.studios-section {
+            @include media-breakpoint-down(sm) {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
             // .scrollbar-hider {
             //     overflow: hidden;
             // }
@@ -1192,6 +1215,11 @@ form {
         }
 
         &.colored-text-section {
+            @include media-breakpoint-down(sm) {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+
             .with-image {
                 p {
                     @include font-size-sm();
@@ -1238,6 +1266,13 @@ form {
     .market-section {
         p {
             margin-bottom: 2rem;
+        }
+
+        .container {
+            @include media-breakpoint-down(sm) {
+                padding-left: 25px;
+                padding-right: 25px;
+            }
         }
 
         .markets-container {
@@ -1288,6 +1323,11 @@ form {
 }
 
 .labs-section {
+    @include media-breakpoint-down(sm) {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
     .lab {
         display: grid;
         grid-template-columns: 1fr;
@@ -1340,6 +1380,11 @@ form {
 .residents-section {
     > .container {
         max-width: 950px !important;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding-left: 13px;
+        padding-right: 13px;
     }
 
     .doorbell {
@@ -1574,6 +1619,10 @@ section.image-embed {
     .list-container {
         padding-top: 60px;
         padding-bottom: 60px;
+        @include media-breakpoint-down(sm) {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
     }
 }
 
@@ -1581,6 +1630,11 @@ section.image-embed {
     .list-container {
         padding-top: 100px;
         padding-bottom: 60px;
+
+        @include media-breakpoint-down(sm) {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
     }
 
     .list-element {
@@ -1628,6 +1682,10 @@ section.image-embed {
     .object-profile-container {
         padding-top: 60px;
         // padding-bottom: 60px;
+        @include media-breakpoint-down(sm) {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
 
         h1 {
             margin-top: 40px;
@@ -1743,6 +1801,13 @@ section.image-embed {
         &.lab-profile-container {
             padding-top: 0;
             padding-bottom: 0;
+
+            &+.container {
+                @include media-breakpoint-down(sm) {
+                    padding-left: 25px;
+                    padding-right: 25px;
+                }
+            }
 
             h1 {
                 margin-top: 30px;
@@ -2005,6 +2070,11 @@ section.image-embed {
         margin-top: 100px;
         margin-bottom: 60px;
 
+        @include media-breakpoint-down(sm) {
+            padding-left: 25px;
+            padding-right: 25px;
+        }
+
         h1 {
             @include font-size-xl();
             margin-bottom: 0;
@@ -2066,6 +2136,10 @@ section.image-embed {
             }
         }
     }
+
+    .payment-notice {
+        @include font-size-md();
+    }
 }
 
 .template-object-list {
@@ -2109,6 +2183,10 @@ section.image-embed {
 .see-more-section {
     padding-top: 30px;
     padding-bottom: 60px;
+    @include media-breakpoint-down(sm) {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
 
     h2 {
         color: $cs-dark-blue;
@@ -2116,10 +2194,6 @@ section.image-embed {
         text-align: center;
         margin-bottom: 30px;
     }
-}
-
-.template-module-page section h2.gallery-title {
-    margin-bottom: 40px;
 }
 
 .custom-gallery {
@@ -2345,12 +2419,6 @@ section.image-embed {
 
 .page-prev {
     transform: scaleX(-1);
-}
-
-.template-profile {
-    .payment-notice {
-        @include font-size-md();
-    }
 }
 
 .edit-profile-form {
