@@ -55,7 +55,7 @@ footer.container-fluid {
     }
 
     .footer-logo {
-        width: 160px;
+        max-width: 160px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
@@ -83,11 +83,11 @@ footer.container-fluid {
         }
 
         @include media-breakpoint-up(md) {
-            width: 100px;
+            max-width: 100px;
         }
 
         @include media-breakpoint-up(xl) {
-            width: 160px;
+            max-width: 160px;
         }
     }
 
