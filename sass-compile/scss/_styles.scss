@@ -493,7 +493,7 @@ form {
         .card-body {
             padding: 0;
         }
-        
+
         &:not(.card-wide) {
             height: 200px;
             flex-direction: row;
@@ -710,10 +710,6 @@ form {
     padding-top: 60px;
 
     @include media-breakpoint-up(md) {
-        padding-top: 40px;
-    }
-
-    @include media-breakpoint-up(xl) {
         padding-top: 0;
     }
 }
@@ -1100,7 +1096,7 @@ form {
                 padding-left: 13px;
                 padding-right: 13px;
 
-                p, li {
+                p, li span {
                     @include font-size-sm();
                 }
 
