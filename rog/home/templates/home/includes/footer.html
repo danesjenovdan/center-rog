@@ -21,7 +21,11 @@
                                 {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
                                 <p>
                                     <span>{{ working_hours.value.day }}</span>
+                                    {% if working_hours.value.start_time and working_hours.value.end_time %}
                                     <span>{{ working_hours.value.start_time|time:"G:i" }} - {{ working_hours.value.end_time|time:"G:i" }}</span>
+                                    {% elif working_hours.value.text %}
+                                    <span>{{ working_hours.value.text }}</span>
+                                    {% endif %}
                                 </p>
                                 {% endfor %}
                                 <br />
