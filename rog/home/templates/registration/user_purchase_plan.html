@@ -40,7 +40,7 @@
                         <input type="radio" name="plans" value="{{ plan.id }}" class="btn-check" id="id_plans_{{ plan.id }}" required="">
                         <label for="id_plans_{{ plan.id }}" class="radio-square btn">
                             <h3>{{ plan.name }}</h3>
-                            <p>cena</p>
+                            <p><small class="mb-0">{% translate 'cena' %}</small></p>
                             {% if user.is_eligible_to_discount %}
                             <p class="price">{{ plan.discounted_price }}€</p>
                             {% else %}

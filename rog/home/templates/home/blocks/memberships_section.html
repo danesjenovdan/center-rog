@@ -9,9 +9,16 @@
             <h2 class="text-center">{{ value.title }}</h2>
         </div>
     </div>
-    <div class="row my-5 justify-content-center radio-square-wrapper">
+    {% if value.intro_text %}
+    <div class="row">
+        <div class="col-12">
+            <p class="intro"><small>{{ value.intro_text }}</small></p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row my-3 justify-content-center radio-square-wrapper">
         {% for membership_type in membership_types %}
-        <div class="col-12 col-md-6 col-xxl-4">
+        <div class="col-12 col-md-6 col-xl-4">
             <div class="radio-square">
                 <h4>{{ membership_type.name }}</h4>
                 <ul>

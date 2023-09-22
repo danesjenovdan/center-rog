@@ -15,7 +15,7 @@ class HomePage(TranslatablePage):
         ModuleBlock(),
         verbose_name="Telo",
         null=True,
-        use_json_field=False
+        use_json_field=True
     )
 
     content_panels = Page.content_panels + [
@@ -30,20 +30,13 @@ class HomePage(TranslatablePage):
         'home.ResidenceArchiveListPage',
         'home.LabListPage',
         'home.LibraryPage',
-        # 'home.BasicTextPage',
+        'home.BasicTextPage',
         'home.ContentPage',
         'events.EventListPage',
         'events.EventListArchivePage',
         'news.NewsListPage',
         # 'news.NewsListArchivePage'
     ]
-
-    # def get_context(self, request, *args, **kwargs):
-    #     context = super().get_context(request, *args, **kwargs)
-
-    #     context['exposed_news'] = NewsPage.objects.all().first()
-    #     return context
-
 
 
 class ContentPage(TranslatablePage):
