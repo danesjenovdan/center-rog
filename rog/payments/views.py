@@ -174,7 +174,7 @@ class PaymentSuccessXML(views.APIView):
         # membership
         membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
         if membership_fee:
-            membership = request.user.membership
+            membership = payment.user.membership
             if not membership:
                 membership_type = MembershipType.objects.filter(plan=membership_fee).first()
                 today = datetime.now()
