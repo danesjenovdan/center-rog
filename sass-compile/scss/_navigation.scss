@@ -88,11 +88,11 @@
     .nav-link {
         color: $cs-dark-gray;
         padding: 4px;
-        @include font-size-sm();
+        @include font-size-md();
 
         &.lang-link {
             margin-right: 0.7rem;
-            @include font-size-xs();
+            @include font-size-sm();
         }
 
         &:hover {
@@ -352,6 +352,7 @@
 
     .header-marquee-text {
         display: inline;
+        @include font-size-xs();
     }
 }
 

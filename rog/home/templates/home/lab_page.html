@@ -122,8 +122,12 @@
                 <div class="text-center">
                     <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
                 </div>
-                <p class="bulletin-board-link">
-                    {% translate 'Za rezervacijo orodja se je potrebno <a href="/prijava"><span>prijaviti</span></a>' %}
+                <p>
+                    {% translate 'Za rezervacijo orodja se je potrebno' %}
+                    <a class="link" href="{% url 'login' %}">
+                        <span class="link-text">{% translate 'prijaviti' %}</span>
+                        <span class="link-icon"></span>
+                    </a>
                 </p>
                 {% endif %}
             </div>

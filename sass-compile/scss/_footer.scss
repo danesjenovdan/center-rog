@@ -2,7 +2,7 @@ footer.container-fluid {
     padding: 30px;
 
     p {
-        @include font-size-xs();
+        @include font-size-sm();
 
         a {
             font-size: inherit;

@@ -7,7 +7,7 @@
         padding-right: 25px;
     }
 
-    p, a {
+    p, a:not(.button-small, .button-medium, .button-large) {
         @include font-size-xs();
     }
 
@@ -76,6 +76,10 @@
     }
 
     .payment-preview {
+        .name {
+            @include font-size-xs();
+        }
+        
         .line,
         .sum-line {
             padding: 20px 0;

@@ -16,6 +16,8 @@ a {
 }
 
 a.link {
+    display: inline-block;
+
     .link-icon::after {
         content: "→";
         display: inline;
@@ -593,6 +595,9 @@ form {
 
         .show-hover {
             transform: rotateY(180deg);
+            p {
+                @include font-size-xs();
+            }
         }
     }
 
@@ -628,10 +633,6 @@ form {
     .card-title {
         @include font-size-sm();
         margin-bottom: 10px;
-    }
-
-    p {
-        @include font-size-xs();
     }
 
     img {
@@ -751,34 +752,6 @@ form {
 
     @include media-breakpoint-up(md) {
         padding-top: 0;
-    }
-}
-
-.bulletin-board-link {
-    text-align: center;
-    margin: 10px 0;
-
-    a {
-        @include font-size-xs();
-        color: $cs-dark-gray;
-        text-decoration: none;
-
-        span {
-            @include prepare-for-underlined-text();
-        }
-
-        &:hover {
-            color: $cs-dark-gray;
-
-            span {
-                @include underline-text();
-            }
-        }
-
-        &::after {
-            content: "→";
-            margin-left: 5px;
-        }
     }
 }
 
@@ -986,17 +959,14 @@ form {
                 }
             }
 
-            .labs-section {
-
-                .lab {
-                    margin-bottom: 0;
-                }
-            }
-
             .market-section {
                 .markets-container {
                     h4 {
                         @include font-size-sm();
+                    }
+
+                    .card-hover a {
+                        margin: 0;
                     }
                 }
             }
@@ -1075,8 +1045,9 @@ form {
                 }
             }
 
-            .bulletin-board-link a {
+            a {
                 @include font-size-xs();
+                margin: 10px 0;
             }
         }
 
@@ -1180,10 +1151,6 @@ form {
                     max-width: 250px;
                 }
             }
-
-            .bulletin-board-link a {
-                @include font-size-sm();
-            }
         }
 
         &.studios-section {
@@ -1244,7 +1211,7 @@ form {
             //     }
             // }
 
-            .bulletin-board-link a {
+            a.link {
                 color: inherit;
                 @include font-size-sm();
             }
@@ -1275,13 +1242,8 @@ form {
                 }
             }
 
-            .bulletin-board-link {
-                text-align: start;
-
-                a {
-                    color: inherit;
-                    @include font-size-sm();
-                }
+            a.link {
+                color: inherit;
             }
         }
 
@@ -1296,6 +1258,11 @@ form {
                     @include underline-text-on-hover();
                 }
             }
+        }
+
+        .bottom-button a.link {
+            color: inherit;
+            @include font-size-sm();
         }
     }
 
@@ -1329,14 +1296,13 @@ form {
             }
         }
 
-        .bulletin-board-link a {
+        a.link {
             color: inherit;
-            @include font-size-sm();
         }
     }
 
     .contacts-section {
-        p {
+        p, .link {
             @include font-size-sm();
         }
 
@@ -1582,7 +1548,7 @@ form {
         }
     }
 
-    .bulletin-board-link a {
+    a.link {
         color: inherit;
         @include font-size-sm();
     }
@@ -1595,7 +1561,7 @@ form {
         }
     }
 
-    .bulletin-board-link a {
+    a.link {
         color: inherit;
         @include font-size-sm();
     }
@@ -1624,13 +1590,8 @@ section.image-embed {
             }
         }
 
-        .bulletin-board-link {
-            text-align: start;
-
-            a {
-                color: inherit;
-                @include font-size-sm();
-            }
+        a.link {
+            color: inherit;
 
             &:last-child {
                 margin-bottom: 0;
@@ -1863,6 +1824,7 @@ section.image-embed {
 
                 p {
                     margin-bottom: 0;
+                    @include font-size-xs();
 
                     a.button-small, a.button-medium, a.button-large {
                         margin: 10px 0;
@@ -2126,6 +2088,10 @@ section.image-embed {
             @include font-size-lg();
         }
 
+        p {
+            @include font-size-xs();
+        }
+
         section {
             padding: 10px;
             height: 100%;
@@ -2154,10 +2120,6 @@ section.image-embed {
 
             p {
                 margin: 0;
-            }
-
-            p:first-child {
-                @include font-size-xs();
             }
 
             p:last-child {
@@ -2515,6 +2477,10 @@ section.image-embed {
         margin-top: 40px;
         margin-bottom: 20px;
     }
+
+    p {
+        @include font-size-xs();
+    }
 }
 
 .card-hover {
@@ -2621,7 +2587,8 @@ section.image-embed {
         }
     }
 
-    .link span {
+    .link span,
+    p span {
         @include font-size-xs();
     }
 }
