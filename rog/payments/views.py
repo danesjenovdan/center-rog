@@ -176,7 +176,7 @@ class PaymentSuccessXML(views.APIView):
         if membership_fee:
             membership = payment.user.membership
             if not membership:
-                membership_type = MembershipType.objects.filter(plan=membership_fee).first()
+                membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
                 today = datetime.now()
                 one_year_from_now = today + relativedelta(years=1)
                 Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=True, user=request.user).save()
