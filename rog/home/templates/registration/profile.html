@@ -43,7 +43,7 @@
                     <h6>{{ user.get_active_subscription_plan.name }}</h6>
                     <p class="subtitle">
                         {% translate 'veljavnost paketa do:' %} <br />
-                        {{ user.get_active_subscription.active_to|date:"j. n. Y" }}
+                        {{ user.get_active_subscription_plan.valid_to|date:"j. n. Y" }}
                     </p>
                 </div>
                 <div>
