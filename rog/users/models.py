@@ -178,9 +178,13 @@ class User(AbstractUser):
 
     @property
     def membership(self):
-        return self.memberships.filter(
-            Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
-            valid_from__lte=datetime.now()).first()
+        membership = self.get_last_active_membership()
+        if membership:
+            return membership
+        else:
+            return self.memberships.filter(
+                Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
+                valid_from__lte=datetime.now()).first()
 
     @property
     def get_last_active_subscription_payment_plan(self):
