@@ -183,12 +183,16 @@ class User(AbstractUser):
             valid_from__lte=datetime.now()).first()
 
     @property
-    def get_active_subscription_plan(self):
-        return self.payments.all().get_active_subscription_plan()
+    def get_last_active_subscription_payment_plan(self):
+        return self.payments.all().get_last_active_subscription_payment_plan()
 
-    @property
-    def get_active_subscription(self):
-        return self.payments.all().get_active_subscription()
+    def get_last_active_membership(self):
+        membership = self.memberships.filter(
+            active=True
+        )
+        if membership:
+            return membership.latest('valid_to')
+        return None
 
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()

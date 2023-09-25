@@ -15,14 +15,16 @@ from news.models import NewsPage
 from events.models import EventPage
 
 import random
+from datetime import date
 
 
 def add_see_more_fields(context):
     # random event
-    events = list(EventPage.objects.live())
+    today = date.today()
+    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live())
+    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
@@ -149,8 +151,18 @@ class LabPage(BasePage):
         blank=True,
         verbose_name=_("Vodja laboratorija")
     )
+    lab_lead_email = models.EmailField(
+        blank=True,
+        verbose_name=_("E-mail vodje laboratorija")
+    )
     training_dates_link = models.URLField(blank=True, verbose_name=_("Termini usposabljanj"))
     online_trainings_link = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
+    optional_button = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
+    button = StreamField([
+        ("external", blocks.URLBlock(label=_("Zunanji URL"))),
+        ("page", blocks.PageChooserBlock(label=_("Podstran"))),
+    ], blank=True, null=True, use_json_field=True, verbose_name=_("Gumb"), max_num=1)
+    button_text = models.TextField(verbose_name=_("Besedilo na gumbu"), blank=True, null=True)
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -159,8 +171,11 @@ class LabPage(BasePage):
         FieldPanel("thumbnail"),
         FieldPanel("gallery"),
         FieldPanel("lab_lead"),
+        FieldPanel("lab_lead_email"),
         FieldPanel("training_dates_link"),
         FieldPanel("online_trainings_link"),
+        FieldPanel("button"),
+        FieldPanel("button_text"),
         InlinePanel("related_tools", label="Orodja"),
         FieldPanel("show_see_more_section")
     ]

@@ -10,8 +10,8 @@
         </div>
     </div>
 
+    <div class="max-800 mb-4">
     {% for contact in value.contacts %}
-    <div class="max-800">
         <div class="row mb-4 mb-md-0">
             <div class="col-md-4">
                 <p class="mb-2">{{ contact.name }}</p>
@@ -30,8 +30,8 @@
                 <span class="copy-email-confirmation small d-none">kopirano!</span>
             </div>
         </div>
-    </div>
     {% endfor %}
+    </div>
 
     {% if value.link %}
     {% include "home/includes/bottom_button.html" with value_link=value.link %}

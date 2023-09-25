@@ -46,7 +46,9 @@
     <div class="container no-image">
         <div class="row justify-content-center">
             <div class="col-12 col-xxl-8">
-                <!-- <h2 class="text-center">{{ value.title }}</h2> -->
+                {% if value.title %}
+                <h2 class="text-center">{{ value.title }}</h2>
+                {% endif %}
                 <p>{{ value.text }}</p>
                 {% if value.link %}
                 <div class="mt-30">

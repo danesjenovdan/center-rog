@@ -1,0 +1,49 @@
+{% load wagtailcore_tags wagtailimages_tags i18n %}
+
+{% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
+<section  class="color-scheme-{{ value.color }} memberships-section user-purchase-plan">
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">{{ value.title }}</h2>
+        </div>
+    </div>
+    {% if value.intro_text %}
+    <div class="row">
+        <div class="col-12">
+            <p class="intro">{{ value.intro_text }}</p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row my-3 justify-content-center radio-square-wrapper">
+        {% for plan in plans %}
+        <div class="col-12 col-md-6 col-xl-4 my-4">
+            <div class="radio-square">
+                <h3>{{ plan.name }}</h3>
+                <p><small class="mb-0">{% translate 'cena' %}</small></p>
+                {% if user.is_eligible_to_discount %}
+                <p class="price">{{ plan.discounted_price }}€</p>
+                {% else %}
+                <p class="price">{{ plan.price }}€</p>
+                {% endif %}
+                <hr />
+                <p><small>{{ plan.description }}</small></p>
+                <hr />
+                <ul>
+                    {% if plan.description_item_1 %}<li>{{ plan.description_item_1 }}</li>{% endif %}
+                    {% if plan.description_item_2 %}<li>{{ plan.description_item_2 }}</li>{% endif %}
+                    {% if plan.description_item_3 %}<li>{{ plan.description_item_3 }}</li>{% endif %}
+                    {% if plan.description_item_4 %}<li>{{ plan.description_item_4 }}</li>{% endif %}
+                    {% if plan.description_item_5 %}<li>{{ plan.description_item_5 }}</li>{% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if value.link %}
+    {% include "home/includes/bottom_button.html" with value_link=value.link %}
+    {% endif %}
+</div>
+
+</section>

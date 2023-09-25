@@ -69,7 +69,7 @@
 
     .navbar-toggler-container {
         position: relative;
-        padding: 10px 24px;
+        padding: 10px 0;
         // z-index: 999999; // to ne sme bit tako, ker potem se ne da klikat na gumbe v navigaciji
         @include media-breakpoint-down(md) {
             padding: 25px 5px;
@@ -88,11 +88,11 @@
     .nav-link {
         color: $cs-dark-gray;
         padding: 4px;
-        @include font-size-sm();
+        @include font-size-md();
 
         &.lang-link {
             margin-right: 0.7rem;
-            @include font-size-xs();
+            @include font-size-sm();
         }
 
         &:hover {
@@ -352,6 +352,7 @@
 
     .header-marquee-text {
         display: inline;
+        @include font-size-xs();
     }
 }
 

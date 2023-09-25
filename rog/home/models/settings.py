@@ -104,7 +104,11 @@ class MetaSettings(BaseGenericSetting):
             ('day', blocks.CharBlock(label=_('Dan'))),
             ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
             ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
-        ], label=_('Dan in ura')))
+        ], label=_('Dan in ura'))),
+        ('notice', blocks.StructBlock([
+            ('day', blocks.CharBlock(label=_('Dan'))),
+            ('text', blocks.CharBlock(label=_('Opomba'))),
+        ], label=_('Dan in opomba')))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas organizacije"))
 
     basic_information_tab_panels = [

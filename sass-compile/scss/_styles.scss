@@ -16,6 +16,8 @@ a {
 }
 
 a.link {
+    display: inline-block;
+
     .link-icon::after {
         content: "→";
         display: inline;
@@ -213,7 +215,11 @@ body.safari {
         display: block;
         @include font-size-md();
         color: inherit;
-        border-bottom: none !important;
+        // border-bottom: none !important;
+
+        &:hover span {
+            border-bottom: 0.0625em solid;
+        }
     }
 }
 
@@ -225,6 +231,10 @@ body.safari {
 
 .input-error {
     border-color: $cs-red;
+}
+
+.input-success {
+    border-color: $cs-dark-green;
 }
 
 .form-field-wrapper {
@@ -460,7 +470,6 @@ form {
         position: absolute;
         top: 0;
         right: 0;
-        transform: translate(12%, -6%) rotate(18deg);
         padding: 12px 16px;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23d9c2a0' preserveAspectRatio='none' viewBox='0 0 114.85 48.2'%3E%3Cpath opacity='0.85' d='m0 48.19 1.85-1.86L0 44.5l1.86-1.86L0 40.78l1.86-1.86-1.85-1.85 1.84-1.86L0 33.37l1.86-1.86L0 29.66l1.86-1.86-1.85-1.85 1.84-1.86L0 22.25l1.86-1.86L0 18.54l1.86-1.86-1.85-1.85 1.85-1.86-1.85-1.84 1.85-1.86L0 7.42l1.86-1.86L.01 3.71l1.85-1.86L.01.01h89.88L91.04 0h23.8l-1.85 1.86 1.86 1.86-1.86 1.85 1.85 1.85L113 9.27l1.85 1.86-1.85 1.85 1.86 1.86-1.86 1.85 1.85 1.85-1.85 1.85 1.85 1.86L113 24.1l1.85 1.86-1.85 1.85 1.85 1.85L113 31.5l1.85 1.86-1.85 1.85 1.85 1.86-1.85 1.85 1.85 1.85-1.85 1.85 1.85 1.86-1.86 1.85 1.86 1.86H7.93z' /%3E%3C/svg%3E");
         background-repeat: no-repeat;
@@ -486,6 +495,47 @@ form {
 
         .card-title {
             @include font-size-md();
+        }
+    }
+
+    &:nth-child(1n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(25deg);
+        }
+    }
+    &:nth-child(2n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(23deg);
+        }
+    }
+    &:nth-child(3n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(30deg);
+        }
+    }
+    &:nth-child(4n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(27deg);
+        }
+    }
+    &:nth-child(5n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(23deg);
+        }
+    }
+    &:nth-child(6n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(24deg);
+        }
+    }
+    &:nth-child(7n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(25deg);
+        }
+    }
+    &:nth-child(8n) {
+        .card-tag {
+            transform: translate(12%, -6%) rotate(26deg);
         }
     }
 
@@ -553,6 +603,9 @@ form {
 
         .show-hover {
             transform: rotateY(180deg);
+            p {
+                @include font-size-xs();
+            }
         }
     }
 
@@ -588,10 +641,6 @@ form {
     .card-title {
         @include font-size-sm();
         margin-bottom: 10px;
-    }
-
-    p {
-        @include font-size-xs();
     }
 
     img {
@@ -711,34 +760,6 @@ form {
 
     @include media-breakpoint-up(md) {
         padding-top: 0;
-    }
-}
-
-.bulletin-board-link {
-    text-align: center;
-    margin: 10px 0;
-
-    a {
-        @include font-size-xs();
-        color: $cs-dark-gray;
-        text-decoration: none;
-
-        span {
-            @include prepare-for-underlined-text();
-        }
-
-        &:hover {
-            color: $cs-dark-gray;
-
-            span {
-                @include underline-text();
-            }
-        }
-
-        &::after {
-            content: "→";
-            margin-left: 5px;
-        }
     }
 }
 
@@ -946,17 +967,14 @@ form {
                 }
             }
 
-            .labs-section {
-
-                .lab {
-                    margin-bottom: 0;
-                }
-            }
-
             .market-section {
                 .markets-container {
                     h4 {
                         @include font-size-sm();
+                    }
+
+                    .card-hover a {
+                        margin: 0;
                     }
                 }
             }
@@ -1035,8 +1053,9 @@ form {
                 }
             }
 
-            .bulletin-board-link a {
+            a {
                 @include font-size-xs();
+                margin: 10px 0;
             }
         }
 
@@ -1140,10 +1159,6 @@ form {
                     max-width: 250px;
                 }
             }
-
-            .bulletin-board-link a {
-                @include font-size-sm();
-            }
         }
 
         &.studios-section {
@@ -1204,7 +1219,7 @@ form {
             //     }
             // }
 
-            .bulletin-board-link a {
+            a.link {
                 color: inherit;
                 @include font-size-sm();
             }
@@ -1235,13 +1250,8 @@ form {
                 }
             }
 
-            .bulletin-board-link {
-                text-align: start;
-
-                a {
-                    color: inherit;
-                    @include font-size-sm();
-                }
+            a.link {
+                color: inherit;
             }
         }
 
@@ -1256,6 +1266,11 @@ form {
                     @include underline-text-on-hover();
                 }
             }
+        }
+
+        .bottom-button a.link {
+            color: inherit;
+            @include font-size-sm();
         }
     }
 
@@ -1289,14 +1304,13 @@ form {
             }
         }
 
-        .bulletin-board-link a {
+        a.link {
             color: inherit;
-            @include font-size-sm();
         }
     }
 
     .contacts-section {
-        p {
+        p, .link {
             @include font-size-sm();
         }
 
@@ -1542,7 +1556,7 @@ form {
         }
     }
 
-    .bulletin-board-link a {
+    a.link {
         color: inherit;
         @include font-size-sm();
     }
@@ -1555,7 +1569,7 @@ form {
         }
     }
 
-    .bulletin-board-link a {
+    a.link {
         color: inherit;
         @include font-size-sm();
     }
@@ -1584,13 +1598,8 @@ section.image-embed {
             }
         }
 
-        .bulletin-board-link {
-            text-align: start;
-
-            a {
-                color: inherit;
-                @include font-size-sm();
-            }
+        a.link {
+            color: inherit;
 
             &:last-child {
                 margin-bottom: 0;
@@ -1823,8 +1832,13 @@ section.image-embed {
 
                 p {
                     margin-bottom: 0;
+                    @include font-size-xs();
 
-                    a {
+                    a.button-small, a.button-medium, a.button-large {
+                        margin: 10px 0;
+                    }
+
+                    a:not(.button-small, .button-medium, .button-large) {
                         font-size: inherit;
                         color: inherit;
 
@@ -2082,8 +2096,12 @@ section.image-embed {
             @include font-size-lg();
         }
 
+        p {
+            @include font-size-xs();
+        }
+
         section {
-            padding: 10px;
+            padding: 15px;
             height: 100%;
             min-height: 200px;
 
@@ -2110,10 +2128,6 @@ section.image-embed {
 
             p {
                 margin: 0;
-            }
-
-            p:first-child {
-                @include font-size-xs();
             }
 
             p:last-child {
@@ -2174,6 +2188,54 @@ section.image-embed {
         }
 
     }
+}
+
+.user-purchase-plan .radio-square {
+    h3 {
+        margin-bottom: 15px;
+    }
+
+    p {
+        margin-bottom: 0;
+
+        &.price {
+            @include font-size-lg();
+            margin-bottom: 10px;
+        }
+    }
+
+    small {
+        display: block;
+        @include font-size-xs();
+        margin: 10px 0;
+    }
+
+    hr {
+        margin: 0;
+        border-bottom: 1.5px solid;
+        border-top: none;
+        opacity: 1;
+    }
+
+    ul {
+        margin-top: 15px;
+        list-style: none;
+        padding-left: 0;
+
+        li {
+            padding-left: 1.5rem;
+            position: relative;
+
+            &::before {
+                position: absolute;
+                top: 0.2em;
+                left: 0;
+                content: "\25CF";
+                line-height: 1;
+            }
+        }
+    }
+
 }
 
 .see-more-section {
@@ -2423,6 +2485,10 @@ section.image-embed {
         margin-top: 40px;
         margin-bottom: 20px;
     }
+
+    p {
+        @include font-size-xs();
+    }
 }
 
 .card-hover {
@@ -2529,7 +2595,8 @@ section.image-embed {
         }
     }
 
-    .link span {
+    .link span,
+    p span {
         @include font-size-xs();
     }
 }

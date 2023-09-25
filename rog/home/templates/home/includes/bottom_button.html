@@ -1,6 +1,6 @@
 {% load wagtailcore_tags %}
 
-<div class="row">
+<div class="row bottom-button">
     <div class="col-12 d-flex {% if align != "left" %}justify-content-center{% endif %}">
         {% for link in value_link %}
             {% if link.value.link_type == "link" %}
