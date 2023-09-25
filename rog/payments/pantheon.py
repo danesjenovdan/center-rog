@@ -6,8 +6,8 @@ import json
 
 def create_ident(item):
     name = item.name
-    price = item.price
-    vat = item.vat
+    price = float(item.price)
+    vat = int(item.vat)
     total_price = price + (price * vat / 100)
     data = {
         "ident": item.get_pantheon_ident_id(),
@@ -474,7 +474,7 @@ def create_move(
             {
                 "acPayMethod": "1",
                 "name": "",
-                "amount": payment.amount,
+                "amount": float(payment.amount),
                 "code": "",
                 "isRefund": True,
                 "fiscalGroup": ""
@@ -482,8 +482,8 @@ def create_move(
         ],
         "clerkId": 1,
         "clerk": "Administrator",
-        "price": payment.amount,
-        "vat": vat * 100 / payment.amount,
+        "price": float(payment.amount),
+        "vat": float(vat * 100 / payment.amount),
         "discount": 0,
         "department": "",
         "status": "N",
@@ -520,7 +520,7 @@ def create_move(
                 "name": item.plan.name,
                 "anNo": 1,
                 "quantity": 1,
-                "price": item.price,
+                "price": float(item.price),
                 "priceCurrency": 0,
                 "rabate": item.promo_code.percent_discount if item.promo_code else 0,
                 "vat": vat,
