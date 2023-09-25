@@ -10,9 +10,10 @@ from .settings import ExternalLinkBlock, PageLinkBlock
 from users.models import MembershipType
 from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
+from payments.models import Plan
 
 import random
-from datetime import date
+from datetime import date, datetime
 
 
 class ModuleBlock(blocks.StructBlock):
@@ -337,7 +338,7 @@ class ResidentsBlock(blocks.StructBlock):
 
 
 class NewsletterBlock(blocks.StructBlock):
-    background_image = ImageChooserBlock(label = _("Slika za ozadje"))
+    background_image = ImageChooserBlock(label=_("Slika za ozadje"))
 
     class Meta:
         label = _("Novičnik")
@@ -346,6 +347,7 @@ class NewsletterBlock(blocks.StructBlock):
 
 class MembershipsBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"), required=False)
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -355,6 +357,21 @@ class MembershipsBlock(ColoredStructBlock):
     class Meta:
         label = _("Vrste članstev")
         template = "home/blocks/memberships_section.html"
+
+
+class PlansBlock(ColoredStructBlock):
+    title = blocks.CharBlock(label=_("Naslov sekcije"))
+    intro_text = blocks.TextBlock(label=_("Uvodno besedilo"), required=False)
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        timestamp = datetime.now()
+        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp)
+        return context
+
+    class Meta:
+        label = _("Vrste uporabnin")
+        template = "home/blocks/plans_section.html"
 
 
 class ModuleBlock(blocks.StreamBlock):
@@ -373,6 +390,7 @@ class ModuleBlock(blocks.StreamBlock):
     colored_rich_text = ColoredRichTextBlock()
     contacts_section = ContactsListBlock()
     memberships_section = MembershipsBlock()
+    plans_section = PlansBlock()
     residents_section = ResidentsBlock()
     newsletter_section = NewsletterBlock()
 

@@ -16,8 +16,8 @@
 
 {% block page_body %}
 <div class="container register-container color-scheme-light-gray">
-    <div class="row justify-content-center">
-        <div class="col-md-10 col-xxl-6">
+    <div class="row justify-content-center max-800">
+        <div class="col-12">
             {% if registration %}
             <div class="registration-progress">
                 <div class="point done"><span>{% translate 'začetek registracije' %}</span></div>
@@ -35,7 +35,7 @@
             <h1>{% translate 'Za plačilo' %}</h1>
         </div>
 
-        <div class="col-md-10 col-xxl-6 payment-preview">
+        <div class="col-12 payment-preview">
 
             {% for item in payment.payment_plans.all %}
                 <div class="line d-flex justify-content-between">
@@ -61,17 +61,14 @@
                 <div class="row mt-4">
                     <div class="form-field-wrapper col-md-8 col-lg-6">
                         <label>{% translate 'Vnesi kodo za popust' %}</label>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center {% if promo_code_error %}input-error{% elif promo_code_success %}input-success{% endif %}">
                             {{ promo_code_form.payment_id.as_hidden }}
                             {{ promo_code_form.registration.as_hidden }}
                             {{ promo_code_form.promo_code }}
                             <button type="submit" class="secondary-button button-small">{% translate 'pošlji' %}</button>
                         </div>
                         {% if promo_code_error %}
-                        <p class="my-2">{% translate 'Vnešena koda ni veljavna.' %}</p>
-                        {% endif %}
-                        {% if promo_code_success %}
-                        <p class="my-2">{% translate 'Koda je sprejeta!' %}</p>
+                        <p class="my-2 error">{% translate 'Vnešena koda ni veljavna.' %}</p>
                         {% endif %}
                     </div>
                 </div>

@@ -20,7 +20,7 @@ class RegisterForm(forms.ModelForm):
     )
     password = forms.CharField(
         widget=forms.PasswordInput,
-        label=_("geslo (vsaj 11 znakov, vsaj ena številka)"),
+        label=_("geslo (vsaj 8 znakov, vsaj ena številka)"),
         label_suffix=""
     )
     password_check = forms.CharField(
@@ -34,8 +34,8 @@ class RegisterForm(forms.ModelForm):
         password = cleaned_data.get("password")
         password_check = cleaned_data.get("password_check")
 
-        if password and len(password) < 11:
-            self.add_error("password", _("Geslo mora biti dolgo vsaj 11 znakov."))
+        if password and len(password) < 8:
+            self.add_error("password", _("Geslo mora biti dolgo vsaj 8 znakov."))
         if password and not any(char.isdigit() for char in password):
             self.add_error("password", _("Geslo mora vsebovati vsaj eno številko."))
 

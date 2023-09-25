@@ -16,8 +16,11 @@
             {% include "events/includes/card.html" with event=event_item %}
           {% endfor %}
         </div>
-        <div class="bulletin-board-link mb-4">
-          <a href="{% pageurl events_list %}"><span>{% translate 'Poglej vse dogodke' %}</span></a>
+        <div class="mb-4 text-center">
+          <a class="link" href="{% pageurl events_list %}">
+            <span class="link-text">{% translate 'Poglej vse dogodke' %}</span>
+            <span class="link-icon"></span>
+          </a>
         </div>
       </div>
       {% endif %}
@@ -28,8 +31,11 @@
             {% include "news/includes/card.html" with news=news_item %}
           {% endfor %}
         </div>
-        <div class="bulletin-board-link mb-4">
-          <a href="{% pageurl news_list %}"><span>{% translate 'Poglej vse novice' %}</span></a>
+        <div class="mb-4 text-center">
+          <a class="link" href="{% pageurl news_list %}">
+            <span class="link-text">{% translate 'Poglej vse novice' %}</span>
+            <span class="link-icon"></span>
+          </a>
         </div>
       </div>
       {% endif %}
@@ -42,8 +48,11 @@
                 {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
                 {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
               </a>
-              <div class="bulletin-board-link mb-4">
-                <a href="{% pageurl labs_list %}"><span>{% translate 'Poglej vse laboratorije' %}</span></a>
+              <div class="mb-4 text-center">
+                <a class="link" href="{% pageurl labs_list %}">
+                  <span class="link-text">{% translate 'Poglej vse laboratorije' %}</span>
+                  <span class="link-icon"></span>
+                </a>
               </div>
             </div>
             {% endif %}
@@ -67,8 +76,11 @@
                   </a>
                 </div>
               </div>
-              <div class="bulletin-board-link">
-                <a href="{% pageurl markets_list %}"><span>{% translate 'Poglej Rog Market' %}</span></a>
+              <div class="text-center">
+                <a class="link" href="{% pageurl markets_list %}">
+                  <span class="link-text">{% translate 'Poglej Rog Market' %}</span>
+                  <span class="link-icon"></span>
+                </a>
               </div>
             </div>
             {% endif %}

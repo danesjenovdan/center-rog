@@ -19,7 +19,7 @@
             <div class="card-img">
                 {% image element.image original class="img-fluid" alt=value.image.alt_description %}
             </div>
-            <div>{{ element.description }}</div>
+            <p class="mb-0"><span>{{ element.description }}</span></p>
             {% if element.link and element.link_text %}
             <a href="{{ element.link }}" target="_blank" class="link">
                 <span class="link-text">{{ element.link_text }}</span>

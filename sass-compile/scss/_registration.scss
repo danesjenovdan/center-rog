@@ -7,7 +7,7 @@
         padding-right: 25px;
     }
 
-    p, a {
+    p, a:not(.button-small, .button-medium, .button-large) {
         @include font-size-xs();
     }
 
@@ -75,55 +75,11 @@
         margin-bottom: 20px;
     }
 
-    .user-purchase-plan .radio-square {
-        h3 {
-            margin-bottom: 15px;
-        }
-
-        p {
-            margin-bottom: 0;
-
-            &.price {
-                @include font-size-lg();
-                margin-bottom: 10px;
-            }
-            &.small {
-                font-size: 12px;
-                line-height: 1.2;
-                margin-top: 15px;
-                margin-bottom: 10px;
-            }
-        }
-
-        hr {
-            margin: 0;
-            border-bottom: 1.5px solid $cs-dark-gray;
-            border-top: none;
-            opacity: 1;
-        }
-
-        ul {
-            margin-top: 15px;
-            list-style: none;
-            padding-left: 0;
-
-            li {
-                padding-left: 1.5rem;
-                position: relative;
-
-                &::before {
-                    position: absolute;
-                    top: 0.2em;
-                    left: 0;
-                    content: "\25CF";
-                    line-height: 1;
-                }
-            }
-        }
-
-    }
-
     .payment-preview {
+        .name {
+            @include font-size-xs();
+        }
+        
         .line,
         .sum-line {
             padding: 20px 0;
@@ -144,10 +100,18 @@
         }
     }
 
-    button + .button-notice {
+    .button-notice {
         max-width: 215px;
         margin-top: 5px;
         margin-bottom: 0;
+    }
+
+    .input-error input {
+        border-color: $cs-red;
+    }
+
+    .input-success input {
+        border-color: $cs-dark-green;
     }
 }
 
