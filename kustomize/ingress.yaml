@@ -15,9 +15,31 @@ spec:
   tls:
     - hosts:
         - rog.lb.djnd.si
+        - center-rog.si
+        - www.center-rog.si
       secretName: rog-wagtail-tls
   rules:
     - host: rog.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rog
+                port:
+                  number: 8000
+    - host: center-rog.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rog
+                port:
+                  number: 8000
+    - host: www.center-rog.si
       http:
         paths:
           - path: /
@@ -44,9 +66,20 @@ spec:
   tls:
     - hosts:
         - files.rog.lb.djnd.si
+        - files.center-rog.si
       secretName: rog-nginx-tls
   rules:
     - host: files.rog.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rog-nginx
+                port:
+                  number: 80
+    - host: files.center-rog.si
       http:
         paths:
           - path: /
