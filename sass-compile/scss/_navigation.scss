@@ -69,7 +69,7 @@
 
     .navbar-toggler-container {
         position: relative;
-        padding: 10px 24px;
+        padding: 10px 0;
         // z-index: 999999; // to ne sme bit tako, ker potem se ne da klikat na gumbe v navigaciji
         @include media-breakpoint-down(md) {
             padding: 25px 5px;

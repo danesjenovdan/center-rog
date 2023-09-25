@@ -215,7 +215,11 @@ body.safari {
         display: block;
         @include font-size-md();
         color: inherit;
-        border-bottom: none !important;
+        // border-bottom: none !important;
+
+        &:hover span {
+            border-bottom: 0.0625em solid;
+        }
     }
 }
 
@@ -227,6 +231,10 @@ body.safari {
 
 .input-error {
     border-color: $cs-red;
+}
+
+.input-success {
+    border-color: $cs-dark-green;
 }
 
 .form-field-wrapper {
@@ -2093,7 +2101,7 @@ section.image-embed {
         }
 
         section {
-            padding: 10px;
+            padding: 15px;
             height: 100%;
             min-height: 200px;
 

@@ -15,14 +15,16 @@ from news.models import NewsPage
 from events.models import EventPage
 
 import random
+from datetime import date
 
 
 def add_see_more_fields(context):
     # random event
-    events = list(EventPage.objects.live())
+    today = date.today()
+    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live())
+    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())

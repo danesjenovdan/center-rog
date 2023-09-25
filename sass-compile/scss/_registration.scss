@@ -100,10 +100,18 @@
         }
     }
 
-    button + .button-notice {
+    .button-notice {
         max-width: 215px;
         margin-top: 5px;
         margin-bottom: 0;
+    }
+
+    .input-error input {
+        border-color: $cs-red;
+    }
+
+    .input-success input {
+        border-color: $cs-dark-green;
     }
 }
 

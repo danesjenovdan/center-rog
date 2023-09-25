@@ -13,16 +13,18 @@ from wagtail.images.blocks import ImageChooserBlock
 from home.models import BasePage, CustomImage
 
 import random
+from datetime import date
 
 
 def add_see_more_fields(context):
     from home.models import LabPage, StudioPage
     from events.models import EventPage
     # random event
-    events = list(EventPage.objects.live())
+    today = date.today()
+    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live())
+    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
@@ -77,7 +79,6 @@ class NewsPage(BasePage):
             ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
         ]))
     ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
-    # archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -88,7 +89,6 @@ class NewsPage(BasePage):
         FieldPanel("body"),
         FieldPanel("tag"),
         FieldPanel("gallery"),
-        # FieldPanel("archived"),
         FieldPanel("show_see_more_section")
     ]
 
@@ -106,30 +106,6 @@ class NewsPage(BasePage):
     class Meta:
         verbose_name = _("Novica")
         verbose_name_plural = _("Novice")
-
-
-# class NewsListArchivePage(BasePage):
-#     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
-
-#     content_panels = Page.content_panels + [
-#         FieldPanel("show_see_more_section")
-#     ]
-
-#     subpage_types = []
-
-#     def get_context(self, request, *args, **kwargs):
-#         context = super().get_context(request, *args, **kwargs)
-
-#         context["list"] = NewsPage.objects.live().filter(archived=True)
-
-#         # see more
-#         context = add_see_more_fields(context)
-
-#         return context
-
-#     class Meta:
-#         verbose_name = _("Arhiv novic")
-#         verbose_name_plural = _("Arhivi novic")
 
 
 class NewsListPage(BasePage):
@@ -185,4 +161,3 @@ class NewsListPage(BasePage):
 
 NewsPage._meta.get_field("color_scheme").default = "light-gray"
 NewsListPage._meta.get_field("color_scheme").default = "light-gray"
-# NewsListArchivePage._meta.get_field("color_scheme").default = "light-gray"
