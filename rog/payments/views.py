@@ -170,19 +170,48 @@ class PaymentSuccessXML(views.APIView):
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.successed_at = timezone.now()
+        payment.save()
+        user = payment.user
 
         # membership
         membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
         if membership_fee:
-            membership = payment.user.membership
+            membership = user.membership
+            membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
+
             if not membership:
-                membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
-                today = datetime.now()
-                one_year_from_now = today + relativedelta(years=1)
-                Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=True, user=payment.user).save()
+                # User has no membership at this time
+                valid_from = timezone.now()
+
+                valid_to = valid_from + timedelta(days=365)
+                Membership(
+                    valid_from=valid_from,
+                    valid_to=valid_to,
+                    type=membership_type,
+                    active=True,
+                    user=user
+                ).save()
             else:
-                membership.active = True
-                membership.save()
+                last_active_membership = user.get_last_active_membership()
+                if last_active_membership:
+                    # user has active membership
+                    valid_from = last_active_membership.valid_to
+                    if valid_from < timezone.now():
+                        valid_from = timezone.now()
+                    valid_to = valid_from + timedelta(days=365)
+                    Membership(
+                        valid_from=valid_from,
+                        valid_to=valid_to,
+                        type=membership_type,
+                        active=True,
+                        user=user
+                    ).save()
+                else:
+                    # user has free membership
+                    membership.active = True
+                    membership.valid_from = valid_from
+                    membership.valid_to = valid_from + timedelta(days=365)
+                    membership.save()
 
         user_fee_plan = None # uporabnina
 
@@ -190,23 +219,25 @@ class PaymentSuccessXML(views.APIView):
         items = []
         for payment_plan in payment.payment_plans.all():
             plan = payment_plan.plan
-            if plan and plan.is_subscription:
-                payment_plan.valid_to = timezone.now() + timedelta(days=plan.duration)
-                payment_plan.save()
             # create tokens
             if plan.item_type and plan.item_type.name == 'uporabnina':
                 user_fee_plan = plan
+                last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
+                valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+                payment_plan.valid_to = valid_from + timedelta(days=plan.duration)
+                payment_plan.save()
+
                 Token.objects.bulk_create([
                     Token(
                         payment=payment,
-                        valid_from=timezone.now(),
-                        valid_to=timezone.now() + timedelta(days=plan.duration)
+                        valid_from=valid_from,
+                        valid_to=valid_from + timedelta(days=plan.duration)
                     ) for i in range(plan.tokens)
                 ] + [
                     Token(
                         payment=payment,
-                        valid_from=timezone.now(),
-                        valid_to=timezone.now() + timedelta(days=plan.duration),
+                        valid_from=valid_from,
+                        valid_to=valid_from + timedelta(days=plan.duration),
                         type_of=Token.Type.WORKSHOP
                     ) for i in range(plan.workshops)
                 ])

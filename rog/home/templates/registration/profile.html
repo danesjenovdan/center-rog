@@ -40,15 +40,15 @@
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
                 <div>
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
-                    {% if user.get_active_subscription_plan %}
-                    <h6>{{ user.get_active_subscription_plan.plan_name }}</h6>
+                    {% if user.get_last_active_subscription_payment_plan %}
+                    <h6>{{ user.get_last_active_subscription_payment_plan.plan_name }}</h6>
                     {% else %}
                     <h6>/</h6>
                     {% endif %}
                     <p class="subtitle">
                         {% translate 'veljavnost paketa do:' %} <br />
-                        {% if user.get_active_subscription_plan %}
-                        {{ user.get_active_subscription_plan.valid_to|date:"j. n. Y" }}
+                        {% if user.get_last_active_subscription_payment_plan %}
+                        {{ user.get_last_active_subscription_payment_plan.valid_to|date:"j. n. Y" }}
                         {% else %}
                         /
                         {% endif %}
