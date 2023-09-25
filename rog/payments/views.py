@@ -45,7 +45,19 @@ class PaymentPreview(views.APIView):
             if plan.item_type.name == 'uporabnina':
                 # if plan is uporabnina add clanarina to payment
                 membership = user.membership
-                if not (membership and membership.type and membership.type.plan and membership.active):
+
+                # check if user has active membership for entire duration of new uporabnina
+                last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
+                valid_to = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+                new_uporabnina_valid_to = valid_to + timedelta(days=plan.duration)
+                last_active_membership = user.get_last_active_membership()
+                if (not last_active_membership) or new_uporabnina_valid_to > last_active_membership.valid_to:
+                    add_membership = True
+                else:
+                    add_membership = False
+
+                # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
+                if (not (membership and membership.type and membership.type.plan and membership.active)) or add_membership:
                     paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
                     plan = paid_membership.plan
                     price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
