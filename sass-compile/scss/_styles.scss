@@ -1166,17 +1166,17 @@ form {
                 padding-left: 13px;
                 padding-right: 13px;
             }
-            // .scrollbar-hider {
-            //     overflow: hidden;
-            // }
+            .scrollbar-hider {
+                overflow: hidden;
+            }
 
-            // .studios-container {
-            //     .row {
-            //         padding-block: 33px; // needed when cards flip on hover to not create a scrollbar
-            //         padding-inline: 15px;
-            //         flex-wrap: nowrap;
-            //         overflow-x: scroll;
-            //     }
+            .studios-container {
+                .row {
+                    padding-block: 33px; // needed when cards flip on hover to not create a scrollbar
+                    padding-inline: 15px;
+                    flex-wrap: nowrap;
+                    overflow-x: scroll;
+                }
 
                 .studio-card-col {
                     // margin-left: 15px;
@@ -1206,18 +1206,18 @@ form {
                         transform: rotate(-4deg);
                     }
                 }
-            // }
+            }
 
-            // .scrolling-dots {
-            //     span {
-            //         border-color: $cs-dark-green;
+            .scrolling-dots {
+                span {
+                    border-color: $cs-dark-green;
 
-            //         &:hover {
-            //             border-color: $cs-dark-gray;
-            //             background-color: $cs-dark-green;
-            //         }
-            //     }
-            // }
+                    &:hover {
+                        border-color: $cs-dark-gray;
+                        background-color: $cs-dark-green;
+                    }
+                }
+            }
 
             a.link {
                 color: inherit;
