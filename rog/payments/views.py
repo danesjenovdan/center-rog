@@ -20,7 +20,7 @@ from .parsers import XMLParser
 from .pantheon import create_move
 from home.email_utils import send_email
 from .forms import PromoCodeForm
-
+from .utils import get_invoice_number
 
 # Create your views here.
 
@@ -170,6 +170,7 @@ class PaymentSuccessXML(views.APIView):
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.successed_at = timezone.now()
+        payment.invoice_number = get_invoice_number()
         payment.save()
         user = payment.user
 
