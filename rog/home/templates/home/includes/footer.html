@@ -47,7 +47,7 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <form>
+            <!-- <form>
                 <div class="form-field-wrapper">
                     <label for="newsletter-input-footer">Prijavi se na naš novičnik</label>
                     <input type="text" id="newsletter-input-footer">
@@ -63,8 +63,8 @@
                 <div class="my-3">
                     <button type="submit" class="secondary-button button-medium">pošlji</button>
                 </div>
-            </form>
-        </div>
+            </form> -->
+            {% include "home/includes/mailchimp.html" %}
     </div>
     {% if settings.home.MetaSettings.footer_logos %}
     <div class="row">
