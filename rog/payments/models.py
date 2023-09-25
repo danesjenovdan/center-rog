@@ -13,9 +13,11 @@ from string import ascii_uppercase
 
 class ActiveAtQuerySet(models.QuerySet):
     def get_last_active_subscription_payment_plan(self):
+        now = datetime.now()
         active_payments = self.filter(
             items__item_type__name="uporabnina",
-            successed_at__isnull=False
+            successed_at__isnull=False,
+            payment_plans__valid_to__gte=now,
         )
         if active_payments:
             return active_payments.latest('successed_at').payment_plans.all().filter(plan__item_type__name="uporabnina").last()
