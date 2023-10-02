@@ -25,7 +25,7 @@
                 {% endif %}
             </div>
             {% else %}
-            <div class="col-md-6 mt-4 mt-md-0 {% if value.image_position == 'align-left' %}order-2{% endif %}">
+            <div class="col-md-6 my-4 mt-md-0 {% if value.image_position == 'align-left' %}order-2{% endif %}">
                 <p>{{ value.text }}</p>
                 {% if value.link %}
                 {% include "home/includes/bottom_button.html" with value_link=value.link align="left" %}

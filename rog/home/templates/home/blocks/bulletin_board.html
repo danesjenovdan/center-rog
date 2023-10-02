@@ -42,71 +42,85 @@
       <div class="col-md-8 col-xl-6">
         <div class="row">
           <div class="col-md-6">
-            {% if lab %}
-            <div class="labs-section">
-              <a href="{% pageurl lab %}" class="lab">
-                {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
-                {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
-              </a>
-              <div class="mb-4 text-center">
-                <a class="link" href="{% pageurl labs_list %}">
-                  <span class="link-text">{% translate 'Poglej vse laboratorije' %}</span>
-                  <span class="link-icon"></span>
-                </a>
-              </div>
-            </div>
-            {% endif %}
-            {% if markets %}
-            <div class="market-section my-4">
-              <div class="markets-container">
-                <div class="color-scheme-{{ markets.0.card_color_scheme }} card-hover">
-                  <a
-                    href="{% pageurl markets.0.localized %}"
-                    class="text-center p-3 d-block"
-                  >
-                    <h4 class="m-0">{{ markets.0.localized }}</h4>
+            <div class="row">
+              {% if lab %}
+              <div class="col-6 col-md-12">
+                <div class="labs-section">
+                  <a href="{% pageurl lab %}" class="lab">
+                    {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
+                    {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
                   </a>
-                </div>
-                <div class="color-scheme-{{ markets.1.card_color_scheme }} card-hover">
-                  <a
-                    href="{% pageurl markets.1.localized %}"
-                    class="text-center p-3 d-block"
-                  >
-                    <h4 class="m-0">{{ markets.1.localized }}</h4>
-                  </a>
+                  <div class="mb-4 text-center">
+                    <a class="link" href="{% pageurl labs_list %}">
+                      <span class="link-text">{% translate 'Poglej vse laboratorije' %}</span>
+                      <span class="link-icon"></span>
+                    </a>
+                  </div>
                 </div>
               </div>
-              <div class="text-center">
-                <a class="link" href="{% pageurl markets_list %}">
-                  <span class="link-text">{% translate 'Poglej Rog Market' %}</span>
-                  <span class="link-icon"></span>
-                </a>
+              {% endif %}
+              {% if markets %}
+              <div class="col-6 col-md-12">
+                <div class="market-section my-md-4">
+                  <div class="markets-container">
+                    <div class="color-scheme-{{ markets.0.card_color_scheme }} card-hover">
+                      <a
+                        href="{% pageurl markets.0.localized %}"
+                        class="text-center p-3 d-block"
+                      >
+                        <h4 class="m-0">{{ markets.0.localized }}</h4>
+                      </a>
+                    </div>
+                    <div class="color-scheme-{{ markets.1.card_color_scheme }} card-hover">
+                      <a
+                        href="{% pageurl markets.1.localized %}"
+                        class="text-center p-3 d-block"
+                      >
+                        <h4 class="m-0">{{ markets.1.localized }}</h4>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="text-center">
+                    <a class="link" href="{% pageurl markets_list %}">
+                      <span class="link-text">{% translate 'Poglej Rog Market' %}</span>
+                      <span class="link-icon"></span>
+                    </a>
+                  </div>
+                </div>
               </div>
+              {% endif %}
             </div>
-            {% endif %}
           </div>
           <div class="col-md-6">
-            <a
-              href="{% pageurl studios_list %}"
-              class="color-scheme-dark-green studios-link"
-            >
-            {% translate 'Poglej, kdo vse je v naših studiih' %}
-            </a>
-            <div class="notice-wrapper color-scheme-white">
-              <div class="tape"></div>
-              <div class="notice text-center">{{ value.notice }}</div>
-              <div class="tape"></div>
-            </div>
-            <div class="residents-section">
-              <div class="doorbell">
-                <a href="{% pageurl residents_list %}" class="resident">
-                  <span class="doorbell-button"></span>
-                  <div class="resident-name">
-                    <div class="paper">{% translate 'Poglej naše rezidence' %}</div>
-                    <div class="tape"></div>
-                    <div class="tape"></div>
-                  </div>
+            <div class="row">
+              <div class="col-6 col-md-12 d-flex flex-column justify-content-center">
+                <a
+                  href="{% pageurl studios_list %}"
+                  class="color-scheme-dark-green studios-link"
+                >
+                {% translate 'Poglej, kdo vse je v naših studiih' %}
                 </a>
+              </div>
+              <div class="col-6 col-md-12 d-flex flex-column justify-content-center">
+                <div class="notice-wrapper color-scheme-white">
+                  <div class="tape"></div>
+                  <div class="notice text-center">{{ value.notice }}</div>
+                  <div class="tape"></div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="residents-section">
+                  <div class="doorbell">
+                    <a href="{% pageurl residents_list %}" class="resident">
+                      <span class="doorbell-button"></span>
+                      <div class="resident-name">
+                        <div class="paper">{% translate 'Poglej naše rezidence' %}</div>
+                        <div class="tape"></div>
+                        <div class="tape"></div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
