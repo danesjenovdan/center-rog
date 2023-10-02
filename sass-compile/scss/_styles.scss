@@ -500,42 +500,42 @@ form {
 
     &:nth-child(1n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(25deg);
+            transform: translate(12%, -6%) rotate(28deg);
         }
     }
     &:nth-child(2n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(23deg);
+            transform: translate(12%, -6%) rotate(18deg);
         }
     }
     &:nth-child(3n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(30deg);
+            transform: translate(12%, -6%) rotate(36deg);
         }
     }
     &:nth-child(4n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(27deg);
+            transform: translate(12%, -6%) rotate(30deg);
         }
     }
     &:nth-child(5n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(23deg);
+            transform: translate(12%, -6%) rotate(18deg);
         }
     }
     &:nth-child(6n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(24deg);
+            transform: translate(12%, -6%) rotate(20deg);
         }
     }
     &:nth-child(7n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(25deg);
+            transform: translate(12%, -6%) rotate(22deg);
         }
     }
     &:nth-child(8n) {
         .card-tag {
-            transform: translate(12%, -6%) rotate(26deg);
+            transform: translate(12%, -6%) rotate(24deg);
         }
     }
 
@@ -544,10 +544,10 @@ form {
             padding: 0;
         }
 
-        &:not(.card-wide) {
-            height: 200px;
-            flex-direction: row;
-        }
+        // &:not(.card-wide) {
+        //     height: 200px;
+        //     flex-direction: row;
+        // }
     }
 }
 
@@ -935,10 +935,6 @@ form {
                     // left: 0;
                     width: 100%;
                     height: 460px;
-
-                    @include media-breakpoint-down(sm) {
-                        height: 200px;
-                    }
 
                     &:nth-child(2) {
                         top: 35px;
@@ -1333,10 +1329,10 @@ form {
 }
 
 .labs-section {
-    @include media-breakpoint-down(sm) {
-        padding-left: 13px;
-        padding-right: 13px;
-    }
+    // @include media-breakpoint-down(sm) {
+    //     padding-left: 13px;
+    //     padding-right: 13px;
+    // }
 
     .lab {
         display: grid;
@@ -1392,10 +1388,10 @@ form {
         max-width: 950px !important;
     }
 
-    @include media-breakpoint-down(sm) {
-        padding-left: 13px;
-        padding-right: 13px;
-    }
+    // @include media-breakpoint-down(sm) {
+    //     padding-left: 13px;
+    //     padding-right: 13px;
+    // }
 
     .doorbell {
         background-color: #F7F7F7;
@@ -1624,9 +1620,18 @@ section.image-embed {
     .list-container {
         padding-top: 60px;
         padding-bottom: 60px;
+
         @include media-breakpoint-down(sm) {
             padding-left: 25px;
             padding-right: 25px;
+
+            .news-card,
+            .events-card {
+                &:not(.card-wide) {
+                    height: 240px;
+                    flex-direction: row;
+                }
+            }
         }
     }
 }
@@ -2241,16 +2246,25 @@ section.image-embed {
 .see-more-section {
     padding-top: 30px;
     padding-bottom: 60px;
-    @include media-breakpoint-down(sm) {
-        padding-left: 13px;
-        padding-right: 13px;
-    }
 
     h2 {
         color: $cs-dark-blue;
         @include font-size-xl();
         text-align: center;
         margin-bottom: 30px;
+    }
+
+    @include media-breakpoint-down(sm) {
+        padding-left: 13px;
+        padding-right: 13px;
+
+        .news-card,
+        .events-card {
+            &:not(.card-wide) {
+                height: 240px;
+                flex-direction: row;
+            }
+        }
     }
 }
 
