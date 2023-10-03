@@ -241,8 +241,8 @@ class MarketplaceBlock(blocks.StructBlock):
 
 class FullWidthImageBlock(ColoredStructBlock):
     image = ImageChooserBlock(label=_("Slika"))
-    text = blocks.TextBlock(label=_("Besedilo (opcijsko)"), blank=True, required=False)
-
+    text = blocks.TextBlock(label=_("Izpostavljeno besedilo"), blank=True, required=False)
+    image_text = blocks.TextBlock(label=_("Besedilo pod sliko"), blank=True, required=False)
 
     class Meta:
         label = _("Slika")
@@ -294,8 +294,8 @@ class ColoredTextCardsBlock(ColoredStructBlock):
 
 
 class ColoredRichTextBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov sekcije"))
-    rich_text = blocks.RichTextBlock(label=_("Besedilo"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
+    rich_text = blocks.RichTextBlock(label=_("Besedilo"), required=False)
 
     class Meta:
         label = _("Barvno obogateno besedilo")
