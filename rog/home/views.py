@@ -121,7 +121,7 @@ class PurchasePlanView(TemplateView):
             plan = form.cleaned_data["plans"]
             print("Chosen plan", plan)
 
-            return redirect(f"/placilo?plan_id={plan.id}")
+            return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
             print("Form ni valid")
 
@@ -159,7 +159,7 @@ class PurchaseMembershipView(TemplateView):
             Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
 
             if membership_type.plan:
-                return redirect(f"/placilo?plan_id={membership_type.plan.id}")
+                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership")
             else:
                 return redirect("profile-my")  
         else:
@@ -354,7 +354,7 @@ class RegistrationProfileView(View):
             user.save()
 
             if payment_needed:
-                return redirect(f"/placilo?plan_id={plan_id}&registracija")
+                return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration")
             else:
                 return redirect("profile-my")
         else:

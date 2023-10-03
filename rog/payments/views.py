@@ -28,7 +28,7 @@ from .utils import get_invoice_number
 class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
-        registration = True if 'registracija' in request.GET else False
+        purchase_type = request.GET.get('purchase_type', '')
         plan = Plan.objects.filter(id=plan_id).first()
         user = request.user
 
@@ -67,7 +67,7 @@ class PaymentPreview(views.APIView):
 
             promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
-            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "registration": registration })
+            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "purchase_type": purchase_type })
         else:
             return render(request, 'payment.html', { "id": None })
 
