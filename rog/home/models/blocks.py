@@ -4,6 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.core import validators
+from django.db.models import F
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
 from .settings import ExternalLinkBlock, PageLinkBlock
@@ -351,7 +352,7 @@ class MembershipsBlock(ColoredStructBlock):
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context["membership_types"] = MembershipType.objects.all()
+        context["membership_types"] = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
         return context
 
     class Meta:
@@ -366,7 +367,7 @@ class PlansBlock(ColoredStructBlock):
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
         timestamp = datetime.now()
-        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp)
+        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp).order_by("price")
         return context
 
     class Meta:

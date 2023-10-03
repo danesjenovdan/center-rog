@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
@@ -107,14 +108,14 @@ class PurchasePlanView(TemplateView):
 
         form = PurchasePlanForm()
         membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
 
         return render(request, self.template_name, { 'user': current_user, "form": form })
 
     def post(self, request):
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
@@ -182,14 +183,14 @@ class RegistrationMembershipView(View):
 
     def get(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all()
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
         # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
         return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
 
     def post(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all()
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
 
         form = RegistrationMembershipForm(request.POST)
 
