@@ -24,14 +24,22 @@
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
                 <div>
                     <p class="mb-1">{% translate 'tip članstva' %}</p>
+                    {% if user.membership %}
                     <h6>{{ user.membership.type }}</h6>
+                    {% else %}
+                    <h6>/</h6>
+                    {% endif %}
                     <p class="subtitle">
                         {% translate 'veljavnost članarine do:' %} <br />
+                        {% if user.membership %}
                         {{ obnovitev_clanarine|date:"j. n. Y" }}
+                        {% else %}
+                        /
+                        {% endif %}
                     </p>
                 </div>
                 <div>
-                    <a href="{% url 'profile-purchase' %}" class="secondary-button button-medium">{% translate 'uredi članstvo' %}</a>
+                    <a href="{% url 'profile-purchase-membership' %}" class="secondary-button button-medium">{% translate 'uredi članstvo' %}</a>
                 </div>
             </section>
         </div>
@@ -55,7 +63,7 @@
                     </p>
                 </div>
                 <div>
-                    <a href="{% url 'profile-purchase' %}" class="secondary-button button-medium">{% translate 'izberi paket' %}</a>
+                    <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium">{% translate 'izberi paket' %}</a>
                 </div>
             </section>
         </div>

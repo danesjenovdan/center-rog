@@ -718,14 +718,14 @@ form {
 
     p {
         margin-bottom: 5px;
-        @include font-size-sm();
+        @include font-size-xs();
     }
 
     .specifications p {
         margin-bottom: 10px;
 
         span:last-child {
-            @include font-size-md();
+            @include font-size-sm();
         }
     }
 
@@ -1578,6 +1578,7 @@ section.image-embed {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    position: relative;
 
     @include media-breakpoint-down(sm) {
         min-height: 70vh;
@@ -1601,6 +1602,10 @@ section.image-embed {
                 margin-bottom: 0;
             }
         }
+    }
+
+    .image-text {
+        bottom: 10px;
     }
 
 
@@ -2610,7 +2615,7 @@ section.image-embed {
     }
 
     .link span,
-    p span {
+    p small {
         @include font-size-xs();
     }
 }
