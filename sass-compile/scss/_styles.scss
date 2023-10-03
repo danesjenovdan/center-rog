@@ -540,6 +540,9 @@ form {
     }
 
     @include media-breakpoint-down(sm) {
+        padding: 20px;
+        gap: 10px;
+
         .card-body {
             padding: 0;
         }
@@ -584,6 +587,10 @@ form {
             flex-grow: 1;
             max-height: 100%;
             padding: 20px;
+
+            @include media-breakpoint-down(sm) {
+                padding: 15px;
+            }
         }
     }
 
@@ -609,12 +616,16 @@ form {
         }
     }
 
-    &:hover,
-    &:focus-within {
-        .card-inner {
-            transform: rotateY(180deg);
+    // flip effect happens only on desktop
+    @include media-breakpoint-up(lg) {
+        &:hover,
+        &:focus-within {
+            .card-inner {
+                transform: rotateY(180deg);
+            }
         }
     }
+    
     // END FLIP EFFECT
 
     &:focus-within .card-inner {
@@ -935,6 +946,7 @@ form {
                     // left: 0;
                     width: 100%;
                     height: 460px;
+                    flex-direction: column;
 
                     &:nth-child(2) {
                         top: 35px;
@@ -1635,6 +1647,16 @@ section.image-embed {
                 &:not(.card-wide) {
                     height: 240px;
                     flex-direction: row;
+
+                    .card-body {
+                        p {
+                            @include font-size-xxs();
+                        }
+
+                        .card-title {
+                            @include font-size-xs();
+                        }
+                    }
                 }
             }
         }
@@ -2175,6 +2197,11 @@ section.image-embed {
     .studio-card-col {
         margin-bottom: 20px;
 
+        @include media-breakpoint-down(sm) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
         &:nth-child(1n) {
             transform: rotate(-3deg);
         }
@@ -2268,6 +2295,16 @@ section.image-embed {
             &:not(.card-wide) {
                 height: 240px;
                 flex-direction: row;
+            }
+
+            .card-body {
+                p {
+                    @include font-size-xxs();
+                }
+
+                .card-title {
+                    @include font-size-xs();
+                }
             }
         }
     }
@@ -2615,7 +2652,7 @@ section.image-embed {
     }
 
     .link span,
-    p small {
+    p {
         @include font-size-xs();
     }
 }
