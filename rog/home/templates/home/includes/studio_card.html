@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load i18n static wagtailcore_tags wagtailimages_tags %}
 
 <div class="card studio-card">
   <div class="card-inner">
@@ -13,7 +13,7 @@
     <div class="show-hover flex-column justify-content-between color-scheme-dark-green">
       <p>{{ studio.short_description }}</p>
       <div class="text-center">
-        <a href="{% pageurl studio %}" class="button-medium secondary-button">obišči studio</a>
+        <a href="{% pageurl studio %}" class="button-medium secondary-button">{% translate 'obišči studio' %}</a>
       </div>
     </div>
   </div>
