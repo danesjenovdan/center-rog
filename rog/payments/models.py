@@ -141,7 +141,7 @@ class Plan(Timestampable):
         FieldPanel("price"),
         FieldPanel("discounted_price"),
         FieldPanel("is_subscription"),
-        # FieldPanel("valid_to"),
+        FieldPanel("valid_to"),
         MultiFieldPanel(
             [
                 FieldPanel("description"),

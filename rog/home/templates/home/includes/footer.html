@@ -22,7 +22,7 @@
                                 <p>
                                     <span>{{ working_hours.value.day }}</span>
                                     {% if working_hours.value.start_time and working_hours.value.end_time %}
-                                    <span>{{ working_hours.value.start_time|time:"G:i" }} - {{ working_hours.value.end_time|time:"G:i" }}</span>
+                                    <span>{{ working_hours.value.start_time|time:"G:i" }} – {{ working_hours.value.end_time|time:"G:i" }}</span>
                                     {% elif working_hours.value.text %}
                                     <span>{{ working_hours.value.text }}</span>
                                     {% endif %}

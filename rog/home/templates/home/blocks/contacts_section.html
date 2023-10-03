@@ -14,10 +14,10 @@
     {% for contact in value.contacts %}
         <div class="row mb-4 mb-md-0">
             <div class="col-md-4">
-                <p class="mb-2">{{ contact.name }}</p>
+                <p class="mb-0">{{ contact.name }}</p>
             </div>
             <div class="col-md-6">
-                <p class="mb-2">{{ contact.position }}</p>
+                <p class="mb-0">{{ contact.position }}</p>
             </div>
             <div class="col-md-2 text-md-end">
                 <a href="mailto:{{ contact.email }}" class="link">email</a>
