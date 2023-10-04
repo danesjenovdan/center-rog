@@ -214,8 +214,17 @@ class Payment(Timestampable):
         help_text="Select a user",
     )
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    successed_at = models.DateTimeField(null=True, blank=True)
+    successed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When payment was successed",
+    )
     errored_at = models.DateTimeField(null=True, blank=True)
+    payment_done_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name=_("Done at"),
+        help_text="When payment was done",)
     active_to = models.DateTimeField(
         null=True,
         blank=True,
@@ -244,6 +253,7 @@ class Payment(Timestampable):
         FieldPanel("user"),
         FieldPanel("amount"),
         FieldPanel("successed_at"),
+        FieldPanel("payment_done_at"),
         FieldPanel("errored_at"),
         FieldPanel("active_to"),
         FieldPanel("status"),
