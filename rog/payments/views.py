@@ -177,8 +177,13 @@ class PaymentSuccessXML(views.APIView):
     def post(self, request):
         data = request.data
         print(data)
+
         payment_id = request.GET.get('id')
         payment = Payment.objects.get(id=payment_id)
+
+        if payment.successed_at:
+            return Response({'status': 'Payment is already processed'})
+
         payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.successed_at = timezone.now()
@@ -265,6 +270,9 @@ class PaymentSuccessXML(views.APIView):
             if payment_plan.promo_code:
                 payment_plan.promo_code.use_code()
 
+        payment.payment_done_at = timezone.now()
+        payment.save()
+
         if user_fee_plan:
             send_email(
                 payment.user.email,
@@ -274,7 +282,6 @@ class PaymentSuccessXML(views.APIView):
                     'plan': user_fee_plan
                 }
             )
-
 
         return Response({'status': 'OK'})
 

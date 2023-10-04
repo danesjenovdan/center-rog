@@ -26,7 +26,7 @@
                 <div class="point done"><span>{% translate 'osebni profil' %}</span></div>
                 <div class="point active"><span>{% translate 'plačilo' %}</span></div>
             </div>
-            {% if purchase_type == "plan" %}
+            {% elif purchase_type == "plan" %}
             <div class="registration-progress">
                 <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
                 <div class="point active"><span>{% translate 'plačilo' %}</span></div>

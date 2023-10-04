@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'thisshouldbesecret')
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [ 'https://rog.lb.djnd.si' ]
+CSRF_TRUSTED_ORIGINS = [ 'https://rog.lb.djnd.si', 'https://center-rog.si' ]
 
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '/static/')
 STATIC_URL = os.getenv('DJANGO_STATIC_URL_BASE', '/static/')
