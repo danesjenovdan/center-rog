@@ -6,13 +6,13 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <h2 class="text-center">{{ value.title }}</h2>
+            <h2 class="text-center max-800">{{ value.title }}</h2>
         </div>
     </div>
     {% if value.intro_text %}
     <div class="row">
         <div class="col-12">
-            <p class="intro"><small>{{ value.intro_text }}</small></p>
+            <p class="intro max-800"><small>{{ value.intro_text }}</small></p>
         </div>
     </div>
     {% endif %}
@@ -20,13 +20,13 @@
         {% for membership_type in membership_types %}
         <div class="col-12 col-md-6 col-xl-4 my-4">
             <div class="radio-square">
-                <h4>{{ membership_type.name }}</h4>
+                <h3>{{ membership_type.name }}</h3>
                 <ul>
                     {% for specification in membership_type.related_specifications.all %}
                     <li>{{ specification }}</li>
                     {% endfor %}
                 </ul>
-                <h3>{{ membership_type.price }}</h3>
+                <h3>{{ membership_type.price }}€</h3>
             </div>
         </div>
         {% endfor %}

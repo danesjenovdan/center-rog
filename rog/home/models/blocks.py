@@ -4,6 +4,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.core import validators
+from django.db.models import F
 
 from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
 from .settings import ExternalLinkBlock, PageLinkBlock
@@ -240,8 +241,8 @@ class MarketplaceBlock(blocks.StructBlock):
 
 class FullWidthImageBlock(ColoredStructBlock):
     image = ImageChooserBlock(label=_("Slika"))
-    text = blocks.TextBlock(label=_("Besedilo (opcijsko)"), blank=True, required=False)
-
+    text = blocks.TextBlock(label=_("Izpostavljeno besedilo"), blank=True, required=False)
+    image_text = blocks.TextBlock(label=_("Besedilo pod sliko"), blank=True, required=False)
 
     class Meta:
         label = _("Slika")
@@ -293,8 +294,8 @@ class ColoredTextCardsBlock(ColoredStructBlock):
 
 
 class ColoredRichTextBlock(ColoredStructBlock):
-    title = blocks.CharBlock(label=_("Naslov sekcije"))
-    rich_text = blocks.RichTextBlock(label=_("Besedilo"))
+    title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
+    rich_text = blocks.RichTextBlock(label=_("Besedilo"), required=False)
 
     class Meta:
         label = _("Barvno obogateno besedilo")
@@ -351,7 +352,7 @@ class MembershipsBlock(ColoredStructBlock):
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context["membership_types"] = MembershipType.objects.all()
+        context["membership_types"] = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
         return context
 
     class Meta:
@@ -366,7 +367,7 @@ class PlansBlock(ColoredStructBlock):
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
         timestamp = datetime.now()
-        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp)
+        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp).order_by("price")
         return context
 
     class Meta:

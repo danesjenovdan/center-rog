@@ -184,7 +184,7 @@ class User(AbstractUser):
         else:
             return self.memberships.filter(
                 Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
-                valid_from__lte=datetime.now()).first()
+                valid_from__lte=datetime.now(), active=True).first()
 
     @property
     def get_last_active_subscription_payment_plan(self):

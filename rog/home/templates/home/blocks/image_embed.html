@@ -17,4 +17,13 @@
         </div>
     </div>
     {% endif %}
+    {% if value.image_text %}
+    <div class="container-fluid position-absolute image-text">
+        <div class="row">
+            <div class="col-12">
+                {{ value.image_text }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </section>
