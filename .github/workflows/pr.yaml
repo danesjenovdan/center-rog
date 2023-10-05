@@ -11,9 +11,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
-      - name: pull-request-k8s-staging
+      - name: pull-request-k8s
         uses: repo-sync/pull-request@v2
         with:
-          destination_branch: "k8s-staging"
+          destination_branch: "k8s"
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          pr_title: "Pulling ${{ github.ref }} into k8s-staging"
+          pr_title: "Pulling ${{ github.ref }} into k8s"
