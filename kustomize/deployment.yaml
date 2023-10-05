@@ -38,11 +38,11 @@ spec:
                 name: rog-credentials
           resources:
             requests:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
             limits:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
         - name: migrate
           image: rog
           command:
@@ -58,11 +58,11 @@ spec:
                 name: rog-credentials
           resources:
             requests:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
             limits:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
       containers:
         - name: rog
           image: rog
@@ -92,11 +92,11 @@ spec:
               value: rog.settings.production
           resources:
             requests:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
             limits:
-              memory: 1Gi
-              cpu: 500m
+              memory: 500m
+              cpu: 300m
         - name: rog-nginx
           ports:
             - name: http
