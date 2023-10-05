@@ -1,5 +1,5 @@
 {% extends "registration/registration_wrapper.html" %}
-{% load static %}
+{% load i18n static %}
 
 {% block title %}Registracija{% endblock %}
 
@@ -13,11 +13,11 @@
 
 <form action="{% url 'registration-membership' %}" method="post">
     {% csrf_token %}
-    <div class="row radio-square-wrapper">
+    <div class="row justify-content-center radio-square-wrapper">
 
         <!-- {{ form.type }} -->
         {% for membership_type in membership_types %}
-        <div class="col-6">
+        <div class="col-12 col-md-6 mb-4">
             <input type="radio" name="type" value="{{ membership_type.id }}" required="" id="id_type_{{ membership_type.id }}" class="btn-check">
             <label for="id_type_{{ membership_type.id }}" class="radio-square btn">
                 <h4>{{ membership_type.name }}</h4>
@@ -35,7 +35,7 @@
     <p class="error">{{ form.membership_choice.errors }}</p>
     {% endif %}
     <div class="d-flex justify-content-end my-4">
-        <button type="submit" class="secondary-button button-medium">naprej</button>
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
     </div>
 </form>
 

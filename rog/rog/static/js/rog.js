@@ -270,6 +270,16 @@ function copyEmailButton() {
   });
 }
 
+function studioCardButtons() {
+  const cards = document.querySelectorAll(".studio-card");
+  cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const href = card.querySelector("a").getAttribute("href");
+      window.location = href;
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   rotateNavbar();
 
@@ -288,6 +298,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   copyEmailButton();
+
+  const screenWidth = screen.width;
+  if (screenWidth < 768 && document.querySelector(".template-studio-list")) {
+    studioCardButtons();
+  }
 });
 
 window.addEventListener("message", function (event) {

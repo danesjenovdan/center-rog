@@ -17,3 +17,10 @@ jobs:
           destination_branch: "k8s"
           github_token: ${{ secrets.GITHUB_TOKEN }}
           pr_title: "Pulling ${{ github.ref }} into k8s"
+
+      - name: pull-request-k8s-staging
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "k8s-staging"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          pr_title: "Pulling ${{ github.ref }} into k8s-staging"

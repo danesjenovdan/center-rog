@@ -25,7 +25,7 @@
                 {% endif %}
             </div>
             {% else %}
-            <div class="col-md-6 mt-4 mt-md-0 {% if value.image_position == 'align-left' %}order-2{% endif %}">
+            <div class="col-md-6 my-4 mt-md-0 {% if value.image_position == 'align-left' %}order-2{% endif %}">
                 <p>{{ value.text }}</p>
                 {% if value.link %}
                 {% include "home/includes/bottom_button.html" with value_link=value.link align="left" %}
@@ -45,16 +45,18 @@
 {% else %}
     <div class="container no-image">
         <div class="row justify-content-center">
-            <div class="col-12 col-xxl-8">
-                {% if value.title %}
-                <h2 class="text-center">{{ value.title }}</h2>
-                {% endif %}
-                <p>{{ value.text }}</p>
-                {% if value.link %}
-                <div class="mt-30">
-                {% include "home/includes/bottom_button.html" with value_link=value.link %}
+            <div class="col-12">
+                <div class="max-800">
+                    {% if value.title %}
+                    <h2 class="text-center">{{ value.title }}</h2>
+                    {% endif %}
+                    <p>{{ value.text }}</p>
+                    {% if value.link %}
+                    <div class="mt-30">
+                    {% include "home/includes/bottom_button.html" with value_link=value.link %}
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>

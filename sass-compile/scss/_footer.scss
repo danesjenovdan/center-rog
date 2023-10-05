@@ -28,11 +28,17 @@ footer.container-fluid {
 
         p {
             margin-bottom: 0;
-            display: flex;
-            justify-content: space-between;
 
             span:first-of-type {
-                padding-right: 16px;
+                display: inline-block;
+                width: 100px;
+                padding-right: 10px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                span:first-of-type {
+                    width: 100%;
+                }
             }
         }
     }
@@ -76,7 +82,7 @@ footer.container-fluid {
         }
 
         img {
-            max-width: 100%;
+            max-width: 70%;
             object-fit: contain;
             max-height: 125px;
             height: auto;

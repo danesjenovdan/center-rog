@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.db.models import F
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
@@ -107,24 +108,65 @@ class PurchasePlanView(TemplateView):
 
         form = PurchasePlanForm()
         membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
 
         return render(request, self.template_name, { 'user': current_user, "form": form })
 
     def post(self, request):
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans)
+        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
             print("Chosen plan", plan)
 
-            return redirect(f"/placilo?plan_id={plan.id}")
+            return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
             print("Form ni valid")
 
         return render(request, self.template_name, { "form": form })
+    
+
+@method_decorator(login_required, name='dispatch')
+class PurchaseMembershipView(TemplateView):
+    template_name = "registration/user_purchase_membership.html"
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+
+        form = RegistrationMembershipForm()
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+
+        return render(request, self.template_name, { 
+            "user": current_user, 
+            "form": form, 
+            "membership_types": membership_types
+        })
+    
+    def post(self, request):
+        user = request.user
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+
+        form = RegistrationMembershipForm(request.POST)
+
+        if form.is_valid():
+            membership_type = form.cleaned_data["type"]
+            today = datetime.now()
+            one_year_from_now = today + relativedelta(years=1)
+            # active will set on payment success (unless it's free membership)
+            active = False if membership_type.plan else True
+            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+
+            if membership_type.plan:
+                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership")
+            else:
+                return redirect("profile-my")  
+        else:
+            return render(request, self.template_name, context={ 
+                "form": form, 
+                "membership_types": membership_types
+            })
 
 
 class RegistrationView(View):
@@ -182,14 +224,14 @@ class RegistrationMembershipView(View):
 
     def get(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all()
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
         # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
         return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
 
     def post(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all()
+        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
 
         form = RegistrationMembershipForm(request.POST)
 
@@ -312,7 +354,7 @@ class RegistrationProfileView(View):
             user.save()
 
             if payment_needed:
-                return redirect(f"/placilo?plan_id={plan_id}&registracija")
+                return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration")
             else:
                 return redirect("profile-my")
         else:
