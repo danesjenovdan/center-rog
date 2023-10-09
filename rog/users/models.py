@@ -212,6 +212,8 @@ class User(AbstractUser):
         now = datetime.now()
         lower_limit = now.replace(year=now.year-26)
         upper_limit = now.replace(year=now.year-65)
+        if self.birth_date == None:
+            return False
         return not(lower_limit.date() > self.birth_date > upper_limit.date())
 
     def random_color(self):
