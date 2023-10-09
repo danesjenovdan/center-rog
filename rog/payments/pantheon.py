@@ -5,6 +5,8 @@ import json
 
 
 def create_ident(item):
+    if not settings.PANTHEON_URL:
+        return None
     name = item.name
     price = float(item.price)
     vat = int(item.vat)
@@ -218,6 +220,8 @@ def create_ident(item):
 
 def create_subject(subject):
     print(subject.email)
+    if not settings.PANTHEON_URL:
+        return None
     data = {
         "subject": subject.get_pantheon_subject_id(),
         "buyer": "T",
@@ -430,6 +434,8 @@ def create_subject(subject):
 def create_move(
         payment,
         vat=22):
+    if not settings.PANTHEON_URL:
+        return None
     """
     {
         'acKey': '2330000000009',
