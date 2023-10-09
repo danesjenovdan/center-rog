@@ -15,9 +15,20 @@ spec:
   tls:
     - hosts:
         - rog-staging.lb.djnd.si
+        - rog.lb.djnd.si
       secretName: rog-wagtail-tls
   rules:
     - host: rog-staging.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rog
+                port:
+                  number: 8000
+    - host: rog.lb.djnd.si
       http:
         paths:
           - path: /
@@ -45,9 +56,20 @@ spec:
   tls:
     - hosts:
         - files.rog-staging.lb.djnd.si
+        - files.rog.lb.djnd.si
       secretName: rog-nginx-tls
   rules:
     - host: files.rog-staging.lb.djnd.si
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rog-nginx
+                port:
+                  number: 80
+    - host: files.rog.lb.djnd.si
       http:
         paths:
           - path: /
