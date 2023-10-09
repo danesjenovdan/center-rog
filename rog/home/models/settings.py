@@ -187,7 +187,16 @@ class MetaSettings(BaseGenericSetting):
         blank=True
     )
 
+    newsletter_terms_page = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     footer_tab_panels = [
+        FieldPanel("newsletter_terms_page"),
         FieldPanel("footer_links"),
         FieldPanel("footer_logos"),
         FieldPanel("footer_random_images"),

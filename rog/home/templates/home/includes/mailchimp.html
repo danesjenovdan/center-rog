@@ -1,3 +1,5 @@
+{% load wagtailcore_tags i18n %}
+
 <style>
     #mc_embed_shell p {
         font-size: 15px;
@@ -11,15 +13,15 @@
             action=https://center-rog.us5.list-manage.com/subscribe/post?u=6b118537d84dfc3040c09e97f&amp;id=d2877ee8a5&amp;v_id=3397&amp;f_id=00b4bae6f0
             method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate"
             target="_blank">
-            <div id="mc_embed_signup_scroll" class="form-field-wrapper">
-                <div class="mc-field-group"><label for="mce-EMAIL">Prijavi se na naš novičnik</label><input type="email"
+            <div id="mc_embed_signup_scroll" class="form-field-wrapper mb-2">
+                <div class="mc-field-group"><label for="mce-EMAIL">{% translate 'Prijavi se na naš novičnik' %}</label><input type="email"
                         name="EMAIL" class="required email" id="mce-EMAIL" required="" value=""></div>
             </div>
             <div>
-                <p class="mc-field-group input-group ">Jezik novičnika // Newsletter Language</p>
-                <div class="form-field-wrapper rog-radios">
-                    <div class="gender-radio">
-                        <div><label for="mce-MMERGE10"><input type="radio" name="MMERGE1" id="mce-MMERGE10"
+                <!-- <p class="mc-field-group input-group ">Jezik novičnika // Newsletter Language</p> -->
+                <div class="form-field-wrapper rog-radios mb-2">
+                    <div class="gender-radio d-flex">
+                        <div class="me-3"><label for="mce-MMERGE10"><input type="radio" name="MMERGE1" id="mce-MMERGE10"
                                     value="Slovenščina">Slovenščina</label></div>
                         <div><label for="mce-MMERGE11"><input type="radio" name="MMERGE1" id="mce-MMERGE11"
                                     value="English">English</label></div>
@@ -27,64 +29,27 @@
                 </div>
                 <div id="mergeRow-gdpr" class="mergeRow gdpr-mergeRow content__gdprBlock mc-field-group">
                     <div class="content__gdpr">
-                        <p>Privolitev v obdelavo osebnih podatkov // Consent to the
-                            processing of personal data</p>
-                        <p>S prijavo na spletne novice Centra Rog se strinjate, da javni zavod Center Rog sme obdelovati
-                            vaše osebne podatke v skladu s spodaj navedenimi pogoji.
-                            // By subscribing to the Center Rog newsletter, you agree that the public institution Center
-                            Rog may process your personal data in accordance with the terms outlined below.
-                        </p>
                         <fieldset class="mc_fieldset gdprRequired mc-field-group" name="interestgroup_field">
                             <!-- <div class="form-field-wrapper rog-check"><label class="checkbox subfield" for="gdpr3669"><input type="checkbox"
                                         id="gdpr_3669" name="gdpr[3669]" class="gdpr" value="Y"><span>Ime in priimek // Name and
                                         surname</span></label></div> -->
-                            <div class="form-field-wrapper rog-check"><label class="checkbox subfield"
-                                    for="gdpr368793"><input type="checkbox" id="gdpr_368793" name="gdpr[368793]"
-                                        class="gdpr" value="Y"><span>E-mail</span></label></div>
+                            <div class="form-field-wrapper rog-check">
+                                <label class="checkbox subfield" for="gdpr368793">
+                                    <input type="checkbox" id="gdpr_368793" name="gdpr[368793]" class="gdpr" value="Y">
+                                        <span>{% translate 'Strinjam se z uporabo moje e-pošte' %}</span>
+                                </label>
+                                {% if settings.home.MetaSettings.newsletter_terms_page %}
+                                <p><a href="{% pageurl settings.home.MetaSettings.newsletter_terms_page.localized %}"><small>{% translate 'preberi več' %}</small></a></p>
+                                {% endif %}
+                            </div>
                         </fieldset>
-                        <p>Vaši osebni podatki se bodo uporabljali izključno za pošiljanje spletnih novic Centra Rog, ki
-                            vključujejo novice, promocije, posebne ponudbe, obvestila o dogodkih in druge informacije,
-                            ki se nanašajo na našo dejavnost in storitve.</p>
-                        <p>
-                            S klikom na gumb "Naročite se na seznam" potrjujete, da želite prejemati spletne novice
-                            Centra Rog in se strinjate, da vam lahko javni zavod Center Rog pošilja e-poštna sporočila
-                            na vaš navedeni e-poštni naslov. Privolitev ostaja veljavna do vašega prostovoljne odjave od
-                            spletnih novic Centra Rog. Odjava je mogoča kadarkoli s klikom na povezavo za odjavo, ki je
-                            vključena v vsakem e-poštnem sporočilu, lahko pa nas tudi kontaktirate na
-                            info@center-rog.si. Vaši osebni podatki bodo varovani v skladu z našo politiko zasebnosti,
-                            ki je dostopna na naši spletni strani.</p>
-                        <p>
-                            Kot posameznik imate pravico zahtevati dostop, popravek, izbris ali omejitev obdelave svojih
-                            osebnih podatkov. Za uveljavljanje svojih pravic nas kontaktirajte na info@center-rog.si.
-                            Privolitev lahko kadar koli prekličete in se od prejemanja spletnih novic Centra Rog
-                            odjavite tako, da kliknete povezavo za odjavo v e-poštnem sporočilu ali nas kontaktirate na
-                            info@center-rog.si.</p>
-                        <p>Your personal data will be used exclusively for sending newsletters
-                            from Center Rog, which include news, promotions, special offers, event notifications, and
-                            other information related to our activities and services.</p>
-                        <p>
-                            By clicking the "Subscribe" button, you confirm that you wish to receive Center Rog
-                            newsletters and agree that the public institution Center Rog may send you email messages to
-                            your provided email address.This consent remains valid until your voluntary unsubscribing
-                            from Center Rog newsletters. Unsubscribing is possible at any time by clicking the
-                            unsubscribe link included in every email message, or you can also contact us at
-                            info@center-rog.si.</p>
-                        <p>
-                            Your personal data will be protected in accordance with our privacy policy, which is
-                            accessible on our website.
-                            As an individual, you have the right to request access, correction, deletion, or restriction
-                            of processing of your personal data. To exercise your rights, please contact us at
-                            info@center-rog.si.
-                            You can revoke your consent and unsubscribe from receiving Center Rog newsletters at any
-                            time by clicking the unsubscribe link in the email message or by contacting us at
-                            info@center-rog.si.</p>
                     </div>
-                    <div class="content__gdprLegal">
+                    <!-- <div class="content__gdprLegal">
                         <p>We use Mailchimp as our marketing platform. By clicking below to subscribe, you acknowledge
                             that your information will be transferred to Mailchimp for processing. <a
                                 href=https://mailchimp.com/legal/terms>Learn more</a> about Mailchimp's privacy
                             practices.</p>
-                    </div>
+                    </div> -->
                 </div>
                 <div id="mce-responses" class="clear foot">
                     <div class="response" id="mce-error-response" style="display: none;"></div>
@@ -122,7 +87,7 @@
              * Language: SL
              */
             $.extend($.validator.messages, {
-                required: "To polje je obvezno.",
+                required: "{% translate 'To polje je obvezno.' %}",
                 remote: "Prosimo popravite to polje.",
                 email: "Prosimo vnesite veljaven email naslov.",
                 url: "Prosimo vnesite veljaven URL naslov.",

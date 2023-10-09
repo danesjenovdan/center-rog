@@ -134,8 +134,8 @@ class Pay(views.APIView):
 
 class PaymentDataXML(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get('id')
-        payment = Payment.objects.get(id=payment_id)
+        payment_id = request.GET.get('id', None)
+        payment = get_object_or_404(Payment, id=payment_id)
         user = payment.user
         opis_placila = 'Članarina'
         sifra_artikla = 1
@@ -179,7 +179,7 @@ class PaymentSuccessXML(views.APIView):
         print(data)
 
         payment_id = request.GET.get('id')
-        payment = Payment.objects.get(id=payment_id)
+        payment = get_object_or_404(Payment, id=payment_id)
 
         if payment.successed_at:
             return Response({'status': 'Payment is already processed'})
@@ -297,7 +297,8 @@ class PaymentSuccess(views.APIView):
 class PaymentFailure(views.APIView):
     def get(self, request):
         data = request.data
-        payment = Payment.objects.get(id=data['id'])
+        payment_id = data.get('id', None)
+        payment = get_object_or_404(Payment, id=payment_id)
         payment.status = Payment.Status.ERROR
         payment.finished_at = timezone.now()
         payment.save()
