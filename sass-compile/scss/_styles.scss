@@ -393,6 +393,15 @@ form {
     }
 }
 
+.user-gallery-wrapper {
+    input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+
+}
+
 .user-gallery {
     display: flex;
     flex-wrap: wrap;
@@ -1261,6 +1270,31 @@ form {
             a.link {
                 color: inherit;
             }
+
+            .link-card {
+                margin-bottom: 30px;
+
+                .card-img {
+                    position: relative;
+                    height: 0;
+                    // aspect-ratio: 250/320;
+                    padding-top: 130%;
+                    margin-bottom: 10px;
+
+                    img {
+                        position: absolute;
+                        inset: 0;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+
+                .link span,
+                p {
+                    @include font-size-xs();
+                }
+            }
         }
 
         &.newsletter-section {
@@ -1696,13 +1730,6 @@ section.image-embed {
         .list-element {
             @include font-size-sm();
 
-            @include media-breakpoint-down(sm) {
-                &>div {
-                    width: 75%;
-                    padding-right: 10px;
-                }
-            }
-
             p:first-child {
                 margin-bottom: 5px;
                 @include font-size-xs();
@@ -1710,6 +1737,22 @@ section.image-embed {
 
             p:last-child {
                 margin-bottom: 0;
+            }
+
+            @include media-breakpoint-down(md) {
+                padding: 10px;
+                margin-bottom: 10px;
+
+                &>div p:first-child {
+                    @include font-size-xxs();
+                    margin-bottom: 5px;
+                }
+
+                &>p {
+                    @include font-size-xxs();
+                    margin-top: 5px;
+                    // margin-bottom: 0;
+                }
             }
         }
     }
@@ -2629,31 +2672,6 @@ section.image-embed {
         input[type="radio"] {
             @include rog-check-style();
         }
-    }
-}
-
-.link-card {
-    margin-bottom: 30px;
-
-    .card-img {
-        position: relative;
-        height: 0;
-        // aspect-ratio: 250/320;
-        padding-top: 130%;
-        margin-bottom: 10px;
-
-        img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-    }
-
-    .link span,
-    p {
-        @include font-size-xs();
     }
 }
 

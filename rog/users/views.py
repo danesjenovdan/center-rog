@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from home import models
 from .tokens import get_email_for_token, get_token_for_user
 
 
@@ -37,4 +38,45 @@ class EditGalleryView(View):
         return JsonResponse({"message": "GET OK", "user": current_user.id})
 
     def post(self, request):
-        return HttpResponse("POST OK")
+        current_user = request.user
+
+        uploaded_images = request.FILES.getlist('image')
+        new_images = []
+
+        for uploaded_file in uploaded_images:
+            image = models.CustomImage(title=uploaded_file.name, file=uploaded_file)
+            image.save()
+            current_stream_data = current_user.gallery
+            current_stream_data.append(('image', image))
+            current_user.gallery = current_stream_data
+            current_user.save()
+            new_images.append({
+                'id': image.id,
+                'src': image.file.url
+            })
+
+        return JsonResponse({"message": "POST OK", "images": new_images})
+
+
+@method_decorator(login_required, name='dispatch')
+class DeleteGalleryView(View):
+    
+    def post(self, request):
+        current_user = request.user
+
+        image_id = request.POST.get("id", None)
+
+        try:
+            new_gallery = []
+
+            for image in current_user.gallery:
+                if image.value.id != int(image_id):
+                    new_gallery.append(("image", image.value))
+            
+            current_user.gallery = new_gallery
+            current_user.save()
+
+            return JsonResponse({"message": "DELETE OK"})
+        
+        except:
+            return HttpResponseBadRequest()
