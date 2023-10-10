@@ -1,6 +1,6 @@
 {% load i18n static wagtailimages_tags usergallery_tags jsonify %}
 
-<form action="" method="post" class="edit-profile-form">
+<form action="{% url 'profile-edit' %}" enctype="multipart/form-data" method="post" class="edit-profile-form">
     {% csrf_token %}
 
     <p>
@@ -100,12 +100,18 @@
 
     <h2>{% translate 'Dodaj slike svojih izdelkov' %}:</h2>
 
-    <div class="form-field-wrapper">
+    <div class="form-field-wrapper user-gallery-wrapper">
         <p>
             {% translate 'Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne datoteke je 5MB. Dovoljena formata sta .jpg in .png.' %}
         </p>
-        <p>
-            <button type="button" class="secondary-button button-small">{% translate 'naloži' %}</button>
+        <p class="gallery-input-field">
+            <label for="id_custom_gallery" class="d-inline-flex secondary-button button-small">
+                {% translate 'naloži' %}
+            </label>
+            {{ form.custom_gallery }}
+        </p>
+        <p class="error">
+            {{ form.custom_gallery.errors }}
         </p>
         <div class="user-gallery">
             <template>

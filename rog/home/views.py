@@ -363,7 +363,7 @@ class EditProfileView(View):
 
     def post(self, request):
         user = request.user
-        form = EditProfileForm(request.POST)
+        form = EditProfileForm(request.POST, request.FILES)
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
@@ -373,6 +373,7 @@ class EditProfileView(View):
             link_2 = form.cleaned_data["link_2"]
             link_3 = form.cleaned_data["link_3"]
             contact = form.cleaned_data["contact"]
+            interests = form.cleaned_data["interests"]
 
             User = get_user_model()
             public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
@@ -389,6 +390,9 @@ class EditProfileView(View):
             user.link_2 = link_2
             user.link_3 = link_3
             user.contact = contact
+
+            for interest in interests:
+                user.interests.add(interest)
 
             user.save()
 
