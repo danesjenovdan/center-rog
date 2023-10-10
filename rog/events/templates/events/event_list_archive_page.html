@@ -5,12 +5,12 @@
 <div class="row events-list-archive">
     <div class="col-12">
         {% for element in list %}
-        <a href="{{ element.url }}" class="color-scheme-{{ element.category.color_scheme }} list-element d-flex justify-content-between align-items-center">
+        <a href="{{ element.url }}" class="color-scheme-{{ element.category.color_scheme }} list-element d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
             <div>
                 <p>{{ element.category.name }}</p>
                 <p>{{ element }}</p>
             </div>
-            {{ element.start_day }}
+            <p>{{ element.start_day }}</p>
         </a>
         {% endfor %}
     </div>
