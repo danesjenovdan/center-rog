@@ -181,12 +181,6 @@ class RegistrationView(View):
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
 
-            # try logging user in
-            user = authenticate(request, email=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("profile-my")
-
             # create PRIMA user
             data, message = prima_api.createUser(email)
             print(data)
@@ -206,13 +200,10 @@ class RegistrationView(View):
                 print("Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu.")
                 return render(request, "registration/registration.html", context={ "form": form, "error": _("Uporabnika ni bilo mogoče ustvariti.") })
 
-
             # TODO subscribe to newsletter
             # Newsletter(
             #     user=user, permission=True if newsletter_permission == "on" else False
             # ).save()
-
-            # TODO send verification email
 
             return redirect("registration-membership")
         else:

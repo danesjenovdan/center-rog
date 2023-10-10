@@ -121,7 +121,8 @@ class Pay(views.APIView):
     def post(self, request):
         print('INIT PAY')
         data = request.data
-        payment = get_object_or_404(Payment, id=data['id'])
+        payment_id = data.get('id', None)
+        payment = get_object_or_404(Payment, id=payment_id)
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
