@@ -1652,9 +1652,10 @@ section.image-embed {
 
     .image-text {
         bottom: 10px;
+        left: 0;
+        color: white;
+        mix-blend-mode: difference;
     }
-
-
 }
 
 .template-object-list {
