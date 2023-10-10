@@ -8,6 +8,24 @@ from users.models import User, MembershipType, Membership, UserInterest
 from payments.models import Plan
 
 
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
 class RegisterForm(forms.ModelForm):
     email = forms.EmailField(
         label=_("elektronski naslov"),
@@ -206,6 +224,7 @@ class EditProfileForm(forms.ModelForm):
     gallery = forms.Field(
         required=False,
     )
+    custom_gallery = MultipleFileField(required=False)
 
     class Meta:
         model = User

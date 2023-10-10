@@ -31,19 +31,19 @@
                     {% if user.link_1 or user.link_2 or user.link_3 %}
                     <div class="mb-3">
                         {% if user.link_1 %}
-                        <a href="{{ user.link_1 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ user.link_1 }}" target="_blank" class="secondary-button button-medium">{% translate 'povezava' %}</a>
                         {% endif %}
                         {% if user.link_2 %}
-                        <a href="{{ user.link_2 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ user.link_2 }}" target="_blank" class="secondary-button button-medium">{% translate 'povezava' %}</a>
                         {% endif %}
                         {% if user.link_3 %}
-                        <a href="{{ user.link_3 }}" target="_blank" class="secondary-button button-medium">gumb</a>
+                        <a href="{{ user.link_3 }}" target="_blank" class="secondary-button button-medium">{% translate 'povezava' %}</a>
                         {% endif %}
                     </div>
                     {% endif %}
                     {% if user.interests %}
                     <div class="mt-3">
-                        <p>Zanimanja:</p>
+                        <p>{% translate 'Zanimanja:' %}</p>
                         {% for interest in user.interests.all %}
                         <div class="radio-square-wrapper d-inline-block">
                             <div class="radio-square tag">
