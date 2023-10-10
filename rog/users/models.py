@@ -17,6 +17,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from home.models import Workshop
 from payments.models import Plan
 from payments.pantheon import create_subject
+from behaviours.models import Timestampable
 
 from datetime import datetime
 import random
@@ -62,7 +63,7 @@ class MembershipTypeSpecification(Orderable):
         verbose_name_plural = _("Bonitete članstva")
 
 
-class Membership(models.Model):
+class Membership(Timestampable):
     type = models.ForeignKey(MembershipType, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True, related_name='memberships')
     valid_from = models.DateTimeField(
@@ -140,7 +141,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class User(AbstractUser, Timestampable):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
     prima_id = models.IntegerField(null=True)
