@@ -1,4 +1,4 @@
-{% load i18n wagtailcore_tags news_and_events_tags %}
+{% load static i18n wagtailcore_tags news_and_events_tags %}
 
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
 <section  class="color-scheme-yellow studios-section">
@@ -35,4 +35,11 @@
         {% include "home/includes/bottom_button.html" with value_link=value.link %}
         {% endif %}
     </div>
+    <div class="container studios-container-mobile">
+        {% for studio in value.studios|with_up_to_15_random_studios %}
+            {% include "home/includes/studio_link.html" with studio=studio %}
+        {% endfor %}
+    </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="{% static 'js/studio_card_swipe.js' %}"></script>

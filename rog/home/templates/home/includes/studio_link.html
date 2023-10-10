@@ -1,0 +1,17 @@
+{% load i18n static wagtailcore_tags wagtailimages_tags %}
+
+<a href="{% pageurl studio.localized %}" class="studio-card-col">
+  <div  class="card studio-card">
+    <div class="card-inner">
+      <div class="show-normal flex-column justify-content-between color-scheme-dark-green">
+        <div class="card-body">
+          <h4 class="card-title text-center">{{ studio.title }}</h4>
+        </div>
+        <div class="card-img">
+          {% image studio.thumbnail width-480 %}
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+
