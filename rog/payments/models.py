@@ -7,6 +7,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from datetime import datetime, timezone
 
 from .pantheon import create_ident, create_move
+from behaviours.models import Timestampable
 
 import random
 from string import ascii_uppercase
@@ -42,17 +43,6 @@ class ActiveAtQuerySet(models.QuerySet):
             type_of=Token.Type.WORKSHOP,
             payment__in=self
         )
-
-class Timestampable(models.Model):
-    """
-    An abstract base class model that provides self-updating
-    ``created`` and ``modified`` fields.
-    """
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    updated_at = models.DateTimeField(auto_now=True, db_index=True)
-
-    class Meta:
-        abstract = True
 
 
 class ItemType(models.Model):
