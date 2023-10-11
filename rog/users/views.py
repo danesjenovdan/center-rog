@@ -43,17 +43,23 @@ class EditGalleryView(View):
         uploaded_images = request.FILES.getlist('image')
         new_images = []
 
+        new_gallery = []
+
+        for image in current_user.gallery:
+            print(image.value)
+            new_gallery.append(("image", image.value))
+        
         for uploaded_file in uploaded_images:
             image = models.CustomImage(title=uploaded_file.name, file=uploaded_file)
             image.save()
-            current_stream_data = current_user.gallery
-            current_stream_data.append(('image', image))
-            current_user.gallery = current_stream_data
-            current_user.save()
+            new_gallery.append(('image', image))
             new_images.append({
                 'id': image.id,
                 'src': image.file.url
             })
+
+        current_user.gallery = new_gallery
+        current_user.save()
 
         return JsonResponse({"message": "POST OK", "images": new_images})
 
