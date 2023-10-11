@@ -18,8 +18,9 @@ class Carousel {
 
     // if at least one card is present
     if (this.cards.length > 0) {
+      const randomRotation = Math.floor(Math.random() * 10 - 5);
       // set default top card position and scale
-      this.topCard.style.transform = "translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1)";
+      this.topCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${randomRotation}deg) rotateY(0deg) scale(1)`;
 
       // destroy previous Hammer instance, if present
       if (this.hammer) this.hammer.destroy();
@@ -84,7 +85,7 @@ class Carousel {
 
     // scale up next card
     if (this.nextCard) this.nextCard.style.transform =
-      "translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(" + scale + ")";
+      "translateX(-50%) translateY(-50%) rotateY(0deg) scale(" + scale + ")";
 
     if (e.isFinal) {
       this.isPanning = false;
@@ -128,10 +129,37 @@ class Carousel {
   }
 
   push(element) {
+    element.style.transform = null;
     this.board.insertBefore(element, this.board.firstChild);
   }
 }
 
-let board = document.querySelector(".studios-container-mobile");
+(function () {
+  let board = document.querySelector(".studios-container-mobile");
+  let carousel = new Carousel(board);
 
-let carousel = new Carousel(board);
+  let windowHeight;
+
+  function init() {
+    windowHeight = window.innerHeight;
+  }
+
+  function checkPosition() {
+    const positionFromTop = board.getBoundingClientRect().top;
+
+    if (positionFromTop - windowHeight <= 0) {
+      console.log("animacija")
+      board.classList.add("animate");
+    }
+  }
+
+  window.addEventListener("scroll", checkPosition);
+  window.addEventListener("resize", init);
+
+  init();
+  checkPosition();
+})();
+
+
+
+
