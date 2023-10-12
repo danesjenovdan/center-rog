@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load i18n static %}
 
-{% block title %}Plačilo uspešno{% endblock %}
+{% block title %}{% translate 'Plačilo uspešno' %}{% endblock %}
 
 {% block body_class %}template-register{% endblock %}
 
@@ -20,13 +20,13 @@
         <div class="col-md-10 col-xxl-6">
 
             <div class="registration-progress">
-                <div class="point done"><span>izbira uporabnine</span></div>
-                <div class="point active done"><span>plačilo</span></div>
+                <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
+                <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
             </div>
 
-            <h4 class="my-5">Plačilo je bilo uspešno!</h4>
+            <h4 class="my-5">{% translate 'Plačilo je bilo uspešno!' %}</h4>
             <div class="text-end">
-                <a href="/profil" class="button-medium secondary-button">na profil</a>
+                <a href="/profil" class="button-medium secondary-button">{% translate 'na profil' %}</a>
             </div>
 
         </div>
