@@ -133,15 +133,15 @@ class Pay(views.APIView):
         print('INIT PAY')
         data = request.data
         payment_id = data.get('id', None)
-        purchase_type = data.get('purchase_type', 'registration')
+        purchase_type = data.get('purchase_type', 'error')
+        print("pay post purchase type", purchase_type)
         payment = get_object_or_404(Payment, id=payment_id)
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
         # is_wizard = request.GET.get("wizard", False)
-        
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&purchase_type={purchase_type}'
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type}'
         print("url za redirectat", redirect_url)
 
         response_data = {'redirect_url': redirect_url}
