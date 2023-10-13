@@ -15,7 +15,7 @@ urlpatterns = [
     path('', PaymentPreview.as_view(), name='preview'),
     path('izvedi/', Pay.as_view(), name='pay'),
     path('narocilo/', PaymentDataXML.as_view()),
-    path('uspesno/', PaymentSuccess.as_view()),
+    path('uspesno/', PaymentSuccess.as_view(), name='payment-success'),
     path('neuspesno/', PaymentFailure .as_view()),
     path('potrditev/', PaymentSuccessXML.as_view()),
     path('zgodovina/', PaymentHistory.as_view(), name='history'),
