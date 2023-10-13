@@ -26,7 +26,7 @@
             window.location.href = "{% url 'payment-success' %}?purchase_type=" + purchase_type;
         {% endif %}
 
-        var url = "/placilo/izvedi/purchase_type=" + purchase_type;
+        var url = "/placilo/izvedi/";
         fetch(url, {
             method: 'POST',
             headers: {
@@ -34,7 +34,8 @@
               "X-CSRFTOKEN": "{{ csrf_token }}"
             },
             body: JSON.stringify({
-                id: "{{ id }}"
+                id: "{{ id }}",
+                purchase_type: purchase_type
             })
         })
         .then(data => {
