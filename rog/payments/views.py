@@ -212,7 +212,7 @@ class PaymentSuccessXML(views.APIView):
 
 class PaymentSuccess(views.APIView):
     def get(self, request):
-        purchase_type = request.GET("purchase_type", "error")
+        purchase_type = request.GET.get("purchase_type", "error")
         context_vars = {
             "purchase_type": purchase_type
         }
