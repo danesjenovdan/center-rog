@@ -140,7 +140,10 @@ class Pay(views.APIView):
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
         # is_wizard = request.GET.get("wizard", False)
+        
         redirect_url = f'{payment_url}?ids={ids}&id={id}&purchase_type={purchase_type}'
+        print("url za redirectat", redirect_url)
+
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
 
@@ -206,8 +209,6 @@ class PaymentSuccessXML(views.APIView):
         finish_payment(payment)
 
         return Response({'status': 'OK'})
-
-
 
 
 class PaymentSuccess(views.APIView):
