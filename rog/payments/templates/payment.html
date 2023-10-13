@@ -23,10 +23,10 @@
         console.log(purchase_type);
 
         {% if free_order %}
-            window.location.href = "{% url 'payment-success' %}?wizard=wizard";
+            window.location.href = "{% url 'payment-success' %}?purchase_type=" + purchase_type;
         {% endif %}
 
-        var url = "/placilo/izvedi/";
+        var url = "/placilo/izvedi/purchase_type=" + purchase_type;
         fetch(url, {
             method: 'POST',
             headers: {
@@ -34,8 +34,7 @@
               "X-CSRFTOKEN": "{{ csrf_token }}"
             },
             body: JSON.stringify({
-                id: "{{ id }}",
-                purchase_type: purchase_type
+                id: "{{ id }}"
             })
         })
         .then(data => {
