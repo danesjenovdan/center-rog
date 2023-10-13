@@ -105,6 +105,19 @@ class BasePage(TranslatablePage):
         default="white",
     )
 
+    meta_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Meta slika")
+    )
+
+    promote_panels = Page.promote_panels + [
+        FieldPanel('meta_image'),
+    ]
+
     def short_title(self):
         if len(self.title) > 65:
             return self.title[:62] + "..."
@@ -233,10 +246,23 @@ class ObjectProfilePage(BasePage):
 class BasicTextPage(TranslatablePage):
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
 
+    meta_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Meta slika")
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("body"),
     ]
 
+    promote_panels = Page.promote_panels + [
+        FieldPanel('meta_image'),
+    ]
+    
     subpage_types = []
 
     class Meta:
