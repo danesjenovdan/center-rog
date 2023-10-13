@@ -7,7 +7,7 @@ from wagtail.fields import StreamField
 
 from .blocks import (ModuleBlock)
 from .base_pages import BasePage, TranslatablePage
-
+from .image import CustomImage
 from .pages import add_see_more_fields
 
 class HomePage(TranslatablePage):
@@ -18,8 +18,21 @@ class HomePage(TranslatablePage):
         use_json_field=True
     )
 
+    meta_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Meta slika")
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel('body'),
+    ]
+
+    promote_panels = Page.promote_panels + [
+        FieldPanel('meta_image'),
     ]
 
     subpage_types = [
@@ -48,10 +61,23 @@ class ContentPage(TranslatablePage):
     )
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
+    meta_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Meta slika")
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel('secondary_navigation'),
         FieldPanel('body'),
         FieldPanel('show_see_more_section')
+    ]
+
+    promote_panels = Page.promote_panels + [
+        FieldPanel('meta_image'),
     ]
 
     subpage_types = []

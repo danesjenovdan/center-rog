@@ -19,7 +19,6 @@ from wagtail.snippets.models import register_snippet
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.fields import StreamField
-from wagtail.images.edit_handlers import ImageChooserPanel
 
 from .image import CustomImage
 
@@ -202,14 +201,18 @@ class MetaSettings(BaseGenericSetting):
         FieldPanel("footer_random_images"),
     ]
 
-    # meta_image = models.ForeignKey(
-    #     "wagtailimages.Image",
-    #     null=True,
-    #     blank=True,
-    #     on_delete=models.SET_NULL,
-    #     related_name="+",
-    #     verbose_name="OG slika",
-    # )
+    meta_image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Meta slika",
+    )
+
+    promotion_tab_panels = [
+        FieldPanel("meta_image"),
+    ]
 
     edit_handler = TabbedInterface(
         [
@@ -217,6 +220,7 @@ class MetaSettings(BaseGenericSetting):
             ObjectList(social_media_tab_panels, heading="Družbena omrežja"),
             ObjectList(header_tab_panels, heading="Navigacija"),
             ObjectList(footer_tab_panels, heading="Noga"),
+            ObjectList(promotion_tab_panels, heading="Promocija"),
         ]
     )
 
