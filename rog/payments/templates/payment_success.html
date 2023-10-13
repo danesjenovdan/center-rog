@@ -14,21 +14,35 @@
 {% block page_body %}
 
 <div class="container register-container color-scheme-light-gray">
-
-    <div class="row justify-content-center">
-
-        <div class="col-md-10 col-xxl-6">
-
+    <div class="row justify-content-center max-800">
+        <div class="col-12">
+            {% if purchase_type == "registration" %}
+            <div class="registration-progress">
+                <div class="point done"><span>{% translate 'začetek registracije' %}</span></div>
+                <div class="point done"><span>{% translate 'izbira članstva' %}</span></div>
+                <div class="point done"><span>{% translate 'osnovni podatki' %}</span></div>
+                <div class="point done"><span>{% translate 'osebni profil' %}</span></div>
+                <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+            {% elif purchase_type == "plan" %}
             <div class="registration-progress">
                 <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
                 <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
             </div>
-
+            {% else %}
+            <div class="registration-progress">
+                <div class="point done"><span>{% translate 'izbira članarine' %}</span></div>
+                <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+            {% endif %}
+            {% if purchase_type == "registration" %}
+            <h4 class="my-5">{% translate 'Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam poslali potrditveno sporočilo.' %}</h4>
+            {% else %}
             <h4 class="my-5">{% translate 'Plačilo je bilo uspešno!' %}</h4>
+            {% endif %}
             <div class="text-end">
                 <a href="/profil" class="button-medium secondary-button">{% translate 'na profil' %}</a>
             </div>
-
         </div>
 
     </div>

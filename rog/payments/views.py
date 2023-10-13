@@ -133,13 +133,14 @@ class Pay(views.APIView):
         print('INIT PAY')
         data = request.data
         payment_id = data.get('id', None)
+        purchase_type = data.get('purchase_type', 'registration')
         payment = get_object_or_404(Payment, id=payment_id)
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        is_wizard = request.GET.get("wizard", False)
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&{"urlpar=wizard" if is_wizard else ""}'
+        # is_wizard = request.GET.get("wizard", False)
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&purchase_type={purchase_type}'
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
 
@@ -211,10 +212,15 @@ class PaymentSuccessXML(views.APIView):
 
 class PaymentSuccess(views.APIView):
     def get(self, request):
-        if "wizard" in request.GET:
-            return render(request,'registration_payment_success.html', { "registration_step": 5 })
-        else:
-            return render(request, 'payment_success.html', {})
+        purchase_type = request.GET("purchase_type", "error")
+        context_vars = {
+            "purchase_type": purchase_type
+        }
+
+        if purchase_type == "registration":
+            context_vars["registration_step"] = 5
+        
+        return render(request,'payment_success.html', context_vars)
 
 
 class PaymentFailure(views.APIView):
