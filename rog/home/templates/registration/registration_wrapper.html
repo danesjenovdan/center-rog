@@ -24,7 +24,7 @@
                 <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>izbira članstva</span></div>
                 <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>osnovni podatki</span></div>
                 <div class="point {% if registration_step == 3 %} active{% elif registration_step > 3 %} done{% endif %}"><span>osebni profil</span></div>
-                {% if user.is_authenticated and user.membership and user.membership.type.price > 0 %}
+                {% if user.is_authenticated and user.most_recent_membership_is_billable %}
                 <div class="point {% if registration_step == 4 %} active{% elif registration_step > 4 %} done{% endif %}"><span>plačilo</span></div>
                 {% endif %}
             </div>

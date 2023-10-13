@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load i18n static %}
 
-{% block title %}Plačilo{% endblock %}
+{% block title %}{% translate 'Plačilo' %}{% endblock %}
 
 {% block body_class %}template-profile{% endblock %}
 
@@ -14,15 +14,28 @@
 <script>
 
     function initPayment()  {
-        console.log("INIT PAYMENT")
-        fetch("/placilo/izvedi/?wizard=wizard", {
+        console.log("INIT PAYMENT");
+        const queryString = window.location.search;
+        console.log(queryString);
+        const urlParams = new URLSearchParams(queryString);
+        console.log(urlParams);
+        const purchase_type = urlParams.get('purchase_type')
+        console.log(purchase_type);
+
+        {% if free_order %}
+            window.location.href = "{% url 'payment-success' %}?wizard=wizard";
+        {% endif %}
+
+        var url = "/placilo/izvedi/";
+        fetch(url, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               "X-CSRFTOKEN": "{{ csrf_token }}"
             },
             body: JSON.stringify({
-                id: "{{ id }}"
+                id: "{{ id }}",
+                purchase_type: purchase_type
             })
         })
         .then(data => {
@@ -48,7 +61,7 @@
 <div class="container payment-notice color-scheme-light-gray">
     <div class="row my-5">
         <div class="col-12">
-            <p class="text-center my-5">Poteka preusmeritev na stran za plačilo...</p>
+            <p class="text-center my-5">{% translate 'Poteka preusmeritev na stran za plačilo...' %}</p>
         </div>
     </div>
 </div>

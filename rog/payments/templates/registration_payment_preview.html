@@ -5,10 +5,10 @@
 
 {% block extra_js %}
 <script>
-    document.getElementById("apply-promo-code").addEventListener("click", () => {
-        const code = document.getElementById("promo-code-input").value
-        console.log(code)
-    })
+    // document.getElementById("apply-promo-code").addEventListener("click", () => {
+    //     const code = document.getElementById("promo-code-input").value
+    //     console.log(code)
+    // })
 </script>
 {% endblock extra_js %}
 
@@ -81,7 +81,7 @@
 
             <div class="row mt-4">
                 <div class="d-flex flex-column align-items-end my-4">
-                    <a href="/placilo/izvedi/?id={{payment.id}}" class="primary-button button-medium">{% translate 'naprej' %}</a>
+                    <a href="/placilo/izvedi/?id={{payment.id}}&purchase_type={{purchase_type}}" class="primary-button button-medium">{% translate 'naprej' %}</a>
                     <p class="button-notice">{% translate '*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart' %}</p>
                 </div>
             </div>

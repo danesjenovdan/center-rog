@@ -31,6 +31,7 @@ class MembershipType(ClusterableModel):
     def __str__(self):
         return self.name
 
+    @property
     def price(self):
         if self.plan:
             return self.plan.price
@@ -186,6 +187,12 @@ class User(AbstractUser, Timestampable):
             return self.memberships.filter(
                 Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
                 valid_from__lte=datetime.now(), active=True).first()
+        
+    @property
+    def most_recent_membership_is_billable(self):
+        last_membership = self.memberships.last()
+        print("last", last_membership)
+        return last_membership.active == False and last_membership.type.plan.price > 0
 
     @property
     def get_last_active_subscription_payment_plan(self):
