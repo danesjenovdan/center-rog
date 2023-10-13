@@ -20,7 +20,7 @@ from .parsers import XMLParser
 from .pantheon import create_move
 from home.email_utils import send_email
 from .forms import PromoCodeForm
-from .utils import get_invoice_number
+from .utils import get_invoice_number, finish_payment
 
 # Create your views here.
 
@@ -116,19 +116,31 @@ class PaymentPreview(views.APIView):
 class Pay(views.APIView):
     def get(self, request):
         payment_id = request.GET.get('id', False)
-        return render(request, 'payment.html', { "id": payment_id })
+        payment = get_object_or_404(Payment, id=payment_id)
+        free_order = False
+        if payment.amount == 0:
+            # User has 100% discount dont show payment page
+            finish_payment(payment)
+            free_order = True
+            payment.status = Payment.Status.SUCCESS
+            payment.info = 'Plačano s promo kodo 100% popust'
+            payment.successed_at = timezone.now()
+            payment.invoice_number = get_invoice_number()
+            payment.save()
+        return render(request, 'payment.html', { "id": payment_id , "free_order": free_order})
 
     def post(self, request):
         print('INIT PAY')
         data = request.data
         payment_id = data.get('id', None)
+        purchase_type = data.get('purchase_type', 'registration')
         payment = get_object_or_404(Payment, id=payment_id)
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        is_wizard = request.GET.get("wizard", False)
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&{"urlpar=wizard" if is_wizard else ""}'
+        # is_wizard = request.GET.get("wizard", False)
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&purchase_type={purchase_type}'
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
 
@@ -190,109 +202,25 @@ class PaymentSuccessXML(views.APIView):
         payment.successed_at = timezone.now()
         payment.invoice_number = get_invoice_number()
         payment.save()
-        user = payment.user
 
-        # membership
-        membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
-        if membership_fee:
-            membership = user.membership
-            membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
-
-            if not membership:
-                # User has no membership at this time
-                valid_from = timezone.now()
-
-                valid_to = valid_from + timedelta(days=365)
-                Membership(
-                    valid_from=valid_from,
-                    valid_to=valid_to,
-                    type=membership_type,
-                    active=True,
-                    user=user
-                ).save()
-            else:
-                last_active_membership = user.get_last_active_membership()
-                if last_active_membership:
-                    # user has active membership
-                    valid_from = last_active_membership.valid_to
-                    if valid_from < timezone.now():
-                        valid_from = timezone.now()
-                    valid_to = valid_from + timedelta(days=365)
-                    Membership(
-                        valid_from=valid_from,
-                        valid_to=valid_to,
-                        type=membership_type,
-                        active=True,
-                        user=user
-                    ).save()
-                else:
-                    # user has free membership
-                    membership.active = True
-                    membership.valid_from = valid_from
-                    membership.valid_to = valid_from + timedelta(days=365)
-                    membership.save()
-
-        user_fee_plan = None # uporabnina
-
-        # set active_to if plan is subscription
-        items = []
-        for payment_plan in payment.payment_plans.all():
-            plan = payment_plan.plan
-            # create tokens
-            if plan.item_type and plan.item_type.name == 'uporabnina':
-                user_fee_plan = plan
-                last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
-                valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
-                payment_plan.valid_to = valid_from + timedelta(days=plan.duration)
-                payment_plan.save()
-
-                Token.objects.bulk_create([
-                    Token(
-                        payment=payment,
-                        valid_from=valid_from,
-                        valid_to=valid_from + timedelta(days=plan.duration)
-                    ) for i in range(plan.tokens)
-                ] + [
-                    Token(
-                        payment=payment,
-                        valid_from=valid_from,
-                        valid_to=valid_from + timedelta(days=plan.duration),
-                        type_of=Token.Type.WORKSHOP
-                    ) for i in range(plan.workshops)
-                ])
-            items.append({
-                'quantity': 1,
-                'name': plan.name,
-                'price': plan.price,
-            })
-
-        payment_plans = PaymentPlan.objects.filter(payment=payment)
-        for payment_plan in payment_plans:
-            if payment_plan.promo_code:
-                payment_plan.promo_code.use_code()
-
-        payment.payment_done_at = timezone.now()
-        payment.save()
-
-        if user_fee_plan:
-            send_email(
-                payment.user.email,
-                'emails/order_user_fee.html',
-                f'Center Rog – uspešen zakup paketa {user_fee_plan.name} za odprte termine',
-                {
-                    'plan': user_fee_plan
-                }
-            )
+        finish_payment(payment)
 
         return Response({'status': 'OK'})
 
 
+
+
 class PaymentSuccess(views.APIView):
     def get(self, request):
-        if "wizard" in request.GET:
-            return render(request,'registration_payment_success.html', { "registration_step": 5 })
-        else:
-            return render(request, 'payment_success.html', {})
+        purchase_type = request.GET("purchase_type", "error")
+        context_vars = {
+            "purchase_type": purchase_type
+        }
+
+        if purchase_type == "registration":
+            context_vars["registration_step"] = 5
+        
+        return render(request,'payment_success.html', context_vars)
 
 
 class PaymentFailure(views.APIView):
