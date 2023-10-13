@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static wagtailcore_tags wagtailimages_tags wagtailuserbar %}
 
 <!DOCTYPE html>
 <html lang="sl">
@@ -17,6 +17,16 @@
         <meta name="description" content="{{ page.search_description }}" />
         {% endif %}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {% if self.meta_image %}
+            {% image self.meta_image max-1200x630 as og_image %}
+            <meta property="og:image" content="{{ og_image.url }}">
+            <meta name="twitter:image" content="{{ og_image.url }}">
+        {% else %}
+            {% image settings.home.MetaSettings.meta_image max-1200x630 as og_image %}
+            <meta property="og:image" content="{{ og_image.url }}">
+            <meta name="twitter:image" content="{{ og_image.url }}">
+        {% endif %}
 
         <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
         <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
