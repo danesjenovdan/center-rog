@@ -2804,3 +2804,29 @@ body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-c
         margin-top: 100px;
     }
 }
+
+/* MAILCHIMP */
+#mc_embed_signup {
+    #mce-error-response {
+        color: $cs-red;
+        @include font-size-xs();
+    }
+
+    .mc-field-group {
+        input.mce_inline_error {
+            border-color: $cs-red;
+
+            &+span {
+                color: $cs-red;
+            }
+        }
+
+        div.mce_inline_error {
+            color: $cs-red;
+            @include font-size-xs();
+            background-color: initial;
+            margin: 0;
+            padding: 10px 0;
+        }
+    }
+}
