@@ -1182,6 +1182,12 @@ form {
                     margin-right: 15px;
                     max-width: 250px;
                 }
+
+                @include media-breakpoint-down(sm) {
+                    .card-body {
+                        padding: 0;
+                    }
+                }
             }
         }
 
