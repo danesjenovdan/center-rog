@@ -14,13 +14,9 @@
 <script>
 
     function initPayment()  {
-        console.log("INIT PAYMENT");
         const queryString = window.location.search;
-        console.log(queryString);
         const urlParams = new URLSearchParams(queryString);
-        console.log(urlParams);
         const purchase_type = urlParams.get('purchase_type')
-        console.log(purchase_type);
 
         {% if free_order %}
             window.location.href = "{% url 'payment-success' %}?purchase_type=" + purchase_type;

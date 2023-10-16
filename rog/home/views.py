@@ -119,7 +119,6 @@ class PurchasePlanView(TemplateView):
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
-            print("Chosen plan", plan)
 
             return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
@@ -231,12 +230,10 @@ class RegistrationMembershipView(View):
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
-            print("membership chosem", membership_type)
             # active will set on payment success
             active = False
             new_membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user)
             new_membership.save()
-            print("new membership", new_membership)
 
             return redirect("registration-information")
         else:
