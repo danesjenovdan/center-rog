@@ -74,6 +74,8 @@ class PaymentPreview(views.APIView):
     def post(self, request):
         user = request.user
 
+        purchase_type = request.GET.get('purchase_type', '')
+
         promo_code_form = PromoCodeForm(request.POST)
         promo_code_error = False
         promo_code_success = False
@@ -105,7 +107,8 @@ class PaymentPreview(views.APIView):
                 "promo_code_form": promo_code_form,
                 "promo_code_error": promo_code_error,
                 "promo_code_success": promo_code_success,
-                "registration": registration
+                "registration": registration,
+                "purchase_type": purchase_type
             })
 
         else:
@@ -130,19 +133,15 @@ class Pay(views.APIView):
         return render(request, 'payment.html', { "id": payment_id , "free_order": free_order})
 
     def post(self, request):
-        print('INIT PAY')
         data = request.data
         payment_id = data.get('id', None)
         purchase_type = data.get('purchase_type', 'error')
-        print("pay post purchase type", purchase_type)
         payment = get_object_or_404(Payment, id=payment_id)
 
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        # is_wizard = request.GET.get("wizard", False)
         redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type}'
-        print("url za redirectat", redirect_url)
 
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
