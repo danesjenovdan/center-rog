@@ -97,11 +97,11 @@ class Carousel {
       if (this.nextCard) this.nextCard.style.transition = "transform 100ms linear";
 
       // check threshold and movement direction
-      if (propX > 0.25 && e.direction == Hammer.DIRECTION_RIGHT) {
+      if (propX > 0.125 && e.direction == Hammer.DIRECTION_RIGHT) {
         successful = true;
         // get right border position
         posX = this.board.clientWidth;
-      } else if (propX < -0.25 && e.direction == Hammer.DIRECTION_LEFT) {
+      } else if (propX < -0.125 && e.direction == Hammer.DIRECTION_LEFT) {
         successful = true;
         // get left border position
         posX = -(this.board.clientWidth + this.topCard.clientWidth);
@@ -136,6 +136,11 @@ class Carousel {
 
 (function () {
   let board = document.querySelector(".studios-container-mobile");
+
+  board.addEventListener("animationend", function () {
+    board.classList.remove("animate");
+  }, false);
+
   let carousel = new Carousel(board);
 
   let windowHeight;
@@ -148,8 +153,8 @@ class Carousel {
     const positionFromTop = board.getBoundingClientRect().top;
 
     if (positionFromTop - windowHeight <= 0) {
-      console.log("animacija")
       board.classList.add("animate");
+      window.removeEventListener("scroll", checkPosition);
     }
   }
 
