@@ -216,7 +216,6 @@ class PaymentSuccess(views.APIView):
 
         if "registration" in request.GET:
             purchase_type = "registration"
-            context_vars["registration_step"] = 5
         elif "plan" in request.GET:
             purchase_type = "plan"
         else:
@@ -225,6 +224,9 @@ class PaymentSuccess(views.APIView):
         context_vars = {
             "purchase_type": purchase_type
         }
+
+        if purchase_type == "registration":
+            context_vars["registration_step"] = 5
         
         return render(request,'payment_success.html', context_vars)
 
