@@ -1722,6 +1722,10 @@ section.image-embed {
             &:last-child {
                 margin-bottom: 0;
             }
+
+            @include media-breakpoint-down(sm) {
+                @include font-size-sm();
+            }
         }
 
         a.link {
@@ -2802,6 +2806,13 @@ body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-c
 
     @include media-breakpoint-down(sm) {
         margin-top: 100px;
+    }
+}
+
+
+@include media-breakpoint-down(sm) {
+    body.has-secondary-navigation.has-header-marquee .wrapper-page section.image-embed .image-embed-text-box {
+        margin-top: 30px;
     }
 }
 
