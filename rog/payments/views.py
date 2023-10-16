@@ -220,21 +220,20 @@ class PaymentSuccess(views.APIView):
             purchase_type = "plan"
         else:
             purchase_type = "membership"
-        
+
         context_vars = {
             "purchase_type": purchase_type
         }
 
         if purchase_type == "registration":
             context_vars["registration_step"] = 5
-        
+
         return render(request,'payment_success.html', context_vars)
 
 
 class PaymentFailure(views.APIView):
     def get(self, request):
-        data = request.data
-        payment_id = data.get('id', None)
+        payment_id = request.GET.get('id', None)
         payment = get_object_or_404(Payment, id=payment_id)
         payment.status = Payment.Status.ERROR
         payment.finished_at = timezone.now()
