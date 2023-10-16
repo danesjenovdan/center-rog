@@ -119,7 +119,6 @@ class PurchasePlanView(TemplateView):
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
-            print("Chosen plan", plan)
 
             return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
@@ -227,12 +226,14 @@ class RegistrationMembershipView(View):
         form = RegistrationMembershipForm(request.POST)
 
         if form.is_valid():
+            
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
             # active will set on payment success
             active = False
-            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+            new_membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user)
+            new_membership.save()
 
             return redirect("registration-information")
         else:
@@ -297,25 +298,13 @@ class RegistrationProfileView(View):
         user = request.user
         form = EditProfileForm(instance=user)
 
-        plan_id = None
-        payment_needed = False
-        if user.membership and user.membership.type:
-            payment_needed = user.membership.type.price() > 0
-            if payment_needed:
-                plan_id = user.membership.type.plan.id
+        payment_needed = user.most_recent_membership_is_billable
 
         return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
 
     def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
-
-        plan_id = None
-        payment_needed = False
-        if user.membership and user.membership.type:
-            payment_needed = user.membership.type.price() > 0
-            if payment_needed:
-                plan_id = user.membership.type.plan.id
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
@@ -327,9 +316,10 @@ class RegistrationProfileView(View):
             contact = form.cleaned_data["contact"]
 
             User = get_user_model()
-            public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
-            if public_username_exists:
-                form.add_error("public_username", _("Uporabniško ime že obstaja."))
+            if public_username:
+                public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+                if public_username_exists:
+                    form.add_error("public_username", _("Uporabniško ime že obstaja."))
 
             if not form.is_valid():
                 return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
@@ -343,8 +333,10 @@ class RegistrationProfileView(View):
             user.contact = contact
 
             user.save()
-
+            payment_needed = user.most_recent_membership_is_billable
+            
             if payment_needed:
+                plan_id = user.memberships.last().type.plan.id
                 return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration")
             else:
                 return redirect("profile-my")
@@ -376,9 +368,10 @@ class EditProfileView(View):
             interests = form.cleaned_data["interests"]
 
             User = get_user_model()
-            public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
-            if public_username_exists:
-                form.add_error("public_username", _("Uporabniško ime že obstaja."))
+            if public_username:
+                public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+                if public_username_exists:
+                    form.add_error("public_username", _("Uporabniško ime že obstaja."))
 
             if not form.is_valid():
                 return render(request, "registration/edit_profile.html", context={ "form": form })
