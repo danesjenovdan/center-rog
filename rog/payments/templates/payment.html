@@ -24,7 +24,7 @@
 
         {% if free_order %}
             window.location.href = "{% url 'payment-success' %}?purchase_type=" + purchase_type;
-        {% endif %}
+        {% else %}
 
         var url = "/placilo/izvedi/";
         fetch(url, {
@@ -47,6 +47,7 @@
             console.log(data);
             window.location.href = data.redirect_url;
         })
+        {% endif %}
     }
 
     document.addEventListener("DOMContentLoaded", () => {
