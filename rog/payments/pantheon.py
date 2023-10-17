@@ -489,7 +489,7 @@ def create_move(
         "clerkId": 1,
         "clerk": "Administrator",
         "price": float(payment.amount),
-        "vat": float(vat * 100 / payment.amount),
+        "vat": float(vat * 100 / float(payment.amount)) if payment.amount > 0 else 0.0,
         "discount": 0,
         "department": "",
         "status": "N",
