@@ -2812,6 +2812,10 @@ body.has-secondary-navigation.has-header-marquee .wrapper-page > section:first-c
 
 @include media-breakpoint-down(sm) {
     body.has-secondary-navigation.has-header-marquee .wrapper-page section.image-embed .image-embed-text-box {
+        margin-top: 70px;
+    }
+
+    body.has-secondary-navigation .wrapper-page section.image-embed .image-embed-text-box {
         margin-top: 50px;
     }
 }
