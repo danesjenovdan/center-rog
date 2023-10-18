@@ -231,7 +231,7 @@ class RegistrationMembershipView(View):
             today = datetime.now()
             one_year_from_now = today + relativedelta(years=1)
             # active will set on payment success
-            active = False
+            active = membership_type.price == 0
             new_membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user)
             new_membership.save()
 

@@ -191,8 +191,7 @@ class User(AbstractUser, Timestampable):
     @property
     def most_recent_membership_is_billable(self):
         last_membership = self.memberships.last()
-        print("last", last_membership)
-        return last_membership.active == False and last_membership.type.plan.price > 0
+        return last_membership.active == False and last_membership.type.price > 0
 
     @property
     def get_last_active_subscription_payment_plan(self):

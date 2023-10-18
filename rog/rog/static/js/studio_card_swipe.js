@@ -6,6 +6,13 @@ class Carousel {
     this.handle();
   }
 
+  getRotation(transformString) {
+    const substrings = transformString.match(/rotate\(([^)]+)\)/g);
+    for (const substring of substrings) {
+      return substring.substring(7, substring.length - 4);
+    }
+  }
+
   handle() {
     // list all cards
     this.cards = this.board.querySelectorAll(".studio-card-col");
@@ -18,16 +25,17 @@ class Carousel {
 
     // if at least one card is present
     if (this.cards.length > 0) {
-      const randomRotation = Math.floor(Math.random() * 10 - 5);
+      const rotation = this.getRotation(this.topCard.style.transform);
       // set default top card position and scale
-      this.topCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${randomRotation}deg) rotateY(0deg) scale(1)`;
+      this.topCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${rotation}deg) rotateY(0deg) scale(1)`;
+      
 
       // destroy previous Hammer instance, if present
       if (this.hammer) this.hammer.destroy();
 
       // listen for tap and pan gestures on top card
       this.hammer = new Hammer(this.topCard);
-      
+
       this.hammer.add(
         new Hammer.Pan({
           position: Hammer.position_ALL,
@@ -43,6 +51,7 @@ class Carousel {
   }
 
   onPan(e) {
+    
     if (!this.isPanning) {
       this.isPanning = true;
 
@@ -84,8 +93,10 @@ class Carousel {
     this.topCard.style.transform = "translateX(" + posX + "px) translateY(" + posY + "px) rotate(" + deg + "deg) rotateY(0deg) scale(1)";
 
     // scale up next card
-    if (this.nextCard) this.nextCard.style.transform =
-      "translateX(-50%) translateY(-50%) rotateY(0deg) scale(" + scale + ")";
+    if (this.nextCard) {
+      const oldNextCardRotation = this.getRotation(this.nextCard.style.transform);
+      this.nextCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${oldNextCardRotation}deg) rotateY(0deg) scale(${scale})`;
+    }
 
     if (e.isFinal) {
       this.isPanning = false;
@@ -113,33 +124,50 @@ class Carousel {
 
         // wait transition end
         setTimeout(() => {
-            // remove swiped card
-            this.board.removeChild(this.topCard);
-            // add new card
-            this.push(this.topCard);
-            // handle gestures on new top card
-            this.handle();
+          // remove swiped card
+          this.board.removeChild(this.topCard);
+          // add new card
+          this.push(this.topCard);
+          // handle gestures on new top card
+          this.handle();
         }, 200);
       } else {
         // reset cards position and size
-        this.topCard.style.transform = "translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1)";
-        if (this.nextCard) this.nextCard.style.transform = "translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(0.95)";
+        const randomRotation = Math.floor(Math.random() * 10 - 5);
+        this.topCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${randomRotation}deg) rotateY(0deg) scale(1)`;
+        if (this.nextCard)  {
+          const oldNextCardRotation = this.getRotation(this.nextCard.style.transform);
+          this.nextCard.style.transform = `translateX(-50%) translateY(-50%) rotate(${oldNextCardRotation}deg) rotateY(0deg) scale(0.95)`;
+        }
       }
     }
   }
 
   push(element) {
-    element.style.transform = null;
+    const randomRotation = Math.floor(Math.random() * 10 - 5);
+    element.style.transform = `translateX(-50%) translateY(-50%) rotate(${randomRotation}deg)`;
     this.board.insertBefore(element, this.board.firstChild);
   }
 }
 
 (function () {
+  // const cards
   let board = document.querySelector(".studios-container-mobile");
 
-  board.addEventListener("animationend", function () {
-    board.classList.remove("animate");
-  }, false);
+  // initial rotations
+  const cards = board.querySelectorAll(".studio-card-col");
+  for (const card of cards) {
+    const randomRotation = Math.floor(Math.random() * 10 - 5);
+    card.style.transform = "translateX(-50%) translateY(-50%) rotate(" + randomRotation + "deg)";
+  }
+
+  board.addEventListener(
+    "animationend",
+    function () {
+      board.classList.remove("animate");
+    },
+    false
+  );
 
   let carousel = new Carousel(board);
 
@@ -152,7 +180,7 @@ class Carousel {
   function checkPosition() {
     const positionFromTop = board.getBoundingClientRect().top;
 
-    if (positionFromTop - windowHeight <= 0) {
+    if (positionFromTop - windowHeight <= -200) {
       board.classList.add("animate");
       window.removeEventListener("scroll", checkPosition);
     }
