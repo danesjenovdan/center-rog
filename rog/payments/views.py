@@ -118,7 +118,7 @@ class PaymentPreview(views.APIView):
 @method_decorator(login_required, name='dispatch')
 class Pay(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get('id', False)
+        payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
         free_order = False
         if payment.amount == 0:
@@ -134,7 +134,7 @@ class Pay(views.APIView):
 
     def post(self, request):
         data = request.data
-        payment_id = data.get('id', None)
+        payment_id = data.get('id', 0)
         purchase_type = data.get('purchase_type', 'error')
         payment = get_object_or_404(Payment, id=payment_id)
 
@@ -149,7 +149,7 @@ class Pay(views.APIView):
 
 class PaymentDataXML(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get('id', None)
+        payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
         user = payment.user
         opis_placila = 'Članarina'
@@ -193,7 +193,7 @@ class PaymentSuccessXML(views.APIView):
         data = request.data
         print(data)
 
-        payment_id = request.GET.get('id')
+        payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
 
         if payment.successed_at:
@@ -232,7 +232,7 @@ class PaymentSuccess(views.APIView):
 
 class PaymentFailure(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get('id', None)
+        payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
         payment.status = Payment.Status.ERROR
         payment.finished_at = timezone.now()
