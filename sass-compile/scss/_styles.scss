@@ -970,7 +970,11 @@ form {
             }
 
             .residents-section {
-                margin-top: 34px;
+                margin-top: 24px;
+
+                @include media-breakpoint-up(md) {
+                    margin-top: 34px;
+                }
 
                 .doorbell {
                     // max-width: 70%;
@@ -1243,29 +1247,6 @@ form {
                     position: absolute;
                     top: 50%;
                     left: 50%;
-                    // transform: translateX(-50%) translateY(-50%);
-
-                    &:nth-child(1n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(-3deg);
-                    }
-                    &:nth-child(2n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(2deg);
-                    }
-                    &:nth-child(3n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(-5deg);
-                    }
-                    &:nth-child(4n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(-1deg);
-                    }
-                    &:nth-child(5n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(3deg);
-                    }
-                    &:nth-child(6n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(1deg);
-                    }
-                    &:nth-child(7n) {
-                        transform: translateX(-50%) translateY(-50%) rotate(-4deg);
-                    }
                 }
 
                 .card {
