@@ -74,6 +74,7 @@ class EventPage(BasePage):
     start_day = models.DateField(verbose_name=_("Datum začetka"))
     end_day = models.DateField(blank=True, null=True, verbose_name=_("Datum konca (če gre za večdneven dogodek)"))
     location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
+    apply_url = models.URLField(blank=True, verbose_name=_("Povezava za prijavo (če je prazno, se gumb skrije)"))
     notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
     event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
@@ -88,6 +89,7 @@ class EventPage(BasePage):
         FieldPanel("start_time"),
         FieldPanel("end_time"),
         FieldPanel("location"),
+        FieldPanel("apply_url"),
         FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
         FieldPanel("show_see_more_section")
