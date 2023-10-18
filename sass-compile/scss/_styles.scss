@@ -596,6 +596,7 @@ form {
             flex-grow: 1;
             max-height: 100%;
             padding: 20px;
+            border-radius: 3px;
 
             @include media-breakpoint-down(sm) {
                 padding: 15px;
@@ -605,7 +606,6 @@ form {
 
     // FLIP EFFECT
     background-color: transparent;
-    perspective: 1000px;
 
     .card-inner {
         transition: transform 0.5s ease-in-out;
@@ -614,7 +614,8 @@ form {
         .show-normal,
         .show-hover {
             backface-visibility: hidden;
-            border-radius: 3px;
+            perspective: 1000px;
+            
         }
 
         .show-hover {
@@ -630,7 +631,7 @@ form {
         &:hover,
         &:focus-within {
             .card-inner {
-                transform: rotateY(180deg);
+                transform: rotateY(179.99deg);
             }
         }
     }
