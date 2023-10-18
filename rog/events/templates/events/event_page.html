@@ -43,7 +43,9 @@
                         <span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span>
                     </p>
                     <p>{{ page.location }}</p>
-                    <button class="primary-button button-medium" disabled>{% translate 'prijava na dogodek' %}</button>
+                    {% if page.apply_url %}
+                        <a href="{{ page.apply_url }}" class="primary-button button-medium" target="_blank">{% translate 'prijava' %}</a>
+                    {% endif %}
                     <p><small>{{ page.notice }}</small></p>
                 </div>
             </div>

@@ -92,43 +92,45 @@
                     </p>
                 </div>
                 {% endif %}
-                {% if user.is_authenticated %}
-                    {% if tool.required_workshop %}
-                        {% if tool.required_workshop in user.workshops_attended.all %}
+                {% if tool.prima_location_id or tool.prima_group_id %}
+                    {% if user.is_authenticated %}
+                        {% if tool.required_workshop %}
+                            {% if tool.required_workshop in user.workshops_attended.all %}
+                            <div class="text-center">
+                                <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+                            </div>
+                            <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
+                            {% else %}
+                            <div class="text-center">
+                                <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
+                            </div>
+                            <p>{% translate 'Za rezervacijo potrebuješ usposabljanje.' %}</p>
+                            {% if tool.workshop_event %}
+                            <p class="more-information">
+                                <a class="link" href="{% pageurl tool.workshop_event %}">
+                                    <span class="link-text">{% translate 'Prijava na usposabljanje' %}</span>
+                                    <span class="link-icon"></span>
+                                </a>
+                            </p>
+                            {% endif %}
+                            {% endif %}
+                        {% else %}
                         <div class="text-center">
                             <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                         </div>
-                        <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
-                        {% else %}
-                        <div class="text-center">
-                            <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
-                        </div>
-                        <p>{% translate 'Za rezervacijo potrebuješ usposabljanje.' %}</p>
-                        {% if tool.workshop_event %}
-                        <p class="more-information">
-                            <a class="link" href="{% pageurl tool.workshop_event %}">
-                                <span class="link-text">{% translate 'Prijava na usposabljanje' %}</span>
-                                <span class="link-icon"></span>
-                            </a>
-                        </p>
-                        {% endif %}
                         {% endif %}
                     {% else %}
                     <div class="text-center">
-                        <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+                        <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
                     </div>
+                    <p>
+                        {% translate 'Za rezervacijo orodja se je potrebno' %}
+                        <a class="link" href="{% url 'login' %}">
+                            <span class="link-text">{% translate 'prijaviti' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
                     {% endif %}
-                {% else %}
-                <div class="text-center">
-                    <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
-                </div>
-                <p>
-                    {% translate 'Za rezervacijo orodja se je potrebno' %}
-                    <a class="link" href="{% url 'login' %}">
-                        <span class="link-text">{% translate 'prijaviti' %}</span>
-                        <span class="link-icon"></span>
-                    </a>
-                </p>
                 {% endif %}
             </div>
         </div>
