@@ -21,28 +21,27 @@
         {% if free_order %}
             window.location.href = "{% url 'payment-success' %}?purchase_type=" + purchase_type;
         {% else %}
-
-        var url = "/placilo/izvedi/";
-        fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              "X-CSRFTOKEN": "{{ csrf_token }}"
-            },
-            body: JSON.stringify({
-                id: "{{ id }}",
-                purchase_type: purchase_type
+            var url = "/placilo/izvedi/";
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json',
+                "X-CSRFTOKEN": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    id: "{{ id }}",
+                    purchase_type: purchase_type
+                })
             })
-        })
-        .then(data => {
-            //handle data
-            console.log(data);
-            return data.json();
-        })
-        .then(data => {
-            console.log(data);
-            window.location.href = data.redirect_url;
-        })
+            .then(data => {
+                //handle data
+                console.log(data);
+                return data.json();
+            })
+            .then(data => {
+                console.log(data);
+                window.location.href = data.redirect_url;
+            })
         {% endif %}
     }
 
