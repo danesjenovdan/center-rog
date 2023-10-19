@@ -38,7 +38,7 @@ def finish_payment(payment):
                 user=user
             ).save()
         else:
-            last_active_membership = user.get_last_active_membership()
+            last_active_membership = user.get_last_active_billable_membership()
             if last_active_membership:
                 # user has active membership
                 valid_from = last_active_membership.valid_to

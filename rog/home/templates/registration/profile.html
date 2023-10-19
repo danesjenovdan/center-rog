@@ -27,11 +27,11 @@
                     {% if user.membership %}
                     <h6>{{ user.membership.type }}</h6>
                     {% else %}
-                    <h6>/</h6>
+                    <h6>Gost</h6>
                     {% endif %}
                     <p class="subtitle">
                         {% translate 'veljavnost članarine do:' %} <br />
-                        {% if user.membership %}
+                        {% if user.membership and user.membership.type and user.membership.type.plan %}
                         {{ obnovitev_clanarine|date:"j. n. Y" }}
                         {% else %}
                         /
