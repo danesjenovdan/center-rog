@@ -187,7 +187,7 @@ class User(AbstractUser, Timestampable):
             return self.memberships.filter(
                 Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
                 valid_from__lte=datetime.now(), active=True).first()
-        
+
     @property
     def most_recent_membership_is_billable(self):
         last_membership = self.memberships.last()
@@ -200,6 +200,15 @@ class User(AbstractUser, Timestampable):
     def get_last_active_membership(self):
         membership = self.memberships.filter(
             active=True
+        )
+        if membership:
+            return membership.latest('valid_to')
+        return None
+
+    def get_last_active_billable_membership(self):
+        membership = self.memberships.filter(
+            active=True,
+            type__plan__isnull=False
         )
         if membership:
             return membership.latest('valid_to')
