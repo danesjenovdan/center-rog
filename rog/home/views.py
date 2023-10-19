@@ -137,12 +137,12 @@ class PurchaseMembershipView(TemplateView):
         form = RegistrationMembershipForm()
         membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
 
-        return render(request, self.template_name, { 
-            "user": current_user, 
-            "form": form, 
+        return render(request, self.template_name, {
+            "user": current_user,
+            "form": form,
             "membership_types": membership_types
         })
-    
+
     def post(self, request):
         user = request.user
         membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
@@ -153,17 +153,23 @@ class PurchaseMembershipView(TemplateView):
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + timedelta(days=365)
-            # active will set on payment success (unless it's free membership)
-            active = False if membership_type.plan else True
-            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+            # create membership
+            if membership_type.plan:
+                membership = Membership(
+                    valid_from=today,
+                    valid_to=one_year_from_now,
+                    type=membership_type,
+                    active=False,
+                    user=user)
+                membership.save()
 
             if membership_type.plan:
-                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership")
+                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership&membership_id={membership.id}")
             else:
-                return redirect("profile-my")  
+                return redirect("profile-my")
         else:
-            return render(request, self.template_name, context={ 
-                "form": form, 
+            return render(request, self.template_name, context={
+                "form": form,
                 "membership_types": membership_types
             })
 
