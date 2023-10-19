@@ -29,6 +29,7 @@ class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
         purchase_type = request.GET.get('purchase_type', '')
+        membership_id = request.GET.get('membership', False)
         plan = Plan.objects.filter(id=plan_id).first()
         user = request.user
 
@@ -39,6 +40,9 @@ class PaymentPreview(views.APIView):
             payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
+            if membership_id:
+                membership = Membership.objects.get(id=membership_id)
+                payment.membership = membership
             payment.save()
             PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
 
@@ -51,17 +55,24 @@ class PaymentPreview(views.APIView):
                 valid_to = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
                 new_uporabnina_valid_to = valid_to + timedelta(days=plan.duration)
                 last_active_membership = user.get_last_active_membership()
-                if (not last_active_membership) or new_uporabnina_valid_to > last_active_membership.valid_to:
-                    add_membership = True
-                else:
-                    add_membership = False
 
-                # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
-                if (not (membership and membership.type and membership.type.plan and membership.active)) or add_membership:
-                    paid_membership = MembershipType.objects.filter(plan__isnull=False).first()
-                    plan = paid_membership.plan
+                 # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
+                if (not last_active_membership) or new_uporabnina_valid_to > last_active_membership.valid_to:
+                    today = datetime.now()
+                    one_year_from_now = today + timedelta(days=365)
+                    paid_membership_type = MembershipType.objects.filter(plan__isnull=False).first()
+                    membership = Membership(
+                        valid_from=today,
+                        valid_to=one_year_from_now,
+                        type=paid_membership_type,
+                        active=False,
+                        user=user)
+                    membership.save()
+
+                    plan = paid_membership_type.plan
                     price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
                     payment.amount += price
+                    payment.membership = membership
                     payment.save()
                     PaymentPlan(plan=plan, payment=payment, price=price).save()
 

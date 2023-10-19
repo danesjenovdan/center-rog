@@ -2,7 +2,7 @@
 
 <form action="{% if payment_needed %}{% url 'registration-profile' %}{% else %}{% url 'profile-edit' %}{% endif %}" enctype="multipart/form-data" method="post" class="edit-profile-form">
     {% csrf_token %}
-
+    {{ form.membership.as_hidden }}
     <p>
         {% translate 'Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, pomoč... Dostopne bodo samo informacije spodaj...' %}
     </p>

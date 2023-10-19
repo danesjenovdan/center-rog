@@ -205,24 +205,6 @@ class User(AbstractUser, Timestampable):
             return membership.latest('valid_to')
         return None
 
-    def get_last_active_billable_membership(self):
-        membership = self.memberships.filter(
-            active=True,
-            type__plan__isnull=False
-        )
-        if membership:
-            return membership.latest('valid_to')
-        return None
-
-    def get_last_inactive_billable_membership(self):
-        membership = self.memberships.filter(
-            active=False,
-            type__plan__isnull=False
-        )
-        if membership:
-            return membership.latest('created_at')
-        return None
-
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()
 
