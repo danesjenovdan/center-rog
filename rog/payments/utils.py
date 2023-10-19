@@ -24,11 +24,9 @@ def finish_payment(payment):
     if membership_fee:
         membership = user.membership
         membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
-
+        valid_from = timezone.now()
         if not membership:
             # User has no membership at this time
-            valid_from = timezone.now()
-
             valid_to = valid_from + timedelta(days=365)
             Membership(
                 valid_from=valid_from,
@@ -54,6 +52,9 @@ def finish_payment(payment):
                 ).save()
             else:
                 # user has free membership
+                membership = user.get_last_inactive_billable_membership()
+                if not membership:
+                    raise Exception('User has no inactive billable membership.')
                 membership.active = True
                 membership.valid_from = valid_from
                 membership.valid_to = valid_from + timedelta(days=365)
