@@ -160,6 +160,17 @@ class RegistrationInformationForm(forms.ModelForm):
         required=False
     )
 
+    membership = forms.CharField(
+        widget=forms.HiddenInput(),
+        required = False
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.membership = kwargs.pop("membership", None)
+        super().__init__(*args, **kwargs)
+        if self.membership:
+            self.initial['membership'] = self.membership
+
     class Meta:
         model = User
         fields = [
@@ -225,6 +236,17 @@ class EditProfileForm(forms.ModelForm):
         required=False,
     )
     custom_gallery = MultipleFileField(required=False)
+
+    membership = forms.CharField(
+        widget=forms.HiddenInput(),
+        required = False
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.membership = kwargs.pop("membership", None)
+        super().__init__(*args, **kwargs)
+        if self.membership:
+            self.initial['membership'] = self.membership
 
     class Meta:
         model = User

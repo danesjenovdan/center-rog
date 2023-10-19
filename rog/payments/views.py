@@ -29,7 +29,7 @@ class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
         purchase_type = request.GET.get('purchase_type', '')
-        membership_id = request.GET.get('membership_id', False)
+        membership_id = request.GET.get('membership', False)
         plan = Plan.objects.filter(id=plan_id).first()
         user = request.user
 
