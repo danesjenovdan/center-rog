@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
 
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 from dateutil.relativedelta import relativedelta
 
 from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm, PurchasePlanForm
@@ -152,7 +152,7 @@ class PurchaseMembershipView(TemplateView):
         if form.is_valid():
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
-            one_year_from_now = today + relativedelta(years=1)
+            one_year_from_now = today + timedelta(days=365)
             # active will set on payment success (unless it's free membership)
             active = False if membership_type.plan else True
             Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
@@ -229,7 +229,7 @@ class RegistrationMembershipView(View):
             
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
-            one_year_from_now = today + relativedelta(years=1)
+            one_year_from_now = today + timedelta(days=365)
             # active will set on payment success
             active = membership_type.price == 0
             new_membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user)
