@@ -163,7 +163,7 @@ class PaymentDataXML(views.APIView):
         payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
         user = payment.user
-        opis_placila = 'Članarina'
+        opis_placila = 'Plačilo za rog'
         sifra_artikla = 1
         kolicina = 1
         # TODO fill in user data
@@ -173,16 +173,21 @@ class PaymentDataXML(views.APIView):
         user_city = ''
         user_post = ''
         user_email = user.email
+        items = ''
+        for pp in payment.payment_plans.all():
+            items = items + f'''
+            <postavka sifraArtikla="{pp.plan.id}" imaProvizijo="false" konto="" podracun="" sklicPostavke="11">
+                <opis>{pp.plan_name}</opis>
+                <kolicina>1</kolicina>
+                <cena>{pp.price}</cena>
+            </postavka>
+            '''
 
         order_body = f'''
             <?xml version="1.0" encoding="UTF-8"?>
             <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
-            <postavka sifraArtikla="{sifra_artikla}" imaProvizijo="false" konto="" podracun="" sklicPostavke="11">
-                <opis>{opis_placila}</opis>
-                <kolicina>{kolicina}</kolicina>
-                <cena>{payment.amount}</cena>
-            </postavka>
+            {items}
                 <kupec sifraKupca="{user.id}">
                     <idZaDdv>{user_tax_id}</idZaDdv>
                     <naziv>{user_name}</naziv>
