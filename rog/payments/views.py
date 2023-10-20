@@ -74,7 +74,7 @@ class PaymentPreview(views.APIView):
                     payment.amount += price
                     payment.membership = membership
                     payment.save()
-                    PaymentPlan(plan=plan, payment=payment, price=price).save()
+                    PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
 
             promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
