@@ -125,7 +125,7 @@ class PurchasePlanView(TemplateView):
             print("Form ni valid")
 
         return render(request, self.template_name, { "form": form })
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class PurchaseMembershipView(TemplateView):

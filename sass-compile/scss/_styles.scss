@@ -264,7 +264,22 @@ body.safari {
         }
     }
 
-    select + select {
+    [name^="birth_date_"] {
+        -moz-appearance: textfield;
+        width: 45px;
+    }
+
+    [name^="birth_date_"]::-webkit-outer-spin-button,
+    [name^="birth_date_"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+
+    [name^="birth_date_year"] {
+        width: 65px;
+    }
+
+    select + select,
+    [name^="birth_date_"] + [name^="birth_date_"] {
         margin-left: 12px;
     }
 
@@ -301,7 +316,8 @@ body.safari {
 
 .registration-gender-row {
     display: flex;
-    gap: 24px;
+    gap: 12px 24px;
+    flex-wrap: wrap;
     margin-bottom: 20px;
 
     .form-field-wrapper {
