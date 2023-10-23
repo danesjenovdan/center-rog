@@ -80,7 +80,7 @@ class PaymentPreview(views.APIView):
 
             return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "purchase_type": purchase_type })
         else:
-            return render(request, 'payment.html', { "id": None })
+            return redirect('profile-my')
 
     def post(self, request):
         user = request.user
