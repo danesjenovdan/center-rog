@@ -95,8 +95,23 @@ function gallery() {
     const startIndex = count >= 5 ? 2 : Math.floor(count / 2);
     let activeIndex = startIndex;
 
+    items.forEach((item) => {
+      const mc = new Hammer.Manager(item, {
+        recognizers: [[Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }]],
+      });
+
+      mc.on("swipe", (event) => {
+        if (event.direction === Hammer.DIRECTION_LEFT) {
+          setActiveItem(activeIndex + 1);
+        } else if (event.direction === Hammer.DIRECTION_RIGHT) {
+          setActiveItem(activeIndex - 1);
+        }
+      });
+    });
+
     function resizeImages() {
-      const maxWidth = gallery.offsetWidth * 0.66;
+      const isMobile = gallery.offsetWidth < 600;
+      const maxWidth = gallery.offsetWidth * (isMobile ? 0.85 : 0.66);
       const maxHeight = gallery.querySelector(".custom-gallery-image").offsetHeight;
 
       navArrows.forEach((nav) => {
@@ -120,6 +135,7 @@ function gallery() {
           image.style.height = `${maxHeight}px`;
         }
 
+        const sideOffsetMult = isMobile ? 0.04125 : 0.0825;
         image.style.top = `${(maxHeight - image.offsetHeight) / 2}px`;
         image.style.bottom = "auto";
         image.style.right = "auto";
@@ -131,7 +147,7 @@ function gallery() {
           image.removeAttribute("tabindex");
           image.style.transformOrigin = "center left";
           if (item.classList.contains("prev1")) {
-            image.style.left = `${gallery.offsetWidth * 0.0825}px`;
+            image.style.left = `${gallery.offsetWidth * sideOffsetMult}px`;
           } else if (item.classList.contains("prev2")) {
             image.style.left = "0";
           } else {
@@ -141,7 +157,7 @@ function gallery() {
           image.removeAttribute("tabindex");
           image.style.transformOrigin = "center right";
           if (item.classList.contains("next1")) {
-            image.style.left = `${gallery.offsetWidth - image.offsetWidth - gallery.offsetWidth * 0.0825}px`;
+            image.style.left = `${gallery.offsetWidth - image.offsetWidth - gallery.offsetWidth * sideOffsetMult}px`;
           } else if (item.classList.contains("next2")) {
             image.style.left = `${gallery.offsetWidth - image.offsetWidth}px`;
           } else {
