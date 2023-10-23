@@ -11,4 +11,4 @@ resources:
 images:
   - name: rog
     newName: rg.fr-par.scw.cloud/djnd/rog-staging
-    newTag: '7d5d82a651906be911f14ce9e8a38a4f1ad58704'
+    newTag: '03c6be668a1b1d301c1e9e46bfdebe9d5afe1b80'
