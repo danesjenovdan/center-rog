@@ -90,6 +90,44 @@ class RegistrationMembershipForm(forms.ModelForm):
         }
 
 
+class SplitInputDateWidget(forms.SelectDateWidget):
+    input_type = "number"
+    select_widget = forms.NumberInput
+
+    def get_context(self, name, value, attrs):
+        context = super(forms.SelectDateWidget, self).get_context(name, value, attrs)
+        date_context = {}
+        year_name = self.year_field % name
+        date_context["year"] = self.select_widget(
+            attrs,
+        ).get_context(
+            name=year_name,
+            value=context["widget"]["value"]["year"],
+            attrs={**context["widget"]["attrs"], "id": "id_%s" % year_name, "placeholder": "1989"},
+        )
+        month_name = self.month_field % name
+        date_context["month"] = self.select_widget(
+            attrs,
+        ).get_context(
+            name=month_name,
+            value=context["widget"]["value"]["month"],
+            attrs={**context["widget"]["attrs"], "id": "id_%s" % month_name, "placeholder": "12"},
+        )
+        day_name = self.day_field % name
+        date_context["day"] = self.select_widget(
+            attrs,
+        ).get_context(
+            name=day_name,
+            value=context["widget"]["value"]["day"],
+            attrs={**context["widget"]["attrs"], "id": "id_%s" % day_name, "placeholder": "31"},
+        )
+        subwidgets = []
+        for field in self._parse_date_fmt():
+            subwidgets.append(date_context[field]["widget"])
+        context["widget"]["subwidgets"] = subwidgets
+        return context
+
+
 class RegistrationInformationForm(forms.ModelForm):
     first_name = forms.CharField(
         label=_("Ime"),
@@ -102,19 +140,21 @@ class RegistrationInformationForm(forms.ModelForm):
     birth_date = forms.DateField(
         label=_("Datum rojstva"),
         label_suffix="",
-        widget=forms.SelectDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
+        widget=SplitInputDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
         required=True
     )
     gender = forms.ChoiceField(
         label=_("Spol"),
         label_suffix="",
         choices=(("F", _("ženski")), ("M", _("moški")), ("O", _("drugo"))),
+        initial="",
         widget=forms.RadioSelect(attrs={"class": "gender-radio"}),
     )
     gender_other = forms.CharField(
         label=_("izpolni"),
         label_suffix="",
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "spol"})
     )
     address_1 = forms.CharField(
         label=_("Naslov 1"),
@@ -159,6 +199,17 @@ class RegistrationInformationForm(forms.ModelForm):
         label_suffix="",
         required=False
     )
+
+    membership = forms.CharField(
+        widget=forms.HiddenInput(),
+        required = False
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.membership = kwargs.pop("membership", None)
+        super().__init__(*args, **kwargs)
+        if self.membership:
+            self.initial['membership'] = self.membership
 
     class Meta:
         model = User
@@ -225,6 +276,17 @@ class EditProfileForm(forms.ModelForm):
         required=False,
     )
     custom_gallery = MultipleFileField(required=False)
+
+    membership = forms.CharField(
+        widget=forms.HiddenInput(),
+        required = False
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.membership = kwargs.pop("membership", None)
+        super().__init__(*args, **kwargs)
+        if self.membership:
+            self.initial['membership'] = self.membership
 
     class Meta:
         model = User

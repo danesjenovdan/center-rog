@@ -162,7 +162,7 @@ class User(AbstractUser, Timestampable):
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
     birth_date = models.DateField(verbose_name="Datum rojstva", null=True)
-    gender = models.CharField(max_length=1, choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")), default="O", verbose_name="Spol")
+    gender = models.CharField(max_length=1, blank=True, choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")), verbose_name="Spol")
     gender_other = models.CharField(max_length=200, blank=True, verbose_name="Spol (drugo)")
     # categories
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
@@ -187,7 +187,7 @@ class User(AbstractUser, Timestampable):
             return self.memberships.filter(
                 Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
                 valid_from__lte=datetime.now(), active=True).first()
-        
+
     @property
     def most_recent_membership_is_billable(self):
         last_membership = self.memberships.last()

@@ -239,6 +239,7 @@ class Payment(Timestampable):
         help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
     )
     invoice_number = models.CharField(max_length=100, null=True, blank=True)
+    membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
     panels = [
         FieldPanel("user"),
         FieldPanel("amount"),

@@ -9,7 +9,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
 
-from datetime import datetime, date, time
+from datetime import datetime, date, time, timedelta
 from dateutil.relativedelta import relativedelta
 
 from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm, PurchasePlanForm
@@ -125,7 +125,7 @@ class PurchasePlanView(TemplateView):
             print("Form ni valid")
 
         return render(request, self.template_name, { "form": form })
-    
+
 
 @method_decorator(login_required, name='dispatch')
 class PurchaseMembershipView(TemplateView):
@@ -137,12 +137,12 @@ class PurchaseMembershipView(TemplateView):
         form = RegistrationMembershipForm()
         membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
 
-        return render(request, self.template_name, { 
-            "user": current_user, 
-            "form": form, 
+        return render(request, self.template_name, {
+            "user": current_user,
+            "form": form,
             "membership_types": membership_types
         })
-    
+
     def post(self, request):
         user = request.user
         membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
@@ -152,18 +152,24 @@ class PurchaseMembershipView(TemplateView):
         if form.is_valid():
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
-            one_year_from_now = today + relativedelta(years=1)
-            # active will set on payment success (unless it's free membership)
-            active = False if membership_type.plan else True
-            Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user).save()
+            one_year_from_now = today + timedelta(days=365)
+            # create membership
+            if membership_type.plan:
+                membership = Membership(
+                    valid_from=today,
+                    valid_to=one_year_from_now,
+                    type=membership_type,
+                    active=False,
+                    user=user)
+                membership.save()
 
             if membership_type.plan:
-                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership")
+                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership&membership={membership.id}")
             else:
-                return redirect("profile-my")  
+                return redirect("profile-my")
         else:
-            return render(request, self.template_name, context={ 
-                "form": form, 
+            return render(request, self.template_name, context={
+                "form": form,
                 "membership_types": membership_types
             })
 
@@ -226,16 +232,24 @@ class RegistrationMembershipView(View):
         form = RegistrationMembershipForm(request.POST)
 
         if form.is_valid():
-            
+
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
-            one_year_from_now = today + relativedelta(years=1)
-            # active will set on payment success
-            active = membership_type.price == 0
-            new_membership = Membership(valid_from=today, valid_to=one_year_from_now, type=membership_type, active=active, user=user)
-            new_membership.save()
+            one_year_from_now = today + timedelta(days=365)
+            if membership_type.plan:
+                new_membership = Membership(
+                    valid_from=today,
+                    valid_to=one_year_from_now,
+                    type=membership_type,
+                    active=False,
+                    user=user
+                )
+                new_membership.save()
+                membership_query = f"?membership={new_membership.id}"
+            else:
+                membership_query = ""
 
-            return redirect("registration-information")
+            return redirect(f"/registracija/podatki{membership_query}")
         else:
             return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
 
@@ -244,8 +258,9 @@ class RegistrationInformationView(View):
 
     def get(self, request):
         user = request.user
+        membership = request.GET.get('membership', None)
 
-        form = RegistrationInformationForm(instance=user)
+        form = RegistrationInformationForm(instance=user, membership=membership)
         return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
 
     def post(self, request):
@@ -283,10 +298,16 @@ class RegistrationInformationView(View):
 
             user.save()
 
+            membership = form.cleaned_data["membership"]
+            if membership:
+                membership_query = f"?membership={membership}"
+            else:
+                membership_query = ""
+
             # update PRIMA user
             data, message = prima_api.updateUser(user_id=user.prima_id, name=user.first_name, last_name=user.last_name)
 
-            return redirect("registration-profile")
+            return redirect(f"/registracija/profil{membership_query}")
         else:
             return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
 
@@ -296,9 +317,10 @@ class RegistrationProfileView(View):
 
     def get(self, request):
         user = request.user
-        form = EditProfileForm(instance=user)
+        membership = request.GET.get('membership', None)
+        form = EditProfileForm(instance=user, membership=membership)
 
-        payment_needed = user.most_recent_membership_is_billable
+        payment_needed = True if membership else False
 
         return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
 
@@ -334,10 +356,16 @@ class RegistrationProfileView(View):
 
             user.save()
             payment_needed = user.most_recent_membership_is_billable
-            
+
+            membership = form.cleaned_data["membership"]
+            if membership:
+                membership_query = f"&membership={membership}"
+            else:
+                membership_query = ""
+
             if payment_needed:
                 plan_id = user.memberships.last().type.plan.id
-                return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration")
+                return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}")
             else:
                 return redirect("profile-my")
         else:

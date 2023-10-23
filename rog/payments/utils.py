@@ -6,6 +6,8 @@ from home.email_utils import send_email
 
 from datetime import datetime, timedelta
 
+from sentry_sdk import capture_message, push_scope
+
 
 
 def get_invoice_number():
@@ -18,48 +20,34 @@ def get_invoice_number():
 
 
 def finish_payment(payment):
-    # membership
+    user_fee_plan = None
     user = payment.user
     membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
-    if membership_fee:
-        membership = user.membership
-        membership_type = MembershipType.objects.filter(plan=membership_fee.first()).first()
+    membership = payment.membership
+    if membership_fee and membership:
+        valid_from = timezone.now()
 
-        if not membership:
-            # User has no membership at this time
-            valid_from = timezone.now()
+        last_active_membership = user.get_last_active_membership()
+        if last_active_membership:
+            # user has active membership
+            valid_from = last_active_membership.valid_to
+            if valid_from < timezone.now():
+                valid_from = timezone.now()
 
-            valid_to = valid_from + timedelta(days=365)
-            Membership(
-                valid_from=valid_from,
-                valid_to=valid_to,
-                type=membership_type,
-                active=True,
-                user=user
-            ).save()
-        else:
-            last_active_membership = user.get_last_active_membership()
-            if last_active_membership:
-                # user has active membership
-                valid_from = last_active_membership.valid_to
-                if valid_from < timezone.now():
-                    valid_from = timezone.now()
-                valid_to = valid_from + timedelta(days=365)
-                Membership(
-                    valid_from=valid_from,
-                    valid_to=valid_to,
-                    type=membership_type,
-                    active=True,
-                    user=user
-                ).save()
-            else:
-                # user has free membership
-                membership.active = True
-                membership.valid_from = valid_from
-                membership.valid_to = valid_from + timedelta(days=365)
-                membership.save()
+        valid_to = valid_from + timedelta(days=365)
+        membership.valid_from = valid_from
+        membership.valid_to = valid_to
+        membership.active = True
+        membership.save()
+    elif membership_fee or membership:
+        # send error to sentry
+        msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
+        with push_scope() as scope:
+            scope.user = { "user" : user}
+            scope.set_extra("membership", membership.id)
+            scope.set_extra("payment", payment.id)
+            capture_message(msg, 'fatal')
 
-    user_fee_plan = None # uporabnina
 
     # set valid_to if plan is subscription
     items = []
