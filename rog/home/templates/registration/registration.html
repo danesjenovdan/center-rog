@@ -1,12 +1,12 @@
 {% extends "registration/registration_wrapper.html" %}
 {% load static i18n %}
 
-{% block title %}Registracija{% endblock %}
+{% block title %}{% translate 'Registracija' %}{% endblock %}
 
 {% block body_class %}template-register{% endblock %}
 
 {% block form_title %}
-<h1>Vnesi elektronski naslov in izberi geslo:</h1>
+<h1>{% translate 'Vnesi elektronski naslov in izberi geslo:' %}</h1>
 {% endblock form_title %}
 
 {% block form_block %}
@@ -41,7 +41,7 @@
     </div>
 
     <div class="d-flex justify-content-end my-4">
-        <button type="submit" class="secondary-button button-medium">naprej</button>
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
     </div>
 </form>
 
