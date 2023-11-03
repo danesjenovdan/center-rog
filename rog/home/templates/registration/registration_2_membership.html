@@ -1,12 +1,12 @@
 {% extends "registration/registration_wrapper.html" %}
 {% load i18n static %}
 
-{% block title %}Registracija{% endblock %}
+{% block title %}{% translate 'Registracija' %}{% endblock %}
 
 {% block body_class %}template-register{% endblock %}
 
 {% block form_title %}
-<h1>Izberi tip članstva:</h1>
+<h1>{% translate 'Izberi tip članstva:' %}</h1>
 {% endblock form_title %}
 
 {% block form_block %}
