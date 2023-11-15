@@ -1,7 +1,7 @@
 {% extends "home/wrapper_page.html" %}
-{% load static %}
+{% load wagtailcore_tags static i18n %}
 
-{% block title %}Odjava{% endblock %}
+{% block title %}{% translate 'Odjava' %}{% endblock %}
 
 {% block body_class %}template-logout{% endblock %}
 
@@ -15,9 +15,9 @@
     <div class="row justify-content-center">
         <div class="col-md-10 col-xxl-6">
             <div>
-                <h3>Se vidimo!</h3>
+                <h3>{% translate 'Se vidimo!' %}</h3>
                 <div>
-                    <a href="/prijava">Ponovna prijava</a>
+                    <a href="{% url 'login' %}">{% translate 'Ponovna prijava' %}</a>
                 </div>
             </div>
         </div>
