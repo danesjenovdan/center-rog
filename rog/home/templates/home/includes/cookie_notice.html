@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <div class="cookie-notice color-scheme-white" style="display:none;">
   <div class="tape"></div>
   <div class="binder-holes">
@@ -8,17 +10,17 @@
   <div class="binder-bg">
     <div class="binder-content">
       <p>
-        Ali se strinjate z uporabo piškotkov?
+        {% translate 'Ali se strinjate z uporabo piškotkov?' %}
       </p>
       <p>
         <a class="link" href="/politika-zasebnosti/">
-          <span class="link-text">preberi več</span>
+          <span class="link-text">{% translate 'preberi več' %}</span>
           <span class="link-icon"></span>
         </a>
       </p>
       <p class="buttons">
-        <button type="button" id="cookie-yes" class="secondary-button button-small">da</button>
-        <button type="button" id="cookie-no" class="secondary-button button-small">ne</button>
+        <button type="button" id="cookie-yes" class="secondary-button button-small">{% translate 'da' %}</button>
+        <button type="button" id="cookie-no" class="secondary-button button-small">{% translate 'ne' %}</button>
       </p>
     </div>
   </div>

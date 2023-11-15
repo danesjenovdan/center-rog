@@ -1,4 +1,4 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags i18n %}
 
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
 <section  class="color-scheme-{{ value.color }} colored-text-section contacts-section">
@@ -20,7 +20,7 @@
                 <p class="mb-0">{{ contact.position }}</p>
             </div>
             <div class="col-md-2 text-md-end">
-                <a href="mailto:{{ contact.email }}" class="link">email</a>
+                <a href="mailto:{{ contact.email }}" class="link">{% translate 'e-pošta' %}</a>
                 <button type="button" class="copy-email-button" data-email="{{ contact.email }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
                         <path stroke="currentColor" stroke-width="1.15" d="M12.94 8.84h-5c-.6 0-1.1.5-1.1 1.1v5c0 .6.5 1.1 1.1 1.1h5c.6 0 1.1-.5 1.1-1.1v-5c0-.6-.5-1.1-1.1-1.1Z"/>
