@@ -163,7 +163,6 @@ class PaymentDataXML(views.APIView):
         payment_id = request.GET.get('id', 0)
         payment = get_object_or_404(Payment, id=payment_id)
         user = payment.user
-        opis_placila = 'Plačilo za rog'
         sifra_artikla = 1
         kolicina = 1
         # TODO fill in user data
@@ -186,12 +185,13 @@ class PaymentDataXML(views.APIView):
         year = payment.created_at.year
 
         reference = f'{year}-369-{payment.id}'
-        opis = f'Plačilo računa za {user_name}'
+        opis_placila = f'Plačilo računa za {user_name}'
 
         order_body = f'''
             <?xml version="1.0" encoding="UTF-8"?>
-            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" opisPlacila="{opis}" referenca="{reference}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
+            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
+                <referenca>{reference}</referenca>
             {items}
                 <kupec sifraKupca="{user.id}">
                     <idZaDdv>{user_tax_id}</idZaDdv>
