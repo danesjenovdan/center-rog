@@ -226,8 +226,8 @@ def create_subject(subject):
     taxer = False
 
     tax_number = subject.legal_person_tax_number
-    if 'si' in tax_number.lower():
-        tax_number = tax_number.replace('SI', '')
+    tax_number = tax_number.replace('SI', '').strip()
+    if subject.legal_person_vat:
         taxer = True
 
     data = {
@@ -444,10 +444,6 @@ def create_move(
         vat=22):
     if not settings.PANTHEON_URL:
         return None
-    tax_number = payment.user.legal_person_tax_number
-    taxer = False
-    if 'si' in tax_number.lower():
-        taxer = True
     """
     {
         'acKey': '2330000000009',
@@ -485,7 +481,7 @@ def create_move(
         "invoiceDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "taxDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "expectedDeliveryDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
-        "wayOfSale": "Z" if taxer else "K",
+        "wayOfSale": "Z" if payment.user.legal_person_vat else "K",
         "paymentMethod": "1",
         "paymentMethodId": "1",
         "paymentMethods": [
