@@ -21,7 +21,7 @@ def create_ident(item):
         "setOfItem": "700", # vrsta materialnega sredstva npr. od storitve
         "supplier": "",
         "formula": "",
-        "vat": vat,
+        "vat": 0,
         "currency": "EUR",
         "salePrice": price,
         "rtprice": total_price,
@@ -33,8 +33,8 @@ def create_ident(item):
         "um": "KOS",
         "umtoUm2": 0,
         "um2": "",
-        "vatcode": "2S",
-        "vatcodeLow": "2S",
+        "vatcode": "NN",
+        "vatcodeLow": "NN",
         "discount": 0,
         "warrenty": 0,
         "serialNo": "",
@@ -78,7 +78,7 @@ def create_ident(item):
         "maxStock": 0,
         "optStock": 0,
         "declarForOrigin": "",
-        "dept": "",
+        "dept": "LASTNA SREDSTVA/TRG/03",
         "qtyInCode": "",
         "umdim1": "",
         "umdim2": "",
@@ -110,7 +110,7 @@ def create_ident(item):
         "deliveryDeadline": 0,
         "posqty": 0,
         "showAtena": "",
-        "acctIncome": "",
+        "acctIncome": "760103",
         "inFlowOutFlow": "",
         "fieldNf": 0,
         "fieldNg": 0,
@@ -126,7 +126,7 @@ def create_ident(item):
         "qtyInCodeDecPlace": 0,
         "orderMinQty": 0,
         "orderOptQty": 0,
-        "costDrv": "",
+        "costDrv": "PMS",
         "packing": "",
         "purExciseE": 0,
         "purExciseA": 0,
@@ -222,6 +222,14 @@ def create_subject(subject):
     print(subject.email)
     if not settings.PANTHEON_URL:
         return None
+
+    taxer = False
+
+    tax_number = subject.legal_person_tax_number
+    tax_number = tax_number.replace('SI', '').strip()
+    if subject.legal_person_vat:
+        taxer = True
+
     data = {
         "subject": subject.get_pantheon_subject_id(),
         "buyer": "T",
@@ -235,14 +243,14 @@ def create_subject(subject):
         "dept": "F",
         "school": "F",
         "institution": "F",
-        "name2": subject.legal_person_name,
-        "address": subject.legal_person_address_1,
+        "name2": f'{subject.first_name} {subject.last_name}',
+        "address": subject.address_1,
         "name3": subject.legal_person_name,
-        "post": f'SI-{subject.legal_person_address_2}' if subject.legal_person_address_2 else 'SI-1000',
+        "post": f'SI-{subject.get_post()}',
         "country": "Slovenija",
         "km": 0,
-        "vatcodePrefix": "SI",
-        "code": subject.legal_person_tax_number,
+        "vatcodePrefix": "SI" if taxer else "",
+        "code": tax_number,
         "region": "",
         "suprCommune": "",
         "phone": "",
@@ -264,12 +272,12 @@ def create_subject(subject):
         "dateInvent": None,#"2023-08-11T05:05:12.971Z",
         "clerk": 0,
         "rabate": 0,
-        "wayOfSale": "Z",
+        "wayOfSale": "Z" if taxer else "K",
         "currency": "EUR",
         "priceCalcMethod": "0",
-        "payMethod": "1",
-        "delivery": "5",
-        "regNo": "6436005000 ",
+        "payMethod": "",
+        "delivery": "",
+        "regNo": "",
         "acPayer": "",
         "activityCode": "",
         "separSaleCalc": "",
@@ -467,13 +475,13 @@ def create_move(
         "issuerId": "Veleprodajno skladišče",
         "thirdParty": payment.user.legal_person_name,
         "thirdPartyId": payment.user.legal_person_name,
-        "docType": "3000", # poslovni dogodek
+        "docType": "3690", # poslovni dogodek
         "date": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "dateDue": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "invoiceDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "taxDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "expectedDeliveryDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
-        "wayOfSale": "Z",
+        "wayOfSale": "Z" if payment.user.legal_person_vat else "K",
         "paymentMethod": "1",
         "paymentMethodId": "1",
         "paymentMethods": [
@@ -529,17 +537,17 @@ def create_move(
                 "price": float(item.price),
                 "priceCurrency": 0,
                 "rabate": item.promo_code.percent_discount if item.promo_code else 0,
-                "vat": vat,
-                "vatCode": "2S",
-                "vatCodeTR": "2S",
+                "vat": 0,
+                "vatCode": "NN",
+                "vatCodeTR": "NN",
                 "note": "", # opomba na poziciji
                 "measurementUnit": "KOS",
                 "taxPrice": 0,
                 "basisForTax": 0,
                 "priceForValue": 0,
                 "stock": 0,
-                "costDrv": "",
-                "department": "",
+                "costDrv": "PMS",
+                "department": "LASTNA SREDSTVA/TRG/03",
                 "retailPrice": 0,
                 "newRetailPrice": 0,
                 "rabateRetail": 0,

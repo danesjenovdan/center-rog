@@ -179,10 +179,14 @@
                         {% if user.legal_person_receipt %}
                             {{ user.legal_person_name }}<br>
                             {{ user.legal_person_address_1 }}<br>
-                            {{ user.legal_person_address_2 }}
+                            {{ user.legal_person_address_2 }}<br>
+                            {% if user.legal_person_vat %}
+                                {% if user.legal_person_vat %}SI{% endif %}{{ user.legal_person_tax_number }}
+                            {% endif %}
                         {% else %}
-                            &nbsp;<br>
-                            &nbsp;<br>
+                            {{ user.first_name }} {{ user.last_name }}<br>
+                            {{ user.address_1 }}<br>
+                            {{ user.address_2 }}<br>
                             &nbsp;
                         {% endif %}
                     </div>
