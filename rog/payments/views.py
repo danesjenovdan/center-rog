@@ -185,6 +185,7 @@ class PaymentDataXML(views.APIView):
         year = payment.created_at.year
 
         reference = f'{year}-369-{payment.id}'
+        sklic = f'SIO0{year}369{payment.id}'
         opis_placila = f'Plačilo računa za {user_name}'
 
         order_body = f'''
@@ -192,6 +193,7 @@ class PaymentDataXML(views.APIView):
             <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
                 <referenca>{reference}</referenca>
+                <sklicDobro>{sklic}</sklicDobro>
             {items}
                 <kupec sifraKupca="{user.id}">
                     <idZaDdv>{user_tax_id}</idZaDdv>
