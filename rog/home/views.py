@@ -328,6 +328,8 @@ class RegistrationProfileView(View):
         user = request.user
         form = EditProfileForm(request.POST)
 
+        payment_needed = True if request.POST.get('membership', None) else False
+
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
             public_username = form.cleaned_data["public_username"]
@@ -343,6 +345,7 @@ class RegistrationProfileView(View):
                 if public_username_exists:
                     form.add_error("public_username", _("Uporabniško ime že obstaja."))
 
+            # if public username error added
             if not form.is_valid():
                 return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
 
