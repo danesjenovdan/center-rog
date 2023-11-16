@@ -22,6 +22,7 @@ from behaviours.models import Timestampable
 from datetime import datetime
 import random
 import uuid
+import re
 
 
 class MembershipType(ClusterableModel):
@@ -225,6 +226,14 @@ class User(AbstractUser, Timestampable):
 
     def random_color(self):
         return random.choice(settings.COLOR_SCHEMES)[0]
+
+    def get_post(self):
+        all_addresses = f'{self.address_1} {self.address_2} {self.legal_person_address_1} {self.legal_person_address_2}'
+        print(all_addresses)
+        maybe_post = re.search(r'\d{4}', all_addresses)
+        if maybe_post:
+            return maybe_post.group()
+        return '1000'
 
     def save(self, *args, **kwargs):
         if self.id == None:
