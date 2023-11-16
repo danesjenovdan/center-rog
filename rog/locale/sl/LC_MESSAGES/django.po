@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 08:43+0200\n"
+"POT-Creation-Date: 2023-11-15 10:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,12 +16,1475 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n"
-"%100==4 ? 2 : 3);\n"
-#: home/templates/registration/login.html:5
-msgid "Login"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
+"n%100==4 ? 2 : 3);\n"
+
+#: events/models.py:39 news/models.py:40 users/models.py:91
+msgid "Ime kategorije"
 msgstr ""
 
-#: users/forms.py:8 users/forms.py:12
+#: events/models.py:42 news/models.py:43
+msgid "Barvna shema"
+msgstr ""
+
+#: events/models.py:61
+msgid "Kategorija dogodkov"
+msgstr ""
+
+#: events/models.py:62
+msgid "Dogodki - kategorije"
+msgstr ""
+
+#: events/models.py:67
+msgid "Slika dogodka"
+msgstr ""
+
+#: events/models.py:69 news/models.py:71
+msgid "Kategorija"
+msgstr ""
+
+#: events/models.py:70 home/models/base_pages.py:247 news/models.py:74
+msgid "Telo"
+msgstr ""
+
+#: events/models.py:71
+msgid "Oznaka na kartici"
+msgstr ""
+
+#: events/models.py:72
+msgid "Ura začetka"
+msgstr ""
+
+#: events/models.py:73
+msgid "Ura konca"
+msgstr ""
+
+#: events/models.py:74
+msgid "Datum začetka"
+msgstr ""
+
+#: events/models.py:75
+msgid "Datum konca (če gre za večdneven dogodek)"
+msgstr ""
+
+#: events/models.py:76
+msgid "Lokacija"
+msgstr ""
+
+#: events/models.py:77
+msgid "Povezava za prijavo (če je prazno, se gumb skrije)"
+msgstr ""
+
+#: events/models.py:78 home/models/settings.py:109
+msgid "Opomba"
+msgstr ""
+
+#: events/models.py:79
+msgid "Dogodek je usposabljanje"
+msgstr ""
+
+#: events/models.py:80 events/models.py:115 events/models.py:141
+#: home/models/base_pages.py:197 home/models/module_pages.py:62
+#: home/models/pages.py:166 news/models.py:82 news/models.py:112
+msgid "Pokaži več"
+msgstr ""
+
+#: events/models.py:110 home/models/blocks.py:134
+msgid "Dogodek"
+msgstr ""
+
+#: events/models.py:111 home/models/blocks.py:135
+msgid "Dogodki"
+msgstr ""
+
+#: events/models.py:136
+msgid "Arhiv programa"
+msgstr ""
+
+#: events/models.py:137
+msgid "Arhivi programov"
+msgstr ""
+
+#: events/models.py:189
+msgid "Program"
+msgstr ""
+
+#: events/models.py:190
+msgid "Programi"
+msgstr ""
+
+#: events/templates/events/event_list_page.html:38
+#: home/templates/home/residence_list_page.html:34
+#: home/templates/home/studio_list_page.html:17
+#: news/templates/news/news_list_page.html:38
+msgid "arhiv"
+msgstr ""
+
+#: events/templates/events/event_page.html:31
+msgid "začetek"
+msgstr ""
+
+#: events/templates/events/event_page.html:33
+msgid "konec"
+msgstr ""
+
+#: events/templates/events/event_page.html:47
+#: home/templates/home/includes/header.html:25
+#: home/templates/home/includes/header.html:114
+msgid "prijava"
+msgstr ""
+
+#: home/forms.py:31
+msgid "elektronski naslov"
+msgstr ""
+
+#: home/forms.py:35
+msgid "prijavi me na novičnik"
+msgstr ""
+
+#: home/forms.py:41
+msgid "geslo (vsaj 8 znakov, vsaj ena številka)"
+msgstr ""
+
+#: home/forms.py:46
+msgid "ponovi geslo"
+msgstr ""
+
+#: home/forms.py:56
+msgid "Geslo mora biti dolgo vsaj 8 znakov."
+msgstr ""
+
+#: home/forms.py:58
+msgid "Geslo mora vsebovati vsaj eno številko."
+msgstr ""
+
+#: home/forms.py:61 home/forms.py:62
+msgid "Gesli se ne ujemata."
+msgstr ""
+
+#: home/forms.py:133 home/models/blocks.py:308 home/models/settings.py:94
+msgid "Ime"
+msgstr ""
+
+#: home/forms.py:137
+msgid "Priimek"
+msgstr ""
+
+#: home/forms.py:141
+msgid "Datum rojstva"
+msgstr ""
+
+#: home/forms.py:147
+msgid "Spol"
+msgstr ""
+
+#: home/forms.py:149
+msgid "ženski"
+msgstr ""
+
+#: home/forms.py:149
+msgid "moški"
+msgstr ""
+
+#: home/forms.py:149
+msgid "drugo"
+msgstr ""
+
+#: home/forms.py:154
+msgid "izpolni"
+msgstr ""
+
+#: home/forms.py:160 home/forms.py:181
+msgid "Naslov 1"
+msgstr ""
+
+#: home/forms.py:164 home/forms.py:187
+msgid "Naslov 2 (neobvezno)"
+msgstr ""
+
+#: home/forms.py:169
+msgid "potrebujem račun za pravno osebo"
+msgstr ""
+
+#: home/forms.py:175
+msgid "Naziv pravne osebe"
+msgstr ""
+
+#: home/forms.py:193
+msgid "Davčna številka"
+msgstr ""
+
+#: home/forms.py:198
+msgid "sem zavezanec za DDV"
+msgstr ""
+
+#: home/forms.py:234
+msgid ""
+"Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"
+msgstr ""
+
+#: home/forms.py:240
+msgid "Uporabniško ime"
+msgstr ""
+
+#: home/forms.py:246 home/models/base_pages.py:132
+#: home/models/base_pages.py:160 home/models/pages.py:126 payments/models.py:65
+msgid "Opis"
+msgstr ""
+
+#: home/forms.py:251 home/forms.py:256 home/forms.py:261
+msgid "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
+msgstr ""
+
+#: home/forms.py:266
+msgid "Kontakt"
+msgstr ""
+
+#: home/models/base_pages.py:114 home/models/base_pages.py:255
+#: home/models/module_pages.py:27 home/models/module_pages.py:70
+msgid "Meta slika"
+msgstr ""
+
+#: home/models/base_pages.py:133 home/models/base_pages.py:149
+msgid "Poglej več"
+msgstr ""
+
+#: home/models/base_pages.py:167 home/models/base_pages.py:188
+#: home/models/base_pages.py:218 home/models/blocks.py:190
+#: home/models/blocks.py:243 home/models/blocks.py:248
+#: home/models/blocks.py:255 home/models/pages.py:133 home/models/pages.py:145
+#: home/models/settings.py:182 news/models.py:78
+msgid "Slika"
+msgstr ""
+
+#: home/models/base_pages.py:169
+msgid "Dodaten opis slike"
+msgstr ""
+
+#: home/models/base_pages.py:171 home/models/blocks.py:310
+msgid "Elektronski naslov"
+msgstr ""
+
+#: home/models/base_pages.py:172 home/models/settings.py:100
+msgid "Telefonska številka"
+msgstr ""
+
+#: home/models/base_pages.py:173
+msgid "Instagram"
+msgstr ""
+
+#: home/models/base_pages.py:174
+msgid "Facebook"
+msgstr ""
+
+#: home/models/base_pages.py:175
+msgid "Spletna stran"
+msgstr ""
+
+#: home/models/base_pages.py:176
+msgid "Dodatna informacija"
+msgstr ""
+
+#: home/models/base_pages.py:180 home/models/settings.py:103
+#: home/models/settings.py:108
+msgid "Dan"
+msgstr ""
+
+#: home/models/base_pages.py:181 home/models/settings.py:104
+msgid "Začetna ura"
+msgstr ""
+
+#: home/models/base_pages.py:182 home/models/settings.py:105
+msgid "Končna ura"
+msgstr ""
+
+#: home/models/base_pages.py:183 home/models/settings.py:106
+msgid "Dan in ura"
+msgstr ""
+
+#: home/models/base_pages.py:184
+msgid "Delovni čas"
+msgstr ""
+
+#: home/models/base_pages.py:189 home/models/blocks.py:191
+#: home/models/pages.py:146 news/models.py:79
+msgid "Podnapis k sliki"
+msgstr ""
+
+#: home/models/base_pages.py:191 home/models/blocks.py:192
+#: home/models/blocks.py:195 home/models/pages.py:148 news/models.py:81
+#: users/models.py:174
+msgid "Galerija"
+msgstr ""
+
+#: home/models/base_pages.py:193
+msgid "Arhiviraj"
+msgstr ""
+
+#: home/models/base_pages.py:194
+msgid "Deloval od"
+msgstr ""
+
+#: home/models/base_pages.py:195
+msgid "Deloval do"
+msgstr ""
+
+#: home/models/base_pages.py:210
+msgid "Kontaktni podatki"
+msgstr ""
+
+#: home/models/base_pages.py:226
+msgid "Arhivacija"
+msgstr ""
+
+#: home/models/base_pages.py:269
+msgid "Osnovna stran z besedilom"
+msgstr ""
+
+#: home/models/base_pages.py:270
+msgid "Osnovne strani z besedilom"
+msgstr ""
+
+#: home/models/blocks.py:23
+msgid "Pokaži povezavo do modula v sekundarnem meniju"
+msgstr ""
+
+#: home/models/blocks.py:33
+msgid "Barva"
+msgstr ""
+
+#: home/models/blocks.py:36 home/models/blocks.py:116 home/models/blocks.py:137
+#: home/models/blocks.py:154 home/models/blocks.py:178
+#: home/models/blocks.py:209 home/models/blocks.py:228
+#: home/models/blocks.py:327
+msgid "Povezava do strani"
+msgstr ""
+
+#: home/models/blocks.py:37 home/models/blocks.py:117 home/models/blocks.py:138
+#: home/models/blocks.py:155 home/models/blocks.py:179
+#: home/models/blocks.py:210 home/models/blocks.py:229
+#: home/models/blocks.py:328
+msgid "Zunanja povezava"
+msgstr ""
+
+#: home/models/blocks.py:38
+msgid "Povezava pod besedilom"
+msgstr ""
+
+#: home/models/blocks.py:45 home/models/blocks.py:110 home/models/blocks.py:131
+#: home/models/blocks.py:150 home/models/blocks.py:169
+#: home/models/blocks.py:188 home/models/blocks.py:203
+#: home/models/blocks.py:224 home/models/blocks.py:253
+#: home/models/blocks.py:269 home/models/blocks.py:282
+#: home/models/blocks.py:297 home/models/blocks.py:306
+#: home/models/blocks.py:323 home/models/blocks.py:350
+#: home/models/blocks.py:364
+msgid "Naslov sekcije"
+msgstr ""
+
+#: home/models/blocks.py:46
+msgid "Obvestilo"
+msgstr ""
+
+#: home/models/blocks.py:47
+msgid "Izpostavljen dogodek (če pustite prazno, se izbere naključni)"
+msgstr ""
+
+#: home/models/blocks.py:48
+msgid "Izpostavljena novica (če pustite prazno, se izbere naključna)"
+msgstr ""
+
+#: home/models/blocks.py:105
+msgid "Oglasna deska"
+msgstr ""
+
+#: home/models/blocks.py:113 news/models.py:107
+msgid "Novica"
+msgstr ""
+
+#: home/models/blocks.py:114 news/models.py:108 news/models.py:158
+#: news/models.py:159
+msgid "Novice"
+msgstr ""
+
+#: home/models/blocks.py:118 home/models/blocks.py:139
+#: home/models/blocks.py:156 home/models/blocks.py:180
+#: home/models/blocks.py:211 home/models/blocks.py:230
+#: home/models/blocks.py:329
+msgid "Povezava/gumb na dnu (opcijsko)"
+msgstr ""
+
+#: home/models/blocks.py:126
+msgid "Izpostavljene novice"
+msgstr ""
+
+#: home/models/blocks.py:142
+msgid "Izpostavljeni dogodki"
+msgstr ""
+
+#: home/models/blocks.py:151 home/models/blocks.py:170
+#: home/models/blocks.py:204 home/models/blocks.py:225
+#: home/models/blocks.py:324 home/models/blocks.py:351
+#: home/models/blocks.py:365
+msgid "Uvodno besedilo"
+msgstr ""
+
+#: home/models/blocks.py:152
+msgid "Izpostavljeni laboratoriji"
+msgstr ""
+
+#: home/models/blocks.py:164 home/models/pages.py:206 home/models/pages.py:356
+#: home/models/pages.py:357
+msgid "Laboratoriji"
+msgstr ""
+
+#: home/models/blocks.py:173
+msgid "URL"
+msgstr ""
+
+#: home/models/blocks.py:174 home/models/blocks.py:288
+msgid "Ime povezave"
+msgstr ""
+
+#: home/models/blocks.py:175 home/models/blocks.py:273
+#: home/models/blocks.py:287
+msgid "Povezava"
+msgstr ""
+
+#: home/models/blocks.py:176 home/models/blocks.py:183
+msgid "Seznam povezav"
+msgstr ""
+
+#: home/models/blocks.py:207
+msgid "Izpostavljeni studii"
+msgstr ""
+
+#: home/models/blocks.py:219 home/models/pages.py:69 home/models/pages.py:289
+#: home/models/pages.py:290
+msgid "Studii"
+msgstr ""
+
+#: home/models/blocks.py:226
+msgid "Prostor"
+msgstr ""
+
+#: home/models/blocks.py:226
+msgid "Izpostavljeni prostori"
+msgstr ""
+
+#: home/models/blocks.py:238
+msgid "Tržnica"
+msgstr ""
+
+#: home/models/blocks.py:244
+msgid "Izpostavljeno besedilo"
+msgstr ""
+
+#: home/models/blocks.py:245
+msgid "Besedilo pod sliko"
+msgstr ""
+
+#: home/models/blocks.py:254 home/models/blocks.py:270
+#: home/models/blocks.py:283 home/models/blocks.py:298
+msgid "Besedilo"
+msgstr ""
+
+#: home/models/blocks.py:256 home/models/blocks.py:286
+msgid "Opis pod sliko"
+msgstr ""
+
+#: home/models/blocks.py:261
+msgid "Pozicija slike"
+msgstr ""
+
+#: home/models/blocks.py:264
+msgid "Barvno besedilo (s sliko)"
+msgstr ""
+
+#: home/models/blocks.py:274
+msgid "Sličice"
+msgstr ""
+
+#: home/models/blocks.py:277
+msgid "Barvno besedilo z majhnimi slikami"
+msgstr ""
+
+#: home/models/blocks.py:289
+msgid "Kartice"
+msgstr ""
+
+#: home/models/blocks.py:292
+msgid "Barvno besedilo s karticami"
+msgstr ""
+
+#: home/models/blocks.py:301
+msgid "Barvno obogateno besedilo"
+msgstr ""
+
+#: home/models/blocks.py:309
+msgid "Delovno mesto"
+msgstr ""
+
+#: home/models/blocks.py:311 home/models/blocks.py:314
+msgid "Kontakti"
+msgstr ""
+
+#: home/models/blocks.py:325 home/models/blocks.py:337 home/models/pages.py:89
+#: home/models/pages.py:334 home/models/pages.py:335
+msgid "Rezidenti"
+msgstr ""
+
+#: home/models/blocks.py:342
+msgid "Slika za ozadje"
+msgstr ""
+
+#: home/models/blocks.py:345
+msgid "Novičnik"
+msgstr ""
+
+#: home/models/blocks.py:359
+msgid "Vrste članstev"
+msgstr ""
+
+#: home/models/blocks.py:374
+msgid "Vrste uporabnin"
+msgstr ""
+
+#: home/models/blocks.py:399
+msgid "Modul"
+msgstr ""
+
+#: home/models/module_pages.py:94
+msgid "Generična stran"
+msgstr ""
+
+#: home/models/module_pages.py:95
+msgid "Generične strani"
+msgstr ""
+
+#: home/models/pages.py:48 home/models/pages.py:141 news/models.py:69
+msgid "Predogledna slika"
+msgstr ""
+
+#: home/models/pages.py:68
+msgid "Studio"
+msgstr ""
+
+#: home/models/pages.py:88
+msgid "Rezident"
+msgstr ""
+
+#: home/models/pages.py:99
+msgid "Barvna shema kartice na seznamu"
+msgstr ""
+
+#: home/models/pages.py:119
+msgid "Trgovina"
+msgstr ""
+
+#: home/models/pages.py:120
+msgid "Trgovine"
+msgstr ""
+
+#: home/models/pages.py:152
+msgid "Vodja laboratorija"
+msgstr ""
+
+#: home/models/pages.py:156
+msgid "E-mail vodje laboratorija"
+msgstr ""
+
+#: home/models/pages.py:158
+msgid "Termini usposabljanj"
+msgstr ""
+
+#: home/models/pages.py:159 home/models/pages.py:160
+msgid "Spletna usposabljanja"
+msgstr ""
+
+#: home/models/pages.py:162
+msgid "Zunanji URL"
+msgstr ""
+
+#: home/models/pages.py:163
+msgid "Podstran"
+msgstr ""
+
+#: home/models/pages.py:164
+msgid "Gumb"
+msgstr ""
+
+#: home/models/pages.py:165
+msgid "Besedilo na gumbu"
+msgstr ""
+
+#: home/models/pages.py:205
+msgid "Laboratorij"
+msgstr ""
+
+#: home/models/pages.py:222
+msgid "Knjižnica"
+msgstr ""
+
+#: home/models/pages.py:223
+msgid "Knjižnice"
+msgstr ""
+
+#: home/models/pages.py:244
+msgid "Arhiv studiev"
+msgstr ""
+
+#: home/models/pages.py:245
+msgid "Arhivi studiev"
+msgstr ""
+
+#: home/models/pages.py:264
+msgid "Arhiv rezidentov"
+msgstr ""
+
+#: home/models/pages.py:265
+msgid "Arhivi rezidentov"
+msgstr ""
+
+#: home/models/pages.py:311 home/models/pages.py:312
+msgid "Market"
+msgstr ""
+
+#: home/models/settings.py:95
+msgid "Ulica in hišna številka"
+msgstr ""
+
+#: home/models/settings.py:96
+msgid "Poštna številka"
+msgstr ""
+
+#: home/models/settings.py:97
+msgid "Pošta"
+msgstr ""
+
+#: home/models/settings.py:98
+msgid "Država"
+msgstr ""
+
+#: home/models/settings.py:99
+msgid "E-pošta"
+msgstr ""
+
+#: home/models/settings.py:110
+msgid "Dan in opomba"
+msgstr ""
+
+#: home/models/settings.py:111
+msgid "Delovni čas organizacije"
+msgstr ""
+
+#: home/models/settings.py:137
+msgid "Vrteče besedilo"
+msgstr ""
+
+#: home/models/settings.py:158
+msgid "Povezave v nogi"
+msgstr ""
+
+#: home/models/settings.py:167
+msgid "Naslov"
+msgstr ""
+
+#: home/models/settings.py:173
+msgid "Logotipi"
+msgstr ""
+
+#: home/models/settings.py:184
+msgid "Naključne slike v nogi"
+msgstr ""
+
+#: home/models/tool.py:24
+msgid "Zahteva usposabljanje?"
+msgstr ""
+
+#: home/models/tool.py:25
+msgid "Povezava za več informacij"
+msgstr ""
+
+#: home/models/tool.py:26
+msgid "Prima location id"
+msgstr ""
+
+#: home/models/tool.py:27
+msgid "Prima group id"
+msgstr ""
+
+#: home/models/tool.py:32 home/models/tool.py:58
+msgid "Specifikacija"
+msgstr ""
+
+#: home/models/tool.py:53
+msgid "Orodje"
+msgstr ""
+
+#: home/models/tool.py:54
+msgid "Orodja"
+msgstr ""
+
+#: home/models/tool.py:59
+msgid "Vrednost"
+msgstr ""
+
+#: home/models/tool.py:71
+msgid "Specifikacija orodja"
+msgstr ""
+
+#: home/models/tool.py:72
+msgid "Specifikacije orodja"
+msgstr ""
+
+#: home/models/workshop.py:8
+msgid "Ime usposabljanja"
+msgstr ""
+
+#: home/models/workshop.py:18
+msgid "Usposabljanje za orodje"
+msgstr ""
+
+#: home/models/workshop.py:19
+msgid "Orodja - usposabljanja"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:21
+msgid "vsi dogodki"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:36
+msgid "vse novice"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:55
+msgid "vsi labi"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:85
+msgid "Rog Market"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:101
+msgid "Poglej, kdo vse je v naših studiih"
+msgstr ""
+
+#: home/templates/home/blocks/bulletin_board.html:117
+msgid "Poglej naše rezidence"
+msgstr ""
+
+#: home/templates/home/blocks/contacts_section.html:23
+#: home/templates/home/lab_page.html:29
+#: home/templates/home/object_profile_page.html:44
+msgid "e-pošta"
+msgstr ""
+
+#: home/templates/home/blocks/plans_section.html:24
+#: home/templates/registration/user_purchase_plan.html:43
+msgid "cena"
+msgstr ""
+
+#: home/templates/home/includes/cookie_notice.html:13
+msgid "Ali se strinjate z uporabo piškotkov?"
+msgstr ""
+
+#: home/templates/home/includes/cookie_notice.html:17
+#: home/templates/home/includes/mailchimp.html:42
+msgid "preberi več"
+msgstr ""
+
+#: home/templates/home/includes/cookie_notice.html:22
+msgid "da"
+msgstr ""
+
+#: home/templates/home/includes/cookie_notice.html:23
+msgid "ne"
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:7
+msgid ""
+"Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas "
+"bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, "
+"pomoč... Dostopne bodo samo informacije spodaj..."
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:86
+msgid "Izberi kategorije, ki te zanimajo"
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:101
+msgid "Dodaj slike svojih izdelkov"
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:105
+msgid ""
+"Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne datoteke "
+"je 5MB. Dovoljena formata sta .jpg in .png."
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:109
+msgid "naloži"
+msgstr ""
+
+#: home/templates/home/includes/edit_profile_form.html:120
+msgid "odstrani"
+msgstr ""
+
+#: home/templates/home/includes/header.html:21
+#: home/templates/home/includes/header.html:112
+msgid "Moj profil"
+msgstr ""
+
+#: home/templates/home/includes/mailchimp.html:17
+msgid "Prijavi se na naš novičnik"
+msgstr ""
+
+#: home/templates/home/includes/mailchimp.html:39
+msgid "Strinjam se z uporabo moje e-pošte"
+msgstr ""
+
+#: home/templates/home/includes/mailchimp.html:90
+msgid "To polje je obvezno."
+msgstr ""
+
+#: home/templates/home/includes/see_more.html:7
+msgid "Poglej še"
+msgstr ""
+
+#: home/templates/home/includes/studio_card.html:16
+msgid "obišči studio"
+msgstr ""
+
+#: home/templates/home/lab_page.html:23
+msgid "Vodja laba"
+msgstr ""
+
+#: home/templates/home/lab_page.html:36
+#: home/templates/home/object_profile_page.html:51
+msgid "kopirano!"
+msgstr ""
+
+#: home/templates/home/lab_page.html:41
+msgid "termini usposabljanj"
+msgstr ""
+
+#: home/templates/home/lab_page.html:49
+msgid "spletna usposabljanja"
+msgstr ""
+
+#: home/templates/home/lab_page.html:89
+msgid "več informacij"
+msgstr ""
+
+#: home/templates/home/lab_page.html:100 home/templates/home/lab_page.html:105
+#: home/templates/home/lab_page.html:119 home/templates/home/lab_page.html:124
+msgid "rezerviraj"
+msgstr ""
+
+#: home/templates/home/lab_page.html:102
+msgid "Usposabljanje je opravljeno!"
+msgstr ""
+
+#: home/templates/home/lab_page.html:107
+msgid "Za rezervacijo potrebuješ usposabljanje."
+msgstr ""
+
+#: home/templates/home/lab_page.html:111
+msgid "Prijava na usposabljanje"
+msgstr ""
+
+#: home/templates/home/lab_page.html:127
+msgid "Za rezervacijo orodja se je potrebno"
+msgstr ""
+
+#: home/templates/home/lab_page.html:129
+msgid "prijaviti"
+msgstr ""
+
+#: home/templates/home/object_profile_page.html:65
+msgid "spletna stran"
+msgstr ""
+
+#: home/templates/registration/edit_profile.html:4
+msgid "Uredi profil"
+msgstr ""
+
+#: home/templates/registration/edit_profile.html:18
+msgid "Uredi profil:"
+msgstr ""
+
+#: home/templates/registration/edit_profile.html:24
+msgid "Izpolni podatke za osebni profil:"
+msgstr ""
+
+#: home/templates/registration/logged_out.html:4
+msgid "Odjava"
+msgstr ""
+
+#: home/templates/registration/logged_out.html:18
+msgid "Se vidimo!"
+msgstr ""
+
+#: home/templates/registration/logged_out.html:20
+msgid "Ponovna prijava"
+msgstr ""
+
+#: home/templates/registration/login.html:4
+msgid "Prijava"
+msgstr ""
+
+#: home/templates/registration/login.html:16
+#: home/templates/registration/password_reset_complete.html:18
+msgid "Prijavi se"
+msgstr ""
+
+#: home/templates/registration/login.html:19
+msgid "Uporabniško ime in geslo se ne ujemata."
+msgstr ""
+
+#: home/templates/registration/login.html:37
+msgid "Pozabljeno geslo?"
+msgstr ""
+
+#: home/templates/registration/login.html:38
+msgid "Registriraj se"
+msgstr ""
+
+#: home/templates/registration/login.html:42
+#: home/templates/registration/password_reset_form.html:29
+#: home/templates/registration/registration.html:44
+#: home/templates/registration/registration_2_membership.html:38
+#: home/templates/registration/registration_3_information.html:207
+#: home/templates/registration/user_purchase_membership.html:56
+#: home/templates/registration/user_purchase_plan.html:65
+#: payments/templates/registration_payment_preview.html:84
+msgid "naprej"
+msgstr ""
+
+#: home/templates/registration/password_reset_complete.html:4
+#: home/templates/registration/password_reset_confirm.html:5
+#: home/templates/registration/password_reset_done.html:4
+#: home/templates/registration/password_reset_form.html:4
+msgid "Ponastavitev gesla"
+msgstr ""
+
+#: home/templates/registration/password_reset_complete.html:16
+msgid "Vaše geslo je nastavljeno. Zdaj se lahko prijavite."
+msgstr ""
+
+#: home/templates/registration/password_reset_confirm.html:26
+msgid "Nastavite novo geslo"
+msgstr ""
+
+#: home/templates/registration/password_reset_confirm.html:28
+#: home/templates/registration/password_reset_form.html:18
+msgid ""
+"Spodaj vpišite svoj e-poštni naslov in poslali vam bomo navodila, kako "
+"nastavite novo geslo."
+msgstr ""
+
+#: home/templates/registration/password_reset_confirm.html:36
+msgid "Novo geslo:"
+msgstr ""
+
+#: home/templates/registration/password_reset_confirm.html:43
+msgid "Potrdi geslo:"
+msgstr ""
+
+#: home/templates/registration/password_reset_confirm.html:50
+msgid "Spremeni geslo"
+msgstr ""
+
+#: home/templates/registration/password_reset_done.html:16
+msgid "Na elektronski naslov smo vam poslali navodila za ponastavitev geslo"
+msgstr ""
+
+#: home/templates/registration/password_reset_form.html:16
+msgid "Ste pozabili geslo?"
+msgstr ""
+
+#: home/templates/registration/password_reset_form.html:23
+msgid "E-pošta:"
+msgstr ""
+
+#: home/templates/registration/profile.html:18
+#: payments/templates/payment_history.html:17
+msgid "Živjo,"
+msgstr ""
+
+#: home/templates/registration/profile.html:26
+msgid "tip članstva"
+msgstr ""
+
+#: home/templates/registration/profile.html:30
+msgid "Gost"
+msgstr ""
+
+#: home/templates/registration/profile.html:33
+msgid "veljavnost članarine do:"
+msgstr ""
+
+#: home/templates/registration/profile.html:42
+msgid "uredi članstvo"
+msgstr ""
+
+#: home/templates/registration/profile.html:50
+msgid "zakupljen paket uporabnine"
+msgstr ""
+
+#: home/templates/registration/profile.html:57
+msgid "veljavnost paketa do:"
+msgstr ""
+
+#: home/templates/registration/profile.html:66
+msgid "izberi paket"
+msgstr ""
+
+#: home/templates/registration/profile.html:76
+msgid "pretekla poraba"
+msgstr ""
+
+#: home/templates/registration/profile.html:82
+msgid "uredi profil"
+msgstr ""
+
+#: home/templates/registration/profile.html:88
+msgid "poglej svoj profil"
+msgstr ""
+
+#: home/templates/registration/profile.html:94
+msgid "odjava"
+msgstr ""
+
+#: home/templates/registration/profile.html:101
+msgid "drugi člani"
+msgstr ""
+
+#: home/templates/registration/profile.html:110
+#: home/templates/registration/profile.html:117
+msgid "tvoji prihajajoči dogodki"
+msgstr ""
+
+#: home/templates/registration/profile.html:111
+msgid "PRIHAJAJOČI DOGODKI"
+msgstr ""
+
+#: home/templates/registration/profile.html:127
+msgid "nabor opravljenih usposabljanj"
+msgstr ""
+
+#: home/templates/registration/profile.html:130
+msgid "Usposabljanje"
+msgstr ""
+
+#: home/templates/registration/registration.html:4
+#: home/templates/registration/registration_2_membership.html:4
+#: home/templates/registration/registration_3_information.html:4
+#: home/templates/registration/registration_4_profile.html:4
+#: home/templates/registration/registration_wrapper.html:4
+msgid "Registracija"
+msgstr ""
+
+#: home/templates/registration/registration.html:9
+msgid "Vnesi elektronski naslov in izberi geslo:"
+msgstr ""
+
+#: home/templates/registration/registration_2_membership.html:9
+msgid "Izberi tip članstva:"
+msgstr ""
+
+#: home/templates/registration/registration_3_information.html:58
+msgid "Izpolni podatke:"
+msgstr ""
+
+#: home/templates/registration/registration_4_profile.html:9
+msgid "Izpolni podatke za osebni profil"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:23
+#: payments/templates/payment_success.html:21
+#: payments/templates/registration_payment_preview.html:23
+msgid "začetek registracije"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:24
+#: payments/templates/payment_success.html:22
+#: payments/templates/registration_payment_preview.html:24
+msgid "izbira članstva"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:25
+#: payments/templates/payment_success.html:23
+#: payments/templates/registration_payment_preview.html:25
+msgid "osnovni podatki"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:26
+#: payments/templates/payment_success.html:24
+#: payments/templates/registration_payment_preview.html:26
+msgid "osebni profil"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:28
+#: home/templates/registration/user_purchase_membership.html:24
+#: home/templates/registration/user_purchase_plan.html:24
+#: payments/templates/payment_success.html:25
+#: payments/templates/payment_success.html:30
+#: payments/templates/payment_success.html:35
+#: payments/templates/registration_payment_preview.html:27
+#: payments/templates/registration_payment_preview.html:32
+#: payments/templates/registration_payment_preview.html:37
+msgid "plačilo"
+msgstr ""
+
+#: home/templates/registration/search_profile.html:6
+msgid "Poišči druge uporabnike"
+msgstr ""
+
+#: home/templates/registration/search_profile.html:15
+msgid "Poišči druge uporabnike:"
+msgstr ""
+
+#: home/templates/registration/search_profile.html:21
+msgid "Izberi kategorije, ki te zanimajo:"
+msgstr ""
+
+#: home/templates/registration/search_profile.html:40
+msgid "išči"
+msgstr ""
+
+#: home/templates/registration/search_profile.html:45
+msgid "Uporabniki s temi zanimanji:"
+msgstr ""
+
+#: home/templates/registration/user_profile.html:34
+#: home/templates/registration/user_profile.html:37
+#: home/templates/registration/user_profile.html:40
+msgid "povezava"
+msgstr ""
+
+#: home/templates/registration/user_profile.html:46
+msgid "Zanimanja:"
+msgstr ""
+
+#: home/templates/registration/user_purchase_membership.html:4
+#: home/templates/registration/user_purchase_plan.html:4
+msgid "Nakup uporabnine"
+msgstr ""
+
+#: home/templates/registration/user_purchase_membership.html:23
+#: payments/templates/payment_success.html:34
+#: payments/templates/registration_payment_preview.html:36
+msgid "izbira članarine"
+msgstr ""
+
+#: home/templates/registration/user_purchase_membership.html:27
+msgid "Izberi članarino"
+msgstr ""
+
+#: home/templates/registration/user_purchase_membership.html:29
+msgid ""
+"Z letnim članstvom lahko v naslednjem koraku izbereš svoj uporabniški paket "
+"ter opravljaš usposabljanja, ki so pogoj za samostojno uporabo naših labov. "
+"Če ne želiš biti član ali članica, se lahko prijaviš kot gost."
+msgstr ""
+
+#: home/templates/registration/user_purchase_plan.html:23
+#: payments/templates/payment_success.html:29
+#: payments/templates/registration_payment_preview.html:31
+msgid "izbira uporabnine"
+msgstr ""
+
+#: home/templates/registration/user_purchase_plan.html:27
+msgid "Izberi uporabniški paket"
+msgstr ""
+
+#: home/templates/registration/user_purchase_plan.html:29
+msgid ""
+"Člani in članice lahko proizvodne laboratorije uporabljajo ob zakupu enega "
+"od treh spodaj navedenih uporabniških paketov, ki veljajo določeno časovno "
+"obdobje. Nakup paketa omogoča dostop do usposabljanj za stroje in delovne "
+"postaje oziroma možnost samostojnega dela v posamičnih labih."
+msgstr ""
+
+#: home/views.py:201
+msgid "Center Rog – vaša registracija je uspela"
+msgstr ""
+
+#: home/views.py:206
+msgid "Uporabnika ni bilo mogoče ustvariti."
+msgstr ""
+
+#: home/views.py:344 home/views.py:402
+msgid "Uporabniško ime že obstaja."
+msgstr ""
+
+#: news/models.py:62
+msgid "Kategorija novic"
+msgstr ""
+
+#: news/models.py:63
+msgid "Novice - kategorije"
+msgstr ""
+
+#: news/models.py:67
+msgid "Kratek opis"
+msgstr ""
+
+#: news/models.py:73
+msgid "Naslovna slika"
+msgstr ""
+
+#: news/models.py:75
+msgid "Oznaka"
+msgstr ""
+
+#: payments/forms.py:8 payments/templates/registration_payment_preview.html:68
+msgid "Vnesi kodo za popust"
+msgstr ""
+
+#: payments/models.py:56
+msgid "Ime paketa"
+msgstr ""
+
+#: payments/models.py:56 payments/models.py:174
+msgid "Npr. letna uporabnina"
+msgstr ""
+
+#: payments/models.py:60
+msgid "Discounted price"
+msgstr ""
+
+#: payments/models.py:61
+msgid "Price for younger than 26 years old and older than 65"
+msgstr ""
+
+#: payments/models.py:64
+msgid "Cena"
+msgstr ""
+
+#: payments/models.py:66
+msgid "Postavka 1"
+msgstr ""
+
+#: payments/models.py:67
+msgid "Postavka 2"
+msgstr ""
+
+#: payments/models.py:68
+msgid "Postavka 3"
+msgstr ""
+
+#: payments/models.py:69
+msgid "Postavka 4"
+msgstr ""
+
+#: payments/models.py:70
+msgid "Postavka 5"
+msgstr ""
+
+#: payments/models.py:72
+msgid "When the plan starts"
+msgstr ""
+
+#: payments/models.py:77 users/models.py:76
+msgid "When the plan expires"
+msgstr ""
+
+#: payments/models.py:82
+msgid "Koliko dni traja paket?"
+msgstr ""
+
+#: payments/models.py:86
+msgid "Koliko žetonov dobi uporabnik?"
+msgstr ""
+
+#: payments/models.py:91
+msgid "Tedenska omejitev porabe žetonov"
+msgstr ""
+
+#: payments/models.py:97
+msgid "Mesečna omejitev porabe žetonov"
+msgstr ""
+
+#: payments/models.py:103
+msgid "Letna omejitev porabe žetonov"
+msgstr ""
+
+#: payments/models.py:109
+msgid "Koliko delavnic dobi uporabnik v paketu?"
+msgstr ""
+
+#: payments/models.py:118
+msgid "Unique ident id for Pantheon without dashes and spaces"
+msgstr ""
+
+#: payments/models.py:144
+msgid "Opis paketa"
+msgstr ""
+
+#: payments/models.py:157 users/models.py:29
+msgid "Plačilni paket"
+msgstr ""
+
+#: payments/models.py:158
+msgid "Uporabniki - plačilni paketi"
+msgstr ""
+
+#: payments/models.py:174
+msgid "Ime paketa na dan nakupa"
+msgstr ""
+
+#: payments/models.py:196
+msgid "Pending"
+msgstr ""
+
+#: payments/models.py:197
+msgid "Success"
+msgstr ""
+
+#: payments/models.py:198
+msgid "Error"
+msgstr ""
+
+#: payments/models.py:216
+msgid "Done at"
+msgstr ""
+
+#: payments/models.py:239
+msgid ""
+"Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v "
+"Pantheon"
+msgstr ""
+
+#: payments/models.py:258
+msgid "Naročilo"
+msgstr ""
+
+#: payments/models.py:259
+msgid "Naročila"
+msgstr ""
+
+#: payments/models.py:279
+msgid "Lab"
+msgstr ""
+
+#: payments/models.py:280
+msgid "Workshop"
+msgstr ""
+
+#: payments/models.py:310
+msgid "When does the code expire?"
+msgstr ""
+
+#: payments/templates/payment.html:4 payments/templates/payment_failed.html:4
+#: payments/templates/payment_history.html:4
+msgid "Plačilo"
+msgstr ""
+
+#: payments/templates/payment.html:60
+msgid "Poteka preusmeritev na stran za plačilo..."
+msgstr ""
+
+#: payments/templates/payment_failed.html:16
+msgid "Napaka pri plačilu."
+msgstr ""
+
+#: payments/templates/payment_history.html:27
+msgid "prenesi PDF računa"
+msgstr ""
+
+#: payments/templates/payment_success.html:4
+msgid "Plačilo uspešno"
+msgstr ""
+
+#: payments/templates/payment_success.html:39
+msgid ""
+"Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam "
+"poslali potrditveno sporočilo."
+msgstr ""
+
+#: payments/templates/payment_success.html:41
+msgid "Plačilo je bilo uspešno!"
+msgstr ""
+
+#: payments/templates/payment_success.html:44
+msgid "na profil"
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:4
+msgid "Povzetek plačila"
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:40
+msgid "Za plačilo"
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:59
+msgid "skupaj"
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:73
+msgid "pošlji"
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:76
+msgid "Vnešena koda ni veljavna."
+msgstr ""
+
+#: payments/templates/registration_payment_preview.html:85
+msgid ""
+"*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart"
+msgstr ""
+
+#: users/forms.py:11 users/forms.py:21
 msgid "Prima ID"
 msgstr ""
+
+#: users/forms.py:12 users/forms.py:22
+msgid "Opravljena usposabljanja"
+msgstr ""
+
+#: users/forms.py:13 users/forms.py:23
+msgid "Kategorije zanimanj"
+msgstr ""
+
+#: users/models.py:28
+msgid "Ime članstva"
+msgstr ""
+
+#: users/models.py:43
+msgid "Bonitete"
+msgstr ""
+
+#: users/models.py:47
+msgid "Tip članstva"
+msgstr ""
+
+#: users/models.py:48
+msgid "Uporabniki - tipi članstev"
+msgstr ""
+
+#: users/models.py:52
+msgid "Boniteta"
+msgstr ""
+
+#: users/models.py:63
+msgid "Boniteta članstva"
+msgstr ""
+
+#: users/models.py:64
+msgid "Bonitete članstva"
+msgstr ""
+
+#: users/models.py:101
+msgid "Kategorija zanimanj uporabnikov"
+msgstr ""
+
+#: users/models.py:102
+msgid "Uporabniki - kategorije zanimanj"
+msgstr ""
+
+#~ msgid "shrani"
+#~ msgstr "shrani"
