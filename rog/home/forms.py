@@ -188,7 +188,7 @@ class RegistrationInformationForm(forms.ModelForm):
         label_suffix="",
         required=False
     )
-    legal_person_tax_number = forms.CharField(
+    legal_person_tax_number = forms.IntegerField(
         widget=forms.TextInput,
         label=_("Davčna številka"),
         label_suffix="",
