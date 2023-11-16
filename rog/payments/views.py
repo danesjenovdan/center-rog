@@ -185,7 +185,7 @@ class PaymentDataXML(views.APIView):
         year = payment.created_at.year
 
         reference = f'{year}-369-{payment.id}'
-        sklic = f'SIO0{year}369{payment.id}'
+        sklic = f'SI00{year}369{payment.id}'
         opis_placila = f'Plačilo računa za {user_name}'
 
         order_body = f'''
