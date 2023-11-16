@@ -167,11 +167,11 @@ class PaymentDataXML(views.APIView):
         sifra_artikla = 1
         kolicina = 1
         # TODO fill in user data
-        user_tax_id = ''
-        user_name = ''
-        user_address = ''
+        user_tax_id = user.legal_person_tax_number
+        user_name = f'{payment.user.first_name} {payment.user.last_name}'
+        user_address = user.address_1
         user_city = ''
-        user_post = ''
+        user_post = user.get_post()
         user_email = user.email
         items = ''
         for pp in payment.payment_plans.all():
@@ -183,9 +183,14 @@ class PaymentDataXML(views.APIView):
             </postavka>
             '''
 
+        year = payment.created_at.year
+
+        reference = f'{year}-369-{payment.id}'
+        opis = f'Plačilo računa za {user_name}'
+
         order_body = f'''
             <?xml version="1.0" encoding="UTF-8"?>
-            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
+            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" opisPlacila="{opis}" referenca="{reference}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
             {items}
                 <kupec sifraKupca="{user.id}">
