@@ -106,6 +106,8 @@ class PaymentPreview(views.APIView):
                         payment_plan.save()
                         plan = payment_plan.plan
                         plan_price = plan.discounted_price if user.is_eligible_to_discount() else plan.price
+                        payment_plan.price = plan_price
+                        payment_plan.save()
                         payment.amount -= plan_price * Decimal(valid_promo_code.percent_discount / 100)
                         payment.save()
                         promo_code_error = False
