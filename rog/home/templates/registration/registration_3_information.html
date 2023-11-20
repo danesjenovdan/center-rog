@@ -10,13 +10,16 @@
 <script>
     const legal_person_checkbox = document.getElementById("id_legal_person_receipt");
     const legal_information_wrapper = document.getElementById("legal-information-wrapper");
+    const legal_person_tax_number = document.getElementById("id_legal_person_tax_number");
 
     if (legal_person_checkbox && legal_information_wrapper) {
         // make sure it has corrent class on load
         if (legal_person_checkbox.checked) {
             legal_information_wrapper.classList.remove("hide");
+            legal_person_tax_number.required = true;
         } else {
             legal_information_wrapper.classList.add("hide");
+            legal_person_tax_number.required = false;
         }
 
         // add listener
