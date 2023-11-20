@@ -3,6 +3,7 @@ from django.forms import widgets
 from django.utils.translation import gettext_lazy as _
 from django.db import ProgrammingError
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from users.models import User, MembershipType, Membership, UserInterest
 from payments.models import Plan
@@ -204,6 +205,14 @@ class RegistrationInformationForm(forms.ModelForm):
         widget=forms.HiddenInput(),
         required = False
     )
+
+    def clean_legal_person_tax_number(self):
+        legal_person_receipt = self.cleaned_data["legal_person_receipt"]
+        legal_person_tax_number = self.cleaned_data["legal_person_tax_number"]
+        if legal_person_receipt and not legal_person_tax_number:
+            raise ValidationError(_("Pravna oseba mora vnesti davčno številko!"))
+
+        return legal_person_tax_number
 
     def __init__(self, *args, **kwargs):
         self.membership = kwargs.pop("membership", None)
