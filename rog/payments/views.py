@@ -175,7 +175,7 @@ class PaymentDataXML(views.APIView):
 
         payment = get_object_or_404(Payment, id=payment_id)
 
-        if payment.user.uuid != urlpars[1]:
+        if str(payment.user.uuid) != urlpars[1]:
             print('uuid does not match')
             return Response({'status': 'UUID does not match'}, status=400)
 
@@ -241,7 +241,7 @@ class PaymentSuccessXML(views.APIView):
 
         payment = get_object_or_404(Payment, id=payment_id)
 
-        if payment.user.uuid != urlpars[1]:
+        if str(payment.user.uuid) != urlpars[1]:
             return Response({'status': 'UUID does not match'}, status=400)
 
         if payment.successed_at:
