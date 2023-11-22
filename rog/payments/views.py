@@ -151,10 +151,12 @@ class Pay(views.APIView):
         purchase_type = data.get('purchase_type', 'error')
         payment = get_object_or_404(Payment, id=payment_id)
 
+        uuid = payment.user.uuid
+
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type}'
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type},{uuid}'
 
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
@@ -162,11 +164,21 @@ class Pay(views.APIView):
 
 class PaymentDataXML(views.APIView):
     def get(self, request):
+        print(request.META)
         payment_id = request.GET.get('id', 0)
+        urlpar = request.GET.get('urlpar', '')
+        urlpars = urlpar.split(',')
+
+        if len(urlpars) < 2:
+            print(urlpar)
+            return Response({'status': 'Not enough urlpar values'}, status=400)
+
         payment = get_object_or_404(Payment, id=payment_id)
+
+        if payment.user.uuid != urlpars[1]:
+            return Response({'status': 'UUID does not match'}, status=400)
+
         user = payment.user
-        sifra_artikla = 1
-        kolicina = 1
         # TODO fill in user data
         user_tax_id = user.legal_person_tax_number
         user_name = f'{payment.user.first_name} {payment.user.last_name}'
@@ -219,7 +231,17 @@ class PaymentSuccessXML(views.APIView):
         print(data)
 
         payment_id = request.GET.get('id', 0)
+        urlpar = request.GET.get('urlpar', '')
+        urlpars = urlpar.split(',')
+
+        if len(urlpars) < 2:
+            print(urlpar)
+            return Response({'status': 'Not enough urlpar values'}, status=400)
+
         payment = get_object_or_404(Payment, id=payment_id)
+
+        if payment.user.uuid != urlpars[1]:
+            return Response({'status': 'UUID does not match'}, status=400)
 
         if payment.successed_at:
             return Response({'status': 'Payment is already processed'})
