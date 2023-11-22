@@ -152,11 +152,8 @@ class Pay(views.APIView):
         payment = get_object_or_404(Payment, id=payment_id)
 
         uuid = payment.user.uuid
-
-        ids = settings.PAYMENT_IDS
-        payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar=args={purchase_type},{uuid}'
+        redirect_url = f'{settings.PAYMENT_BASE_URL}vstop/index?ids={settings.PAYMENT_IDS}&id={id}&urlpar=args={purchase_type},{uuid}'
 
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
@@ -240,6 +237,13 @@ class PaymentSuccessXML(views.APIView):
             return Response({'status': 'Not enough urlpar values'}, status=400)
 
         payment = get_object_or_404(Payment, id=payment_id)
+
+        check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.id}',
+        check_response = requests.get(check_url)
+
+        print('Success')
+        print(check_response.content)
+        print(check_response.status_code)
 
         if str(payment.user.uuid) != urlpars[1]:
             return Response({'status': 'UUID does not match'}, status=400)
