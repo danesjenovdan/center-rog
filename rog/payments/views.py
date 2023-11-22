@@ -170,12 +170,13 @@ class PaymentDataXML(views.APIView):
         urlpars = urlpar.split(',')
 
         if len(urlpars) < 2:
-            print(urlpar)
+            print(urlpars)
             return Response({'status': 'Not enough urlpar values'}, status=400)
 
         payment = get_object_or_404(Payment, id=payment_id)
 
         if payment.user.uuid != urlpars[1]:
+            print('uuid does not match')
             return Response({'status': 'UUID does not match'}, status=400)
 
         user = payment.user
@@ -235,7 +236,7 @@ class PaymentSuccessXML(views.APIView):
         urlpars = urlpar.split(',')
 
         if len(urlpars) < 2:
-            print(urlpar)
+            print(urlpars)
             return Response({'status': 'Not enough urlpar values'}, status=400)
 
         payment = get_object_or_404(Payment, id=payment_id)
