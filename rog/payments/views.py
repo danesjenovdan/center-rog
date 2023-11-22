@@ -156,7 +156,7 @@ class Pay(views.APIView):
         ids = settings.PAYMENT_IDS
         payment_url = settings.PAYMENT_BASE_URL
         id = payment.id
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type},{uuid}'
+        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar=args={purchase_type},{uuid}'
 
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
@@ -166,7 +166,7 @@ class PaymentDataXML(views.APIView):
     def get(self, request):
         print(request.META)
         payment_id = request.GET.get('id', 0)
-        urlpar = request.GET.get('urlpar', '')
+        urlpar = request.GET.get('args', '')
         urlpars = urlpar.split(',')
 
         if len(urlpars) < 2:
@@ -231,7 +231,7 @@ class PaymentSuccessXML(views.APIView):
         print(data)
 
         payment_id = request.GET.get('id', 0)
-        urlpar = request.GET.get('urlpar', '')
+        urlpar = request.GET.get('args', '')
         urlpars = urlpar.split(',')
 
         if len(urlpars) < 2:
