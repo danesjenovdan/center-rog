@@ -21,6 +21,7 @@ from .pantheon import create_move
 from home.email_utils import send_email
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, finish_payment
+import requests
 
 # Create your views here.
 
