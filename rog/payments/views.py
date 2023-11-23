@@ -21,6 +21,7 @@ from .pantheon import create_move
 from home.email_utils import send_email
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, finish_payment
+import requests
 
 # Create your views here.
 
@@ -151,10 +152,9 @@ class Pay(views.APIView):
         purchase_type = data.get('purchase_type', 'error')
         payment = get_object_or_404(Payment, id=payment_id)
 
-        ids = settings.PAYMENT_IDS
-        payment_url = settings.PAYMENT_BASE_URL
+        uuid = payment.user.uuid
         id = payment.id
-        redirect_url = f'{payment_url}?ids={ids}&id={id}&urlpar={purchase_type}'
+        redirect_url = f'{settings.PAYMENT_BASE_URL}vstop/index?ids={settings.PAYMENT_IDS}&id={id}&urlpar=args={purchase_type},{uuid}'
 
         response_data = {'redirect_url': redirect_url}
         return Response(response_data)
@@ -162,11 +162,22 @@ class Pay(views.APIView):
 
 class PaymentDataXML(views.APIView):
     def get(self, request):
+        print(request.META)
         payment_id = request.GET.get('id', 0)
+        urlpar = request.GET.get('args', '')
+        urlpars = urlpar.split(',')
+
+        if len(urlpars) < 2:
+            print(urlpars)
+            return Response({'status': 'Not enough urlpar values'}, status=400)
+
         payment = get_object_or_404(Payment, id=payment_id)
+
+        if str(payment.user.uuid) != urlpars[1]:
+            print('uuid does not match')
+            return Response({'status': 'UUID does not match'}, status=400)
+
         user = payment.user
-        sifra_artikla = 1
-        kolicina = 1
         # TODO fill in user data
         user_tax_id = user.legal_person_tax_number
         user_name = f'{payment.user.first_name} {payment.user.last_name}'
@@ -219,7 +230,24 @@ class PaymentSuccessXML(views.APIView):
         print(data)
 
         payment_id = request.GET.get('id', 0)
+        urlpar = request.GET.get('args', '')
+        urlpars = urlpar.split(',')
+
+        if len(urlpars) < 2:
+            print(urlpars)
+            return Response({'status': 'Not enough urlpar values'}, status=400)
+
         payment = get_object_or_404(Payment, id=payment_id)
+
+        # check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.id}',
+        # check_response = requests.get(check_url)
+
+        # print('Success')
+        # print(check_response.content)
+        # print(check_response.status_code)
+
+        if str(payment.user.uuid) != urlpars[1]:
+            return Response({'status': 'UUID does not match'}, status=400)
 
         if payment.successed_at:
             return Response({'status': 'Payment is already processed'})
