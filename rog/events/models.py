@@ -18,9 +18,12 @@ import random
 def add_see_more_fields(context):
     from home.models import LabPage, StudioPage
     from news.models import NewsPage
+
     # random event
     today = date.today()
-    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
+    events = list(
+        EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")
+    )[:5]
     context["event"] = random.choice(events) if events else None
     # random news
     news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
@@ -36,7 +39,9 @@ def add_see_more_fields(context):
 
 
 class EventCategory(models.Model):
-    name = models.TextField(verbose_name=_("Ime kategorije"),)
+    name = models.TextField(
+        verbose_name=_("Ime kategorije"),
+    )
     slug = models.SlugField()
     color_scheme = models.CharField(
         verbose_name=_("Barvna shema"),
@@ -64,20 +69,49 @@ class EventCategory(models.Model):
 
 class EventPage(BasePage):
     hero_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Slika dogodka"))
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Slika dogodka"),
+    )
     category = models.ForeignKey(
-        EventCategory, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
+        EventCategory,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Kategorija"),
+    )
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
-    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka na kartici"))
+    tag = models.CharField(
+        max_length=16, blank=True, null=True, verbose_name=_("Oznaka na kartici")
+    )
     start_time = models.TimeField(verbose_name=_("Ura začetka"))
     end_time = models.TimeField(verbose_name=_("Ura konca"))
     start_day = models.DateField(verbose_name=_("Datum začetka"))
-    end_day = models.DateField(blank=True, null=True, verbose_name=_("Datum konca (če gre za večdneven dogodek)"))
-    location = models.TextField(blank=True, default="Center Rog", verbose_name=_("Lokacija"))
-    apply_url = models.URLField(blank=True, verbose_name=_("Povezava za prijavo (če je prazno, se gumb skrije)"))
+    end_day = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Datum konca (če gre za večdneven dogodek)"),
+    )
+    location = models.TextField(
+        blank=True, default="Center Rog", verbose_name=_("Lokacija")
+    )
+    apply_url = models.URLField(
+        blank=True, verbose_name=_("Povezava za prijavo (če je prazno, se gumb skrije)")
+    )
     notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
-    event_is_workshop = models.ForeignKey(Workshop, null=True, blank=True, on_delete=models.SET_NULL, verbose_name=_("Dogodek je usposabljanje"))
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    event_is_workshop = models.ForeignKey(
+        Workshop,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Dogodek je usposabljanje"),
+    )
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -92,12 +126,10 @@ class EventPage(BasePage):
         FieldPanel("apply_url"),
         FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
-        FieldPanel("show_see_more_section")
+        FieldPanel("show_see_more_section"),
     ]
 
-    parent_page_types = [
-        "events.EventListPage"
-    ]
+    parent_page_types = ["events.EventListPage"]
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -112,11 +144,11 @@ class EventPage(BasePage):
 
 
 class EventListArchivePage(BasePage):
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
-    content_panels = Page.content_panels + [
-        FieldPanel("show_see_more_section")
-    ]
+    content_panels = Page.content_panels + [FieldPanel("show_see_more_section")]
 
     subpage_types = []
 
@@ -125,7 +157,9 @@ class EventListArchivePage(BasePage):
 
         today = date.today()
 
-        context["list"] = EventPage.objects.live().filter(start_day__lt=today).order_by("-start_day")
+        context["list"] = (
+            EventPage.objects.live().filter(start_day__lt=today).order_by("-start_day")
+        )
 
         # see more
         context = add_see_more_fields(context)
@@ -138,11 +172,11 @@ class EventListArchivePage(BasePage):
 
 
 class EventListPage(BasePage):
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
-    content_panels = Page.content_panels + [
-        FieldPanel("show_see_more_section")
-    ]
+    content_panels = Page.content_panels + [FieldPanel("show_see_more_section")]
 
     subpage_types = [
         "events.EventPage",
@@ -157,12 +191,20 @@ class EventListPage(BasePage):
 
         today = date.today()
 
-        all_event_page_objects = EventPage.objects.live().filter(start_day__gte=today).order_by("start_day", "start_time")
+        all_event_page_objects = (
+            EventPage.objects.live()
+            .filter(start_day__gte=today)
+            .order_by("start_day", "start_time")
+        )
 
         # filtering
-        chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
+        chosen_category = categories.filter(
+            slug=request.GET.get("category", None)
+        ).first()
         if chosen_category:
-            all_event_page_objects = all_event_page_objects.filter(category=chosen_category)
+            all_event_page_objects = all_event_page_objects.filter(
+                category=chosen_category
+            )
 
         # arhiv
         context["archive_page"] = EventListArchivePage.objects.live().first()
@@ -188,6 +230,66 @@ class EventListPage(BasePage):
     class Meta:
         verbose_name = _("Program")
         verbose_name_plural = _("Programi")
+
+
+# prijavnica (povezava med uporabnikom in dogodkom)
+class EventRegistration(models.Model):
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="event_registrations",
+    )
+    event = models.ForeignKey(
+        EventPage,
+        on_delete=models.CASCADE,
+        related_name="event_registrations",
+    )
+    name = models.TextField(verbose_name=_("Ime"), blank=True)
+    surname = models.TextField(verbose_name=_("Priimek"), blank=True)
+    phone = models.TextField(verbose_name=_("Telefonska številka"), blank=True)
+    disabilities = models.TextField(verbose_name=_("Oviranosti (naštej)"), blank=True)
+    allergies = models.TextField(verbose_name=_("Alergije (naštej)"), blank=True)
+    agreement_responsibility = models.BooleanField(
+        verbose_name=_("Strinjam se z zavrnitvijo odgovornosti"), default=False
+    )
+    allow_photos = models.BooleanField(
+        verbose_name=_("Dovoljujem fotografiranje in snemanje"),
+        default=False,
+    )
+    registration_finished = models.BooleanField(
+        verbose_name=_("Prijava na dogodek je zaključena"), default=False
+    )
+
+    class Meta:
+        unique_together = (
+            "user",
+            "event",
+        )
+        verbose_name = _("Prijava na dogodek")
+        verbose_name_plural = _("Dogodki - prijave")
+
+
+# prijavnica za otroka (se veže na prijavnico)
+class EventRegistrationChild(models.Model):
+    event_registration = models.ForeignKey(
+        EventRegistration,
+        on_delete=models.CASCADE,
+        related_name="event_registration_children",
+    )
+    child_name = models.TextField(verbose_name=_("Ime otroka"))
+    child_surname = models.TextField(verbose_name=_("Priimek otroka"))
+    parent_phone = models.TextField(
+        verbose_name=_("Telefonska številka zakonitega skrbnika")
+    )
+    birth_date = models.DateField(verbose_name="Datum rojstva")
+    gender = models.CharField(
+        max_length=1,
+        choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")),
+        verbose_name="Spol",
+    )
+    gender_other = models.CharField(
+        max_length=200, blank=True, verbose_name="Spol (drugo)"
+    )
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

@@ -1,0 +1,32 @@
+{% extends "events/event_registration_wrapper.html" %}
+{% load static i18n %}
+
+{% block title %}{% translate 'Prijava na dogodek' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block form_title %}
+<h1>{{ event.category }}: {{ event.title }}<br />{{ event.start_day }}</h1>
+{% endblock form_title %}
+
+{% block form_block %}
+
+<form action="{% url 'event-registration-information' event.slug %}" autocomplete="off" method="post">
+    {% csrf_token %}
+
+    <div class="form-field-wrapper one-line rog-check">
+        {{ form.agreement_responsibility.errors }}
+        {{ form.agreement_responsibility }} {{ form.agreement_responsibility.label_tag }}
+    </div>
+
+    <div class="form-field-wrapper one-line rog-check">
+        {{ form.allow_photos.errors }}
+        {{ form.allow_photos }} {{ form.allow_photos.label_tag }}
+    </div>
+
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
+    </div>
+</form>
+
+{% endblock form_block %}

@@ -1,0 +1,78 @@
+{% extends "events/event_registration_wrapper.html" %}
+{% load static i18n %}
+
+{% block title %}{% translate 'Prijava na dogodek' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block form_title %}
+<h1>{{ event.category }}: {{ event.title }}<br/>{{ event.start_day }}</h1>
+{% endblock form_title %}
+
+{% block form_block %}
+
+<form action="{% url 'event-registration' event.slug %}" autocomplete="off" method="post">
+    {% csrf_token %}
+
+    <div class="form-field-wrapper one-line rog-check">
+        {{ form.register_child_check.errors }}
+        {{ form.register_child_check }} {{ form.register_child_check.label_tag }}
+    </div>
+
+    <div class="form-field-wrapper {% if form.name.errors %}form-field-error{% endif %}">
+        {{ form.name.label_tag }} {{ form.name }}
+        {% if form.name.errors %}
+        {{ form.name.errors }}
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper {% if form.surname.errors %}form-field-error{% endif %}">
+        {{ form.surname.label_tag }} {{ form.surname }}
+        {% if form.surname.errors %}
+        {{ form.surname.errors }}
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper {% if form.phone.errors %}form-field-error{% endif %}">
+        {{ form.phone.label_tag }} {{ form.phone }}
+        {% if form.phone.errors %}
+        {{ form.phone.errors }}
+        {% endif %}
+    </div>
+
+    <!-- TODO: končat formo za otroka -->
+
+    <!-- {{ children_formset.management_form }}
+    {% for form in children_formset %}
+
+    <div>
+        <div class="form-field-wrapper {% if form.child_name.errors %}form-field-error{% endif %}">
+            {{ form.child_name.label_tag }} {{ form.child_name }}
+            {% if form.child_name.errors %}
+            {{ form.child_name.errors }}
+            {% endif %}
+        </div>
+
+        <div class="form-field-wrapper {% if form.child_surname.errors %}form-field-error{% endif %}">
+            {{ form.child_surname.label_tag }} {{ form.child_surname }}
+            {% if form.child_surname.errors %}
+            {{ form.child_surname.errors }}
+            {% endif %}
+        </div>
+
+        <div class="form-field-wrapper {% if form.parent_phone.errors %}form-field-error{% endif %}">
+            {{ form.parent_phone.label_tag }} {{ form.parent_phone }}
+            {% if form.parent_phone.errors %}
+            {{ form.parent_phone.errors }}
+            {% endif %}
+        </div>
+    </div>
+
+    {% endfor %} -->
+
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
+    </div>
+</form>
+
+{% endblock form_block %}

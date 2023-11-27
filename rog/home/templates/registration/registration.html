@@ -21,11 +21,6 @@
         {% endif %}
     </div>
 
-    <!-- <div class="form-field-wrapper one-line">
-        {{ form.newsletter.errors }}
-        {{ form.newsletter }} {{ form.newsletter.label_tag }}
-    </div> -->
-
     <div class="form-field-wrapper {% if form.password.errors %}form-field-error{% endif %}">
         {{ form.password.label_tag }} {{ form.password }}
         {% if form.password.errors %}

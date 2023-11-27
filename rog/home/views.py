@@ -205,11 +205,6 @@ class RegistrationView(View):
                 print("Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu.")
                 return render(request, "registration/registration.html", context={ "form": form, "error": _("Uporabnika ni bilo mogoče ustvariti.") })
 
-            # TODO subscribe to newsletter
-            # Newsletter(
-            #     user=user, permission=True if newsletter_permission == "on" else False
-            # ).save()
-
             return redirect("registration-membership")
         else:
             return render(request, "registration/registration.html", context={ "form": form })

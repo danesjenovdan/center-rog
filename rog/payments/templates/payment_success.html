@@ -29,14 +29,24 @@
                 <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
                 <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
             </div>
-            {% else %}
+            {% elif purchase_type == "membership" %}
             <div class="registration-progress">
                 <div class="point done"><span>{% translate 'izbira članarine' %}</span></div>
+                <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+            {% else %}
+            <div class="registration-progress">
+                <div class="point done"><span>{% translate 'začetek prijave' %}</span></div>
+                <div class="point done"><span>{% translate 'morebitne posebnosti' %}</span></div>
+                <div class="point done"><span>{% translate 'seznanitev s podatki' %}</span></div>
                 <div class="point active done"><span>{% translate 'plačilo' %}</span></div>
             </div>
             {% endif %}
             {% if purchase_type == "registration" %}
             <h4 class="my-5">{% translate 'Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam poslali potrditveno sporočilo.' %}</h4>
+            {% elif purchase_type == "event" %}
+            <h4 class="my-5">{% translate 'Plačilo je uspelo. Prijavljeni ste na dogodek. Na vašo e-pošto smo vam poslali potrditveno sporočilo.' %}</h4>
+            <h4 class="my-5">kategorija dogodka: ime dogodka <br /> datum dogodka</h4>
             {% else %}
             <h4 class="my-5">{% translate 'Plačilo je bilo uspešno!' %}</h4>
             {% endif %}
