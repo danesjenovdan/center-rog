@@ -501,9 +501,9 @@ def create_move(
         "discount": 0,
         "department": "",
         "status": "N",
-        "order": payment.id,        # dokument 1
+        "order": str(payment.id),        # dokument 1
         "orderDate": payment.created_at.strftime("%Y-%m-%dT00:00:00.000Z"),
-        "orderForm": payment.invoice_number,
+        "orderForm": str(payment.invoice_number),
         "orderFormDate":  payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"), # no date SQL offset
         "credited": "",
         "note": "", # opomba v glavi dokumenta
