@@ -361,9 +361,9 @@ def create_subject(subject):
         "deptRegNo": "",
         "payLoc": "",
         "buyerLimitCtrl": "",
-        "timeIns": "2023-08-11T05:05:12.971Z",
+        "timeIns": subject.created_at.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
         "userIns": 1,
-        "timeChg": "2023-08-11T05:05:12.971Z",
+        "timeChg": subject.created_at.strftime("%Y-%m-%dT%H:%M:%S.000Z"),
         "userChg": 1,
         "subUnitCode": "",
         "jibcode": "",
@@ -501,10 +501,10 @@ def create_move(
         "discount": 0,
         "department": "",
         "status": "N",
-        "order": payment.invoice_number,        # dokument 1
-        "orderDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
-        "orderForm": "",
-        "orderFormDate":  "1900-01-01T00:00:00.000Z", # no date SQL offset
+        "order": payment.id,        # dokument 1
+        "orderDate": payment.created_at.strftime("%Y-%m-%dT00:00:00.000Z"),
+        "orderForm": payment.invoice_number,
+        "orderFormDate":  payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"), # no date SQL offset
         "credited": "",
         "note": "", # opomba v glavi dokumenta
         "title": "",
