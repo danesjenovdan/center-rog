@@ -95,7 +95,7 @@
             }
 
             #body table .t-price {
-                width: 85px;
+                width: 70px;
                 text-align: right;
             }
 
@@ -110,12 +110,12 @@
             }
 
             #body table .t-amount {
-                width: 45px;
+                width: 40px;
                 text-align: right;
             }
 
             #body table .t-name {
-                width: 225px;
+                width: 200px;
                 text-align: left;
             }
 
@@ -227,11 +227,11 @@
                     </tr>
                     {% if payment_plan.promo_code %}
                     <tr class="t-promocode">
-                        <td class="t-ident"></td>
-                        <td class="t-name">Koda za popust: <code>{{ payment_plan.promo_code.code }}</code></td>
-                        <td colspan="2"></td>
-                        <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
-                        <td colspan="2"></td>
+                        <td class="t-ident">Koda za popust: <code>{{ payment_plan.promo_code.code }}</code></td>
+                        <td class="t-name"></td>
+                        <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€ </td>
+                        <td></td>
+                        <td></td>
                         <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
                         <td class="t-price">-&nbsp;{{ payment_plan.price|percentage:payment_plan.promo_code.percent_discount|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
