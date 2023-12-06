@@ -496,7 +496,7 @@ def create_move(
         ],
         "clerkId": 1,
         "clerk": "Administrator",
-        "price": float(payment.amount),
+        "price": float(payment.original_amount), # TODO daj tuki brez popusta
         "vat": float(vat * 100 / float(payment.amount)) if payment.amount > 0 else 0.0,
         "discount": 0,
         "department": "",

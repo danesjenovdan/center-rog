@@ -213,7 +213,7 @@
                     <tr>
                         <td class="t-name">{{ payment_plan.plan_name }}</td>
                         <td class="t-amount">1,00</td>
-                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">{{ payment_plan.original_price|floatformat:"2g" }}&nbsp;€</td>
                         <td class="t-vat">
                             {% if payment_plan.promo_code %}
                                 {{ payment_plan.promo_code.percent_discount|floatformat:"2g" }}
@@ -222,8 +222,8 @@
                             {% endif %}
                         </td>
                         <td class="t-vat">{{ 0|floatformat:"2g" }}</td>
-                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
-                        <td class="t-price">{{ payment_plan.price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">{{ payment_plan.original_price|floatformat:"2g" }}&nbsp;€</td>
+                        <td class="t-price">{{ payment_plan.original_price|floatformat:"2g" }}&nbsp;€</td>
                     </tr>
                     {% if payment_plan.promo_code %}
                     <tr class="t-promocode">

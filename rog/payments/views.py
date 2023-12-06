@@ -41,6 +41,7 @@ class PaymentPreview(views.APIView):
             payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
             price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
             payment.amount = price
+            payment.original_amount = plan.price
             if membership_id:
                 membership = Membership.objects.get(id=membership_id)
                 payment.membership = membership
@@ -73,9 +74,16 @@ class PaymentPreview(views.APIView):
                     plan = paid_membership_type.plan
                     price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
                     payment.amount += price
+                    payment.original_amount += plan.price
                     payment.membership = membership
                     payment.save()
-                    PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+                    PaymentPlan(
+                        plan=plan,
+                        payment=payment,
+                        price=price,
+                        original_price=plan.price,
+                        plan_name=plan.name
+                    ).save()
 
             promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
