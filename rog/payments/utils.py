@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from .models import Payment, Token, PaymentPlan
+from .models import Payment, Token, PaymentPlanEvent
 from users.models import Membership, MembershipType
 from home.email_utils import send_email
 
@@ -81,7 +81,7 @@ def finish_payment(payment):
             'price': plan.price,
         })
 
-    payment_plans = PaymentPlan.objects.filter(payment=payment)
+    payment_plans = PaymentPlanEvent.objects.filter(payment=payment)
     for payment_plan in payment_plans:
         if payment_plan.promo_code:
             payment_plan.promo_code.use_code()
