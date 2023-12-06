@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from datetime import datetime, timedelta
 
-from payments.models import PaymentPlan
+from payments.models import PaymentPlanEvent
 from home.email_utils import send_email
 
 class Command(BaseCommand):
@@ -11,7 +11,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Start sending notifications for user fee expiration.")
 
-        payment_plans_1 = PaymentPlan.objects.filter(
+        payment_plans_1 = PaymentPlanEvent.objects.filter(
             valid_to__range=(datetime.now().date() - timedelta(days=0), datetime.now() + timedelta(days=1))
         ).exclude(notification_1_sent=True)
 
@@ -32,7 +32,7 @@ class Command(BaseCommand):
             payment_plan.save()
 
 
-        payment_plans_7 = PaymentPlan.objects.filter(
+        payment_plans_7 = PaymentPlanEvent.objects.filter(
             valid_to__range=(datetime.now().date() - timedelta(days=7), datetime.now())
         ).exclude(
             notification_7_sent=True
@@ -58,7 +58,7 @@ class Command(BaseCommand):
             payment_plan.save()
 
 
-        payment_plans_30 = PaymentPlan.objects.filter(
+        payment_plans_30 = PaymentPlanEvent.objects.filter(
             valid_to__range=(datetime.now().date() - timedelta(days=30), datetime.now())
         ).exclude(
             notification_30_sent=True

@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 from wkhtmltopdf.views import PDFTemplateResponse
 from decimal import Decimal
 
-from .models import Payment, Plan, Token, PaymentPlan, PromoCode
+from .models import Payment, Plan, Token, PaymentPlanEvent, PromoCode
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
@@ -26,62 +26,90 @@ import requests
 # Create your views here.
 
 # payments
+class EventRegistration:
+    pass
 class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get('plan_id', False)
         purchase_type = request.GET.get('purchase_type', '')
         membership_id = request.GET.get('membership', False)
-        plan = Plan.objects.filter(id=plan_id).first()
+        event_registration_id = request.GET.get('event_registration', False)
         user = request.user
 
-        if plan and user:
-            payment = Payment(
-                user=user,
-            )
-            payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
-            price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
-            payment.amount = price
-            if membership_id:
-                membership = Membership.objects.get(id=membership_id)
-                payment.membership = membership
-            payment.save()
-            PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+        # TODO purchase_type = 'event'
 
-            if plan.item_type.name == 'uporabnina':
-                # if plan is uporabnina add clanarina to payment
-                membership = user.membership
+        if plan_id:
+            plan = Plan.objects.filter(id=plan_id).first()
 
-                # check if user has active membership for entire duration of new uporabnina
-                last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
-                valid_to = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
-                new_uporabnina_valid_to = valid_to + timedelta(days=plan.duration)
-                last_active_membership = user.get_last_active_membership()
-
-                 # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
-                if (not last_active_membership) or new_uporabnina_valid_to > last_active_membership.valid_to:
-                    today = datetime.now()
-                    one_year_from_now = today + timedelta(days=365)
-                    paid_membership_type = MembershipType.objects.filter(plan__isnull=False).first()
-                    membership = Membership(
-                        valid_from=today,
-                        valid_to=one_year_from_now,
-                        type=paid_membership_type,
-                        active=False,
-                        user=user)
-                    membership.save()
-
-                    plan = paid_membership_type.plan
-                    price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
-                    payment.amount += price
+            if plan and user:
+                payment = Payment(
+                    user=user,
+                )
+                payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
+                price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+                payment.amount = price
+                if membership_id:
+                    membership = Membership.objects.get(id=membership_id)
                     payment.membership = membership
-                    payment.save()
-                    PaymentPlan(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+                payment.save()
+                PaymentPlanEvent(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
 
-            promo_code_form = PromoCodeForm({'payment_id': payment.id})
+                if plan.item_type.name == 'uporabnina':
+                    # if plan is uporabnina add clanarina to payment
+                    membership = user.membership
 
-            return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "purchase_type": purchase_type })
-        else:
-            return redirect('profile-my')
+                    # check if user has active membership for entire duration of new uporabnina
+                    last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
+                    valid_to = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+                    new_uporabnina_valid_to = valid_to + timedelta(days=plan.duration)
+                    last_active_membership = user.get_last_active_membership()
+
+                    # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
+                    if (not last_active_membership) or new_uporabnina_valid_to > last_active_membership.valid_to:
+                        today = datetime.now()
+                        one_year_from_now = today + timedelta(days=365)
+                        paid_membership_type = MembershipType.objects.filter(plan__isnull=False).first()
+                        membership = Membership(
+                            valid_from=today,
+                            valid_to=one_year_from_now,
+                            type=paid_membership_type,
+                            active=False,
+                            user=user)
+                        membership.save()
+
+                        plan = paid_membership_type.plan
+                        price = plan.discounted_price if payment.user_was_eligible_to_discount else plan.price
+                        payment.amount += price
+                        payment.membership = membership
+                        payment.save()
+                        PaymentPlanEvent(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+
+                promo_code_form = PromoCodeForm({'payment_id': payment.id})
+
+                return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "purchase_type": purchase_type })
+            else:
+                return redirect('profile-my')
+        elif event_registration_id:
+            event_registration = get_object_or_404(EventRegistration, id=event_registration_id)
+            if event_registration.user != user:
+                # user is not owner of event registration
+                return redirect('profile-my')
+
+            if event_registration and user:
+                payment = Payment(
+                    user=user,
+                )
+                payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
+                price = event_registration.event.price
+                payment.amount = price
+                payment.save()
+                PaymentPlanEvent(plan=event_registration.event, payment=payment, price=price, plan_name=event_registration.event.name).save()
+
+                promo_code_form = PromoCodeForm({'payment_id': payment.id})
+
+                return render(request,'registration_payment_preview.html', { "payment": payment, "promo_code_form": promo_code_form, "purchase_type": purchase_type })
+            else:
+                return redirect('profile-my')
 
     def post(self, request):
         user = request.user
@@ -95,7 +123,7 @@ class PaymentPreview(views.APIView):
         if promo_code_form.is_valid():
             registration = promo_code_form.cleaned_data["registration"]
             payment = Payment.objects.get(id=promo_code_form.cleaned_data["payment_id"])
-            related_payment_plans = PaymentPlan.objects.filter(payment=payment)
+            related_payment_plans = PaymentPlanEvent.objects.filter(payment=payment)
             # check for promo code
             promo_code = promo_code_form.cleaned_data["promo_code"]
             if promo_code:
@@ -265,7 +293,6 @@ class PaymentSuccessXML(views.APIView):
 
 class PaymentSuccess(views.APIView):
     def get(self, request):
-
         if "registration" in request.GET:
             purchase_type = "registration"
         elif "plan" in request.GET:

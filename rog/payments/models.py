@@ -168,9 +168,21 @@ class Plan(Timestampable):
             super().save(*args, **kwargs)
 
 
-class PaymentPlan(models.Model):
+class PaymentPlanEvent(models.Model):
+    class Kind(models.TextChoices):
+        PLAN = "PLAN", _("Plan")
+        EVENT = "EVENT", _("Event")
+
+    kind = models.CharField(
+        max_length=20,
+        choices=Kind.choices,
+        default=Kind.PLAN,
+    )
+
     payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
-    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE)
+    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
+    event = models.ForeignKey('events.EventPage', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
+
     plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     promo_code = models.ForeignKey(
@@ -230,7 +242,7 @@ class Payment(Timestampable):
         'Plan',
         help_text="Items in payment",
         related_name="payments",
-        through=PaymentPlan,
+        through=PaymentPlanEvent,
     )
     user_was_eligible_to_discount = models.BooleanField(default=False)
     objects = ActiveAtQuerySet.as_manager()
@@ -322,7 +334,7 @@ class PromoCode(Timestampable):
         return f"{self.code}"
 
     @staticmethod
-    def check_code_validity(code_string: str, payment_plan: PaymentPlan) -> bool:
+    def check_code_validity(code_string: str, payment_plan: PaymentPlanEvent) -> bool:
         code_filter = PromoCode.objects.filter(code=code_string)
 
         if code_filter.count() == 1:

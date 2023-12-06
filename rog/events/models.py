@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.translation import gettext_lazy as _
@@ -116,6 +117,13 @@ class EventPage(BasePage):
         default=True, verbose_name=_("Pokaži več")
     )
 
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena"))
+    price_for_non_member = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena za nečlane"))
+    number_of_places = models.IntegerField(verbose_name=_("Število mest"), default=0)
+    contact_email = models.EmailField(verbose_name=_("Kontaktni email"), null=True, blank=True)
+    labs = models.ManyToManyField("home.LabPage", blank=True, verbose_name=_("Laboratorij"))
+    without_registrations = models.BooleanField(default=False, verbose_name=_("Brez prijave"), help_text=_("Če je označeno, je dogodek brez prijave."))
+
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
         FieldPanel("category"),
@@ -130,6 +138,13 @@ class EventPage(BasePage):
         FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
         FieldPanel("show_see_more_section"),
+
+        FieldPanel("price"),
+        FieldPanel("price_for_non_member"),
+        FieldPanel("number_of_places"),
+        FieldPanel("contact_email"),
+        FieldPanel("labs"),
+        FieldPanel("without_registrations"),
     ]
 
     parent_page_types = ["events.EventListPage"]
@@ -267,6 +282,7 @@ class EventRegistration(Orderable, ClusterableModel):
         return f"{self.event.title} [{self.user}]"
 
     panels = [
+        FieldPanel("event"),
         FieldPanel("name"),
         FieldPanel("surname"),
         FieldPanel("phone"),
