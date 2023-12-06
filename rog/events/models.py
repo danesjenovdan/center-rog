@@ -4,9 +4,12 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
+from wagtail.models import Page, Orderable
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
+
+from modelcluster.fields import ParentalKey
+from modelcluster.models import ClusterableModel
 
 from datetime import date
 
@@ -233,7 +236,7 @@ class EventListPage(BasePage):
 
 
 # prijavnica (povezava med uporabnikom in dogodkom)
-class EventRegistration(models.Model):
+class EventRegistration(Orderable, ClusterableModel):
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -260,6 +263,21 @@ class EventRegistration(models.Model):
         verbose_name=_("Prijava na dogodek je zaključena"), default=False
     )
 
+    def __str__(self):
+        return f"{self.event.title} [{self.user}]"
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("surname"),
+        FieldPanel("phone"),
+        FieldPanel("disabilities"),
+        FieldPanel("allergies"),
+        FieldPanel("agreement_responsibility"),
+        FieldPanel("allow_photos"),
+        FieldPanel("registration_finished"),
+        InlinePanel("event_registration_children", label=_("Prijavljeni otroci")),
+    ]
+
     class Meta:
         unique_together = (
             "user",
@@ -270,8 +288,8 @@ class EventRegistration(models.Model):
 
 
 # prijavnica za otroka (se veže na prijavnico)
-class EventRegistrationChild(models.Model):
-    event_registration = models.ForeignKey(
+class EventRegistrationChild(Orderable):
+    event_registration = ParentalKey(
         EventRegistration,
         on_delete=models.CASCADE,
         related_name="event_registration_children",

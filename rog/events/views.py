@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.forms import formset_factory
+from django.forms import modelformset_factory
 
 
-from events.models import EventPage, EventRegistration
+from events.models import EventPage, EventRegistration, EventRegistrationChild
 from events.forms import (
     EventRegisterPersonForm,
     EventRegisterAdditionalForm,
@@ -16,6 +16,14 @@ from events.forms import (
 
 @method_decorator(login_required, name="dispatch")
 class EventRegistrationView(View):
+    ChildrenFormset = modelformset_factory(
+        EventRegistrationChild,
+        form=EventRegistrationChildForm,
+        fields="__all__",
+        can_delete=True,
+        extra=1,
+    )
+
     def get(self, request, event):
         # user
         current_user = request.user
@@ -31,20 +39,27 @@ class EventRegistrationView(View):
             event_registration = EventRegistration.objects.get(
                 user=current_user, event=event
             )
+            event_registration_children = EventRegistrationChild.objects.filter(
+                event_registration=event_registration
+            )
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterPersonForm(instance=event_registration)
                 # new registration children formset
-                # TODO: treba dopolnit, če že obstajajo vezani otroci
-                children_formset = formset_factory(EventRegistrationChildForm)
+                children_formset = self.ChildrenFormset(
+                    queryset=event_registration_children
+                )
+
         except:
             # new registration form
             form = EventRegisterPersonForm(
                 {"name": current_user.first_name, "surname": current_user.last_name}
             )
             # new registration children formset
-            children_formset = formset_factory(EventRegistrationChildForm)
+            children_formset = self.ChildrenFormset(
+                queryset=EventRegistrationChild.objects.none()
+            )
 
         return render(
             request,
@@ -85,11 +100,16 @@ class EventRegistrationView(View):
             event_registration.user = current_user
             event_registration.event = event
             event_registration.save()
+
+            children_formset = self.ChildrenFormset(request.POST)
+
+            print("otroci")
+            print(children_formset)
         else:
             print("Prijavnica ni valid")
             return render(
                 request,
-                "events/event_registration_2.html",
+                "events/event_registration_1.html",
                 context={"event": event, "form": form},
             )
 

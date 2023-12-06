@@ -1,13 +1,19 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from events.models import EventRegistration, EventRegistrationChild
+
+from home.forms import SplitInputDateWidget
 
 
 class EventRegisterPersonForm(forms.ModelForm):
     register_child_check = forms.BooleanField(
         label=_("na dogodek prijavljam otroka"), label_suffix="", required=False
     )
+
+    def get_deletion_widget(self):
+        return forms.HiddenInput(attrs={"class": "deletion"})
 
     class Meta:
         model = EventRegistration
@@ -44,6 +50,28 @@ class EventRegisterInformationForm(forms.ModelForm):
 
 
 class EventRegistrationChildForm(forms.ModelForm):
+    birth_date = forms.DateField(
+        label=_("Datum rojstva"),
+        label_suffix="",
+        widget=SplitInputDateWidget(
+            attrs={"class": "select-date"}, years=range(1900, timezone.now().year)
+        ),
+        required=True,
+    )
+    gender = forms.ChoiceField(
+        label=_("Spol"),
+        label_suffix="",
+        choices=(("F", _("ženski")), ("M", _("moški")), ("O", _("drugo"))),
+        initial="",
+        widget=forms.RadioSelect(attrs={"class": "gender-radio"}),
+    )
+    gender_other = forms.CharField(
+        label=_("izpolni"),
+        label_suffix="",
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "spol"}),
+    )
+
     class Meta:
         model = EventRegistrationChild
         fields = [
@@ -54,3 +82,8 @@ class EventRegistrationChildForm(forms.ModelForm):
             "gender",
             "gender_other",
         ]
+        widgets = {
+            "child_name": forms.TextInput(),
+            "child_surname": forms.TextInput(),
+            "parent_phone": forms.TextInput(),
+        }
