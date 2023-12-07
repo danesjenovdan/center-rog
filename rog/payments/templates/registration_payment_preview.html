@@ -31,9 +31,16 @@
                 <div class="point done"><span>{% translate 'izbira uporabnine' %}</span></div>
                 <div class="point active"><span>{% translate 'plačilo' %}</span></div>
             </div>
-            {% else %}
+            {% elif purchase_type == "membership" %}
             <div class="registration-progress">
                 <div class="point done"><span>{% translate 'izbira članarine' %}</span></div>
+                <div class="point active"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+            {% else %}
+            <div class="registration-progress">
+                <div class="point done"><span>{% translate 'začetek prijave' %}</span></div>
+                <div class="point done"><span>{% translate 'morebitne posebnosti' %}</span></div>
+                <div class="point done"><span>{% translate 'seznanitev s podatki' %}</span></div>
                 <div class="point active"><span>{% translate 'plačilo' %}</span></div>
             </div>
             {% endif %}
@@ -44,7 +51,7 @@
 
             {% for item in payment.payment_plans.all %}
                 <div class="line d-flex justify-content-between">
-                    <div class="name">{{ item.plan.name }}</div>
+                    <div class="name">{{ item.plan_name }}</div>
                     <div class="price">€{{ item.price|floatformat:"2g" }}</div>
                 </div>
                 {% if item.promo_code %}
