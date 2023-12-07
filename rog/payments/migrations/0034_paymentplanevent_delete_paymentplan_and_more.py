@@ -12,25 +12,27 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='PaymentPlanEvent',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('kind', models.CharField(choices=[('PLAN', 'Plan'), ('EVENT', 'Event')], default='PLAN', max_length=20)),
-                ('plan_name', models.CharField(help_text='Npr. letna uporabnina', max_length=100, verbose_name='Ime paketa na dan nakupa')),
-                ('price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('valid_to', models.DateTimeField(blank=True, help_text='When subscription expires', null=True)),
-                ('notification_30_sent', models.BooleanField(default=False)),
-                ('notification_7_sent', models.BooleanField(default=False)),
-                ('notification_1_sent', models.BooleanField(default=False)),
-                ('event', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='payment_plans', to='events.eventpage')),
-                ('payment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='payment_plans', to='payments.payment')),
-                ('plan', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='payment_plans', to='payments.plan')),
-                ('promo_code', models.ForeignKey(blank=True, help_text='The promo code used for this payment plan', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='payment_plans', to='payments.promocode')),
-            ],
+        migrations.RenameModel(
+            old_name='PaymentPlan',
+            new_name='PaymentPlanEvent',
         ),
-        migrations.DeleteModel(
-            name='PaymentPlan',
+
+        migrations.AddField(
+            model_name='paymentplanevent',
+            name='event',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='payment_plans', to='events.eventpage'),
+        ),
+        migrations.AddField(
+            model_name='paymentplanevent',
+            name='kind',
+            field=models.CharField(choices=[('PLAN', 'Plan'), ('EVENT', 'Event')], default='PLAN', max_length=20),
+            preserve_default=False,
+        ),
+
+        migrations.AlterField(
+            model_name='paymentplanevent',
+            name='plan',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='payments.plan', related_name='payment_plans'),
         ),
         migrations.AlterField(
             model_name='payment',
