@@ -36,8 +36,6 @@ class PaymentPreview(views.APIView):
         event_registration_id = request.GET.get("event_registration", False)
         user = request.user
 
-        # TODO purchase_type = 'event'
-
         if plan_id:
             plan = Plan.objects.filter(id=plan_id).first()
 
@@ -132,29 +130,47 @@ class PaymentPreview(views.APIView):
             event_registration = get_object_or_404(
                 EventRegistration, id=event_registration_id
             )
+
             if event_registration.user != user:
                 # user is not owner of event registration
                 return redirect("profile-my")
 
             if event_registration and user:
-                payment = Payment(
-                    user=user,
-                )
-                if user.membership:
-                    price = event_registration.event.price
+                people_count = event_registration.event_registration_children.count()
+                title = event_registration.event.title
+                if people_count == 0:
+                    people_count = 1
                 else:
-                    price = event_registration.price_for_non_member
-                payment.amount = price
-                payment.original_amount = price
-                payment.save()
-                PaymentPlanEvent(
-                    payment_item_type=PaymentItemType.EVENT,
-                    event_registration=event_registration,
-                    payment=payment,
-                    # original_price=price,
-                    price=price,
-                    plan_name=event_registration.event.title,
-                ).save()
+                    title = f"{title} x {people_count}"
+                if user.membership:
+                    price = event_registration.event.price * people_count
+                else:
+                    price = event_registration.event.price_for_non_member * people_count
+
+                existing_paymetn_plan = event_registration.payment_plans.first()
+                if existing_paymetn_plan:
+                    payment = existing_paymetn_plan.payment
+                    existing_paymetn_plan.price = price
+                    existing_paymetn_plan.save()
+                    payment.amount = price
+                    payment.original_amount = price
+                    payment.save()
+                else:
+                    payment = Payment(
+                        user=user,
+                    )
+                    payment.amount = price
+                    payment.original_amount = price
+                    payment.save()
+                    PaymentPlanEvent(
+                        payment_item_type=PaymentItemType.EVENT,
+                        event_registration=event_registration,
+                        payment=payment,
+                        # original_price=price,
+                        price=price,
+                        plan_name=title,
+                    ).save()
+
 
                 promo_code_form = PromoCodeForm({"payment_id": payment.id})
 
