@@ -496,14 +496,14 @@ def create_move(
         ],
         "clerkId": 1,
         "clerk": "Administrator",
-        "price": float(payment.amount),
+        "price": float(payment.original_amount), # TODO daj tuki brez popusta
         "vat": float(vat * 100 / float(payment.amount)) if payment.amount > 0 else 0.0,
         "discount": 0,
         "department": "",
         "status": "N",
-        "order": payment.id,        # dokument 1
+        "order": str(payment.id),        # dokument 1
         "orderDate": payment.created_at.strftime("%Y-%m-%dT00:00:00.000Z"),
-        "orderForm": payment.invoice_number,
+        "orderForm": str(payment.invoice_number),
         "orderFormDate":  payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"), # no date SQL offset
         "credited": "",
         "note": "", # opomba v glavi dokumenta

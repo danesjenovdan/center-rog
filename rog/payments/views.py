@@ -50,6 +50,7 @@ class PaymentPreview(views.APIView):
                     else plan.price
                 )
                 payment.amount = price
+                payment.original_amount = plan.price
                 if membership_id:
                     membership = Membership.objects.get(id=membership_id)
                     payment.membership = membership
@@ -59,6 +60,7 @@ class PaymentPreview(views.APIView):
                     payment=payment,
                     price=price,
                     plan_name=plan.name,
+                    original_price=plan.price,
                     payment_item_type=plan.payment_item_type,
                 ).save()
 
@@ -103,12 +105,14 @@ class PaymentPreview(views.APIView):
                             else plan.price
                         )
                         payment.amount += price
+                        payment.original_amount += plan.price
                         payment.membership = membership
                         payment.save()
                         PaymentPlanEvent(
                             plan=plan,
                             payment=payment,
                             price=price,
+                            original_price=plan.price,
                             plan_name=plan.name,
                             payment_item_type=plan.payment_item_type,
                         ).save()
@@ -166,7 +170,7 @@ class PaymentPreview(views.APIView):
                         payment_item_type=PaymentItemType.EVENT,
                         event_registration=event_registration,
                         payment=payment,
-                        # original_price=price,
+                        original_price=price,
                         price=price,
                         plan_name=title,
                     ).save()

@@ -188,6 +188,7 @@ class PaymentPlanEvent(models.Model):
     event_registration = models.ForeignKey('events.EventRegistration', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
 
     plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
+    original_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     promo_code = models.ForeignKey(
         "PromoCode",
@@ -220,6 +221,7 @@ class Payment(Timestampable):
         help_text="Select a user",
     )
     amount = models.DecimalField(decimal_places=2, max_digits=10)
+    original_amount = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True, help_text="Original amount before discount")
     successed_at = models.DateTimeField(
         null=True,
         blank=True,
@@ -259,6 +261,7 @@ class Payment(Timestampable):
     panels = [
         FieldPanel("user"),
         FieldPanel("amount"),
+        FieldPanel("original_amount"),
         FieldPanel("successed_at"),
         FieldPanel("payment_done_at"),
         FieldPanel("errored_at"),
@@ -278,7 +281,7 @@ class Payment(Timestampable):
         return f"{self.user} - {self.amount} - {self.created_at}"
 
     def history_name(self):
-        return f"{self.items.first().name}"
+        return f"{self.payment_plans.first().plan_name}"
 
     def save(self, *args, **kwargs):
         if self.saved_in_pantheon == False and self.successed_at:
