@@ -303,11 +303,17 @@ class PaymentDataXML(views.APIView):
         user_post = user.get_post()
         user_email = user.email
         items = ""
+
+        if payment.payment_plans.first().payment_item_type == PaymentItemType.EVENT:
+            sifra = payment.payment_plans.first().event_registration.event.id
+        else:
+            sifra = pp.plan.id
+
         for pp in payment.payment_plans.all():
             items = (
                 items
                 + f"""
-            <postavka sifraArtikla="{pp.plan.id}" imaProvizijo="false" konto="" podracun="" sklicPostavke="11">
+            <postavka sifraArtikla="{sifra}" imaProvizijo="false" konto="" podracun="" sklicPostavke="11">
                 <opis>{pp.plan_name}</opis>
                 <kolicina>1</kolicina>
                 <cena>{pp.price}</cena>
@@ -390,6 +396,8 @@ class PaymentSuccess(views.APIView):
             purchase_type = "registration"
         elif "plan" in request.GET:
             purchase_type = "plan"
+        elif "event" in request.GET:
+            purchase_type = "event"
         else:
             purchase_type = "membership"
 
