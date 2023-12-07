@@ -21,6 +21,7 @@ def get_invoice_number():
 
 def finish_payment(payment):
     user_fee_plan = None
+    event = None
     user = payment.user
     membership_fee = payment.items.filter(payment_item_type=PaymentItemType.CLANARINA)
     membership = payment.membership
@@ -80,6 +81,7 @@ def finish_payment(payment):
             event_registration = payment_plan.event_registration
             event_registration.registration_finished = True
             event_registration.save()
+            event = event_registration.event
 
         items.append({
             'quantity': 1,
@@ -102,5 +104,15 @@ def finish_payment(payment):
             f'Center Rog – uspešen zakup paketa {user_fee_plan.name} za odprte termine',
             {
                 'plan': user_fee_plan
+            }
+        )
+
+    if event:
+        send_email(
+            payment.user.email,
+            'emails/order_event.html',
+            f'Center Rog – uspešna prijava na dogodek',
+            {
+                'event': event
             }
         )
