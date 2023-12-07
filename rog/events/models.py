@@ -204,9 +204,7 @@ class EventListArchivePage(BasePage):
 
         today = date.today()
 
-        context["list"] = (
-            EventPage.objects.live().filter(start_day__lt=today).order_by("-start_day")
-        )
+        context["list"] = EventPage.objects.live().filter(start_day__lt=today, end_day__lt=today).order_by("-start_day")
 
         # see more
         context = add_see_more_fields(context)
@@ -238,11 +236,7 @@ class EventListPage(BasePage):
 
         today = date.today()
 
-        all_event_page_objects = (
-            EventPage.objects.live()
-            .filter(start_day__gte=today)
-            .order_by("start_day", "start_time")
-        )
+        all_event_page_objects = EventPage.objects.live().filter(Q(start_day__gte=today) | Q(end_day__gte=today)).order_by("start_day", "start_time")
 
         # filtering
         chosen_category = categories.filter(
