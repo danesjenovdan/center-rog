@@ -282,8 +282,6 @@ class EventRegistrationInformationView(View):
             print("Prijavnica ni valid")
 
         # TODO: preusmeri na plačilo
-        return render(
-            request,
-            "events/event_registration_3.html",
-            context={"form": form, "registration_step": 2, "event": event},
+        return redirect(
+            f"/placilo?purchase_type=event&event_registration={event_registration.id}"
         )
