@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load i18n static %}
+{% load i18n static wagtailcore_tags %}
 
 {% block title %}Moj profil{% endblock %}
 
@@ -105,16 +105,32 @@
         </div>
     </div>
 
-    <!-- <div class="row my-4">
-        <div class="col-12">
-            <p class="mb-1">{% translate 'tvoji prihajajoči dogodki' %}</p>
-            <div class="">{% translate 'PRIHAJAJOČI DOGODKI' %}</div>
-        </div>
-    </div> -->
-
     <div class="row mb-40">
         <div class="col-12">
             <p class="mb-1">{% translate 'tvoji prihajajoči dogodki' %}</p>
+            {% for event_registration in user.event_registrations.all %}
+                <div class="profile-event-registration">
+                    <div>
+                        <div class="category">{{ event_registration.event.category }}</div>
+                        <div class="title"><a href="{% pageurl event_registration.event.localized %}">{{ event_registration.event.title }}</a></div>
+                        {% firstof event_registration.event.contact_email "info@center-rog.si" as event_registration_email %}
+                        <div class="contact">za urejanje prijave kontaktiraj <a href="mailto:{{ event_registration_email }}">{{ event_registration_email }}</a></div>
+                    </div>
+                    <div>
+                        {% if event_registration.event.start_day and event_registration.event.end_day %}
+                            <div class="date">{{ event_registration.event.start_day|date:"j. n. Y" }} - {{ event_registration.event.end_day|date:"j. n. Y" }}</div>
+                        {% elif event_registration.event.start_day %}
+                            <div class="date">{{ event_registration.event.start_day|date:"j. n. Y" }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row mb-40">
+        <div class="col-12">
+            <p class="mb-1">{% translate 'rezerviraj termin' %}</p>
             <div class="layout-content-body calendar-embed">
                 <iframe id="iframe_booking" style="width: 100%; height: 100%; border: none; display:block;" src="https://centerrog.primacloud.si/app/booking/index.html?{% if location_id %}location={{location_id}}{% elif group_id %}group={{group_id}}{% endif %}&amp;picker=1&amp;grouppicker=1&amp;ulagtoken={{ ulagtoken }}&amp;x=1"></iframe>
             </div>
