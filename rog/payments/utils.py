@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from .models import Payment, Token, PaymentPlan
+from .models import Payment, Token, PaymentPlanEvent, PaymentItemType
 from users.models import Membership, MembershipType
 from home.email_utils import send_email
 
@@ -22,7 +22,7 @@ def get_invoice_number():
 def finish_payment(payment):
     user_fee_plan = None
     user = payment.user
-    membership_fee = payment.items.filter(item_type__name__icontains='clanarina')
+    membership_fee = payment.items.filter(payment_item_type=PaymentItemType.CLANARINA)
     membership = payment.membership
     if membership_fee and membership:
         valid_from = timezone.now()
@@ -54,7 +54,7 @@ def finish_payment(payment):
     for payment_plan in payment.payment_plans.all():
         plan = payment_plan.plan
         # create tokens
-        if plan.item_type and plan.item_type.name == 'uporabnina':
+        if payment_plan.payment_item_type == PaymentItemType.UPORABNINA:
             user_fee_plan = plan
             last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
             valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
@@ -75,13 +75,19 @@ def finish_payment(payment):
                     type_of=Token.Type.WORKSHOP
                 ) for i in range(plan.workshops)
             ])
+
+        if payment_plan.payment_item_type == PaymentItemType.EVENT:
+            event_registration = payment_plan.event_registration
+            event_registration.registration_finished = True
+            event_registration.save()
+
         items.append({
             'quantity': 1,
-            'name': plan.name,
-            'price': plan.price,
+            'name': payment_plan.plan_name,
+            'price': payment_plan.price,
         })
 
-    payment_plans = PaymentPlan.objects.filter(payment=payment)
+    payment_plans = PaymentPlanEvent.objects.filter(payment=payment)
     for payment_plan in payment_plans:
         if payment_plan.promo_code:
             payment_plan.promo_code.use_code()

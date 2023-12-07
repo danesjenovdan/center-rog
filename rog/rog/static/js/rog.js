@@ -298,12 +298,14 @@ function studioCardButtons() {
 
 function preventDoubleSubmission() {
   const form = document.querySelector(".register-container form");
-  form.addEventListener("submit", function(event) {
-    const submitButton = form.querySelector("button[type=submit]");
-    setTimeout(function () {
-      submitButton.disabled = true;
-    }, 0);
-  })
+  if (form) {
+    form.addEventListener("submit", function(event) {
+      const submitButton = form.querySelector("button[type=submit]");
+      setTimeout(function () {
+        submitButton.disabled = true;
+      }, 0);
+    })
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

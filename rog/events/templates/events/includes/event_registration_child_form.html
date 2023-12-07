@@ -1,0 +1,55 @@
+<h4>Otrok {{ child_num }}:</h4>
+    <!-- if children_formset.can_delete 
+<button id="remove-child-button" class="link-cross" type="button">x</button>
+    children_formset.empty_form.DELETE 
+    endif  -->
+
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
+
+<div class="form-field-wrapper {% if form.child_name.errors %}form-field-error{% endif %}">
+    {{ form.child_name.label_tag }} {{ form.child_name }}
+    {% if form.child_name.errors %}
+    {{ form.child_name.errors }}
+    {% endif %}
+</div>
+
+<div class="form-field-wrapper {% if form.child_surname.errors %}form-field-error{% endif %}">
+    {{ form.child_surname.label_tag }} {{ form.child_surname }}
+    {% if form.child_surname.errors %}
+    {{ form.child_surname.errors }}
+    {% endif %}
+</div>
+
+<div class="form-field-wrapper {% if form.parent_phone.errors %}form-field-error{% endif %}">
+    {{ form.parent_phone.label_tag }} {{ form.parent_phone }}
+    {% if form.parent_phone.errors %}
+    {{ form.parent_phone.errors }}
+    {% endif %}
+</div>
+
+<div class="form-field-wrapper">
+    {{ form.birth_date.label_tag }} {{ form.birth_date }}
+    {% if form.birth_date.errors %}
+    <p class="error">{{ form.birth_date.errors }}</p>
+    {% endif %}
+</div>
+
+<div class="registration-gender-row">
+
+    <div class="form-field-wrapper rog-radios">
+        {{ form.gender.label_tag }} {{ form.gender }}
+        {% if form.gender.errors %}
+        <p class="error">{{ form.gender.errors }}</p>
+        {% endif %}
+    </div>
+
+    <div class="form-field-wrapper hide" id="other-gender-wrapper">
+        {{ form.gender_other.label_tag }} {{ form.gender_other }}
+        {% if form.gender_other.errors %}
+        <p class="error">{{ form.gender_other.errors }}</p>
+        {% endif %}
+    </div>
+
+</div>

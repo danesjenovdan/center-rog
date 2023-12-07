@@ -11,7 +11,7 @@ from .settings import ExternalLinkBlock, PageLinkBlock
 from users.models import MembershipType
 from news.models import NewsPage, NewsListPage
 from events.models import EventPage, EventListPage
-from payments.models import Plan
+from payments.models import Plan, PaymentItemType
 
 import random
 from datetime import date, datetime
@@ -367,7 +367,7 @@ class PlansBlock(ColoredStructBlock):
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
         timestamp = datetime.now()
-        context["plans"] = Plan.objects.filter(item_type__name="uporabnina", valid_from__lte=timestamp, valid_to__gte=timestamp).order_by("price")
+        context["plans"] = Plan.objects.filter(payment_item_type=PaymentItemType.UPORABNINA, valid_from__lte=timestamp, valid_to__gte=timestamp).order_by("price")
         return context
 
     class Meta:
