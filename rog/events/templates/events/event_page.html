@@ -45,6 +45,18 @@
                     <p>{{ page.location }}</p>
                     {% if page.apply_url %}
                         <a href="{{ page.apply_url }}" class="primary-button button-medium" target="_blank">{% translate 'prijava' %}</a>
+                    {% elif not page.without_registrations %}
+                        <div class="text-center">
+                            <div>
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium" target="_blank">{% translate 'prijava na dogodek' %}</a>
+                            </div>
+                            <div>
+                                <div class="event-free-places">
+                                    <span class="text">{% translate 'Število prostih mest' %}</span>
+                                    <span class="number">{{ page.number_of_places|stringformat:"02d" }}</span>
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                     <p><small>{{ page.notice }}</small></p>
                 </div>
