@@ -81,36 +81,72 @@ class EventRegistrationView(View):
         except:
             return redirect("profile-my")
 
-        try:
-            event_registration = EventRegistration.objects.get(
-                user=current_user, event=event
-            )
+        event_registration = EventRegistration.objects.filter(
+            user=current_user, event=event
+        ).first()
+
+        if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterPersonForm(
                     request.POST, instance=event_registration
                 )
-        except:
+        else:
             form = EventRegisterPersonForm(request.POST)
 
+        children_formset = self.ChildrenFormset(request.POST)
+
+        valid_children_forms = True
+
         if form.is_valid():
-            print("Prijavnica je valid")
             event_registration = form.save(commit=False)
             event_registration.user = current_user
             event_registration.event = event
             event_registration.save()
 
-            children_formset = self.ChildrenFormset(request.POST)
+            for i, child_form in enumerate(children_formset):
+                temp_child_form_data = child_form.data.copy()
+                temp_child_form_data[
+                    f"form-{i}-event_registration"
+                ] = event_registration
+                child_form.data = temp_child_form_data
 
-            print("otroci")
-            print(children_formset)
+                if child_form.is_valid():
+                    child_form.save()
+                else:
+                    # if form is empty ignore
+                    if (
+                        not child_form.cleaned_data.get("child_name")
+                        and not child_form.cleaned_data.get("child_surname")
+                        and not child_form.cleaned_data.get("parent_phone")
+                        and not child_form.cleaned_data.get("birth_date")
+                        and not child_form.cleaned_data.get("gender")
+                    ):
+                        print("empty form")
+                    else:
+                        valid_children_forms = False
+
+            if not valid_children_forms:
+                return render(
+                    request,
+                    "events/event_registration_1.html",
+                    context={
+                        "event": event,
+                        "form": form,
+                        "children_formset": children_formset,
+                    },
+                )
+
         else:
-            print("Prijavnica ni valid")
             return render(
                 request,
                 "events/event_registration_1.html",
-                context={"event": event, "form": form},
+                context={
+                    "event": event,
+                    "form": form,
+                    "children_formset": children_formset,
+                },
             )
 
         return redirect("event-registration-additional", event=event.slug)

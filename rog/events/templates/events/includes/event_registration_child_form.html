@@ -4,6 +4,10 @@
     children_formset.empty_form.DELETE 
     endif  -->
 
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
+
 <div class="form-field-wrapper {% if form.child_name.errors %}form-field-error{% endif %}">
     {{ form.child_name.label_tag }} {{ form.child_name }}
     {% if form.child_name.errors %}
