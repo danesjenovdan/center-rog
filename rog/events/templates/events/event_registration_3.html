@@ -15,12 +15,15 @@
     {% csrf_token %}
 
     <div class="form-field-wrapper one-line rog-check">
-        {{ form.agreement_responsibility.errors }}
         {{ form.agreement_responsibility }} {{ form.agreement_responsibility.label_tag }}
     </div>
+    {% if form.agreement_responsibility.errors %}
+    <div class="form-field-wrapper">
+        {{ form.agreement_responsibility.errors }}
+    </div>
+    {% endif %}
 
     <div class="form-field-wrapper one-line rog-check">
-        {{ form.allow_photos.errors }}
         {{ form.allow_photos }} {{ form.allow_photos.label_tag }}
     </div>
 

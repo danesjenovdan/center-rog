@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 from django.forms import modelformset_factory
-
 
 from events.models import EventPage, EventRegistration, EventRegistrationChild
 from events.forms import (
@@ -85,9 +85,12 @@ class EventRegistrationView(View):
             user=current_user, event=event
         ).first()
 
+        # event registration object already exists
         if event_registration:
+            # event registration is already finished -> return to event
             if event_registration.registration_finished:
                 return redirect(event.get_url())
+            # event registration is not finished yet -> use the existing object
             else:
                 form = EventRegisterPersonForm(
                     request.POST, instance=event_registration
@@ -100,45 +103,70 @@ class EventRegistrationView(View):
         valid_children_forms = True
 
         if form.is_valid():
-            event_registration = form.save(commit=False)
-            event_registration.user = current_user
-            event_registration.event = event
-            event_registration.save()
+            # user registration
+            if not form.cleaned_data["register_child_check"]:
+                if not form.cleaned_data.get("name"):
+                    form.add_error("name", _("To polje ne sme biti prazno."))
+                if not form.cleaned_data.get("surname"):
+                    form.add_error("surname", _("To polje ne sme biti prazno."))
+                if not form.cleaned_data.get("phone"):
+                    form.add_error("phone", _("To polje ne sme biti prazno."))
 
-            for i, child_form in enumerate(children_formset):
-                temp_child_form_data = child_form.data.copy()
-                temp_child_form_data[
-                    f"form-{i}-event_registration"
-                ] = event_registration
-                child_form.data = temp_child_form_data
+                if form.is_valid():
+                    event_registration = form.save(commit=False)
+                    event_registration.user = current_user
+                    event_registration.event = event
+                    event_registration.save()
 
-                if child_form.is_valid():
-                    child_form.save()
                 else:
-                    # if form is empty ignore
-                    if (
-                        not child_form.cleaned_data.get("child_name")
-                        and not child_form.cleaned_data.get("child_surname")
-                        and not child_form.cleaned_data.get("parent_phone")
-                        and not child_form.cleaned_data.get("birth_date")
-                        and not child_form.cleaned_data.get("gender")
-                    ):
-                        print("empty form")
-                    else:
-                        valid_children_forms = False
+                    return render(
+                        request,
+                        "events/event_registration_1.html",
+                        context={
+                            "event": event,
+                            "form": form,
+                            "children_formset": children_formset,
+                        },
+                    )
 
-            if not valid_children_forms:
-                return render(
-                    request,
-                    "events/event_registration_1.html",
-                    context={
-                        "event": event,
-                        "form": form,
-                        "children_formset": children_formset,
-                    },
-                )
+            else:
+                for i, child_form in enumerate(children_formset):
+                    temp_child_form_data = child_form.data.copy()
+                    temp_child_form_data[
+                        f"form-{i}-event_registration"
+                    ] = event_registration
+                    child_form.data = temp_child_form_data
+
+                    if child_form.is_valid():
+                        child_form.save()
+                    else:
+                        # if form is empty ignore
+                        if (
+                            not child_form.cleaned_data.get("child_name")
+                            and not child_form.cleaned_data.get("child_surname")
+                            and not child_form.cleaned_data.get("parent_phone")
+                            and not child_form.cleaned_data.get("birth_date")
+                            and not child_form.cleaned_data.get("gender")
+                            and i > 0
+                        ):
+                            print("empty form")
+                        else:
+                            valid_children_forms = False
+
+                # children formset has errors
+                if not valid_children_forms:
+                    return render(
+                        request,
+                        "events/event_registration_1.html",
+                        context={
+                            "event": event,
+                            "form": form,
+                            "children_formset": children_formset,
+                        },
+                    )
 
         else:
+            # user form has errors
             return render(
                 request,
                 "events/event_registration_1.html",
@@ -165,15 +193,16 @@ class EventRegistrationAdditionalView(View):
             return redirect("profile-my")
 
         # update existing or return to first step
-        try:
-            event_registration = EventRegistration.objects.get(
-                user=current_user, event=event
-            )
+        event_registration = EventRegistration.objects.filter(
+            user=current_user, event=event
+        ).first()
+
+        if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterAdditionalForm(instance=event_registration)
-        except:
+        else:
             return redirect("event-registration", event=event.slug)
 
         return render(
@@ -193,28 +222,30 @@ class EventRegistrationAdditionalView(View):
             return redirect("profile-my")
 
         # update existing or return to first step
-        try:
-            event_registration = EventRegistration.objects.get(
-                user=current_user, event=event
-            )
+        event_registration = EventRegistration.objects.filter(
+            user=current_user, event=event
+        ).first()
+
+        if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterAdditionalForm(
                     request.POST, instance=event_registration
                 )
-        except:
+        else:
             return redirect("event-registration", event=event.slug)
 
         if form.is_valid():
-            print("Prijavnica je valid")
             form.save()
         else:
-            print("Prijavnica ni valid")
+            print(
+                "Error! Na drugem koraku form ni valid, ko bi na vsak način moral bit, ker polja niso obvezna."
+            )
 
             return render(
                 request,
-                "events/event_registration_3.html",
+                "events/event_registration_2.html",
                 context={"form": form, "registration_step": 1, "event": event},
             )
 
@@ -234,15 +265,16 @@ class EventRegistrationInformationView(View):
             return redirect("profile-my")
 
         # update existing or return to first step
-        try:
-            event_registration = EventRegistration.objects.get(
-                user=current_user, event=event
-            )
+        event_registration = EventRegistration.objects.filter(
+            user=current_user, event=event
+        ).first()
+
+        if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterInformationForm(instance=event_registration)
-        except:
+        else:
             return redirect("event-registration", event=event.slug)
 
         return render(
@@ -262,26 +294,46 @@ class EventRegistrationInformationView(View):
             return redirect("profile-my")
 
         # update existing or return to first step
-        try:
-            event_registration = EventRegistration.objects.get(
-                user=current_user, event=event
-            )
+        event_registration = EventRegistration.objects.filter(
+            user=current_user, event=event
+        ).first()
+
+        if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterInformationForm(
                     request.POST, instance=event_registration
                 )
-        except:
+        else:
             return redirect("event-registration", event=event.slug)
 
         if form.is_valid():
-            print("Prijavnica je valid")
-            form.save()
+            if not form.cleaned_data.get("agreement_responsibility"):
+                form.add_error("agreement_responsibility", _("To polje je obvezno."))
+                return render(
+                    request,
+                    "events/event_registration_3.html",
+                    context={"form": form, "registration_step": 2, "event": event},
+                )
+            else:
+                form.save()
         else:
-            print("Prijavnica ni valid")
+            print(
+                "Error! Na drugem koraku form ni valid, ko bi na vsak način moral bit, ker polja niso obvezna."
+            )
 
-        # TODO: preusmeri na plačilo
-        return redirect(
-            f"/placilo?purchase_type=event&event_registration={event_registration.id}"
-        )
+            return render(
+                request,
+                "events/event_registration_3.html",
+                context={"form": form, "registration_step": 2, "event": event},
+            )
+
+        if event.price > 0:
+            return redirect(
+                f"/placilo?purchase_type=event&event_registration={event_registration.id}"
+            )
+        else:
+            event_registration.registration_finished = True
+            event_registration.save()
+            return redirect("profile-my")

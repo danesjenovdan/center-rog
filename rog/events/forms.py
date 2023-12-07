@@ -39,7 +39,7 @@ class EventRegisterInformationForm(forms.ModelForm):
     )
 
     allow_photos = forms.BooleanField(
-        label=_("dovoljujem, da me Center Rog fotografira in snema:"),
+        label=_("dovoljujem, da me Center Rog fotografira in snema"),
         label_suffix="",
         required=False,
     )

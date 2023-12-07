@@ -13,6 +13,16 @@
     const total_children_forms = document.getElementById("id_form-TOTAL_FORMS");
     const add_child_button = document.getElementById("add-child-button");
 
+    if (children.checked) {
+        user_form.classList.add("hide");
+        children_formset.classList.remove("hide");
+        add_child_button.classList.remove("hide");
+    } else {
+        user_form.classList.remove("hide")
+        children_formset.classList.add("hide");
+        add_child_button.classList.add("hide");
+    }
+
     children.addEventListener("change", function(event) {
         if (event.target.checked) {
             user_form.classList.add("hide");
