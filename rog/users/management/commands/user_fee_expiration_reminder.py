@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 
 from datetime import datetime, timedelta
 
-from payments.models import PaymentPlanEvent
+from payments.models import PaymentPlanEvent, PaymentItemType
 from home.email_utils import send_email
 
 class Command(BaseCommand):
@@ -12,7 +12,8 @@ class Command(BaseCommand):
         self.stdout.write("Start sending notifications for user fee expiration.")
 
         payment_plans_1 = PaymentPlanEvent.objects.filter(
-            valid_to__range=(datetime.now().date() - timedelta(days=0), datetime.now() + timedelta(days=1))
+            valid_to__range=(datetime.now().date() - timedelta(days=0), datetime.now() + timedelta(days=1)),
+            payment_item_type=PaymentItemType.UPORABNINA
         ).exclude(notification_1_sent=True)
 
         for payment_plan in payment_plans_1:
@@ -33,7 +34,8 @@ class Command(BaseCommand):
 
 
         payment_plans_7 = PaymentPlanEvent.objects.filter(
-            valid_to__range=(datetime.now().date() - timedelta(days=7), datetime.now())
+            valid_to__range=(datetime.now().date() - timedelta(days=7), datetime.now()),
+            payment_item_type=PaymentItemType.UPORABNINA
         ).exclude(
             notification_7_sent=True
         ).exclude(
@@ -59,7 +61,8 @@ class Command(BaseCommand):
 
 
         payment_plans_30 = PaymentPlanEvent.objects.filter(
-            valid_to__range=(datetime.now().date() - timedelta(days=30), datetime.now())
+            valid_to__range=(datetime.now().date() - timedelta(days=30), datetime.now()),
+            payment_item_type=PaymentItemType.UPORABNINA
         ).exclude(
             notification_30_sent=True
         ).exclude(
