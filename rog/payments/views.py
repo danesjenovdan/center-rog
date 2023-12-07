@@ -392,16 +392,22 @@ class PaymentSuccessXML(views.APIView):
 
 class PaymentSuccess(views.APIView):
     def get(self, request):
-        if "registration" in request.GET:
+        context_vars = {}
+        args = request.GET.get("args", "")
+        print(args)
+        if "registration" in args:
             purchase_type = "registration"
-        elif "plan" in request.GET:
+        elif "plan" in args:
             purchase_type = "plan"
-        elif "event" in request.GET:
+        elif "event" in args:
             purchase_type = "event"
+            payment = Payment.objects.get(id=request.GET.get('id'))
+            event = payment.payment_plans.first().event_registration.event
+            context_vars['event'] = event
         else:
             purchase_type = "membership"
 
-        context_vars = {"purchase_type": purchase_type}
+        context_vars["purchase_type"] = purchase_type
 
         if purchase_type == "registration":
             context_vars["registration_step"] = 5
