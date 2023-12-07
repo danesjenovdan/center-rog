@@ -113,6 +113,7 @@ a.secondary-button {
         border-color: $cs-disabled;
         color: $cs-white;
         box-shadow: none;
+        pointer-events: none;
 
         &::before {
             display: none;
@@ -225,6 +226,13 @@ body.safari {
             border-bottom: 0.0625em solid;
         }
     }
+}
+
+.link-plus {
+    @include font-size-sm();
+    text-decoration: underline;
+    background: unset;
+    border: none;
 }
 
 /* FORMS */

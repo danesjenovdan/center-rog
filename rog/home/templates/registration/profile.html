@@ -105,16 +105,17 @@
         </div>
     </div>
 
+    {% if event_registrations %}
     <div class="row mb-40">
         <div class="col-12">
             <p class="mb-1">{% translate 'tvoji prihajajoči dogodki' %}</p>
-            {% for event_registration in user.event_registrations.all %}
+            {% for event_registration in event_registrations %}
                 <div class="profile-event-registration">
                     <div>
                         <div class="category">{{ event_registration.event.category }}</div>
                         <div class="title"><a href="{% pageurl event_registration.event.localized %}">{{ event_registration.event.title }}</a></div>
                         {% firstof event_registration.event.contact_email "info@center-rog.si" as event_registration_email %}
-                        <div class="contact">za urejanje prijave kontaktiraj <a href="mailto:{{ event_registration_email }}">{{ event_registration_email }}</a></div>
+                        <div class="contact">{% translate 'za urejanje prijave kontaktiraj' %} <a href="mailto:{{ event_registration_email }}">{{ event_registration_email }}</a></div>
                     </div>
                     <div>
                         {% if event_registration.event.start_day and event_registration.event.end_day %}
@@ -127,6 +128,7 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 
     <div class="row mb-40">
         <div class="col-12">

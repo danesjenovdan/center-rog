@@ -117,12 +117,24 @@ class EventPage(BasePage):
         default=True, verbose_name=_("Pokaži več")
     )
 
-    price = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena"))
-    price_for_non_member = models.DecimalField(decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena za nečlane"))
+    price = models.DecimalField(
+        decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena")
+    )
+    price_for_non_member = models.DecimalField(
+        decimal_places=2, max_digits=10, default=0, verbose_name=_("Cena za nečlane")
+    )
     number_of_places = models.IntegerField(verbose_name=_("Število mest"), default=0)
-    contact_email = models.EmailField(verbose_name=_("Kontaktni email"), null=True, blank=True)
-    labs = models.ManyToManyField("home.LabPage", blank=True, verbose_name=_("Laboratorij"))
-    without_registrations = models.BooleanField(default=False, verbose_name=_("Brez prijave"), help_text=_("Če je označeno, je dogodek brez prijave."))
+    contact_email = models.EmailField(
+        verbose_name=_("Kontaktni email"), null=True, blank=True
+    )
+    labs = models.ManyToManyField(
+        "home.LabPage", blank=True, verbose_name=_("Laboratorij")
+    )
+    without_registrations = models.BooleanField(
+        default=False,
+        verbose_name=_("Brez prijave"),
+        help_text=_("Če je označeno, je dogodek brez prijave."),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -138,7 +150,6 @@ class EventPage(BasePage):
         FieldPanel("notice"),
         FieldPanel("event_is_workshop"),
         FieldPanel("show_see_more_section"),
-
         FieldPanel("price"),
         FieldPanel("price_for_non_member"),
         FieldPanel("number_of_places"),
@@ -153,6 +164,24 @@ class EventPage(BasePage):
         context = super().get_context(request, *args, **kwargs)
         # see more
         context = add_see_more_fields(context)
+
+        free_places = (
+            self.number_of_places
+            - EventRegistration.objects.filter(
+                event=self, registration_finished=True
+            ).count()
+        )
+        context["free_places"] = free_places
+
+        current_user = request.user
+        if current_user.is_authenticated:
+            current_user_registered = EventRegistration.objects.filter(
+                event=self, user=current_user, registration_finished=True
+            ).count()
+        else:
+            current_user_registered = False
+
+        context["current_user_registered"] = current_user_registered
 
         return context
 

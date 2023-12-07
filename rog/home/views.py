@@ -12,7 +12,14 @@ from django.contrib.auth import get_user_model
 from datetime import datetime, date, time, timedelta
 from dateutil.relativedelta import relativedelta
 
-from home.forms import RegisterForm, RegistrationMembershipForm, RegistrationInformationForm, EditProfileForm, UserInterestsForm, PurchasePlanForm
+from home.forms import (
+    RegisterForm,
+    RegistrationMembershipForm,
+    RegistrationInformationForm,
+    EditProfileForm,
+    UserInterestsForm,
+    PurchasePlanForm,
+)
 
 from users.models import User, Membership, MembershipType
 from users.prima_api import PrimaApi
@@ -20,11 +27,12 @@ from users.tokens import get_token_for_user
 from home.email_utils import send_email
 
 from payments.models import Plan
+from events.models import EventRegistration
 
 prima_api = PrimaApi()
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class MyProfileView(TemplateView):
     template_name = "registration/profile.html"
 
@@ -46,13 +54,24 @@ class MyProfileView(TemplateView):
         except AttributeError:
             obnovitev_clanarine = None
 
-        return render(request, self.template_name, {
-            'user': current_user,
-            'ulagtoken': get_token_for_user(current_user),
-            'obnovitev_clanarine': obnovitev_clanarine,
-            "location_id": location_id,
-            "group_id": group_id,
-        })
+        # upcoming events
+        today = date.today()
+        event_registrations = EventRegistration.objects.filter(
+            user=current_user, registration_finished=True, event__start_day__gte=today
+        )
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "user": current_user,
+                "ulagtoken": get_token_for_user(current_user),
+                "obnovitev_clanarine": obnovitev_clanarine,
+                "location_id": location_id,
+                "group_id": group_id,
+                "event_registrations": event_registrations,
+            },
+        )
 
 
 class UserProfileView(TemplateView):
@@ -61,21 +80,21 @@ class UserProfileView(TemplateView):
     def get(self, request, id):
         try:
             user = User.objects.get(id=id)
-            return render(request, self.template_name, {'user': user})
+            return render(request, self.template_name, {"user": user})
         except:
             return HttpResponseNotFound("User not found.")
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class EditProfileView(TemplateView):
     template_name = "registration/edit_profile.html"
 
     def get(self, request, *args, **kwargs):
         current_user = request.user
-        return render(request, self.template_name, {'user': current_user})
+        return render(request, self.template_name, {"user": current_user})
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class SearchProfileView(TemplateView):
     template_name = "registration/search_profile.html"
 
@@ -89,7 +108,6 @@ class SearchProfileView(TemplateView):
     def post(self, request):
         form = UserInterestsForm(request.POST)
 
-
         if form.is_valid():
             interests = form.cleaned_data["interests"]
             users = User.objects.filter(public_profile=True, interests__in=interests)
@@ -99,7 +117,7 @@ class SearchProfileView(TemplateView):
         return render(request, self.template_name, {"users": users, "form": form})
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class PurchasePlanView(TemplateView):
     template_name = "registration/user_purchase_plan.html"
 
@@ -107,15 +125,23 @@ class PurchasePlanView(TemplateView):
         current_user = request.user
 
         form = PurchasePlanForm()
-        membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
+        membership_plans = MembershipType.objects.filter(
+            plan__isnull=False
+        ).values_list("plan", flat=True)
+        form.fields["plans"].queryset = (
+            Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
+        )
 
-        return render(request, self.template_name, { 'user': current_user, "form": form })
+        return render(request, self.template_name, {"user": current_user, "form": form})
 
     def post(self, request):
         form = PurchasePlanForm(request.POST)
-        membership_plans = MembershipType.objects.filter(plan__isnull=False).values_list("plan", flat=True)
-        form.fields["plans"].queryset = Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
+        membership_plans = MembershipType.objects.filter(
+            plan__isnull=False
+        ).values_list("plan", flat=True)
+        form.fields["plans"].queryset = (
+            Plan.objects.all().exclude(id__in=membership_plans).order_by("price")
+        )
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
@@ -124,10 +150,10 @@ class PurchasePlanView(TemplateView):
         else:
             print("Form ni valid")
 
-        return render(request, self.template_name, { "form": form })
+        return render(request, self.template_name, {"form": form})
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class PurchaseMembershipView(TemplateView):
     template_name = "registration/user_purchase_membership.html"
 
@@ -135,17 +161,21 @@ class PurchaseMembershipView(TemplateView):
         current_user = request.user
 
         form = RegistrationMembershipForm()
-        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        membership_types = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=False)
+        )
 
-        return render(request, self.template_name, {
-            "user": current_user,
-            "form": form,
-            "membership_types": membership_types
-        })
+        return render(
+            request,
+            self.template_name,
+            {"user": current_user, "form": form, "membership_types": membership_types},
+        )
 
     def post(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        membership_types = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=False)
+        )
 
         form = RegistrationMembershipForm(request.POST)
 
@@ -160,24 +190,28 @@ class PurchaseMembershipView(TemplateView):
                     valid_to=one_year_from_now,
                     type=membership_type,
                     active=False,
-                    user=user)
+                    user=user,
+                )
                 membership.save()
 
             if membership_type.plan:
-                return redirect(f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership&membership={membership.id}")
+                return redirect(
+                    f"/placilo?plan_id={membership_type.plan.id}&purchase_type=membership&membership={membership.id}"
+                )
             else:
                 return redirect("profile-my")
         else:
-            return render(request, self.template_name, context={
-                "form": form,
-                "membership_types": membership_types
-            })
+            return render(
+                request,
+                self.template_name,
+                context={"form": form, "membership_types": membership_types},
+            )
 
 
 class RegistrationView(View):
     def get(self, request):
         form = RegisterForm()
-        return render(request, "registration/registration.html", context={ "form": form })
+        return render(request, "registration/registration.html", context={"form": form})
 
     def post(self, request):
         form = RegisterForm(request.POST)
@@ -191,43 +225,69 @@ class RegistrationView(View):
             print(data)
 
             if data:
-                prima_id = data['UsrID']
+                prima_id = data["UsrID"]
                 user = User.objects.create_user(
                     email=email,
                     password=password,
                     prima_id=int(prima_id),
-                    is_active=True # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
+                    is_active=True,  # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
                 )
-                send_email(user.email, "emails/registration.html", _("Center Rog – vaša registracija je uspela"), {})
+                send_email(
+                    user.email,
+                    "emails/registration.html",
+                    _("Center Rog – vaša registracija je uspela"),
+                    {},
+                )
                 print("Novi user", user)
                 login(request, user)
             else:
-                print("Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu.")
-                return render(request, "registration/registration.html", context={ "form": form, "error": _("Uporabnika ni bilo mogoče ustvariti.") })
+                print(
+                    "Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu."
+                )
+                return render(
+                    request,
+                    "registration/registration.html",
+                    context={
+                        "form": form,
+                        "error": _("Uporabnika ni bilo mogoče ustvariti."),
+                    },
+                )
 
             return redirect("registration-membership")
         else:
-            return render(request, "registration/registration.html", context={ "form": form })
+            return render(
+                request, "registration/registration.html", context={"form": form}
+            )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class RegistrationMembershipView(View):
-
     def get(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        membership_types = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=False)
+        )
         # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
-        return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
+        return render(
+            request,
+            "registration/registration_2_membership.html",
+            context={
+                "form": form,
+                "registration_step": 1,
+                "membership_types": membership_types,
+            },
+        )
 
     def post(self, request):
         user = request.user
-        membership_types = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        membership_types = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=False)
+        )
 
         form = RegistrationMembershipForm(request.POST)
 
         if form.is_valid():
-
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
             one_year_from_now = today + timedelta(days=365)
@@ -237,7 +297,7 @@ class RegistrationMembershipView(View):
                     valid_to=one_year_from_now,
                     type=membership_type,
                     active=False,
-                    user=user
+                    user=user,
                 )
                 new_membership.save()
                 membership_query = f"?membership={new_membership.id}"
@@ -246,17 +306,29 @@ class RegistrationMembershipView(View):
 
             return redirect(f"/registracija/podatki{membership_query}")
         else:
-            return render(request, "registration/registration_2_membership.html", context={ "form": form, "registration_step": 1, "membership_types": membership_types })
+            return render(
+                request,
+                "registration/registration_2_membership.html",
+                context={
+                    "form": form,
+                    "registration_step": 1,
+                    "membership_types": membership_types,
+                },
+            )
 
-@method_decorator(login_required, name='dispatch')
+
+@method_decorator(login_required, name="dispatch")
 class RegistrationInformationView(View):
-
     def get(self, request):
         user = request.user
-        membership = request.GET.get('membership', None)
+        membership = request.GET.get("membership", None)
 
         form = RegistrationInformationForm(instance=user, membership=membership)
-        return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
+        return render(
+            request,
+            "registration/registration_3_information.html",
+            context={"form": form, "registration_step": 2},
+        )
 
     def post(self, request):
         user = request.user
@@ -280,9 +352,15 @@ class RegistrationInformationView(View):
             user.legal_person_receipt = legal_person_receipt
             if legal_person_receipt:
                 user.legal_person_name = form.cleaned_data["legal_person_name"]
-                user.legal_person_address_1 = form.cleaned_data["legal_person_address_1"]
-                user.legal_person_address_2 = form.cleaned_data["legal_person_address_2"]
-                user.legal_person_tax_number = form.cleaned_data["legal_person_tax_number"]
+                user.legal_person_address_1 = form.cleaned_data[
+                    "legal_person_address_1"
+                ]
+                user.legal_person_address_2 = form.cleaned_data[
+                    "legal_person_address_2"
+                ]
+                user.legal_person_tax_number = form.cleaned_data[
+                    "legal_person_tax_number"
+                ]
                 user.legal_person_vat = form.cleaned_data["legal_person_vat"]
             else:
                 user.legal_person_name = ""
@@ -300,30 +378,43 @@ class RegistrationInformationView(View):
                 membership_query = ""
 
             # update PRIMA user
-            data, message = prima_api.updateUser(user_id=user.prima_id, name=user.first_name, last_name=user.last_name)
+            data, message = prima_api.updateUser(
+                user_id=user.prima_id, name=user.first_name, last_name=user.last_name
+            )
 
             return redirect(f"/registracija/profil{membership_query}")
         else:
-            return render(request, "registration/registration_3_information.html", context={ "form": form, "registration_step": 2 })
+            return render(
+                request,
+                "registration/registration_3_information.html",
+                context={"form": form, "registration_step": 2},
+            )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class RegistrationProfileView(View):
-
     def get(self, request):
         user = request.user
-        membership = request.GET.get('membership', None)
+        membership = request.GET.get("membership", None)
         form = EditProfileForm(instance=user, membership=membership)
 
         payment_needed = True if membership else False
 
-        return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
+        return render(
+            request,
+            "registration/registration_4_profile.html",
+            context={
+                "form": form,
+                "registration_step": 3,
+                "payment_needed": payment_needed,
+            },
+        )
 
     def post(self, request):
         user = request.user
         form = EditProfileForm(request.POST)
 
-        payment_needed = True if request.POST.get('membership', None) else False
+        payment_needed = True if request.POST.get("membership", None) else False
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
@@ -336,13 +427,25 @@ class RegistrationProfileView(View):
 
             User = get_user_model()
             if public_username:
-                public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+                public_username_exists = (
+                    User.objects.filter(public_username=public_username)
+                    .exclude(id=user.id)
+                    .exists()
+                )
                 if public_username_exists:
                     form.add_error("public_username", _("Uporabniško ime že obstaja."))
 
             # if public username error added
             if not form.is_valid():
-                return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
+                return render(
+                    request,
+                    "registration/registration_4_profile.html",
+                    context={
+                        "form": form,
+                        "registration_step": 3,
+                        "payment_needed": payment_needed,
+                    },
+                )
 
             user.public_profile = public_profile
             user.public_username = public_username
@@ -363,21 +466,30 @@ class RegistrationProfileView(View):
 
             if payment_needed:
                 plan_id = user.memberships.last().type.plan.id
-                return redirect(f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}")
+                return redirect(
+                    f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}"
+                )
             else:
                 return redirect("profile-my")
         else:
-            return render(request, "registration/registration_4_profile.html", context={ "form": form, "registration_step": 3, "payment_needed": payment_needed })
+            return render(
+                request,
+                "registration/registration_4_profile.html",
+                context={
+                    "form": form,
+                    "registration_step": 3,
+                    "payment_needed": payment_needed,
+                },
+            )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class EditProfileView(View):
-
     def get(self, request):
         user = request.user
 
         form = EditProfileForm(instance=user)
-        return render(request, "registration/edit_profile.html", context={ "form": form })
+        return render(request, "registration/edit_profile.html", context={"form": form})
 
     def post(self, request):
         user = request.user
@@ -395,12 +507,18 @@ class EditProfileView(View):
 
             User = get_user_model()
             if public_username:
-                public_username_exists = User.objects.filter(public_username=public_username).exclude(id=user.id).exists()
+                public_username_exists = (
+                    User.objects.filter(public_username=public_username)
+                    .exclude(id=user.id)
+                    .exists()
+                )
                 if public_username_exists:
                     form.add_error("public_username", _("Uporabniško ime že obstaja."))
 
             if not form.is_valid():
-                return render(request, "registration/edit_profile.html", context={ "form": form })
+                return render(
+                    request, "registration/edit_profile.html", context={"form": form}
+                )
 
             user.public_profile = public_profile
             user.public_username = public_username
@@ -417,7 +535,9 @@ class EditProfileView(View):
 
             return redirect("profile-my")
         else:
-            return render(request, "registration/edit_profile.html", context={ "form": form })
+            return render(
+                request, "registration/edit_profile.html", context={"form": form}
+            )
 
 
 # @method_decorator(login_required, name='dispatch')

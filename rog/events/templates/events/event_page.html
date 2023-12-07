@@ -45,15 +45,15 @@
                     <p>{{ page.location }}</p>
                     {% if page.apply_url %}
                         <a href="{{ page.apply_url }}" class="primary-button button-medium" target="_blank">{% translate 'prijava' %}</a>
-                    {% elif not page.without_registrations %}
+                    {% elif not page.without_registrations and page.number_of_places > 0 and not current_user_registered %}
                         <div class="text-center">
                             <div>
-                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium" target="_blank">{% translate 'prijava na dogodek' %}</a>
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places == 0 %}disabled{% endif %}" target="_blank">{% translate 'prijava na dogodek' %}</a>
                             </div>
                             <div>
                                 <div class="event-free-places">
                                     <span class="text">{% translate 'Število prostih mest' %}</span>
-                                    <span class="number">{{ page.number_of_places|stringformat:"02d" }}</span>
+                                    <span class="number">{{ free_places|stringformat:"02d" }}</span>
                                 </div>
                             </div>
                         </div>
