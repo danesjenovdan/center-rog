@@ -204,28 +204,48 @@ class PaymentPreview(views.APIView):
             if promo_code:
                 promo_code_error = True
                 for payment_plan in related_payment_plans:
+                    if payment_plan.promo_code:
+                        continue
                     if PromoCode.check_code_validity(promo_code, payment_plan):
-                        valid_promo_code = PromoCode.objects.get(code=promo_code)
-                        payment_plan.promo_code = valid_promo_code
-                        payment_plan.save()
-                        plan = payment_plan.plan
-                        plan_price = (
-                            plan.discounted_price
-                            if user.is_eligible_to_discount()
-                            else plan.price
-                        )
-                        payment.amount -= plan_price * Decimal(
-                            valid_promo_code.percent_discount / 100
-                        )
-                        payment.save()
-                        payment_plan.price = plan_price - plan_price * Decimal(
-                            valid_promo_code.percent_discount / 100
-                        )
-                        payment_plan.save()
-                        promo_code_error = False
-                        promo_code_success = True
+                        if payment_plan.payment_item_type == PaymentItemType.EVENT:
+                            valid_promo_code = PromoCode.objects.get(code=promo_code)
+                            payment_plan.promo_code = valid_promo_code
+                            payment_plan.save()
+                            event = payment_plan.event_registration.event
+                            payment.amount -= payment_plan.price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment.save()
+                            payment_plan.price = payment_plan.price - payment_plan.price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment_plan.save()
+                            promo_code_error = False
+                            promo_code_success = True
 
-                        break
+                            break
+                        else:
+                            valid_promo_code = PromoCode.objects.get(code=promo_code)
+                            payment_plan.promo_code = valid_promo_code
+                            payment_plan.save()
+                            plan = payment_plan.plan
+                            plan_price = (
+                                plan.discounted_price
+                                if user.is_eligible_to_discount()
+                                else plan.price
+                            )
+                            payment.amount -= plan_price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment.save()
+                            payment_plan.price = plan_price - plan_price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment_plan.save()
+                            promo_code_error = False
+                            promo_code_success = True
+
+                            break
 
             return render(
                 request,
