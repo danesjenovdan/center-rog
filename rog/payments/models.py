@@ -12,16 +12,23 @@ from behaviours.models import Timestampable
 import random
 from string import ascii_uppercase
 
+
+class PaymentItemType(models.TextChoices):
+    CLANARINA = "clanarina", _("Clanarina")
+    UPORABNINA = "uporabnina", _("Uporabnina")
+    EVENT = "event", _("Dogodek")
+
+
 class ActiveAtQuerySet(models.QuerySet):
     def get_last_active_subscription_payment_plan(self):
         now = datetime.now()
         active_payments = self.filter(
-            items__item_type__name="uporabnina",
+            items__payment_item_type=PaymentItemType.UPORABNINA,
             successed_at__isnull=False,
             payment_plans__valid_to__gte=now,
         )
         if active_payments:
-            return active_payments.latest('successed_at').payment_plans.all().filter(plan__item_type__name="uporabnina").last()
+            return active_payments.latest('successed_at').payment_plans.all().filter(plan__payment_item_type=PaymentItemType.UPORABNINA).last()
         return None
 
     def get_valid_tokens(self):
@@ -45,11 +52,9 @@ class ActiveAtQuerySet(models.QuerySet):
         )
 
 
-class ItemType(models.Model):
-    name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return f"{self.name}"
+
+
 
 # payments
 class Plan(Timestampable):
@@ -117,7 +122,11 @@ class Plan(Timestampable):
         unique=True,
         help_text=_("Unique ident id for Pantheon without dashes and spaces")
     )
-    item_type = models.ForeignKey('ItemType', blank=True, null=True, on_delete=models.SET_NULL)
+    payment_item_type = models.CharField(
+        max_length=20,
+        choices=PaymentItemType.choices,
+        default=PaymentItemType.CLANARINA,
+    )
     vat = models.IntegerField(default=22) # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
 
     def __str__(self):
@@ -150,7 +159,7 @@ class Plan(Timestampable):
         FieldPanel("year_token_limit"),
         FieldPanel("workshops"),
         FieldPanel("pantheon_ident_id"),
-        FieldPanel("item_type"),
+        FieldPanel("payment_item_type"),
     ]
 
     class Meta:
@@ -167,21 +176,16 @@ class Plan(Timestampable):
         else:
             super().save(*args, **kwargs)
 
-
 class PaymentPlanEvent(models.Model):
-    class Kind(models.TextChoices):
-        PLAN = "PLAN", _("Plan")
-        EVENT = "EVENT", _("Event")
-
-    kind = models.CharField(
+    payment_item_type = models.CharField(
         max_length=20,
-        choices=Kind.choices,
-        default=Kind.PLAN,
+        choices=PaymentItemType.choices,
+        default=PaymentItemType.CLANARINA,
     )
 
     payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
     plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
-    event = models.ForeignKey('events.EventPage', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
+    event_registration = models.ForeignKey('events.EventRegistration', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
 
     plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
@@ -324,8 +328,10 @@ class PromoCode(Timestampable):
         blank=False,
     )
     percent_discount = models.IntegerField(null=False, blank=False)
-    item_type = models.ForeignKey(
-        "ItemType", blank=True, null=True, on_delete=models.SET_NULL
+    payment_item_type = models.CharField(
+        max_length=20,
+        choices=PaymentItemType.choices,
+        default=PaymentItemType.CLANARINA,
     )
     single_use = models.BooleanField(blank=False, null=False)
     number_of_uses = models.IntegerField(null=False, blank=False, default=0)
@@ -347,7 +353,7 @@ class PromoCode(Timestampable):
             if code.single_use and code.number_of_uses > 0:
                 return False
 
-            if code.item_type != payment_plan.plan.item_type:
+            if code.payment_item_type != payment_plan.payment_item_type:
                 return False
 
             if payment_plan.promo_code == code:

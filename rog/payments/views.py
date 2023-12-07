@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 from wkhtmltopdf.views import PDFTemplateResponse
 from decimal import Decimal
 
-from .models import Payment, Plan, Token, PaymentPlanEvent, PromoCode
+from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .pantheon import create_move
@@ -52,9 +52,15 @@ class PaymentPreview(views.APIView):
                     membership = Membership.objects.get(id=membership_id)
                     payment.membership = membership
                 payment.save()
-                PaymentPlanEvent(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+                PaymentPlanEvent(
+                    plan=plan,
+                    payment=payment,
+                    price=price,
+                    plan_name=plan.name,
+                    payment_item_type=plan.payment_item_type
+                ).save()
 
-                if plan.item_type.name == 'uporabnina':
+                if plan.payment_item_type == PaymentItemType.UPORABNINA:
                     # if plan is uporabnina add clanarina to payment
                     membership = user.membership
 
@@ -82,7 +88,13 @@ class PaymentPreview(views.APIView):
                         payment.amount += price
                         payment.membership = membership
                         payment.save()
-                        PaymentPlanEvent(plan=plan, payment=payment, price=price, plan_name=plan.name).save()
+                        PaymentPlanEvent(
+                            plan=plan,
+                            payment=payment,
+                            price=price,
+                            plan_name=plan.name,
+                            payment_item_type=plan.payment_item_type
+                        ).save()
 
                 promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
@@ -99,11 +111,21 @@ class PaymentPreview(views.APIView):
                 payment = Payment(
                     user=user,
                 )
-                payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
-                price = event_registration.event.price
+                if user.membership:
+                    price = event_registration.event.price
+                else:
+                    price = event_registration.price_for_non_members
                 payment.amount = price
+                payment.original_amount = price
                 payment.save()
-                PaymentPlanEvent(plan=event_registration.event, payment=payment, price=price, plan_name=event_registration.event.name).save()
+                PaymentPlanEvent(
+                    kind=PaymentItemType.EVENT,
+                    event=event_registration,
+                    payment=payment,
+                    original_price=price,
+                    price=price,
+                    plan_name=event_registration.event.name
+                ).save()
 
                 promo_code_form = PromoCodeForm({'payment_id': payment.id})
 
