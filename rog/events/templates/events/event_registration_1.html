@@ -13,6 +13,7 @@
     const total_children_forms = document.getElementById("id_form-TOTAL_FORMS");
     const add_child_button = document.getElementById("add-child-button");
 
+    // should children forms initially be shown
     if (children.checked) {
         user_form.classList.add("hide");
         children_formset.classList.remove("hide");
@@ -23,6 +24,7 @@
         add_child_button.classList.add("hide");
     }
 
+    // toggle show/hide on children forms
     children.addEventListener("change", function(event) {
         if (event.target.checked) {
             user_form.classList.add("hide");
@@ -35,10 +37,10 @@
         }
     })
     
+    // when "add child" button is clicked
     add_child_button.addEventListener("click", () => {
         const child_forms = document.getElementsByClassName("child-form");
         const child_forms_num = document.getElementsByClassName("child-form").length + 1;
-        console.log(child_forms_num);
 
         const new_empty_form = document.getElementById("empty-form").cloneNode(true);
         new_empty_form.setAttribute("class", "child-form");
@@ -47,7 +49,6 @@
         new_empty_form.innerHTML = new_empty_form.innerHTML.replace(regex, child_forms_num);
         children_formset.append(new_empty_form);
         total_children_forms.setAttribute("value", child_forms_num + 1);
-        
     });
 
 
@@ -72,6 +73,12 @@
                 }
             });
         });
+    }
+
+    function hide_form(delete_input_id) {
+        const delete_input = document.getElementById(delete_input_id);
+        delete_input.checked = true;
+        delete_input.parentElement.parentElement.classList.add("hide");
     }
 </script>
 {% endblock %}
@@ -118,9 +125,15 @@
         {{ children_formset.management_form }}
 
         {% for form in children_formset %}
-            <div class="child-form">
+            <div class="child-form {% if form.DELETE.value %}hide{% endif %}">
                 {% include "events/includes/event_registration_child_form.html" with form=form child_num=forloop.counter %}
             </div>
+        {% endfor %}
+
+        {% for error in children_formset.non_form_errors %}
+        <div class="error my-3">
+            {{ error }}
+        </div>
         {% endfor %}
 
         <div id="empty-form" class="hide">

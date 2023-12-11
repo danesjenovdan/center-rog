@@ -233,6 +233,10 @@ body.safari {
     text-decoration: underline;
     background: unset;
     border: none;
+
+    &.small {
+        @include font-size-xs();
+    }
 }
 
 /* FORMS */
