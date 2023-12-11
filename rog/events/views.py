@@ -21,7 +21,8 @@ class EventRegistrationView(View):
         form=EventRegistrationChildForm,
         fields="__all__",
         can_delete=True,
-        extra=1,
+        min_num=1,
+        validate_min=True,
     )
 
     def get(self, request, event):
@@ -98,9 +99,10 @@ class EventRegistrationView(View):
         else:
             form = EventRegisterPersonForm(request.POST)
 
-        children_formset = self.ChildrenFormset(request.POST)
-
-        valid_children_forms = True
+        children_formset = self.ChildrenFormset(
+            request.POST,
+            error_messages={"too_few_forms": _("Prosimo, dodajte vsaj enega otroka.")},
+        )
 
         if form.is_valid():
             # user registration
@@ -137,24 +139,9 @@ class EventRegistrationView(View):
                     ] = event_registration
                     child_form.data = temp_child_form_data
 
-                    if child_form.is_valid():
-                        child_form.save()
-                    else:
-                        # if form is empty ignore
-                        if (
-                            not child_form.cleaned_data.get("child_name")
-                            and not child_form.cleaned_data.get("child_surname")
-                            and not child_form.cleaned_data.get("parent_phone")
-                            and not child_form.cleaned_data.get("birth_date")
-                            and not child_form.cleaned_data.get("gender")
-                            and i > 0
-                        ):
-                            print("empty form")
-                        else:
-                            valid_children_forms = False
-
-                # children formset has errors
-                if not valid_children_forms:
+                if children_formset.is_valid():
+                    children_formset.save()
+                else:
                     return render(
                         request,
                         "events/event_registration_1.html",
