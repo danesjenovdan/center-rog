@@ -207,6 +207,11 @@ class PaymentPlanEvent(models.Model):
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
 
+    def get_pantheon_ident_id(self):
+        if self.payment_item_type == PaymentItemType.EVENT:
+            return self.event_registration.event.pantheon_ident
+        return self.plan.get_pantheon_ident_id()
+
 
 class Payment(Timestampable):
     class Status(models.TextChoices):

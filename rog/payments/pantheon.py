@@ -529,8 +529,8 @@ def create_move(
         "invoiceItems": [
             {
                 "acKey": "",
-                "ident": item.plan.get_pantheon_ident_id(),
-                "name": item.plan.name,
+                "ident": item.get_pantheon_ident_id(),
+                "name": item.plan_name,
                 "anNo": 1,
                 "quantity": 1,
                 "price": float(item.price),
