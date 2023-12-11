@@ -4,15 +4,14 @@ import requests
 import json
 
 
-def create_ident(item):
+def create_ident(name, price, vat, ident_id):
     if not settings.PANTHEON_URL:
         return None
-    name = item.name
-    price = float(item.price)
-    vat = int(item.vat)
+    price = float(price)
+    vat = int(vat)
     total_price = price + (price * vat / 100)
     data = {
-        "ident": item.get_pantheon_ident_id(),
+        "ident": ident_id,
         "name": name,
         "classif": "",
         "subClassif": 0,
@@ -496,7 +495,7 @@ def create_move(
         ],
         "clerkId": 1,
         "clerk": "Administrator",
-        "price": float(payment.amount),
+        "price": float(payment.original_amount), # TODO daj tuki brez popusta
         "vat": float(vat * 100 / float(payment.amount)) if payment.amount > 0 else 0.0,
         "discount": 0,
         "department": "",
@@ -530,8 +529,8 @@ def create_move(
         "invoiceItems": [
             {
                 "acKey": "",
-                "ident": item.plan.get_pantheon_ident_id(),
-                "name": item.plan.name,
+                "ident": item.get_pantheon_ident_id(),
+                "name": item.plan_name,
                 "anNo": 1,
                 "quantity": 1,
                 "price": float(item.price),

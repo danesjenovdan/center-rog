@@ -20,8 +20,8 @@ class PaymentAdmin(admin.ModelAdmin):
 
 @admin.register(PromoCode)
 class PromoCodeAdmin(admin.ModelAdmin):
-    list_display = ['code', 'valid_to', 'percent_discount', 'item_type', 'single_use', 'number_of_uses']
-    list_filter = ('item_type', 'single_use',)
+    list_display = ['code', 'valid_to', 'percent_discount', 'payment_item_type', 'single_use', 'number_of_uses']
+    list_filter = ('payment_item_type', 'single_use',)
 
     readonly_fields = ['created_at', 'updated_at']
 

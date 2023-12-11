@@ -1,0 +1,17 @@
+{% extends 'emails/base.html' %}
+{% block body %}
+
+    <p>
+        Živijo!
+    </p>
+    <p>
+        Hvala za prijavo na {{ event.title }}, ki bo dne {{ event.start_day }}.
+    </p>
+    <p>
+        Lep pozdrav,
+    </p>
+    <p>
+        Ekipa Centra Rog
+    </p>
+
+{% endblock body %}
