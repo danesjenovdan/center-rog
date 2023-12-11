@@ -328,12 +328,11 @@ class PaymentDataXML(views.APIView):
         user_email = user.email
         items = ""
 
-        if payment.payment_plans.first().payment_item_type == PaymentItemType.EVENT:
-            sifra = payment.payment_plans.first().event_registration.event.id
-        else:
-            sifra = pp.plan.id
-
         for pp in payment.payment_plans.all():
+            if pp.payment_item_type == PaymentItemType.EVENT:
+                sifra = payment.payment_plans.first().event_registration.event.id
+            else:
+                sifra = pp.plan.id
             items = (
                 items
                 + f"""
