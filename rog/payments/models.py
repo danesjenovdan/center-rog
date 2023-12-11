@@ -172,7 +172,7 @@ class Plan(Timestampable):
             if self.pantheon_ident_id == None:
                 self.pantheon_ident_id = slugify(self.name)[:16]
             super().save(*args, **kwargs)
-            create_ident(self)
+            create_ident(self.name, float(self.price), self.vat, self.get_pantheon_ident_id())
         else:
             super().save(*args, **kwargs)
 

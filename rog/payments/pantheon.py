@@ -4,15 +4,14 @@ import requests
 import json
 
 
-def create_ident(item):
+def create_ident(name, price, vat, ident_id):
     if not settings.PANTHEON_URL:
         return None
-    name = item.name
-    price = float(item.price)
-    vat = int(item.vat)
+    price = float(price)
+    vat = int(vat)
     total_price = price + (price * vat / 100)
     data = {
-        "ident": item.get_pantheon_ident_id(),
+        "ident": ident_id,
         "name": name,
         "classif": "",
         "subClassif": 0,
