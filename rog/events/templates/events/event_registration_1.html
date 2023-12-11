@@ -1,0 +1,139 @@
+{% extends "events/event_registration_wrapper.html" %}
+{% load static i18n %}
+
+{% block title %}{% translate 'Prijava na dogodek' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block extra_js %}
+<script>
+    const user_form = document.getElementById("user_form");
+    const children = document.getElementById("id_register_child_check");
+    const children_formset = document.getElementById("children_formset");
+    const total_children_forms = document.getElementById("id_form-TOTAL_FORMS");
+    const add_child_button = document.getElementById("add-child-button");
+
+    if (children.checked) {
+        user_form.classList.add("hide");
+        children_formset.classList.remove("hide");
+        add_child_button.classList.remove("hide");
+    } else {
+        user_form.classList.remove("hide")
+        children_formset.classList.add("hide");
+        add_child_button.classList.add("hide");
+    }
+
+    children.addEventListener("change", function(event) {
+        if (event.target.checked) {
+            user_form.classList.add("hide");
+            children_formset.classList.remove("hide");
+            add_child_button.classList.remove("hide");
+        } else {
+            user_form.classList.remove("hide")
+            children_formset.classList.add("hide");
+            add_child_button.classList.add("hide");
+        }
+    })
+    
+    add_child_button.addEventListener("click", () => {
+        const child_forms = document.getElementsByClassName("child-form");
+        const child_forms_num = document.getElementsByClassName("child-form").length + 1;
+        console.log(child_forms_num);
+
+        const new_empty_form = document.getElementById("empty-form").cloneNode(true);
+        new_empty_form.setAttribute("class", "child-form");
+        new_empty_form.setAttribute("id", `form-${child_forms_num}`);
+        const regex = new RegExp("__prefix__", "g");
+        new_empty_form.innerHTML = new_empty_form.innerHTML.replace(regex, child_forms_num);
+        children_formset.append(new_empty_form);
+        total_children_forms.setAttribute("value", child_forms_num + 1);
+        
+    });
+
+
+    const gender_radios = document.querySelectorAll("#id_gender input");
+    const other_gender_wrapper = document.getElementById("other-gender-wrapper");
+
+    if (gender_radios && other_gender_wrapper) {
+        // make sure it has corrent class on load
+        const checked_radio = Array.from(gender_radios).filter(r => r.checked)[0];
+        if (checked_radio && checked_radio.value === "O") {
+            other_gender_wrapper.classList.remove("hide");
+        } else {
+            other_gender_wrapper.classList.add("hide");
+        }
+
+        gender_radios.forEach((radio) => {
+            radio.addEventListener("change", function () {
+                if (this.value === "O") {
+                    other_gender_wrapper.classList.remove("hide");
+                } else {
+                    other_gender_wrapper.classList.add("hide");
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}
+
+{% block form_title %}
+<h1>{{ event.category }}: {{ event.title }}<br/>{{ event.start_day }}</h1>
+{% endblock form_title %}
+
+{% block form_block %}
+
+<form action="{% url 'event-registration' event.slug %}" autocomplete="off" method="post">
+    {% csrf_token %}
+
+    <div class="form-field-wrapper one-line rog-check mb-4">
+        {{ form.register_child_check.errors }}
+        {{ form.register_child_check }} {{ form.register_child_check.label_tag }}
+    </div>
+
+    <div id="user_form">
+        <div class="form-field-wrapper {% if form.name.errors %}form-field-error{% endif %}">
+            {{ form.name.label_tag }} {{ form.name }}
+            {% if form.name.errors %}
+            {{ form.name.errors }}
+            {% endif %}
+        </div>
+        
+        <div class="form-field-wrapper {% if form.surname.errors %}form-field-error{% endif %}">
+            {{ form.surname.label_tag }} {{ form.surname }}
+            {% if form.surname.errors %}
+            {{ form.surname.errors }}
+            {% endif %}
+        </div>
+        
+        <div class="form-field-wrapper {% if form.phone.errors %}form-field-error{% endif %}">
+            {{ form.phone.label_tag }} {{ form.phone }}
+            {% if form.phone.errors %}
+            {{ form.phone.errors }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="children_formset" class="hide">
+
+        {{ children_formset.management_form }}
+
+        {% for form in children_formset %}
+            <div class="child-form">
+                {% include "events/includes/event_registration_child_form.html" with form=form child_num=forloop.counter %}
+            </div>
+        {% endfor %}
+
+        <div id="empty-form" class="hide">
+            {% include "events/includes/event_registration_child_form.html" with form=children_formset.empty_form child_num="__prefix__" %}
+        </div>
+
+    </div>
+
+    <button id="add-child-button" class="link-plus hide" type="button">{% translate 'dodaj še enega otroka' %} +</button>
+
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
+    </div>
+</form>
+
+{% endblock form_block %}

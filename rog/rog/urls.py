@@ -56,37 +56,68 @@ urlpatterns = urlpatterns + i18n_patterns(
     # the list:
     # TODO: tukaj dodam recimo login
     # path("prijava/", LoginView.as_view()),
-    path('prijava/', auth_views.LoginView.as_view(), name='login'),
-    path('odjava/', auth_views.LogoutView.as_view(), name='logout'),
+    path("prijava/", auth_views.LoginView.as_view(), name="login"),
+    path("odjava/", auth_views.LogoutView.as_view(), name="logout"),
     path(
-        'pozabljeno-geslo/',
+        "pozabljeno-geslo/",
         auth_views.PasswordResetView.as_view(
             html_email_template_name="registration/password_reset_email.html",
-            email_template_name="registration/password_reset_email_txt.html"
+            email_template_name="registration/password_reset_email_txt.html",
         ),
-        name='password_reset'
+        name="password_reset",
     ),
-    path("ponastavi-geslo/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
-    path("geslo-je-ponastavljeno/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
-    path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete",),
-
-    path('registracija/', RegistrationView.as_view(), name='registration'),
-    path('registracija/clanarina', RegistrationMembershipView.as_view(), name='registration-membership'),
-    path('registracija/podatki', RegistrationInformationView.as_view(), name='registration-information'),
-    path('registracija/profil', RegistrationProfileView.as_view(), name='registration-profile'),
+    path(
+        "ponastavi-geslo/<uidb64>/<token>/",
+        auth_views.PasswordResetConfirmView.as_view(),
+        name="password_reset_confirm",
+    ),
+    path(
+        "geslo-je-ponastavljeno/",
+        auth_views.PasswordResetDoneView.as_view(),
+        name="password_reset_done",
+    ),
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(),
+        name="password_reset_complete",
+    ),
+    path("registracija/", RegistrationView.as_view(), name="registration"),
+    path(
+        "registracija/clanarina",
+        RegistrationMembershipView.as_view(),
+        name="registration-membership",
+    ),
+    path(
+        "registracija/podatki",
+        RegistrationInformationView.as_view(),
+        name="registration-information",
+    ),
+    path(
+        "registracija/profil",
+        RegistrationProfileView.as_view(),
+        name="registration-profile",
+    ),
     # path('registracija/placilo', RegistrationPaymentView.as_view(), name='registration-payment'),
     # path('registracija/uspeh', RegistrationSuccessView.as_view(), name='registration-success'),
-    path('profil/uredi/', EditProfileView.as_view(), name='profile-edit'),
-    path('profil/isci/', SearchProfileView.as_view(), name='profile-search'),
-    path('profil/nakup/', PurchasePlanView.as_view(), name='profile-purchase-plan'),
-    path('profil/clanstvo/', PurchaseMembershipView.as_view(), name='profile-purchase-membership'),
-    path('profil/<int:id>/', UserProfileView.as_view(), name='profile-user'),
-    path('profil/', MyProfileView.as_view(), name='profile-my'),
-    path('placilo/', include('payments.urls')),
-    path('ulagtoken', CheckTokenView.as_view(), name='check-token'),
-    path('test-calendar-embed/', TestCalendarTemplateView.as_view(), name='test-calendar-embed'),
-    path('users/', include('users.urls')),
-
+    path("profil/uredi/", EditProfileView.as_view(), name="profile-edit"),
+    path("profil/isci/", SearchProfileView.as_view(), name="profile-search"),
+    path("profil/nakup/", PurchasePlanView.as_view(), name="profile-purchase-plan"),
+    path(
+        "profil/clanstvo/",
+        PurchaseMembershipView.as_view(),
+        name="profile-purchase-membership",
+    ),
+    path("profil/<int:id>/", UserProfileView.as_view(), name="profile-user"),
+    path("profil/", MyProfileView.as_view(), name="profile-my"),
+    path("placilo/", include("payments.urls")),
+    path("prijava-na-dogodek/", include("events.urls")),
+    path("ulagtoken", CheckTokenView.as_view(), name="check-token"),
+    path(
+        "test-calendar-embed/",
+        TestCalendarTemplateView.as_view(),
+        name="test-calendar-embed",
+    ),
+    path("users/", include("users.urls")),
     path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
