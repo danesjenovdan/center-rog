@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.db.models import F
+from django.db.models import F, Q
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
@@ -57,7 +57,9 @@ class MyProfileView(TemplateView):
         # upcoming events
         today = date.today()
         event_registrations = EventRegistration.objects.filter(
-            user=current_user, registration_finished=True, event__start_day__gte=today
+            Q(event__start_day__gte=today) | Q(event__end_day__gte=today),
+            user=current_user,
+            registration_finished=True,
         )
 
         return render(
