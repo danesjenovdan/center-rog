@@ -172,7 +172,7 @@ class Plan(Timestampable):
             if self.pantheon_ident_id == None:
                 self.pantheon_ident_id = slugify(self.name)[:16]
             super().save(*args, **kwargs)
-            create_ident(self)
+            create_ident(self.name, float(self.price), self.vat, self.get_pantheon_ident_id())
         else:
             super().save(*args, **kwargs)
 
@@ -206,6 +206,11 @@ class PaymentPlanEvent(models.Model):
     notification_30_sent = models.BooleanField(default=False)
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
+
+    def get_pantheon_ident_id(self):
+        if self.payment_item_type == PaymentItemType.EVENT:
+            return self.event_registration.event.pantheon_ident
+        return self.plan.get_pantheon_ident_id()
 
 
 class Payment(Timestampable):

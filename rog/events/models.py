@@ -15,6 +15,7 @@ from modelcluster.models import ClusterableModel
 from datetime import date
 
 from home.models import BasePage, CustomImage, Workshop
+from payments.pantheon import create_ident
 
 import random
 
@@ -135,6 +136,7 @@ class EventPage(BasePage):
         verbose_name=_("Brez prijave"),
         help_text=_("Če je označeno, je dogodek brez prijave."),
     )
+    pantheon_ident = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id"))
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -184,6 +186,13 @@ class EventPage(BasePage):
         context["current_user_registered"] = current_user_registered
 
         return context
+
+    def save(self, *args, **kwargs):
+        if not self.pantheon_ident and self.price > 0 and self.number_of_places:
+            self.pantheon_ident = f'DELAVNICA{self.id}'
+            create_ident(self.title, float(self.price), 0, self.pantheon_ident)
+
+        super(EventPage, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Dogodek")
