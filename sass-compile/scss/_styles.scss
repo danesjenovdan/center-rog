@@ -2192,6 +2192,18 @@ section.image-embed {
                         }
                     }
 
+                    .event-price {
+                        display: inline-flex;
+                        gap: 0.5em;
+                        padding: 0.5em;
+                        margin-bottom: 0.75rem;
+                        background-color: $cs-dark-blue;
+                        border-radius: 3px;
+                        @include font-size-sm();
+                        color: $cs-light-green;
+                        text-align: left;
+                    }
+
                     .event-free-places {
                         display: inline-flex;
                         align-items: center;
