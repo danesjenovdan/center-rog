@@ -48,6 +48,35 @@
                     {% elif not page.without_registrations and page.number_of_places > 0 and not current_user_registered %}
                         <div class="text-center">
                             <div>
+                                {% if page.price == 0 and page.price_for_non_member == 0 %}
+                                <div class="event-price">
+                                    {% translate "brezplačno" %}
+                                </div>
+                                {% else %}
+                                <div class="event-price">
+                                    <div>
+                                        <small>{% translate "za člane" %}</small>
+                                        <div>
+                                            {% if page.price == 0 %}
+                                                {% translate "brezplačno" %}
+                                            {% else %}
+                                                {{ page.price|floatformat:"2g" }}&nbsp;€
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <small>{% translate "za goste" %}</small>
+                                        <div>
+                                            {% if page.price_for_non_member == 0 %}
+                                                {% translate "brezplačno" %}
+                                            {% else %}
+                                                {{ page.price_for_non_member|floatformat:"2g" }}&nbsp;€
+                                            {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div>
                                 <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places == 0 %}disabled{% endif %}" target="_blank">{% translate 'prijava na dogodek' %}</a>
                             </div>
                             <div>
