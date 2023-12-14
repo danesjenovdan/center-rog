@@ -20,233 +20,233 @@ msgstr ""
 
 #: events/models.py:39 news/models.py:40 users/models.py:91
 msgid "Ime kategorije"
-msgstr ""
+msgstr "Category name"
 
 #: events/models.py:42 news/models.py:43
 msgid "Barvna shema"
-msgstr ""
+msgstr "Colour scheme"
 
 #: events/models.py:61
 msgid "Kategorija dogodkov"
-msgstr ""
+msgstr "Event category"
 
 #: events/models.py:62
 msgid "Dogodki - kategorije"
-msgstr ""
+msgstr "Events - categories"
 
 #: events/models.py:67
 msgid "Slika dogodka"
-msgstr ""
+msgstr "Event picture"
 
 #: events/models.py:69 news/models.py:71
 msgid "Kategorija"
-msgstr ""
+msgstr "Category"
 
 #: events/models.py:70 home/models/base_pages.py:247 news/models.py:74
 msgid "Telo"
-msgstr ""
+msgstr "Body"
 
 #: events/models.py:71
 msgid "Oznaka na kartici"
-msgstr ""
+msgstr "Label on the card"
 
 #: events/models.py:72
 msgid "Ura začetka"
-msgstr ""
+msgstr "Start time"
 
 #: events/models.py:73
 msgid "Ura konca"
-msgstr ""
+msgstr "End time"
 
 #: events/models.py:74
 msgid "Datum začetka"
-msgstr ""
+msgstr "Start date"
 
 #: events/models.py:75
 msgid "Datum konca (če gre za večdneven dogodek)"
-msgstr ""
+msgstr "End date (for events across multiple days)"
 
 #: events/models.py:76
 msgid "Lokacija"
-msgstr ""
+msgstr "Location"
 
 #: events/models.py:77
 msgid "Povezava za prijavo (če je prazno, se gumb skrije)"
-msgstr ""
+msgstr "Application link (if empty, button is hidden)"
 
 #: events/models.py:78 home/models/settings.py:109
 msgid "Opomba"
-msgstr ""
+msgstr "Notes"
 
 #: events/models.py:79
 msgid "Dogodek je usposabljanje"
-msgstr ""
+msgstr "This event is a training course"
 
 #: events/models.py:80 events/models.py:115 events/models.py:141
 #: home/models/base_pages.py:197 home/models/module_pages.py:62
 #: home/models/pages.py:166 news/models.py:82 news/models.py:112
 msgid "Pokaži več"
-msgstr ""
+msgstr "Show more"
 
 #: events/models.py:110 home/models/blocks.py:134
 msgid "Dogodek"
-msgstr ""
+msgstr "Event"
 
 #: events/models.py:111 home/models/blocks.py:135
 msgid "Dogodki"
-msgstr ""
+msgstr "Events"
 
 #: events/models.py:136
 msgid "Arhiv programa"
-msgstr ""
+msgstr "Program archive"
 
 #: events/models.py:137
 msgid "Arhivi programov"
-msgstr ""
+msgstr "Program archives"
 
 #: events/models.py:189
 msgid "Program"
-msgstr ""
+msgstr "Program"
 
 #: events/models.py:190
 msgid "Programi"
-msgstr ""
+msgstr "Programs"
 
 #: events/templates/events/event_list_page.html:38
 #: home/templates/home/residence_list_page.html:34
 #: home/templates/home/studio_list_page.html:17
 #: news/templates/news/news_list_page.html:38
 msgid "arhiv"
-msgstr ""
+msgstr "archive"
 
 #: events/templates/events/event_page.html:31
 msgid "začetek"
-msgstr ""
+msgstr "Start"
 
 #: events/templates/events/event_page.html:33
 msgid "konec"
-msgstr ""
+msgstr "End"
 
 #: events/templates/events/event_page.html:47
 #: home/templates/home/includes/header.html:25
 #: home/templates/home/includes/header.html:114
 msgid "prijava"
-msgstr ""
+msgstr "sign up"
 
 #: home/forms.py:31
 msgid "elektronski naslov"
-msgstr ""
+msgstr "Email address"
 
 #: home/forms.py:35
 msgid "prijavi me na novičnik"
-msgstr ""
+msgstr "Sign me up for the newsletter"
 
 #: home/forms.py:41
 msgid "geslo (vsaj 8 znakov, vsaj ena številka)"
-msgstr ""
+msgstr "Password (at least 8 characters and one number)"
 
 #: home/forms.py:46
 msgid "ponovi geslo"
-msgstr ""
+msgstr "Repeat password"
 
 #: home/forms.py:56
 msgid "Geslo mora biti dolgo vsaj 8 znakov."
-msgstr ""
+msgstr "Password must be at least 8 characters long"
 
 #: home/forms.py:58
 msgid "Geslo mora vsebovati vsaj eno številko."
-msgstr ""
+msgstr "Password must contain at least one number"
 
 #: home/forms.py:61 home/forms.py:62
 msgid "Gesli se ne ujemata."
-msgstr ""
+msgstr "Passwords do not match"
 
 #: home/forms.py:133 home/models/blocks.py:308 home/models/settings.py:94
 msgid "Ime"
-msgstr ""
+msgstr "Name"
 
 #: home/forms.py:137
 msgid "Priimek"
-msgstr ""
+msgstr "Surname"
 
 #: home/forms.py:141
 msgid "Datum rojstva"
-msgstr ""
+msgstr "Date of birth"
 
 #: home/forms.py:147
 msgid "Spol"
-msgstr ""
+msgstr "Gender"
 
 #: home/forms.py:149
 msgid "ženski"
-msgstr ""
+msgstr "Female"
 
 #: home/forms.py:149
 msgid "moški"
-msgstr ""
+msgstr "Male"
 
 #: home/forms.py:149
 msgid "drugo"
-msgstr ""
+msgstr "Other"
 
 #: home/forms.py:154
 msgid "izpolni"
-msgstr ""
+msgstr "Complete"
 
 #: home/forms.py:160 home/forms.py:181
 msgid "Naslov 1"
-msgstr ""
+msgstr "Address 1"
 
 #: home/forms.py:164 home/forms.py:187
 msgid "Naslov 2 (neobvezno)"
-msgstr ""
+msgstr "Address 2 (not required)"
 
 #: home/forms.py:169
 msgid "potrebujem račun za pravno osebo"
-msgstr ""
+msgstr "I need a bill for a legal entity"
 
 #: home/forms.py:175
 msgid "Naziv pravne osebe"
-msgstr ""
+msgstr "Legal entity name"
 
 #: home/forms.py:193
 msgid "Davčna številka"
-msgstr ""
+msgstr "Tax ID number"
 
 #: home/forms.py:198
 msgid "sem zavezanec za DDV"
-msgstr ""
+msgstr "I am a VAT taxpayer"
 
 #: home/forms.py:234
 msgid ""
 "Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"
-msgstr ""
+msgstr "The following information can be public and visible to other users of Center Rog"
 
 #: home/forms.py:240
 msgid "Uporabniško ime"
-msgstr ""
+msgstr "Username"
 
 #: home/forms.py:246 home/models/base_pages.py:132
 #: home/models/base_pages.py:160 home/models/pages.py:126 payments/models.py:65
 msgid "Opis"
-msgstr ""
+msgstr "Description"
 
 #: home/forms.py:251 home/forms.py:256 home/forms.py:261
 msgid "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
-msgstr ""
+msgstr "Add link to your webpage or social media profile"
 
 #: home/forms.py:266
 msgid "Kontakt"
-msgstr ""
+msgstr "Contact"
 
 #: home/models/base_pages.py:114 home/models/base_pages.py:255
 #: home/models/module_pages.py:27 home/models/module_pages.py:70
 msgid "Meta slika"
-msgstr ""
+msgstr "Meta picture"
 
 #: home/models/base_pages.py:133 home/models/base_pages.py:149
 msgid "Poglej več"
-msgstr ""
+msgstr "Show more"
 
 #: home/models/base_pages.py:167 home/models/base_pages.py:188
 #: home/models/base_pages.py:218 home/models/blocks.py:190
@@ -254,121 +254,121 @@ msgstr ""
 #: home/models/blocks.py:255 home/models/pages.py:133 home/models/pages.py:145
 #: home/models/settings.py:182 news/models.py:78
 msgid "Slika"
-msgstr ""
+msgstr "Picture"
 
 #: home/models/base_pages.py:169
 msgid "Dodaten opis slike"
-msgstr ""
+msgstr "Additional picture description"
 
 #: home/models/base_pages.py:171 home/models/blocks.py:310
 msgid "Elektronski naslov"
-msgstr ""
+msgstr "Email address"
 
 #: home/models/base_pages.py:172 home/models/settings.py:100
 msgid "Telefonska številka"
-msgstr ""
+msgstr "Phone number"
 
 #: home/models/base_pages.py:173
 msgid "Instagram"
-msgstr ""
+msgstr "Instagram"
 
 #: home/models/base_pages.py:174
 msgid "Facebook"
-msgstr ""
+msgstr "Facebook"
 
 #: home/models/base_pages.py:175
 msgid "Spletna stran"
-msgstr ""
+msgstr "Webpage"
 
 #: home/models/base_pages.py:176
 msgid "Dodatna informacija"
-msgstr ""
+msgstr "Additional information"
 
 #: home/models/base_pages.py:180 home/models/settings.py:103
 #: home/models/settings.py:108
 msgid "Dan"
-msgstr ""
+msgstr "Day"
 
 #: home/models/base_pages.py:181 home/models/settings.py:104
 msgid "Začetna ura"
-msgstr ""
+msgstr "Start time"
 
 #: home/models/base_pages.py:182 home/models/settings.py:105
 msgid "Končna ura"
-msgstr ""
+msgstr "End time"
 
 #: home/models/base_pages.py:183 home/models/settings.py:106
 msgid "Dan in ura"
-msgstr ""
+msgstr "Day and time"
 
 #: home/models/base_pages.py:184
 msgid "Delovni čas"
-msgstr ""
+msgstr "Working schedule"
 
 #: home/models/base_pages.py:189 home/models/blocks.py:191
 #: home/models/pages.py:146 news/models.py:79
 msgid "Podnapis k sliki"
-msgstr ""
+msgstr "Subtitles to the picture"
 
 #: home/models/base_pages.py:191 home/models/blocks.py:192
 #: home/models/blocks.py:195 home/models/pages.py:148 news/models.py:81
 #: users/models.py:174
 msgid "Galerija"
-msgstr ""
+msgstr "Gallery"
 
 #: home/models/base_pages.py:193
 msgid "Arhiviraj"
-msgstr ""
+msgstr "Archive"
 
 #: home/models/base_pages.py:194
 msgid "Deloval od"
-msgstr ""
+msgstr "Operated from"
 
 #: home/models/base_pages.py:195
 msgid "Deloval do"
-msgstr ""
+msgstr "Operated to"
 
 #: home/models/base_pages.py:210
 msgid "Kontaktni podatki"
-msgstr ""
+msgstr "Contact information"
 
 #: home/models/base_pages.py:226
 msgid "Arhivacija"
-msgstr ""
+msgstr "Archive"
 
 #: home/models/base_pages.py:269
 msgid "Osnovna stran z besedilom"
-msgstr ""
+msgstr "Main page with text"
 
 #: home/models/base_pages.py:270
 msgid "Osnovne strani z besedilom"
-msgstr ""
+msgstr "Main pages with text"
 
 #: home/models/blocks.py:23
 msgid "Pokaži povezavo do modula v sekundarnem meniju"
-msgstr ""
+msgstr "Show link to the module in the secondary menu"
 
 #: home/models/blocks.py:33
 msgid "Barva"
-msgstr ""
+msgstr "Color"
 
 #: home/models/blocks.py:36 home/models/blocks.py:116 home/models/blocks.py:137
 #: home/models/blocks.py:154 home/models/blocks.py:178
 #: home/models/blocks.py:209 home/models/blocks.py:228
 #: home/models/blocks.py:327
 msgid "Povezava do strani"
-msgstr ""
+msgstr "Link to the page"
 
 #: home/models/blocks.py:37 home/models/blocks.py:117 home/models/blocks.py:138
 #: home/models/blocks.py:155 home/models/blocks.py:179
 #: home/models/blocks.py:210 home/models/blocks.py:229
 #: home/models/blocks.py:328
 msgid "Zunanja povezava"
-msgstr ""
+msgstr "External link"
 
 #: home/models/blocks.py:38
 msgid "Povezava pod besedilom"
-msgstr ""
+msgstr "Link under the text"
 
 #: home/models/blocks.py:45 home/models/blocks.py:110 home/models/blocks.py:131
 #: home/models/blocks.py:150 home/models/blocks.py:169
@@ -379,576 +379,576 @@ msgstr ""
 #: home/models/blocks.py:323 home/models/blocks.py:350
 #: home/models/blocks.py:364
 msgid "Naslov sekcije"
-msgstr ""
+msgstr "Section title"
 
 #: home/models/blocks.py:46
 msgid "Obvestilo"
-msgstr ""
+msgstr "Notice"
 
 #: home/models/blocks.py:47
 msgid "Izpostavljen dogodek (če pustite prazno, se izbere naključni)"
-msgstr ""
+msgstr "Featured event (random selection if left blank)"
 
 #: home/models/blocks.py:48
 msgid "Izpostavljena novica (če pustite prazno, se izbere naključna)"
-msgstr ""
+msgstr "Featured event (random selection if left blank)"
 
 #: home/models/blocks.py:105
 msgid "Oglasna deska"
-msgstr ""
+msgstr "Notice board"
 
 #: home/models/blocks.py:113 news/models.py:107
 msgid "Novica"
-msgstr ""
+msgstr "News"
 
 #: home/models/blocks.py:114 news/models.py:108 news/models.py:158
 #: news/models.py:159
 msgid "Novice"
-msgstr ""
+msgstr "News"
 
 #: home/models/blocks.py:118 home/models/blocks.py:139
 #: home/models/blocks.py:156 home/models/blocks.py:180
 #: home/models/blocks.py:211 home/models/blocks.py:230
 #: home/models/blocks.py:329
 msgid "Povezava/gumb na dnu (opcijsko)"
-msgstr ""
+msgstr "Link/button at the bottom (optional)"
 
 #: home/models/blocks.py:126
 msgid "Izpostavljene novice"
-msgstr ""
+msgstr "Featured news"
 
 #: home/models/blocks.py:142
 msgid "Izpostavljeni dogodki"
-msgstr ""
+msgstr "Featured events"
 
 #: home/models/blocks.py:151 home/models/blocks.py:170
 #: home/models/blocks.py:204 home/models/blocks.py:225
 #: home/models/blocks.py:324 home/models/blocks.py:351
 #: home/models/blocks.py:365
 msgid "Uvodno besedilo"
-msgstr ""
+msgstr "Introduction text"
 
 #: home/models/blocks.py:152
 msgid "Izpostavljeni laboratoriji"
-msgstr ""
+msgstr "Featured laboratories"
 
 #: home/models/blocks.py:164 home/models/pages.py:206 home/models/pages.py:356
 #: home/models/pages.py:357
 msgid "Laboratoriji"
-msgstr ""
+msgstr "Laboratories"
 
 #: home/models/blocks.py:173
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: home/models/blocks.py:174 home/models/blocks.py:288
 msgid "Ime povezave"
-msgstr ""
+msgstr "Link name"
 
 #: home/models/blocks.py:175 home/models/blocks.py:273
 #: home/models/blocks.py:287
 msgid "Povezava"
-msgstr ""
+msgstr "Link"
 
 #: home/models/blocks.py:176 home/models/blocks.py:183
 msgid "Seznam povezav"
-msgstr ""
+msgstr "List of links"
 
 #: home/models/blocks.py:207
 msgid "Izpostavljeni studii"
-msgstr ""
+msgstr "Featured studios"
 
 #: home/models/blocks.py:219 home/models/pages.py:69 home/models/pages.py:289
 #: home/models/pages.py:290
 msgid "Studii"
-msgstr ""
+msgstr "Studios"
 
 #: home/models/blocks.py:226
 msgid "Prostor"
-msgstr ""
+msgstr "Space"
 
 #: home/models/blocks.py:226
 msgid "Izpostavljeni prostori"
-msgstr ""
+msgstr "Featured spaces"
 
 #: home/models/blocks.py:238
 msgid "Tržnica"
-msgstr ""
+msgstr "Market"
 
 #: home/models/blocks.py:244
 msgid "Izpostavljeno besedilo"
-msgstr ""
+msgstr "Featured text"
 
 #: home/models/blocks.py:245
 msgid "Besedilo pod sliko"
-msgstr ""
+msgstr "Text under the picture"
 
 #: home/models/blocks.py:254 home/models/blocks.py:270
 #: home/models/blocks.py:283 home/models/blocks.py:298
 msgid "Besedilo"
-msgstr ""
+msgstr "Text"
 
 #: home/models/blocks.py:256 home/models/blocks.py:286
 msgid "Opis pod sliko"
-msgstr ""
+msgstr "Description under the picture"
 
 #: home/models/blocks.py:261
 msgid "Pozicija slike"
-msgstr ""
+msgstr "Picture position"
 
 #: home/models/blocks.py:264
 msgid "Barvno besedilo (s sliko)"
-msgstr ""
+msgstr "Colourful text (with picture)"
 
 #: home/models/blocks.py:274
 msgid "Sličice"
-msgstr ""
+msgstr "Thumbnails"
 
 #: home/models/blocks.py:277
 msgid "Barvno besedilo z majhnimi slikami"
-msgstr ""
+msgstr "Colourful text with small images"
 
 #: home/models/blocks.py:289
 msgid "Kartice"
-msgstr ""
+msgstr "Cards"
 
 #: home/models/blocks.py:292
 msgid "Barvno besedilo s karticami"
-msgstr ""
+msgstr "Colourful text with cards"
 
 #: home/models/blocks.py:301
 msgid "Barvno obogateno besedilo"
-msgstr ""
+msgstr "Colour-rich text"
 
 #: home/models/blocks.py:309
 msgid "Delovno mesto"
-msgstr ""
+msgstr "Workplace"
 
 #: home/models/blocks.py:311 home/models/blocks.py:314
 msgid "Kontakti"
-msgstr ""
+msgstr "Contacts"
 
 #: home/models/blocks.py:325 home/models/blocks.py:337 home/models/pages.py:89
 #: home/models/pages.py:334 home/models/pages.py:335
 msgid "Rezidenti"
-msgstr ""
+msgstr "Residents"
 
 #: home/models/blocks.py:342
 msgid "Slika za ozadje"
-msgstr ""
+msgstr "Background picture"
 
 #: home/models/blocks.py:345
 msgid "Novičnik"
-msgstr ""
+msgstr "Newsletter"
 
 #: home/models/blocks.py:359
 msgid "Vrste članstev"
-msgstr ""
+msgstr "Types of membership"
 
 #: home/models/blocks.py:374
 msgid "Vrste uporabnin"
-msgstr ""
+msgstr "User packages"
 
 #: home/models/blocks.py:399
 msgid "Modul"
-msgstr ""
+msgstr "Module"
 
 #: home/models/module_pages.py:94
 msgid "Generična stran"
-msgstr ""
+msgstr "Generic page"
 
 #: home/models/module_pages.py:95
 msgid "Generične strani"
-msgstr ""
+msgstr "Generic pages"
 
 #: home/models/pages.py:48 home/models/pages.py:141 news/models.py:69
 msgid "Predogledna slika"
-msgstr ""
+msgstr "Thumbnail"
 
 #: home/models/pages.py:68
 msgid "Studio"
-msgstr ""
+msgstr "Studio"
 
 #: home/models/pages.py:88
 msgid "Rezident"
-msgstr ""
+msgstr "Resident"
 
 #: home/models/pages.py:99
 msgid "Barvna shema kartice na seznamu"
-msgstr ""
+msgstr "Colour scheme of the card on the list"
 
 #: home/models/pages.py:119
 msgid "Trgovina"
-msgstr ""
+msgstr "Shop"
 
 #: home/models/pages.py:120
 msgid "Trgovine"
-msgstr ""
+msgstr "Shops"
 
 #: home/models/pages.py:152
 msgid "Vodja laboratorija"
-msgstr ""
+msgstr "Lab Manager"
 
 #: home/models/pages.py:156
 msgid "E-mail vodje laboratorija"
-msgstr ""
+msgstr "Lab Manager's Email"
 
 #: home/models/pages.py:158
 msgid "Termini usposabljanj"
-msgstr ""
+msgstr "Training course schedule"
 
 #: home/models/pages.py:159 home/models/pages.py:160
 msgid "Spletna usposabljanja"
-msgstr ""
+msgstr "Online training courses"
 
 #: home/models/pages.py:162
 msgid "Zunanji URL"
-msgstr ""
+msgstr "External URL"
 
 #: home/models/pages.py:163
 msgid "Podstran"
-msgstr ""
+msgstr "Subpage"
 
 #: home/models/pages.py:164
 msgid "Gumb"
-msgstr ""
+msgstr "Button"
 
 #: home/models/pages.py:165
 msgid "Besedilo na gumbu"
-msgstr ""
+msgstr "Text on the button"
 
 #: home/models/pages.py:205
 msgid "Laboratorij"
-msgstr ""
+msgstr "Laboratory"
 
 #: home/models/pages.py:222
 msgid "Knjižnica"
-msgstr ""
+msgstr "Library"
 
 #: home/models/pages.py:223
 msgid "Knjižnice"
-msgstr ""
+msgstr "Libraries"
 
 #: home/models/pages.py:244
 msgid "Arhiv studiev"
-msgstr ""
+msgstr "Studios archive"
 
 #: home/models/pages.py:245
 msgid "Arhivi studiev"
-msgstr ""
+msgstr "Studios archives"
 
 #: home/models/pages.py:264
 msgid "Arhiv rezidentov"
-msgstr ""
+msgstr "Residents archive"
 
 #: home/models/pages.py:265
 msgid "Arhivi rezidentov"
-msgstr ""
+msgstr "Residents archives"
 
 #: home/models/pages.py:311 home/models/pages.py:312
 msgid "Market"
-msgstr ""
+msgstr "Market"
 
 #: home/models/settings.py:95
 msgid "Ulica in hišna številka"
-msgstr ""
+msgstr "Street and house number"
 
 #: home/models/settings.py:96
 msgid "Poštna številka"
-msgstr ""
+msgstr "Postcode"
 
 #: home/models/settings.py:97
 msgid "Pošta"
-msgstr ""
+msgstr "Town"
 
 #: home/models/settings.py:98
 msgid "Država"
-msgstr ""
+msgstr "Country"
 
 #: home/models/settings.py:99
 msgid "E-pošta"
-msgstr ""
+msgstr "Email"
 
 #: home/models/settings.py:110
 msgid "Dan in opomba"
-msgstr ""
+msgstr "Day and note"
 
 #: home/models/settings.py:111
 msgid "Delovni čas organizacije"
-msgstr ""
+msgstr "Opening hours"
 
 #: home/models/settings.py:137
 msgid "Vrteče besedilo"
-msgstr ""
+msgstr "Spinning text"
 
 #: home/models/settings.py:158
 msgid "Povezave v nogi"
-msgstr ""
+msgstr "Footer links"
 
 #: home/models/settings.py:167
 msgid "Naslov"
-msgstr ""
+msgstr "Address"
 
 #: home/models/settings.py:173
 msgid "Logotipi"
-msgstr ""
+msgstr "Logotypes"
 
 #: home/models/settings.py:184
 msgid "Naključne slike v nogi"
-msgstr ""
+msgstr "Random pictures in footers"
 
 #: home/models/tool.py:24
 msgid "Zahteva usposabljanje?"
-msgstr ""
+msgstr "Does it require training?"
 
 #: home/models/tool.py:25
 msgid "Povezava za več informacij"
-msgstr ""
+msgstr "Link for more information"
 
 #: home/models/tool.py:26
 msgid "Prima location id"
-msgstr ""
+msgstr "Prima location id"
 
 #: home/models/tool.py:27
 msgid "Prima group id"
-msgstr ""
+msgstr "Prima group id"
 
 #: home/models/tool.py:32 home/models/tool.py:58
 msgid "Specifikacija"
-msgstr ""
+msgstr "Specification"
 
 #: home/models/tool.py:53
 msgid "Orodje"
-msgstr ""
+msgstr "Tool"
 
 #: home/models/tool.py:54
 msgid "Orodja"
-msgstr ""
+msgstr "Tools"
 
 #: home/models/tool.py:59
 msgid "Vrednost"
-msgstr ""
+msgstr "Value"
 
 #: home/models/tool.py:71
 msgid "Specifikacija orodja"
-msgstr ""
+msgstr "Tool specification"
 
 #: home/models/tool.py:72
 msgid "Specifikacije orodja"
-msgstr ""
+msgstr "Tool specifications"
 
 #: home/models/workshop.py:8
 msgid "Ime usposabljanja"
-msgstr ""
+msgstr "Training course name"
 
 #: home/models/workshop.py:18
 msgid "Usposabljanje za orodje"
-msgstr ""
+msgstr "Training course for tools"
 
 #: home/models/workshop.py:19
 msgid "Orodja - usposabljanja"
-msgstr ""
+msgstr "Tools - training courses"
 
 #: home/templates/home/blocks/bulletin_board.html:21
 msgid "vsi dogodki"
-msgstr ""
+msgstr "All events"
 
 #: home/templates/home/blocks/bulletin_board.html:36
 msgid "vse novice"
-msgstr ""
+msgstr "All news"
 
 #: home/templates/home/blocks/bulletin_board.html:55
 msgid "vsi labi"
-msgstr ""
+msgstr "All labs"
 
 #: home/templates/home/blocks/bulletin_board.html:85
 msgid "Rog Market"
-msgstr ""
+msgstr "Rog Market"
 
 #: home/templates/home/blocks/bulletin_board.html:101
 msgid "Poglej, kdo vse je v naših studiih"
-msgstr ""
+msgstr "See who is in our studios"
 
 #: home/templates/home/blocks/bulletin_board.html:117
 msgid "Poglej naše rezidence"
-msgstr ""
+msgstr "See our residents"
 
 #: home/templates/home/blocks/contacts_section.html:23
 #: home/templates/home/lab_page.html:29
 #: home/templates/home/object_profile_page.html:44
 msgid "e-pošta"
-msgstr ""
+msgstr "email"
 
 #: home/templates/home/blocks/plans_section.html:24
 #: home/templates/registration/user_purchase_plan.html:43
 msgid "cena"
-msgstr ""
+msgstr "price"
 
 #: home/templates/home/includes/cookie_notice.html:13
 msgid "Ali se strinjate z uporabo piškotkov?"
-msgstr ""
+msgstr "Do you accept cookies?"
 
 #: home/templates/home/includes/cookie_notice.html:17
 #: home/templates/home/includes/mailchimp.html:42
 msgid "preberi več"
-msgstr ""
+msgstr "Read more"
 
 #: home/templates/home/includes/cookie_notice.html:22
 msgid "da"
-msgstr ""
+msgstr "yes"
 
 #: home/templates/home/includes/cookie_notice.html:23
 msgid "ne"
-msgstr ""
+msgstr "no"
 
 #: home/templates/home/includes/edit_profile_form.html:7
 msgid ""
 "Če želite je lahko vaš profil dostopen tudi drugim uporabnikom. Tako vas "
 "bodo tisti s podobnimi zanimanji lažje našli, ter vprašali za nasvet, "
 "pomoč... Dostopne bodo samo informacije spodaj..."
-msgstr ""
+msgstr "If you wish, your profile can be accessible to other users. This way, those with similar interests can easily find you and ask for advice, assistance, etc. Only the information below will be avalaible."
 
 #: home/templates/home/includes/edit_profile_form.html:86
 msgid "Izberi kategorije, ki te zanimajo"
-msgstr ""
+msgstr "Select categories that interest you"
 
 #: home/templates/home/includes/edit_profile_form.html:101
 msgid "Dodaj slike svojih izdelkov"
-msgstr ""
+msgstr "Add pictures of your products"
 
 #: home/templates/home/includes/edit_profile_form.html:105
 msgid ""
 "Naložiš lahko največ 10 slik. Največja dovoljena velikost posamezne datoteke "
 "je 5MB. Dovoljena formata sta .jpg in .png."
-msgstr ""
+msgstr "You can upload up to 10 pictures. The maximum allowed size for each file is 5MB. Accepted formats are .jpg and .png."
 
 #: home/templates/home/includes/edit_profile_form.html:109
 msgid "naloži"
-msgstr ""
+msgstr "Upload"
 
 #: home/templates/home/includes/edit_profile_form.html:120
 msgid "odstrani"
-msgstr ""
+msgstr "Remove"
 
 #: home/templates/home/includes/header.html:21
 #: home/templates/home/includes/header.html:112
 msgid "Moj profil"
-msgstr ""
+msgstr "My profile"
 
 #: home/templates/home/includes/mailchimp.html:17
 msgid "Prijavi se na naš novičnik"
-msgstr ""
+msgstr "Sign up to our newsletter"
 
 #: home/templates/home/includes/mailchimp.html:39
 msgid "Strinjam se z uporabo moje e-pošte"
-msgstr ""
+msgstr "I agree to the use of my email"
 
 #: home/templates/home/includes/mailchimp.html:90
 msgid "To polje je obvezno."
-msgstr ""
+msgstr "This field is mandatory"
 
 #: home/templates/home/includes/see_more.html:7
 msgid "Poglej še"
-msgstr ""
+msgstr "See more"
 
 #: home/templates/home/includes/studio_card.html:16
 msgid "obišči studio"
-msgstr ""
+msgstr "Visit studio"
 
 #: home/templates/home/lab_page.html:23
 msgid "Vodja laba"
-msgstr ""
+msgstr "Lab Manager"
 
 #: home/templates/home/lab_page.html:36
 #: home/templates/home/object_profile_page.html:51
 msgid "kopirano!"
-msgstr ""
+msgstr "copied!"
 
 #: home/templates/home/lab_page.html:41
 msgid "termini usposabljanj"
-msgstr ""
+msgstr "Training course dates"
 
 #: home/templates/home/lab_page.html:49
 msgid "spletna usposabljanja"
-msgstr ""
+msgstr "Online training courses"
 
 #: home/templates/home/lab_page.html:89
 msgid "več informacij"
-msgstr ""
+msgstr "More information"
 
 #: home/templates/home/lab_page.html:100 home/templates/home/lab_page.html:105
 #: home/templates/home/lab_page.html:119 home/templates/home/lab_page.html:124
 msgid "rezerviraj"
-msgstr ""
+msgstr "reserve"
 
 #: home/templates/home/lab_page.html:102
 msgid "Usposabljanje je opravljeno!"
-msgstr ""
+msgstr "Training course is finished!"
 
 #: home/templates/home/lab_page.html:107
 msgid "Za rezervacijo potrebuješ usposabljanje."
-msgstr ""
+msgstr "Completed training course required to reserve"
 
 #: home/templates/home/lab_page.html:111
 msgid "Prijava na usposabljanje"
-msgstr ""
+msgstr "Sign up for training course"
 
 #: home/templates/home/lab_page.html:127
 msgid "Za rezervacijo orodja se je potrebno"
-msgstr ""
+msgstr "To reserve the tool, it is necessary"
 
 #: home/templates/home/lab_page.html:129
 msgid "prijaviti"
-msgstr ""
+msgstr "to sign up"
 
 #: home/templates/home/object_profile_page.html:65
 msgid "spletna stran"
-msgstr ""
+msgstr "webpage"
 
 #: home/templates/registration/edit_profile.html:4
 msgid "Uredi profil"
-msgstr ""
+msgstr "Edit profile"
 
 #: home/templates/registration/edit_profile.html:18
 msgid "Uredi profil:"
-msgstr ""
+msgstr "Edit profile:"
 
 #: home/templates/registration/edit_profile.html:24
 msgid "Izpolni podatke za osebni profil:"
-msgstr ""
+msgstr "Fill in the details for your personal profile:"
 
 #: home/templates/registration/logged_out.html:4
 msgid "Odjava"
-msgstr ""
+msgstr "Log out"
 
 #: home/templates/registration/logged_out.html:18
 msgid "Se vidimo!"
-msgstr ""
+msgstr "See you!"
 
 #: home/templates/registration/logged_out.html:20
 msgid "Ponovna prijava"
-msgstr ""
+msgstr "Re-login"
 
 #: home/templates/registration/login.html:4
 msgid "Prijava"
-msgstr ""
+msgstr "Login"
 
 #: home/templates/registration/login.html:16
 #: home/templates/registration/password_reset_complete.html:18
 msgid "Prijavi se"
-msgstr ""
+msgstr "Sign up"
 
 #: home/templates/registration/login.html:19
 msgid "Uporabniško ime in geslo se ne ujemata."
-msgstr ""
+msgstr "Username and password do not match"
 
 #: home/templates/registration/login.html:37
 msgid "Pozabljeno geslo?"
-msgstr ""
+msgstr "Forgotten password?"
 
 #: home/templates/registration/login.html:38
 msgid "Registriraj se"
-msgstr ""
+msgstr "Register"
 
 #: home/templates/registration/login.html:42
 #: home/templates/registration/password_reset_form.html:29
@@ -959,171 +959,171 @@ msgstr ""
 #: home/templates/registration/user_purchase_plan.html:65
 #: payments/templates/registration_payment_preview.html:84
 msgid "naprej"
-msgstr ""
+msgstr "Next"
 
 #: home/templates/registration/password_reset_complete.html:4
 #: home/templates/registration/password_reset_confirm.html:5
 #: home/templates/registration/password_reset_done.html:4
 #: home/templates/registration/password_reset_form.html:4
 msgid "Ponastavitev gesla"
-msgstr ""
+msgstr "Reset password"
 
 #: home/templates/registration/password_reset_complete.html:16
 msgid "Vaše geslo je nastavljeno. Zdaj se lahko prijavite."
-msgstr ""
+msgstr "Your password is set. You can now sign up."
 
 #: home/templates/registration/password_reset_confirm.html:26
 msgid "Nastavite novo geslo"
-msgstr ""
+msgstr "Create new password"
 
 #: home/templates/registration/password_reset_confirm.html:28
 #: home/templates/registration/password_reset_form.html:18
 msgid ""
 "Spodaj vpišite svoj e-poštni naslov in poslali vam bomo navodila, kako "
 "nastavite novo geslo."
-msgstr ""
+msgstr "Enter your email address below and we will send you instructions on how to ''reset password''"
 
 #: home/templates/registration/password_reset_confirm.html:36
 msgid "Novo geslo:"
-msgstr ""
+msgstr "New password:"
 
 #: home/templates/registration/password_reset_confirm.html:43
 msgid "Potrdi geslo:"
-msgstr ""
+msgstr "Confirm password:"
 
 #: home/templates/registration/password_reset_confirm.html:50
 msgid "Spremeni geslo"
-msgstr ""
+msgstr "Change password"
 
 #: home/templates/registration/password_reset_done.html:16
 msgid "Na elektronski naslov smo vam poslali navodila za ponastavitev geslo"
-msgstr ""
+msgstr "Instructions on how to change your password have been sent to your email address"
 
 #: home/templates/registration/password_reset_form.html:16
 msgid "Ste pozabili geslo?"
-msgstr ""
+msgstr "Did you forget your password?"
 
 #: home/templates/registration/password_reset_form.html:23
 msgid "E-pošta:"
-msgstr ""
+msgstr "email"
 
 #: home/templates/registration/profile.html:18
 #: payments/templates/payment_history.html:17
 msgid "Živjo,"
-msgstr ""
+msgstr "Hi,"
 
 #: home/templates/registration/profile.html:26
 msgid "tip članstva"
-msgstr ""
+msgstr "membership type"
 
 #: home/templates/registration/profile.html:30
 msgid "Gost"
-msgstr ""
+msgstr "Guest"
 
 #: home/templates/registration/profile.html:33
 msgid "veljavnost članarine do:"
-msgstr ""
+msgstr "Membership valid until:"
 
 #: home/templates/registration/profile.html:42
 msgid "uredi članstvo"
-msgstr ""
+msgstr "edit membership"
 
 #: home/templates/registration/profile.html:50
 msgid "zakupljen paket uporabnine"
-msgstr ""
+msgstr "leased user package"
 
 #: home/templates/registration/profile.html:57
 msgid "veljavnost paketa do:"
-msgstr ""
+msgstr "package is valid until:"
 
 #: home/templates/registration/profile.html:66
 msgid "izberi paket"
-msgstr ""
+msgstr "choose user package"
 
 #: home/templates/registration/profile.html:76
 msgid "pretekla poraba"
-msgstr ""
+msgstr "past usage"
 
 #: home/templates/registration/profile.html:82
 msgid "uredi profil"
-msgstr ""
+msgstr "edit profile"
 
 #: home/templates/registration/profile.html:88
 msgid "poglej svoj profil"
-msgstr ""
+msgstr "view your profile"
 
 #: home/templates/registration/profile.html:94
 msgid "odjava"
-msgstr ""
+msgstr "sign out"
 
 #: home/templates/registration/profile.html:101
 msgid "drugi člani"
-msgstr ""
+msgstr "other members"
 
 #: home/templates/registration/profile.html:110
 #: home/templates/registration/profile.html:117
 msgid "tvoji prihajajoči dogodki"
-msgstr ""
+msgstr "your upcoming events"
 
 #: home/templates/registration/profile.html:111
 msgid "PRIHAJAJOČI DOGODKI"
-msgstr ""
+msgstr "UPCOMING EVENTS"
 
 #: home/templates/registration/profile.html:127
 msgid "nabor opravljenih usposabljanj"
-msgstr ""
+msgstr "set of completed training courses"
 
 #: home/templates/registration/profile.html:130
 msgid "Usposabljanje"
-msgstr ""
+msgstr "Training course"
 
 #: home/templates/registration/registration.html:4
 #: home/templates/registration/registration_2_membership.html:4
-#: home/templates/registration/registration_3_information.html:4
-#: home/templates/registration/registration_4_profile.html:4
+#: home/temptemplateslates/registration/registration_3_information.html:4
+#: home//registration/registration_4_profile.html:4
 #: home/templates/registration/registration_wrapper.html:4
 msgid "Registracija"
-msgstr ""
+msgstr "Registration"
 
 #: home/templates/registration/registration.html:9
 msgid "Vnesi elektronski naslov in izberi geslo:"
-msgstr ""
+msgstr "Enter your email address and choose password"
 
 #: home/templates/registration/registration_2_membership.html:9
 msgid "Izberi tip članstva:"
-msgstr ""
+msgstr "Choose membership type"
 
 #: home/templates/registration/registration_3_information.html:58
 msgid "Izpolni podatke:"
-msgstr ""
+msgstr "Fill in information"
 
 #: home/templates/registration/registration_4_profile.html:9
 msgid "Izpolni podatke za osebni profil"
-msgstr ""
+msgstr "Fill in information for your personal profile"
 
 #: home/templates/registration/registration_wrapper.html:23
 #: payments/templates/payment_success.html:21
 #: payments/templates/registration_payment_preview.html:23
 msgid "začetek registracije"
-msgstr ""
+msgstr "start of registration"
 
 #: home/templates/registration/registration_wrapper.html:24
 #: payments/templates/payment_success.html:22
 #: payments/templates/registration_payment_preview.html:24
 msgid "izbira članstva"
-msgstr ""
+msgstr "membership selection"
 
 #: home/templates/registration/registration_wrapper.html:25
 #: payments/templates/payment_success.html:23
 #: payments/templates/registration_payment_preview.html:25
 msgid "osnovni podatki"
-msgstr ""
+msgstr "basic data"
 
 #: home/templates/registration/registration_wrapper.html:26
 #: payments/templates/payment_success.html:24
 #: payments/templates/registration_payment_preview.html:26
 msgid "osebni profil"
-msgstr ""
+msgstr "personal profile"
 
 #: home/templates/registration/registration_wrapper.html:28
 #: home/templates/registration/user_purchase_membership.html:24
@@ -1135,69 +1135,69 @@ msgstr ""
 #: payments/templates/registration_payment_preview.html:32
 #: payments/templates/registration_payment_preview.html:37
 msgid "plačilo"
-msgstr ""
+msgstr "payment"
 
 #: home/templates/registration/search_profile.html:6
 msgid "Poišči druge uporabnike"
-msgstr ""
+msgstr "Find other users"
 
 #: home/templates/registration/search_profile.html:15
 msgid "Poišči druge uporabnike:"
-msgstr ""
+msgstr "Find other users:"
 
 #: home/templates/registration/search_profile.html:21
 msgid "Izberi kategorije, ki te zanimajo:"
-msgstr ""
+msgstr "Pick categories you are interested in"
 
 #: home/templates/registration/search_profile.html:40
 msgid "išči"
-msgstr ""
+msgstr "search"
 
 #: home/templates/registration/search_profile.html:45
 msgid "Uporabniki s temi zanimanji:"
-msgstr ""
+msgstr "Users with these interests:"
 
 #: home/templates/registration/user_profile.html:34
 #: home/templates/registration/user_profile.html:37
 #: home/templates/registration/user_profile.html:40
 msgid "povezava"
-msgstr ""
+msgstr "link"
 
 #: home/templates/registration/user_profile.html:46
 msgid "Zanimanja:"
-msgstr ""
+msgstr "Interests:"
 
 #: home/templates/registration/user_purchase_membership.html:4
 #: home/templates/registration/user_purchase_plan.html:4
 msgid "Nakup uporabnine"
-msgstr ""
+msgstr "Purchase of user package"
 
 #: home/templates/registration/user_purchase_membership.html:23
 #: payments/templates/payment_success.html:34
 #: payments/templates/registration_payment_preview.html:36
 msgid "izbira članarine"
-msgstr ""
+msgstr "Choice of membership"
 
 #: home/templates/registration/user_purchase_membership.html:27
 msgid "Izberi članarino"
-msgstr ""
+msgstr "Choose membership"
 
 #: home/templates/registration/user_purchase_membership.html:29
 msgid ""
 "Z letnim članstvom lahko v naslednjem koraku izbereš svoj uporabniški paket "
 "ter opravljaš usposabljanja, ki so pogoj za samostojno uporabo naših labov. "
 "Če ne želiš biti član ali članica, se lahko prijaviš kot gost."
-msgstr ""
+msgstr "If you're a member, in the next step you will be able to choose your user package.'' ''In order to use our labs independently, you must complete the required training courses.'' ''If you don't want to be a member, you can register as a guest."
 
 #: home/templates/registration/user_purchase_plan.html:23
 #: payments/templates/payment_success.html:29
 #: payments/templates/registration_payment_preview.html:31
 msgid "izbira uporabnine"
-msgstr ""
+msgstr "Membership selection"
 
 #: home/templates/registration/user_purchase_plan.html:27
 msgid "Izberi uporabniški paket"
-msgstr ""
+msgstr "Choose user package"
 
 #: home/templates/registration/user_purchase_plan.html:29
 msgid ""
@@ -1205,282 +1205,282 @@ msgid ""
 "od treh spodaj navedenih uporabniških paketov, ki veljajo določeno časovno "
 "obdobje. Nakup paketa omogoča dostop do usposabljanj za stroje in delovne "
 "postaje oziroma možnost samostojnega dela v posamičnih labih."
-msgstr ""
+msgstr "Members can use production labs by purchasing one'' ''of the three user packages listed below, which are valid for a certain time'' ''period. Purchasing a user package gives you access to training courses, work'' ''stations, and the possibility of independent work in individual labs."
 
 #: home/views.py:201
 msgid "Center Rog – vaša registracija je uspela"
-msgstr ""
+msgstr "Center Rog - your registration was successful"
 
 #: home/views.py:206
 msgid "Uporabnika ni bilo mogoče ustvariti."
-msgstr ""
+msgstr "User could not be created"
 
 #: home/views.py:344 home/views.py:402
 msgid "Uporabniško ime že obstaja."
-msgstr ""
+msgstr "Username already exists"
 
 #: news/models.py:62
 msgid "Kategorija novic"
-msgstr ""
+msgstr "News category"
 
 #: news/models.py:63
 msgid "Novice - kategorije"
-msgstr ""
+msgstr "News - categories"
 
 #: news/models.py:67
 msgid "Kratek opis"
-msgstr ""
+msgstr "Short description"
 
 #: news/models.py:73
 msgid "Naslovna slika"
-msgstr ""
+msgstr "Cover photo"
 
 #: news/models.py:75
 msgid "Oznaka"
-msgstr ""
+msgstr "Note"
 
 #: payments/forms.py:8 payments/templates/registration_payment_preview.html:68
 msgid "Vnesi kodo za popust"
-msgstr ""
+msgstr "Enter the discount code"
 
 #: payments/models.py:56
 msgid "Ime paketa"
-msgstr ""
+msgstr "Package name"
 
 #: payments/models.py:56 payments/models.py:174
 msgid "Npr. letna uporabnina"
-msgstr ""
+msgstr "Example annual user package"
 
 #: payments/models.py:60
 msgid "Discounted price"
-msgstr ""
+msgstr "Discounted price"
 
 #: payments/models.py:61
 msgid "Price for younger than 26 years old and older than 65"
-msgstr ""
+msgstr "Price for younger than 26 years old and older than 65"
 
 #: payments/models.py:64
 msgid "Cena"
-msgstr ""
+msgstr "Price"
 
 #: payments/models.py:66
 msgid "Postavka 1"
-msgstr ""
+msgstr "Item 1"
 
 #: payments/models.py:67
 msgid "Postavka 2"
-msgstr ""
+msgstr "Item 2"
 
 #: payments/models.py:68
 msgid "Postavka 3"
-msgstr ""
+msgstr "Item 3"
 
 #: payments/models.py:69
 msgid "Postavka 4"
-msgstr ""
+msgstr "Item 4"
 
 #: payments/models.py:70
 msgid "Postavka 5"
-msgstr ""
+msgstr "Item 5"
 
 #: payments/models.py:72
 msgid "When the plan starts"
-msgstr ""
+msgstr "When the plan starts"
 
 #: payments/models.py:77 users/models.py:76
 msgid "When the plan expires"
-msgstr ""
+msgstr "When the plan expires"
 
 #: payments/models.py:82
 msgid "Koliko dni traja paket?"
-msgstr ""
+msgstr "How many days does the package last?"
 
 #: payments/models.py:86
 msgid "Koliko žetonov dobi uporabnik?"
-msgstr ""
+msgstr "How many tokens does the user get?"
 
 #: payments/models.py:91
 msgid "Tedenska omejitev porabe žetonov"
-msgstr ""
+msgstr "Weekly token spending limit"
 
 #: payments/models.py:97
 msgid "Mesečna omejitev porabe žetonov"
-msgstr ""
+msgstr "Monthly token spending limit"
 
 #: payments/models.py:103
 msgid "Letna omejitev porabe žetonov"
-msgstr ""
+msgstr "Yearly token spending limit"
 
 #: payments/models.py:109
 msgid "Koliko delavnic dobi uporabnik v paketu?"
-msgstr ""
+msgstr "How many workshops does the user get in the package?"
 
 #: payments/models.py:118
 msgid "Unique ident id for Pantheon without dashes and spaces"
-msgstr ""
+msgstr "Unique ident id for Pantheon without dashes and spaces"
 
 #: payments/models.py:144
 msgid "Opis paketa"
-msgstr ""
+msgstr "Package description"
 
 #: payments/models.py:157 users/models.py:29
 msgid "Plačilni paket"
-msgstr ""
+msgstr "Payment package"
 
 #: payments/models.py:158
 msgid "Uporabniki - plačilni paketi"
-msgstr ""
+msgstr "Users - payment packages"
 
 #: payments/models.py:174
 msgid "Ime paketa na dan nakupa"
-msgstr ""
+msgstr "Package name on the day of purchase"
 
 #: payments/models.py:196
 msgid "Pending"
-msgstr ""
+msgstr "Pending"
 
 #: payments/models.py:197
 msgid "Success"
-msgstr ""
+msgstr "Success"
 
 #: payments/models.py:198
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: payments/models.py:216
 msgid "Done at"
-msgstr ""
+msgstr "Done at"
 
 #: payments/models.py:239
 msgid ""
 "Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v "
 "Pantheon"
-msgstr ""
+msgstr "Is the account already saved in Pantheon or prevent the account from being saved in ''Pantheon''"
 
 #: payments/models.py:258
 msgid "Naročilo"
-msgstr ""
+msgstr "Order"
 
 #: payments/models.py:259
 msgid "Naročila"
-msgstr ""
+msgstr "Orders"
 
 #: payments/models.py:279
 msgid "Lab"
-msgstr ""
+msgstr "Lab"
 
 #: payments/models.py:280
 msgid "Workshop"
-msgstr ""
+msgstr "Workshop"
 
 #: payments/models.py:310
 msgid "When does the code expire?"
-msgstr ""
+msgstr "When does the code expire?"
 
 #: payments/templates/payment.html:4 payments/templates/payment_failed.html:4
 #: payments/templates/payment_history.html:4
 msgid "Plačilo"
-msgstr ""
+msgstr "Payment"
 
 #: payments/templates/payment.html:60
 msgid "Poteka preusmeritev na stran za plačilo..."
-msgstr ""
+msgstr "Redirecting to payment page"
 
 #: payments/templates/payment_failed.html:16
 msgid "Napaka pri plačilu."
-msgstr ""
+msgstr "Payment error."
 
 #: payments/templates/payment_history.html:27
 msgid "prenesi PDF računa"
-msgstr ""
+msgstr "Download PDF invoice"
 
 #: payments/templates/payment_success.html:4
 msgid "Plačilo uspešno"
-msgstr ""
+msgstr "Payment successful"
 
 #: payments/templates/payment_success.html:39
 msgid ""
 "Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam "
 "poslali potrditveno sporočilo."
-msgstr ""
+msgstr "The payment was successful, you have become a member of Center Rog. We have sent you a confirmation email "
 
 #: payments/templates/payment_success.html:41
 msgid "Plačilo je bilo uspešno!"
-msgstr ""
+msgstr "Payment was successful!"
 
 #: payments/templates/payment_success.html:44
 msgid "na profil"
-msgstr ""
+msgstr "to profile"
 
 #: payments/templates/registration_payment_preview.html:4
 msgid "Povzetek plačila"
-msgstr ""
+msgstr "Payment summary"
 
 #: payments/templates/registration_payment_preview.html:40
 msgid "Za plačilo"
-msgstr ""
+msgstr "For payment"
 
 #: payments/templates/registration_payment_preview.html:59
 msgid "skupaj"
-msgstr ""
+msgstr "together"
 
 #: payments/templates/registration_payment_preview.html:73
 msgid "pošlji"
-msgstr ""
+msgstr "send"
 
 #: payments/templates/registration_payment_preview.html:76
 msgid "Vnešena koda ni veljavna."
-msgstr ""
+msgstr "Entered code is not valid"
 
 #: payments/templates/registration_payment_preview.html:85
 msgid ""
 "*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart"
-msgstr ""
+msgstr "you will be redirected to the webpage of our bankart payment provider"
 
 #: users/forms.py:11 users/forms.py:21
 msgid "Prima ID"
-msgstr ""
+msgstr "Prima ID"
 
 #: users/forms.py:12 users/forms.py:22
 msgid "Opravljena usposabljanja"
-msgstr ""
+msgstr "Completed training courses"
 
 #: users/forms.py:13 users/forms.py:23
 msgid "Kategorije zanimanj"
-msgstr ""
+msgstr "Categories of interests"
 
 #: users/models.py:28
 msgid "Ime članstva"
-msgstr ""
+msgstr "Membership name"
 
 #: users/models.py:43
 msgid "Bonitete"
-msgstr ""
+msgstr "Credits"
 
 #: users/models.py:47
 msgid "Tip članstva"
-msgstr ""
+msgstr "Membership type"
 
 #: users/models.py:48
 msgid "Uporabniki - tipi članstev"
-msgstr ""
+msgstr "Users - membership types"
 
 #: users/models.py:52
 msgid "Boniteta"
-msgstr ""
+msgstr "Credit"
 
 #: users/models.py:63
 msgid "Boniteta članstva"
-msgstr ""
+msgstr "Membership credit"
 
 #: users/models.py:64
 msgid "Bonitete članstva"
-msgstr ""
+msgstr "Membership credits"
 
 #: users/models.py:101
 msgid "Kategorija zanimanj uporabnikov"
-msgstr ""
+msgstr "Category of user interests"
 
 #: users/models.py:102
 msgid "Uporabniki - kategorije zanimanj"
-msgstr ""
+msgstr "Users - interest categories"
