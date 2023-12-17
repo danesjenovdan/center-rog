@@ -22,6 +22,7 @@ class EventRegistrationView(View):
         fields="__all__",
         can_delete=True,
         min_num=1,
+        extra=0,
         validate_min=True,
     )
 

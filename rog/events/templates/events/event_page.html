@@ -86,6 +86,12 @@
                                 </div>
                             </div>
                         </div>
+                    {% elif current_user_registered %}
+                        <div class="text-center">
+                            <div>
+                                <a href="{% url 'profile-my' %}" class="primary-button button-medium">{% translate 'poglej svojo prijavo' %}</a>
+                            </div>
+                        </div>
                     {% endif %}
                     <p><small>{{ page.notice }}</small></p>
                 </div>
