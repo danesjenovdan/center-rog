@@ -162,18 +162,27 @@ class EventPage(BasePage):
 
     parent_page_types = ["events.EventListPage"]
 
+    def get_free_places(self):
+        registerd_childern = EventRegistrationChild.objects.filter(
+            event_registration__event=self,
+            event_registration__registration_finished=True
+        ).count()
+
+        registerd_users =EventRegistration.objects.filter(
+            event=self, registration_finished=True,
+            event_registration_children__isnull=True
+        ).count()
+
+        free_places = self.number_of_places - (registerd_childern + registerd_users)
+
+        return free_places
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         # see more
         context = add_see_more_fields(context)
 
-        free_places = (
-            self.number_of_places
-            - EventRegistration.objects.filter(
-                event=self, registration_finished=True
-            ).count()
-        )
-        context["free_places"] = free_places
+        context["free_places"] = self.get_free_places()
 
         current_user = request.user
         if current_user.is_authenticated:
