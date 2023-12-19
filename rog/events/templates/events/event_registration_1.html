@@ -52,28 +52,19 @@
     });
 
 
-    const gender_radios = document.querySelectorAll("#id_gender input");
-    const other_gender_wrapper = document.getElementById("other-gender-wrapper");
+    const gender_radios = document.querySelectorAll(".registration-gender-row .gender-radio input");
 
-    if (gender_radios && other_gender_wrapper) {
-        // make sure it has corrent class on load
-        const checked_radio = Array.from(gender_radios).filter(r => r.checked)[0];
-        if (checked_radio && checked_radio.value === "O") {
-            other_gender_wrapper.classList.remove("hide");
-        } else {
-            other_gender_wrapper.classList.add("hide");
-        }
-
-        gender_radios.forEach((radio) => {
-            radio.addEventListener("change", function () {
-                if (this.value === "O") {
-                    other_gender_wrapper.classList.remove("hide");
-                } else {
-                    other_gender_wrapper.classList.add("hide");
-                }
-            });
+    gender_radios.forEach((radio) => {
+        radio.addEventListener("change", function (event) {
+            const rog_radios = event.target.parentElement.parentElement.parentElement.parentElement;
+            const other_gender_wrapper = rog_radios.nextElementSibling;
+            if (this.value === "O") {
+                other_gender_wrapper.classList.remove("hide");
+            } else {
+                other_gender_wrapper.classList.add("hide");
+            }
         });
-    }
+    });
 
     function hide_form(delete_input_id) {
         const delete_input = document.getElementById(delete_input_id);

@@ -17,7 +17,7 @@ class EventRegisterPersonForm(forms.ModelForm):
 
     class Meta:
         model = EventRegistration
-        fields = ["name", "surname", "phone"]
+        fields = ["name", "surname", "phone", "register_child_check"]
         widgets = {
             "name": forms.TextInput(),
             "surname": forms.TextInput(),
