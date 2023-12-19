@@ -17,7 +17,7 @@ class EventRegisterPersonForm(forms.ModelForm):
 
     class Meta:
         model = EventRegistration
-        fields = ["name", "surname", "phone"]
+        fields = ["name", "surname", "phone", "register_child_check"]
         widgets = {
             "name": forms.TextInput(),
             "surname": forms.TextInput(),
@@ -33,13 +33,13 @@ class EventRegisterAdditionalForm(forms.ModelForm):
 
 class EventRegisterInformationForm(forms.ModelForm):
     agreement_responsibility = forms.BooleanField(
-        label=_("strinjam se z zavrnitvijo odgovornosti"),
+        label=_("Opremo v delavnicah bom uporabljal_a na lastno odgovornost."),
         label_suffix="",
         required=False,
     )
 
     allow_photos = forms.BooleanField(
-        label=_("dovoljujem, da me Center Rog fotografira in snema"),
+        label=_("Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."),
         label_suffix="",
         required=False,
     )

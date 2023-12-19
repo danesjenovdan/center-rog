@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 
 from sentry_sdk import capture_message, push_scope
 
+from users.prima_api import PrimaApi
+
+prima_api = PrimaApi()
 
 
 def get_invoice_number():
@@ -40,6 +43,10 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
+
+        valid_from_prima = valid_from.strftime('%Y-%m-%d %H:%M:%S')
+        valid_to_prima = valid_to.strftime('%Y-%m-%d %H:%M:%S')
+        prima_api.setUporabninaDates(user.prima_id, valid_from_prima, valid_to_prima)
     elif membership_fee or membership:
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"

@@ -83,4 +83,6 @@ COPY --chown=wagtail:wagtail --from=sass-compile /app/static/css ./rog/static/cs
 # Use user "wagtail" to run the build commands below and the server itself.
 USER wagtail
 
+RUN python manage.py compilemessages
+
 CMD gunicorn rog.wsgi:application -b 0.0.0.0:8000 --log-level DEBUG
