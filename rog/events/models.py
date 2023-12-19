@@ -136,7 +136,9 @@ class EventPage(BasePage):
         verbose_name=_("Brez prijave"),
         help_text=_("Če je označeno, je dogodek brez prijave."),
     )
-    pantheon_ident = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id"))
+    pantheon_ident = models.CharField(
+        max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -162,18 +164,28 @@ class EventPage(BasePage):
 
     parent_page_types = ["events.EventListPage"]
 
+    def get_free_places(self):
+        registerd_childern = EventRegistrationChild.objects.filter(
+            event_registration__event=self,
+            event_registration__registration_finished=True,
+        ).count()
+
+        registerd_users = EventRegistration.objects.filter(
+            event=self,
+            registration_finished=True,
+            event_registration_children__isnull=True,
+        ).count()
+
+        free_places = self.number_of_places - (registerd_childern + registerd_users)
+
+        return free_places
+
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         # see more
         context = add_see_more_fields(context)
 
-        free_places = (
-            self.number_of_places
-            - EventRegistration.objects.filter(
-                event=self, registration_finished=True
-            ).count()
-        )
-        context["free_places"] = free_places
+        context["free_places"] = self.get_free_places()
 
         current_user = request.user
         if current_user.is_authenticated:
@@ -189,7 +201,7 @@ class EventPage(BasePage):
 
     def save(self, *args, **kwargs):
         if not self.pantheon_ident and self.price > 0 and self.number_of_places:
-            self.pantheon_ident = f'DELAVNICA{self.id}'
+            self.pantheon_ident = f"DELAVNICA{self.id}"
             create_ident(self.title, float(self.price), 0, self.pantheon_ident)
 
         super(EventPage, self).save(*args, **kwargs)
@@ -213,7 +225,11 @@ class EventListArchivePage(BasePage):
 
         today = date.today()
 
-        context["list"] = EventPage.objects.live().filter(start_day__lt=today, end_day__lt=today).order_by("-start_day")
+        context["list"] = (
+            EventPage.objects.live()
+            .filter(start_day__lt=today, end_day__lt=today)
+            .order_by("-start_day")
+        )
 
         # see more
         context = add_see_more_fields(context)
@@ -245,7 +261,11 @@ class EventListPage(BasePage):
 
         today = date.today()
 
-        all_event_page_objects = EventPage.objects.live().filter(Q(start_day__gte=today) | Q(end_day__gte=today)).order_by("start_day", "start_time")
+        all_event_page_objects = (
+            EventPage.objects.live()
+            .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
+            .order_by("start_day", "start_time")
+        )
 
         # filtering
         chosen_category = categories.filter(
@@ -297,6 +317,9 @@ class EventRegistration(Orderable, ClusterableModel):
     name = models.TextField(verbose_name=_("Ime"), blank=True)
     surname = models.TextField(verbose_name=_("Priimek"), blank=True)
     phone = models.TextField(verbose_name=_("Telefonska številka"), blank=True)
+    register_child_check = models.BooleanField(
+        verbose_name=_("Na dogodek prijavljam otroka"), default=False
+    )
     disabilities = models.TextField(verbose_name=_("Oviranosti (naštej)"), blank=True)
     allergies = models.TextField(verbose_name=_("Alergije (naštej)"), blank=True)
     agreement_responsibility = models.BooleanField(
@@ -317,6 +340,7 @@ class EventRegistration(Orderable, ClusterableModel):
         FieldPanel("event"),
         FieldPanel("name"),
         FieldPanel("surname"),
+        FieldPanel("register_child_check"),
         FieldPanel("phone"),
         FieldPanel("disabilities"),
         FieldPanel("allergies"),

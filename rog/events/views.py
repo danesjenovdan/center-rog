@@ -19,9 +19,18 @@ class EventRegistrationView(View):
     ChildrenFormset = modelformset_factory(
         EventRegistrationChild,
         form=EventRegistrationChildForm,
-        fields="__all__",
+        fields=[
+            "child_name",
+            "child_surname",
+            "parent_phone",
+            "birth_date",
+            "gender",
+            "gender_other",
+        ],
         can_delete=True,
-        extra=1,
+        min_num=1,
+        extra=0,
+        validate_min=True,
     )
 
     def get(self, request, event):
@@ -98,9 +107,10 @@ class EventRegistrationView(View):
         else:
             form = EventRegisterPersonForm(request.POST)
 
-        children_formset = self.ChildrenFormset(request.POST)
-
-        valid_children_forms = True
+        children_formset = self.ChildrenFormset(
+            request.POST,
+            error_messages={"too_few_forms": _("Prosimo, dodajte vsaj enega otroka.")},
+        )
 
         if form.is_valid():
             # user registration
@@ -130,31 +140,17 @@ class EventRegistrationView(View):
                     )
 
             else:
-                for i, child_form in enumerate(children_formset):
-                    temp_child_form_data = child_form.data.copy()
-                    temp_child_form_data[
-                        f"form-{i}-event_registration"
-                    ] = event_registration
-                    child_form.data = temp_child_form_data
+                event_registration = form.save(commit=False)
+                event_registration.user = current_user
+                event_registration.event = event
+                event_registration.save()
 
-                    if child_form.is_valid():
-                        child_form.save()
-                    else:
-                        # if form is empty ignore
-                        if (
-                            not child_form.cleaned_data.get("child_name")
-                            and not child_form.cleaned_data.get("child_surname")
-                            and not child_form.cleaned_data.get("parent_phone")
-                            and not child_form.cleaned_data.get("birth_date")
-                            and not child_form.cleaned_data.get("gender")
-                            and i > 0
-                        ):
-                            print("empty form")
-                        else:
-                            valid_children_forms = False
-
-                # children formset has errors
-                if not valid_children_forms:
+                if children_formset.is_valid():
+                    children = children_formset.save(commit=False)
+                    for child in children:
+                        child.event_registration = event_registration
+                    children = children_formset.save()
+                else:
                     return render(
                         request,
                         "events/event_registration_1.html",

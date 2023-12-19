@@ -155,6 +155,8 @@ class PaymentPreview(views.APIView):
                 if existing_paymetn_plan:
                     payment = existing_paymetn_plan.payment
                     existing_paymetn_plan.price = price
+                    existing_paymetn_plan.original_price = price
+                    existing_paymetn_plan.plan_name=title
                     existing_paymetn_plan.save()
                     payment.amount = price
                     payment.original_amount = price

@@ -16,6 +16,8 @@ class EventRegistrationAdmin(ModelAdmin):
     menu_order = 300
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_filter = ("register_child_check", "registration_finished")
+    search_fields = ("event__title", "name", "surname", "user__first_name", "user__last_name")
 
 
 modeladmin_register(EventCategoryAdmin)

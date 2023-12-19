@@ -1,12 +1,14 @@
-<h4>Otrok {{ child_num }}:</h4>
-    <!-- if children_formset.can_delete 
-<button id="remove-child-button" class="link-cross" type="button">x</button>
-    children_formset.empty_form.DELETE 
-    endif  -->
+{% load i18n %}
+
+<h4>{% translate 'Otrok' %} {{ child_num }}:</h4>
 
 {% for field in form.hidden_fields %}
 {{ field }}
 {% endfor %}
+
+<div class="hide">
+    {{ form.DELETE }}
+</div>
 
 <div class="form-field-wrapper {% if form.child_name.errors %}form-field-error{% endif %}">
     {{ form.child_name.label_tag }} {{ form.child_name }}
@@ -45,11 +47,15 @@
         {% endif %}
     </div>
 
-    <div class="form-field-wrapper hide" id="other-gender-wrapper">
+    <div class="form-field-wrapper other-gender-wrapper hide">
         {{ form.gender_other.label_tag }} {{ form.gender_other }}
         {% if form.gender_other.errors %}
         <p class="error">{{ form.gender_other.errors }}</p>
         {% endif %}
     </div>
 
+</div>
+
+<div class="text-end">
+    <button class="link-plus small" type="button" onclick="hide_form('{{ form.DELETE.auto_id }}')">{% translate 'odstrani osebo' %}</button>
 </div>
