@@ -19,7 +19,14 @@ class EventRegistrationView(View):
     ChildrenFormset = modelformset_factory(
         EventRegistrationChild,
         form=EventRegistrationChildForm,
-        fields="__all__",
+        fields=[
+            "child_name",
+            "child_surname",
+            "parent_phone",
+            "birth_date",
+            "gender",
+            "gender_other",
+        ],
         can_delete=True,
         min_num=1,
         extra=0,
@@ -133,15 +140,16 @@ class EventRegistrationView(View):
                     )
 
             else:
-                for i, child_form in enumerate(children_formset):
-                    temp_child_form_data = child_form.data.copy()
-                    temp_child_form_data[
-                        f"form-{i}-event_registration"
-                    ] = event_registration
-                    child_form.data = temp_child_form_data
+                event_registration = form.save(commit=False)
+                event_registration.user = current_user
+                event_registration.event = event
+                event_registration.save()
 
                 if children_formset.is_valid():
-                    children_formset.save()
+                    children = children_formset.save(commit=False)
+                    for child in children:
+                        child.event_registration = event_registration
+                    children = children_formset.save()
                 else:
                     return render(
                         request,

@@ -379,9 +379,16 @@ class RegistrationInformationView(View):
             else:
                 membership_query = ""
 
+            # prepare valid from and to dates
+            valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
+            valid_to = valid_from
             # update PRIMA user
             data, message = prima_api.updateUser(
-                user_id=user.prima_id, name=user.first_name, last_name=user.last_name
+                user_id=user.prima_id,
+                name=user.first_name,
+                last_name=user.last_name,
+                valid_from=valid_from,
+                valid_to=valid_to,
             )
 
             return redirect(f"/registracija/profil{membership_query}")

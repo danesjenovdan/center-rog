@@ -150,7 +150,7 @@ class PrimaApi(object):
 
         return data, message
     
-    def updateUser(self, user_id, name, last_name):
+    def updateUser(self, user_id, name, last_name, valid_from, valid_to):
         """ 
         TODO
         """
@@ -160,6 +160,8 @@ class PrimaApi(object):
             'UsrID': user_id,
             'UsrName': name,
             'UsrLastName': last_name,
+            'UsrValidFrom': valid_from,
+            'UsrValidTo': valid_to,
         }
 
         data, message = self.primaRequest(payload)
@@ -180,6 +182,17 @@ class PrimaApi(object):
 
         return data, message
 
+    def setUporabninaDates(self, user_id, valid_from, valid_to):
+        payload = {
+            'Request': 'UpdateUser', 
+            'UsrID': user_id,
+            'UsrValidFrom': valid_from,
+            'UsrValidTo': valid_to,
+        }
+
+        data, message = self.primaRequest(payload)
+
+        return data, message
     
     ### BOOKINGS
     
