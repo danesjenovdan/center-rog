@@ -93,10 +93,10 @@
                 <a class="nav-link {% if request.get_full_path == navigation_link.value.page.url %}active{% endif %}"
                     href="{% if navigation_link.value.url %}{{ navigation_link.value.url }}{% elif navigation_link.value.page %}{% pageurl navigation_link.value.page %}{% endif %}"
                     {% if request.get_full_path == navigation_link.value.page.url %} aria-current="page" {% endif %}>
-                  {% if navigation_link.value.name %}
-                    {{ navigation_link.value.name }}
-                  {% elif navigation_link.value.page %}
+                  {% if navigation_link.value.page %}
                     {{ navigation_link.value.page.title }}
+                  {% elif navigation_link.value.name %}
+                    {{ navigation_link.value.name }}
                   {% endif %}
                 </a>
               </li>
