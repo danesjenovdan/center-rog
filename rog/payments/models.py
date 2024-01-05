@@ -1,10 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+from django.utils import timezone
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-
-from datetime import datetime, timezone
 
 from .pantheon import create_ident, create_move
 from behaviours.models import Timestampable
@@ -21,7 +20,7 @@ class PaymentItemType(models.TextChoices):
 
 class ActiveAtQuerySet(models.QuerySet):
     def get_last_active_subscription_payment_plan(self):
-        now = datetime.now()
+        now = timezone.now()
         active_payments = self.filter(
             items__payment_item_type=PaymentItemType.UPORABNINA,
             successed_at__isnull=False,
@@ -32,7 +31,7 @@ class ActiveAtQuerySet(models.QuerySet):
         return None
 
     def get_valid_tokens(self):
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         return Token.objects.filter(
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
@@ -42,7 +41,7 @@ class ActiveAtQuerySet(models.QuerySet):
         )
 
     def get_available_workshops(self):
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         return Token.objects.filter(
             valid_from__lte=timestamp,
             valid_to__gte=timestamp,
@@ -353,7 +352,7 @@ class PromoCode(Timestampable):
 
         if code_filter.count() == 1:
             code = code_filter.first()
-            now = datetime.now().replace(tzinfo=timezone.utc)
+            now = timezone.now()
 
             if code.valid_to < now:
                 return False
