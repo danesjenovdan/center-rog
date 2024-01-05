@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from users.prima_api import PrimaApi
+from payments.models import PaymentItemType
 
 prima_api = PrimaApi()
 
@@ -22,10 +23,24 @@ class Command(BaseCommand):
             valid_from = today_midnight
             valid_to = today_midnight
 
-            last_active_membership = user.get_last_active_membership()
-            if last_active_membership:
-                valid_from = last_active_membership.valid_from
-                valid_to = last_active_membership.valid_to
+            sub_payments = user.payments.filter(
+                items__payment_item_type=PaymentItemType.UPORABNINA,
+                successed_at__isnull=False,
+            )
+            payment_plan = None
+            if sub_payments:
+                payment_plan = (
+                    sub_payments.latest("successed_at")
+                    .payment_plans.all()
+                    .filter(plan__payment_item_type=PaymentItemType.UPORABNINA)
+                    .last()
+                )
+
+            if payment_plan:
+                valid_from = payment_plan.valid_to - timezone.timedelta(
+                    days=payment_plan.plan.duration
+                )
+                valid_to = payment_plan.valid_to
 
             valid_from_prima = valid_from.strftime("%Y-%m-%d %H:%M:%S")
             valid_to_prima = valid_to.strftime("%Y-%m-%d %H:%M:%S")
