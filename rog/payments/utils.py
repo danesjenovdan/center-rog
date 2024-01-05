@@ -43,10 +43,6 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
-
-        valid_from_prima = valid_from.strftime('%Y-%m-%d %H:%M:%S')
-        valid_to_prima = valid_to.strftime('%Y-%m-%d %H:%M:%S')
-        prima_api.setUporabninaDates(user.prima_id, valid_from_prima, valid_to_prima)
     elif membership_fee or membership:
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
@@ -66,8 +62,16 @@ def finish_payment(payment):
             user_fee_plan = plan
             last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
             valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
-            payment_plan.valid_to = valid_from + timedelta(days=plan.duration)
+            valid_to = valid_from + timedelta(days=plan.duration)
+            payment_plan.valid_to = valid_to
             payment_plan.save()
+
+            # always set uporabnina dates on prima from now since there could be an active plan already
+            valid_from_prima = timezone.now()
+            valid_to_prima = valid_to
+            valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
+            valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
+            prima_api.setUporabninaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
             Token.objects.bulk_create([
                 Token(
