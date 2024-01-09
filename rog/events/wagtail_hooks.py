@@ -4,13 +4,13 @@ from django.utils import timezone
 from django.db.models import Q
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 
-from .models import EventCategory, EventRegistration
+from .models import EventPage, EventCategory, EventRegistration
 
 
 class RelevantEventsListFilter(SimpleListFilter):
     # Human-readable title which will be displayed in the
     # right admin sidebar just above the filter options.
-    title = _("Datum dogodka")
+    title = _("Trenutni in prihodni dogodki")
 
     # Parameter for the filter that will be used in the URL query.
     parameter_name = "relevant_event"
@@ -23,9 +23,15 @@ class RelevantEventsListFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        return [
-            ("relevant", _("Trenutni in prihodnji dogodki")),
-        ]
+        now = timezone.now()
+
+        relevant_events = (
+            EventPage.objects.filter(Q(start_day__gte=now) | Q(end_day__gte=now))
+            .order_by("start_day", "start_time")
+            .values_list("id", "title")
+        )
+
+        return relevant_events
 
     def queryset(self, request, queryset):
         """
@@ -35,12 +41,11 @@ class RelevantEventsListFilter(SimpleListFilter):
         """
         # Compare the requested value (either 'all' or 'relevant')
         # to decide how to filter the queryset.
-        now = timezone.now()
 
-        if self.value() == "relevant":
+        if self.value():
             return queryset.filter(
-                Q(event__start_day__gte=now) | Q(event__end_day__gte=now)
-            ).order_by("event__start_day", "event__start_time")
+                event=self.value()
+            )
 
 
 class EventCategoryAdmin(ModelAdmin):
