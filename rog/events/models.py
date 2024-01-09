@@ -12,6 +12,8 @@ from wagtail.fields import RichTextField, StreamField
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
+from wagtailautocomplete.edit_handlers import AutocompletePanel
+
 from datetime import date
 
 from home.models import BasePage, CustomImage, Workshop
@@ -337,6 +339,7 @@ class EventRegistration(Orderable, ClusterableModel):
         return f"{self.event.title} [{self.user}]"
 
     panels = [
+        AutocompletePanel("user", target_model="users.User"),
         FieldPanel("event"),
         FieldPanel("name"),
         FieldPanel("surname"),
