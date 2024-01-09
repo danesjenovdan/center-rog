@@ -27,7 +27,13 @@ import re
 
 class MembershipType(ClusterableModel):
     name = models.TextField(verbose_name=_("Ime članstva"))
-    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("Plačilni paket"))
+    plan = models.ForeignKey(
+        Plan,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name=_("Plačilni paket"),
+    )
 
     def __str__(self):
         return self.name
@@ -51,7 +57,9 @@ class MembershipType(ClusterableModel):
 
 class MembershipTypeSpecification(Orderable):
     name = models.TextField(verbose_name=_("Boniteta"))
-    membership_type = ParentalKey(MembershipType, on_delete=models.CASCADE, related_name="related_specifications")
+    membership_type = ParentalKey(
+        MembershipType, on_delete=models.CASCADE, related_name="related_specifications"
+    )
 
     def __str__(self):
         return self.name
@@ -66,17 +74,19 @@ class MembershipTypeSpecification(Orderable):
 
 
 class Membership(Timestampable):
-    type = models.ForeignKey(MembershipType, on_delete=models.CASCADE, null=True, blank=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE, null=True, blank=True, related_name='memberships')
-    valid_from = models.DateTimeField(
-        auto_now_add=True,
-        null=True,
-        blank=True
+    type = models.ForeignKey(
+        MembershipType, on_delete=models.CASCADE, null=True, blank=True
     )
-    valid_to = models.DateTimeField(
-        help_text=_("When the plan expires"),
+    user = models.ForeignKey(
+        "User",
+        on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
+        related_name="memberships",
+    )
+    valid_from = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    valid_to = models.DateTimeField(
+        help_text=_("When the plan expires"), null=True, blank=True
     )
     active = models.BooleanField(default=False)
 
@@ -114,10 +124,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError("Users must have an email address")
 
-        user = self.model(
-            email=self.normalize_email(email),
-            **extra_fields
-        )
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -149,32 +156,64 @@ class User(AbstractUser, Timestampable):
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
-    legal_person_receipt = models.BooleanField(default=False, verbose_name="Račun za pravno osebo")
-    legal_person_name = models.CharField(max_length=200, blank=True, verbose_name="Naziv pravne osebe")
-    legal_person_address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
-    legal_person_address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
-    legal_person_tax_number = models.CharField(max_length=200, blank=True, verbose_name="Davčna številka")
-    legal_person_vat = models.BooleanField(default=False, verbose_name="Zavezanec za DDV")
-    public_profile = models.BooleanField(default=False, verbose_name="Profil naj bo javno viden")
-    public_username = models.CharField(max_length=20, blank=True, verbose_name="Uporabniško ime")
+    legal_person_receipt = models.BooleanField(
+        default=False, verbose_name="Račun za pravno osebo"
+    )
+    legal_person_name = models.CharField(
+        max_length=200, blank=True, verbose_name="Naziv pravne osebe"
+    )
+    legal_person_address_1 = models.CharField(
+        max_length=200, blank=True, verbose_name="Naslov 1"
+    )
+    legal_person_address_2 = models.CharField(
+        max_length=200, blank=True, verbose_name="Naslov 2"
+    )
+    legal_person_tax_number = models.CharField(
+        max_length=200, blank=True, verbose_name="Davčna številka"
+    )
+    legal_person_vat = models.BooleanField(
+        default=False, verbose_name="Zavezanec za DDV"
+    )
+    public_profile = models.BooleanField(
+        default=False, verbose_name="Profil naj bo javno viden"
+    )
+    public_username = models.CharField(
+        max_length=20, blank=True, verbose_name="Uporabniško ime"
+    )
     description = models.CharField(max_length=600, blank=True, verbose_name="Opis")
     link_1 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_2 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     link_3 = models.URLField(blank=True, verbose_name="Povezava do spletne strani")
     contact = models.EmailField(blank=True, verbose_name="Kontakt")
     birth_date = models.DateField(verbose_name="Datum rojstva", null=True)
-    gender = models.CharField(max_length=1, blank=True, choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")), verbose_name="Spol")
-    gender_other = models.CharField(max_length=200, blank=True, verbose_name="Spol (drugo)")
+    gender = models.CharField(
+        max_length=1,
+        blank=True,
+        choices=(("F", "ženski"), ("M", "moški"), ("O", "drugo")),
+        verbose_name="Spol",
+    )
+    gender_other = models.CharField(
+        max_length=200, blank=True, verbose_name="Spol (drugo)"
+    )
     # categories
     interests = models.ManyToManyField(UserInterest, verbose_name="Kategorije zanimanj")
     # images
-    workshops_attended = models.ManyToManyField(Workshop, verbose_name="Opravljena usposabljanja")
+    workshops_attended = models.ManyToManyField(
+        Workshop, verbose_name="Opravljena usposabljanja"
+    )
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    gallery = StreamField([
-        ("image", ImageChooserBlock())
-    ], use_json_field=True, blank=True, default=[], max_num=10, verbose_name=_("Galerija"))
+    gallery = StreamField(
+        [("image", ImageChooserBlock())],
+        use_json_field=True,
+        blank=True,
+        default=[],
+        max_num=10,
+        verbose_name=_("Galerija"),
+    )
 
     objects = UserManager()
+
+    autocomplete_search_field = "email"
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -187,7 +226,9 @@ class User(AbstractUser, Timestampable):
         else:
             return self.memberships.filter(
                 Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
-                valid_from__lte=datetime.now(), active=True).first()
+                valid_from__lte=datetime.now(),
+                active=True,
+            ).first()
 
     @property
     def most_recent_membership_is_billable(self):
@@ -199,11 +240,9 @@ class User(AbstractUser, Timestampable):
         return self.payments.all().get_last_active_subscription_payment_plan()
 
     def get_last_active_membership(self):
-        membership = self.memberships.filter(
-            active=True
-        )
+        membership = self.memberships.filter(active=True)
         if membership:
-            return membership.latest('valid_to')
+            return membership.latest("valid_to")
         return None
 
     def get_valid_tokens(self):
@@ -213,27 +252,27 @@ class User(AbstractUser, Timestampable):
         return self.payments.all().get_available_workshops()
 
     def get_pantheon_subject_id(self):
-        return str(self.uuid).replace('-', '')[:30]
+        return str(self.uuid).replace("-", "")[:30]
 
     def is_eligible_to_discount(self):
         # user is eligible to discount if he is younger than 26 and older than 65
         now = datetime.now()
-        lower_limit = now.replace(year=now.year-26)
-        upper_limit = now.replace(year=now.year-65)
+        lower_limit = now.replace(year=now.year - 26)
+        upper_limit = now.replace(year=now.year - 65)
         if self.birth_date == None:
             return False
-        return not(lower_limit.date() > self.birth_date > upper_limit.date())
+        return not (lower_limit.date() > self.birth_date > upper_limit.date())
 
     def random_color(self):
         return random.choice(settings.COLOR_SCHEMES)[0]
 
     def get_post(self):
-        all_addresses = f'{self.address_1} {self.address_2} {self.legal_person_address_1} {self.legal_person_address_2}'
+        all_addresses = f"{self.address_1} {self.address_2} {self.legal_person_address_1} {self.legal_person_address_2}"
         print(all_addresses)
-        maybe_post = re.search(r'\d{4}', all_addresses)
+        maybe_post = re.search(r"\d{4}", all_addresses)
         if maybe_post:
             return maybe_post.group()
-        return '1000'
+        return "1000"
 
     def save(self, *args, **kwargs):
         if self.id == None:
@@ -241,6 +280,9 @@ class User(AbstractUser, Timestampable):
             create_subject(self)
         else:
             super().save(*args, **kwargs)
+
+    def autocomplete_label(self):
+        return self.email
 
 
 class BookingToken(models.Model):
