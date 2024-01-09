@@ -97,9 +97,6 @@ def finish_payment(payment):
             event_registration.save()
             event = event_registration.event
 
-        if payment_plan.payment_item_type == PaymentItemType.CLANARINA:
-            payment_plan.promo_code.use_code()
-
         items.append({
             'quantity': 1,
             'name': payment_plan.plan_name,
