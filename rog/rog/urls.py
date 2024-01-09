@@ -7,6 +7,8 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
+
 from search import views as search_views
 
 from django.contrib.auth import views as auth_views
@@ -34,6 +36,7 @@ from users.views import (
 # Non-translatable URLs
 urlpatterns = [
     path("django-admin/", admin.site.urls),
+    path("admin/autocomplete/", include(autocomplete_admin_urls)),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
 ]
@@ -51,11 +54,6 @@ if settings.DEBUG:
 # These will be available under a language code prefix.
 urlpatterns = urlpatterns + i18n_patterns(
     path("search/", search_views.search, name="search"),
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    # TODO: tukaj dodam recimo login
-    # path("prijava/", LoginView.as_view()),
     path("prijava/", auth_views.LoginView.as_view(), name="login"),
     path("odjava/", auth_views.LogoutView.as_view(), name="logout"),
     path(

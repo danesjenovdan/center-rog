@@ -38,6 +38,7 @@ telepath==0.3.1
 typing_extensions==4.7.1
 urllib3==1.26.16
 wagtail==4.2.4
+wagtail-autocomplete==0.11.0
 wagtail-modeltranslation==0.13.0
 wagtailmedia==0.14.2
 Wand==0.6.11
