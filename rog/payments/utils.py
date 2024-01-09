@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from .models import Payment, Token, PaymentPlanEvent, PaymentItemType
+from .models import Payment, PromoCode, Token, PaymentPlanEvent, PaymentItemType
 from users.models import Membership, MembershipType
 from home.email_utils import send_email
 
@@ -25,6 +25,7 @@ def get_invoice_number():
 def finish_payment(payment):
     user_fee_plan = None
     event = None
+    first_membership_paid = False
     user = payment.user
     membership_fee = payment.items.filter(payment_item_type=PaymentItemType.CLANARINA)
     membership = payment.membership
@@ -43,6 +44,8 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
+        if user.memberships.count() == 1:
+            first_membership_paid = True
     elif membership_fee or membership:
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
@@ -94,6 +97,9 @@ def finish_payment(payment):
             event_registration.save()
             event = event_registration.event
 
+        if payment_plan.payment_item_type == PaymentItemType.CLANARINA:
+            payment_plan.promo_code.use_code()
+
         items.append({
             'quantity': 1,
             'name': payment_plan.plan_name,
@@ -107,6 +113,24 @@ def finish_payment(payment):
 
     payment.payment_done_at = timezone.now()
     payment.save()
+
+    if first_membership_paid:
+        promo_code = PromoCode.objects.create(
+            valid_to=datetime(day=1, month=1, year=timezone.now().year + 1),
+            percent_discount=100,
+            payment_item_type=PaymentItemType.EVENT,
+            single_use=True,
+        )
+        send_email(
+            payment.user.email,
+            'emails/first_membership_paid.html',
+            f'Center Rog – uspešen zakup članstva',
+            {
+                'membership': membership,
+                'code': promo_code.code
+
+            }
+        )
 
     if user_fee_plan:
         send_email(
