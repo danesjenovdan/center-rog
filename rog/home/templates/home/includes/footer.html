@@ -41,7 +41,7 @@
                     </p>
                     {% if settings.home.MetaSettings.social_media_links %}
                     <p>
-                        sledi nam:<br />
+                        {% translate 'sledi nam' %}:<br />
                         {% for link in settings.home.MetaSettings.social_media_links %}
                         <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}" target="_blank">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
                         {% endfor %}
