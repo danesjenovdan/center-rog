@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from wagtail.models import Orderable
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -224,9 +225,10 @@ class User(AbstractUser, Timestampable):
         if membership:
             return membership
         else:
+            now = timezone.now()
             return self.memberships.filter(
-                Q(valid_to__gte=datetime.now()) | Q(valid_to=None),
-                valid_from__lte=datetime.now(),
+                Q(valid_to__gte=now) | Q(valid_to=None),
+                valid_from__lte=now,
                 active=True,
             ).first()
 
