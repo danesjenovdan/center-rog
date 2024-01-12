@@ -214,13 +214,13 @@ class PaymentPreview(views.APIView):
                         continue
                     if PromoCode.check_code_validity(promo_code, payment_plan):
                         if payment_plan.payment_item_type == PaymentItemType.EVENT:
-                            valid_promo_code = PromoCode.objects.get(code=promo_code)
-                            payment_plan.promo_code = valid_promo_code
-                            payment_plan.save()
                             event = payment_plan.event_registration.event
                             # check if event is usposabljanje
                             if event.category.name != "Usposabljanja":
                                 break
+                            valid_promo_code = PromoCode.objects.get(code=promo_code)
+                            payment_plan.promo_code = valid_promo_code
+                            payment_plan.save()
                             payment.amount -= payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
                             )
