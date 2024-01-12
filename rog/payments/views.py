@@ -219,7 +219,7 @@ class PaymentPreview(views.APIView):
                             payment_plan.save()
                             event = payment_plan.event_registration.event
                             # check if event is usposabljanje
-                            if event.category__name != "Usposabljanja":
+                            if event.category.name != "Usposabljanja":
                                 break
                             payment.amount -= payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
