@@ -19,6 +19,8 @@ from datetime import date
 from home.models import BasePage, CustomImage, Workshop
 from payments.pantheon import create_ident
 
+from behaviours.models import Timestampable
+
 import random
 
 
@@ -305,7 +307,7 @@ class EventListPage(BasePage):
 
 
 # prijavnica (povezava med uporabnikom in dogodkom)
-class EventRegistration(Orderable, ClusterableModel):
+class EventRegistration(Orderable, ClusterableModel, Timestampable):
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,

@@ -10,6 +10,7 @@ from behaviours.models import Timestampable
 
 import random
 from string import ascii_uppercase
+import sentry_sdk
 
 
 class PaymentItemType(models.TextChoices):
@@ -231,6 +232,11 @@ class Payment(Timestampable):
         blank=True,
         help_text="When payment was successed",
     )
+    transaction_success_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When payment transaction was provided",
+    )
     errored_at = models.DateTimeField(null=True, blank=True)
     payment_done_at = models.DateTimeField(
         null=True,
@@ -260,6 +266,7 @@ class Payment(Timestampable):
         default=False,
         help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
     )
+    pantheon_id = models.CharField(max_length=100, null=True, blank=True)
     invoice_number = models.CharField(max_length=100, null=True, blank=True)
     membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
     panels = [
@@ -288,11 +295,18 @@ class Payment(Timestampable):
         return f"{self.payment_plans.first().plan_name}"
 
     def save(self, *args, **kwargs):
-        if self.saved_in_pantheon == False and self.successed_at:
+        if self.saved_in_pantheon == False and self.transaction_success_at:
             super().save(*args, **kwargs)
-            print(create_move(self))
-            self.saved_in_pantheon = True
-            super().save(*args, **kwargs)
+            try:
+                response = create_move(self)
+                if response.status_code == 200:
+                    data = response.json()
+                    print(data)
+                    self.pantheon_id = data.get('acKey', '')
+                self.saved_in_pantheon = True
+                super().save(*args, **kwargs)
+            except Exception as e:
+                sentry_sdk.capture_exception(e)
         else:
             super().save(*args, **kwargs)
 
