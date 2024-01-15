@@ -191,6 +191,8 @@ class PaymentPreview(views.APIView):
                 )
             else:
                 return redirect("profile-my")
+        else:
+            return redirect("profile-my")
 
     def post(self, request):
         user = request.user
@@ -407,13 +409,12 @@ class PaymentSuccessXML(views.APIView):
         if payment.successed_at:
             return Response({"status": "Payment is already processed"})
 
-        payment.status = Payment.Status.SUCCESS
+        # payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
-        payment.successed_at = timezone.now()
-        payment.invoice_number = get_invoice_number()
+        payment.transaction_success_at = timezone.now()
         payment.save()
 
-        finish_payment(payment)
+        # finish_payment(payment)
 
         return Response({"status": "OK"})
 
@@ -422,6 +423,15 @@ class PaymentSuccess(views.APIView):
     def get(self, request):
         context_vars = {}
         args = request.GET.get("args", "")
+        urlpar = request.GET.get("args", "")
+        urlpars = urlpar.split(",")
+
+        if len(urlpars) < 2:
+            print(urlpars)
+            return Response({"status": "Not enough urlpar values"}, status=400)
+
+        referer = request.META.get('HTTP_REFERER')
+
         print(args)
         if "registration" in args:
             purchase_type = "registration"
@@ -439,6 +449,19 @@ class PaymentSuccess(views.APIView):
 
         if purchase_type == "registration":
             context_vars["registration_step"] = 5
+
+        if str(payment.user.uuid) != urlpars[1]:
+            return Response({"status": "UUID does not match"}, status=400)
+
+        if payment.successed_at:
+            return Response({"status": "Payment is already processed"})
+
+        payment.status = Payment.Status.SUCCESS
+        payment.successed_at = timezone.now()
+        payment.invoice_number = get_invoice_number()
+
+        payment.save()
+        finish_payment(payment)
 
         return render(request, "payment_success.html", context_vars)
 
