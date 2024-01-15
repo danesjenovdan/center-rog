@@ -191,6 +191,8 @@ class PaymentPreview(views.APIView):
                 )
             else:
                 return redirect("profile-my")
+        else:
+            return redirect("profile-my")
 
     def post(self, request):
         user = request.user
