@@ -308,7 +308,7 @@ class Pay(views.APIView):
             # user is not owner of event registration
             return redirect("profile-my")
 
-        if payment.status in [Payment.Status.SUCCESS, Payment.Status.ERROR]:
+        if payment.status == Payment.Status.SUCCESS:
             return render(request, "payment_failed.html", {"status": _("Plačilo je bilo že sprocesirano.")})
 
         uuid = payment.user.uuid
@@ -431,6 +431,10 @@ class PaymentSuccessXML(views.APIView):
         if '<rezultat>1</rezultat>' in payment.info:
             if payment.status == Payment.Status.SUCCESS:
                 capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
+            else:
+                payment.status = Payment.Status.ERROR
+                payment.errored_at = timezone.now()
+                payment.save()
         elif '<rezultat>0</rezultat>' in payment.info:
             payment.transaction_success_at = timezone.now()
         payment.save()
@@ -491,9 +495,6 @@ class PaymentFailure(views.APIView):
     def get(self, request):
         payment_ujp_id = request.GET.get("id", 0)
         payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
-        payment.status = Payment.Status.ERROR
-        payment.finished_at = timezone.now()
-        payment.save()
         return render(request, "payment_failed.html", {})
 
 
