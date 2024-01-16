@@ -455,7 +455,12 @@ class PaymentSuccess(views.APIView):
             print(urlpars)
             return Response({"status": "Not enough urlpar values"}, status=400)
 
+        payment = Payment.objects.get(ujp_id=request.GET.get('id'))
+
         referer = request.META.get('HTTP_REFERER')
+        if referer != settings.PAYMENT_BASE_URL:
+            capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
+            return render(request, "payment_failed.html", {'status', 'Napaka pri plačilu'})
 
         print(args)
         if "registration" in args:
@@ -464,7 +469,6 @@ class PaymentSuccess(views.APIView):
             purchase_type = "plan"
         elif "event" in args:
             purchase_type = "event"
-            payment = Payment.objects.get(ujp_id=request.GET.get('id'))
             event = payment.payment_plans.first().event_registration.event
             context_vars['event'] = event
         else:
