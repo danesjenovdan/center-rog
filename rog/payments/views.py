@@ -281,6 +281,9 @@ class Pay(views.APIView):
     def get(self, request):
         payment_id = request.GET.get("id", 0)
         payment = get_object_or_404(Payment, id=payment_id)
+        if payment.user != request.user:
+            # user is not owner of event registration
+            return redirect("profile-my")
         free_order = False
         if payment.amount == 0:
             # User has 100% discount dont show payment page
@@ -301,8 +304,12 @@ class Pay(views.APIView):
         purchase_type = data.get("purchase_type", "error")
         payment = get_object_or_404(Payment, id=payment_id)
 
+        if payment.user != request.user:
+            # user is not owner of event registration
+            return redirect("profile-my")
+
         if payment.status in [Payment.Status.SUCCESS, Payment.Status.ERROR]:
-            return Response({"status": "Payment is already processed"})
+            return render(request, "payment_failed.html", {"status": _("Plačilo je bilo že sprocesirano.")})
 
         uuid = payment.user.uuid
 
@@ -369,7 +376,7 @@ class PaymentDataXML(views.APIView):
 
         order_body = f"""
             <?xml version="1.0" encoding="UTF-8"?>
-            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
+            <narocilo id="{payment_ujp_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_ujp_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
                 <referenca>{reference}</referenca>
                 <sklicDobro>{sklic}</sklicDobro>
