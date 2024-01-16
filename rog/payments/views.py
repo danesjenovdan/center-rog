@@ -314,7 +314,7 @@ class Pay(views.APIView):
         uuid = payment.user.uuid
 
         # increase ujp id
-        last_ujp_payment = Payment.objects.all().order_by('-ujp_id')[0]
+        last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
         payment.ujp_id = last_ujp_payment.ujp_id + 1
         payment.save()
 
