@@ -500,7 +500,7 @@ def create_move(
         "discount": 0,
         "department": "",
         "status": "N",
-        "order": str(payment.id),        # dokument 1
+        "order": str(payment.ujp_id),        # dokument 1
         "orderDate": payment.created_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "orderForm": str(payment.invoice_number),
         "orderFormDate":  payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"), # no date SQL offset

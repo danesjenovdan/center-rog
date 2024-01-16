@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from wkhtmltopdf.views import PDFTemplateResponse
 from decimal import Decimal
+from sentry_sdk import capture_message
 
 from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
@@ -151,13 +152,13 @@ class PaymentPreview(views.APIView):
                 else:
                     price = event_registration.event.price_for_non_member * people_count
 
-                existing_paymetn_plan = event_registration.payment_plans.first()
-                if existing_paymetn_plan:
-                    payment = existing_paymetn_plan.payment
-                    existing_paymetn_plan.price = price
-                    existing_paymetn_plan.original_price = price
-                    existing_paymetn_plan.plan_name=title
-                    existing_paymetn_plan.save()
+                existing_payment_plan = event_registration.payment_plans.first()
+                if existing_payment_plan:
+                    payment = existing_payment_plan.payment
+                    existing_payment_plan.price = price
+                    existing_payment_plan.original_price = price
+                    existing_payment_plan.plan_name=title
+                    existing_payment_plan.save()
                     payment.amount = price
                     payment.original_amount = price
                     payment.save()
@@ -300,8 +301,17 @@ class Pay(views.APIView):
         purchase_type = data.get("purchase_type", "error")
         payment = get_object_or_404(Payment, id=payment_id)
 
+        if payment.status in [Payment.Status.SUCCESS, Payment.Status.ERROR]:
+            return Response({"status": "Payment is already processed"})
+
         uuid = payment.user.uuid
-        id = payment.id
+
+        # increase ujp id
+        last_ujp_payment = Payment.objects.all().order_by('-ujp_id')[0]
+        payment.ujp_id = last_ujp_payment.ujp_id + 1
+        payment.save()
+
+        id = payment.ujp_id
         redirect_url = f"{settings.PAYMENT_BASE_URL}vstop/index?ids={settings.PAYMENT_IDS}&id={id}&urlpar=args={purchase_type},{uuid}"
 
         response_data = {"redirect_url": redirect_url}
@@ -311,7 +321,7 @@ class Pay(views.APIView):
 class PaymentDataXML(views.APIView):
     def get(self, request):
         print(request.META)
-        payment_id = request.GET.get("id", 0)
+        payment_ujp_id = request.GET.get("id", 0)
         urlpar = request.GET.get("args", "")
         urlpars = urlpar.split(",")
 
@@ -319,7 +329,7 @@ class PaymentDataXML(views.APIView):
             print(urlpars)
             return Response({"status": "Not enough urlpar values"}, status=400)
 
-        payment = get_object_or_404(Payment, id=payment_id)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
 
         if str(payment.user.uuid) != urlpars[1]:
             print("uuid does not match")
@@ -353,8 +363,8 @@ class PaymentDataXML(views.APIView):
 
         year = payment.created_at.year
 
-        reference = f"{year}-369-{payment.id}"
-        sklic = f"SI00{year}369{payment.id}"
+        reference = f"{year}-369-{payment.ujp_id}"
+        sklic = f"SI00{year}369{payment.ujp_id}"
         opis_placila = f"Plačilo računa za {user_name}"
 
         order_body = f"""
@@ -386,7 +396,7 @@ class PaymentSuccessXML(views.APIView):
         data = request.data
         print(data)
 
-        payment_id = request.GET.get("id", 0)
+        payment_ujp_id = request.GET.get("id", 0)
         urlpar = request.GET.get("args", "")
         urlpars = urlpar.split(",")
 
@@ -394,9 +404,9 @@ class PaymentSuccessXML(views.APIView):
             print(urlpars)
             return Response({"status": "Not enough urlpar values"}, status=400)
 
-        payment = get_object_or_404(Payment, id=payment_id)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
 
-        # check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.id}',
+        # check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.ujp_id}',
         # check_response = requests.get(check_url)
 
         # print('Success')
@@ -411,7 +421,11 @@ class PaymentSuccessXML(views.APIView):
 
         # payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
-        payment.transaction_success_at = timezone.now()
+        if '<rezultat>1</rezultat>' in payment.info:
+            if payment.status == Payment.Status.SUCCESS:
+                capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
+        elif '<rezultat>0</rezultat>' in payment.info:
+            payment.transaction_success_at = timezone.now()
         payment.save()
 
         # finish_payment(payment)
@@ -439,7 +453,7 @@ class PaymentSuccess(views.APIView):
             purchase_type = "plan"
         elif "event" in args:
             purchase_type = "event"
-            payment = Payment.objects.get(id=request.GET.get('id'))
+            payment = Payment.objects.get(ujp_id=request.GET.get('id'))
             event = payment.payment_plans.first().event_registration.event
             context_vars['event'] = event
         else:
@@ -468,8 +482,8 @@ class PaymentSuccess(views.APIView):
 
 class PaymentFailure(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get("id", 0)
-        payment = get_object_or_404(Payment, id=payment_id)
+        payment_ujp_id = request.GET.get("id", 0)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
         payment.status = Payment.Status.ERROR
         payment.finished_at = timezone.now()
         payment.save()
@@ -519,7 +533,7 @@ class PaymentInvoicePDF(View):
                     "payment": payment,
                     "user": payment.user,
                 },
-                filename=f"rog-racun-{payment.id}.pdf",
+                filename=f"rog-racun-{payment.ujp_id}.pdf",
                 show_content_in_browser=True,
             )
         else:

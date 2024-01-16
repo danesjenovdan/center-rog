@@ -219,6 +219,7 @@ class Payment(Timestampable):
         SUCCESS = "SUCCESS", _("Success")
         ERROR = "ERROR", _("Error")
 
+    ujp_id = models.IntegerField(null=True, blank=True)
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,
@@ -271,6 +272,7 @@ class Payment(Timestampable):
     membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
     panels = [
         FieldPanel("user"),
+        FieldPanel("ujp_id"),
         FieldPanel("amount"),
         FieldPanel("original_amount"),
         FieldPanel("successed_at"),
