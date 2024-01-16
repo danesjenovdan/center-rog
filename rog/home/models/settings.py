@@ -60,11 +60,15 @@ import random
 class ExternalLinkBlock(blocks.StructBlock):
     name = blocks.CharBlock(label="Ime")
     url = blocks.URLBlock(label="URL")
-    link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
-        ("primary_button", "Primarni gumb"),
-        ("secondary_button", "Sekundarni gumb"),
-        ("link", "Povezava s puščico")
-    ], default="primary_button")
+    link_type = blocks.ChoiceBlock(
+        label="Tip povezave",
+        choices=[
+            ("primary_button", "Primarni gumb"),
+            ("secondary_button", "Sekundarni gumb"),
+            ("link", "Povezava s puščico"),
+        ],
+        default="primary_button",
+    )
 
     class Meta:
         label = "Zunanja povezava"
@@ -78,11 +82,15 @@ class PageLinkBlock(blocks.StructBlock):
         help_text="Če je prazno, se uporabi naslov strani.",
     )
     page = blocks.PageChooserBlock(label="Stran")
-    link_type = blocks.ChoiceBlock(label="Tip povezave", choices=[
-        ("primary_button", "Primarni gumb"),
-        ("secondary_button", "Sekundarni gumb"),
-        ("link", "Povezava s puščico")
-    ], default="primary_button")
+    link_type = blocks.ChoiceBlock(
+        label="Tip povezave",
+        choices=[
+            ("primary_button", "Primarni gumb"),
+            ("secondary_button", "Sekundarni gumb"),
+            ("link", "Povezava s puščico"),
+        ],
+        default="primary_button",
+    )
 
     class Meta:
         label = "Povezava do strani"
@@ -92,23 +100,54 @@ class PageLinkBlock(blocks.StructBlock):
 @register_setting(icon="cog")
 class MetaSettings(BaseGenericSetting):
     organization_name = models.TextField(verbose_name=_("Ime"), blank=True, null=True)
-    organization_address = models.TextField(verbose_name=_("Ulica in hišna številka"), blank=True, null=True)
-    organization_postal_number = models.IntegerField(verbose_name=_("Poštna številka"), validators=[MinValueValidator(1000), MaxValueValidator(9999)], blank=True, null=True)
+    organization_address = models.TextField(
+        verbose_name=_("Ulica in hišna številka"), blank=True, null=True
+    )
+    organization_postal_number = models.IntegerField(
+        verbose_name=_("Poštna številka"),
+        validators=[MinValueValidator(1000), MaxValueValidator(9999)],
+        blank=True,
+        null=True,
+    )
     organization_post = models.TextField(verbose_name=_("Pošta"), blank=True, null=True)
-    organization_country = models.TextField(verbose_name=_("Država"), blank=True, null=True)
-    organization_email = models.EmailField(verbose_name=_("E-pošta"), blank=True, null=True)
-    organization_phone_number = models.CharField(verbose_name=_("Telefonska številka"), max_length=20, blank=True, null=True)
-    organization_working_hours = StreamField([
-        ('time', blocks.StructBlock([
-            ('day', blocks.CharBlock(label=_('Dan'))),
-            ('start_time', blocks.TimeBlock(label=_('Začetna ura'))),
-            ('end_time', blocks.TimeBlock(label=_('Končna ura'))),
-        ], label=_('Dan in ura'))),
-        ('notice', blocks.StructBlock([
-            ('day', blocks.CharBlock(label=_('Dan'))),
-            ('text', blocks.CharBlock(label=_('Opomba'))),
-        ], label=_('Dan in opomba')))
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas organizacije"))
+    organization_country = models.TextField(
+        verbose_name=_("Država"), blank=True, null=True
+    )
+    organization_email = models.EmailField(
+        verbose_name=_("E-pošta"), blank=True, null=True
+    )
+    organization_phone_number = models.CharField(
+        verbose_name=_("Telefonska številka"), max_length=20, blank=True, null=True
+    )
+    organization_working_hours = StreamField(
+        [
+            (
+                "time",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
+                        ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
+                    ],
+                    label=_("Dan in ura"),
+                ),
+            ),
+            (
+                "notice",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("text", blocks.CharBlock(label=_("Opomba"))),
+                    ],
+                    label=_("Dan in opomba"),
+                ),
+            ),
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Delovni čas organizacije"),
+    )
 
     basic_information_tab_panels = [
         FieldPanel("organization_name"),
@@ -127,14 +166,16 @@ class MetaSettings(BaseGenericSetting):
         ],
         verbose_name="Družbena omrežja",
         use_json_field=True,
-        blank=True
+        blank=True,
     )
 
     social_media_tab_panels = [
         FieldPanel("social_media_links"),
     ]
 
-    header_marquee = models.TextField(verbose_name=_("Vrteče besedilo"), blank=True, null=True)
+    header_marquee = models.TextField(
+        verbose_name=_("Vrteče besedilo"), blank=True, null=True
+    )
     header_links = StreamField(
         [
             ("page_link", PageLinkBlock()),
@@ -142,7 +183,7 @@ class MetaSettings(BaseGenericSetting):
         ],
         verbose_name="Povezave v navigacijski vrstici",
         use_json_field=True,
-        blank=True
+        blank=True,
     )
 
     header_tab_panels = [
@@ -157,33 +198,49 @@ class MetaSettings(BaseGenericSetting):
         ],
         verbose_name=_("Povezave v nogi"),
         use_json_field=True,
-        blank=True
+        blank=True,
     )
 
     footer_logos = StreamField(
         [
-            ("logo", blocks.StructBlock([
-                ("image", ImageChooserBlock()),
-                ("description", blocks.CharBlock(label=_("Naslov"), blank=True, required=False))
-            ]))
+            (
+                "logo",
+                blocks.StructBlock(
+                    [
+                        ("image", ImageChooserBlock()),
+                        (
+                            "description",
+                            blocks.CharBlock(
+                                label=_("Naslov"), blank=True, required=False
+                            ),
+                        ),
+                    ]
+                ),
+            )
         ],
-        block_counts = {
+        block_counts={
             "logo": {"max_num": 4},
         },
         verbose_name=_("Logotipi"),
         use_json_field=True,
-        blank=True
+        blank=True,
     )
 
     footer_random_images = StreamField(
         [
-            ("image", blocks.StructBlock([
-                ("image", ImageChooserBlock()),
-            ], label=_("Slika")))
+            (
+                "image",
+                blocks.StructBlock(
+                    [
+                        ("image", ImageChooserBlock()),
+                    ],
+                    label=_("Slika"),
+                ),
+            )
         ],
         verbose_name=_("Naključne slike v nogi"),
         use_json_field=True,
-        blank=True
+        blank=True,
     )
 
     newsletter_terms_page = models.ForeignKey(
@@ -216,7 +273,10 @@ class MetaSettings(BaseGenericSetting):
 
     edit_handler = TabbedInterface(
         [
-            ObjectList(basic_information_tab_panels, heading="Osnovne informacije o organizaciji"),
+            ObjectList(
+                basic_information_tab_panels,
+                heading="Osnovne informacije o organizaciji",
+            ),
             ObjectList(social_media_tab_panels, heading="Družbena omrežja"),
             ObjectList(header_tab_panels, heading="Navigacija"),
             ObjectList(footer_tab_panels, heading="Noga"),
@@ -230,6 +290,7 @@ class MetaSettings(BaseGenericSetting):
 
 ## CUSTOM CONTEXT PROCESSORS
 
+
 def footer_image_processor(request):
     meta_settings = MetaSettings.load(request_or_site=request)
     random_image = None
@@ -237,7 +298,7 @@ def footer_image_processor(request):
     images = meta_settings.footer_random_images.raw_data
     if images:
         random_choice = random.choice(images)
-        random_image_id = random_choice['value']['image']
+        random_image_id = random_choice["value"]["image"]
         random_image = CustomImage.objects.get(id=random_image_id)
 
-    return {'random_image': random_image}
+    return {"random_image": random_image}
