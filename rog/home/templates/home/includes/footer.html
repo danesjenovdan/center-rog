@@ -36,14 +36,14 @@
                 <div class="col-12 col-md-6 col-xxl-5">
                     <p>
                         {% for link in settings.home.MetaSettings.footer_links %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page.specific %}{% endif %}">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
                         {% endfor %}
                     </p>
                     {% if settings.home.MetaSettings.social_media_links %}
                     <p>
                         {% translate 'sledi nam' %}:<br />
                         {% for link in settings.home.MetaSettings.social_media_links %}
-                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page %}{% endif %}" target="_blank">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
+                        <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page.specific %}{% endif %}" target="_blank">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />
                         {% endfor %}
                     </p>
                     {% endif %}
@@ -51,23 +51,6 @@
             </div>
         </div>
         <div class="col-12 col-md-6">
-            <!-- <form>
-                <div class="form-field-wrapper">
-                    <label for="newsletter-input-footer">Prijavi se na naš novičnik</label>
-                    <input type="text" id="newsletter-input-footer">
-                </div>
-
-                <div class="form-field-wrapper one-line rog-check">
-                    <input type="checkbox" id="newsletter-checkbox-footer">
-                    <label for="newsletter-checkbox-footer">
-                        <span>Strinjam se s <a href="/pogoji-uporabe/">pogoji uporabe</a></span>
-                    </label>
-                </div>
-
-                <div class="my-3">
-                    <button type="submit" class="secondary-button button-medium">pošlji</button>
-                </div>
-            </form> -->
             {% include "home/includes/mailchimp.html" %}
     </div>
     {% if settings.home.MetaSettings.footer_logos %}
