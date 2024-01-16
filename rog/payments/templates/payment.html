@@ -19,7 +19,7 @@
         const purchase_type = urlParams.get('purchase_type')
 
         {% if free_order %}
-            window.location.href = "{% url 'payment-success' %}?free_order=true&id={{ujp_id}}&purchase_type=" + purchase_type;
+            window.location.href = "{% url 'payment-success' %}?free_order=true&id={{ujp_id}}&args=" + purchase_type + ",";
         {% else %}
             var url = "/placilo/izvedi/";
             fetch(url, {
