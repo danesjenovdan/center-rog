@@ -454,7 +454,9 @@ class PaymentSuccess(views.APIView):
         urlpars = urlpar.split(",")
         free_order = request.GET.get("free_order", False)
 
-        if len(urlpars) < 2:
+        # free order has no args and different HTTP_REFERER
+
+        if not free_order and len(urlpars) < 2:
             return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
         payment = Payment.objects.get(ujp_id=request.GET.get('id'))
@@ -465,7 +467,7 @@ class PaymentSuccess(views.APIView):
                 return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
         referer = request.META.get('HTTP_REFERER')
-        if referer != settings.PAYMENT_BASE_URL:
+        if not free_order and referer != settings.PAYMENT_BASE_URL:
             capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
             return render(request, "payment_failed.html", {'status', 'Napaka pri plačilu'})
 

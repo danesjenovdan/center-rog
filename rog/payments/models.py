@@ -301,7 +301,7 @@ class Payment(Timestampable):
             super().save(*args, **kwargs)
             try:
                 response = create_move(self)
-                if response.status_code == 200:
+                if response and response.status_code == 200:
                     data = response.json()
                     print(data)
                     self.pantheon_id = data.get('acKey', '')
