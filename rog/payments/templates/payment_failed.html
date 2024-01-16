@@ -13,7 +13,11 @@
 
 <div class="container user-profile-container">
 
-    {% translate 'Napaka pri plačilu.' %}
+    {% if status %}
+        {{ status }}
+    {% else %}
+        {% translate 'Napaka pri plačilu.' %}
+    {% endif %}
 
 </div>
 
