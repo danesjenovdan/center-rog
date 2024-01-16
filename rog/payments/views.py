@@ -287,6 +287,8 @@ class Pay(views.APIView):
         free_order = False
         if payment.amount == 0:
             # User has 100% discount dont show payment page
+            last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
+            payment.ujp_id = last_ujp_payment.ujp_id + 1
             finish_payment(payment)
             free_order = True
             payment.status = Payment.Status.SUCCESS
@@ -295,7 +297,7 @@ class Pay(views.APIView):
             payment.invoice_number = get_invoice_number()
             payment.save()
         return render(
-            request, "payment.html", {"id": payment_id, "free_order": free_order}
+            request, "payment.html", {"id": payment_id, "ujp_id": payment.ujp_id, "free_order": free_order}
         )
 
     def post(self, request):
@@ -450,12 +452,17 @@ class PaymentSuccess(views.APIView):
         args = request.GET.get("args", "")
         urlpar = request.GET.get("args", "")
         urlpars = urlpar.split(",")
+        free_order = request.GET.get("free_order", False)
 
         if len(urlpars) < 2:
-            print(urlpars)
-            return Response({"status": "Not enough urlpar values"}, status=400)
+            return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
         payment = Payment.objects.get(ujp_id=request.GET.get('id'))
+
+        if free_order:
+            if payment.status != Payment.Status.SUCCESS:
+                capture_message(f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!", 'fatal')
+                return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
         referer = request.META.get('HTTP_REFERER')
         if referer != settings.PAYMENT_BASE_URL:
@@ -479,11 +486,12 @@ class PaymentSuccess(views.APIView):
         if purchase_type == "registration":
             context_vars["registration_step"] = 5
 
-        if str(payment.user.uuid) != urlpars[1]:
-            return Response({"status": "UUID does not match"}, status=400)
+        if free_order:
+            # Free order has already status.SUCCESS
+            return render(request, "payment_success.html", context_vars)
 
-        if payment.successed_at:
-            return Response({"status": "Payment is already processed"})
+        if str(payment.user.uuid) != urlpars[1]:
+            return render(request, "payment_failed.html",{"status": "UUID does not match"})
 
         payment.status = Payment.Status.SUCCESS
         payment.successed_at = timezone.now()
