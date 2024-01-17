@@ -301,7 +301,7 @@ class Payment(Timestampable):
         return f"{self.payment_plans.first().plan_name}"
 
     def save(self, *args, **kwargs):
-        if self.saved_in_pantheon == False and self.transaction_success_at:
+        if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at:
             super().save(*args, **kwargs)
             try:
                 response = create_move(self)
