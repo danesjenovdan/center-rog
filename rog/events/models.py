@@ -19,6 +19,8 @@ from datetime import date
 from home.models import BasePage, CustomImage, Workshop
 from payments.pantheon import create_ident
 
+from behaviours.models import Timestampable
+
 import random
 
 
@@ -167,18 +169,18 @@ class EventPage(BasePage):
     parent_page_types = ["events.EventListPage"]
 
     def get_free_places(self):
-        registerd_childern = EventRegistrationChild.objects.filter(
+        registered_children = EventRegistrationChild.objects.filter(
             event_registration__event=self,
             event_registration__registration_finished=True,
         ).count()
 
-        registerd_users = EventRegistration.objects.filter(
+        registered_users = EventRegistration.objects.filter(
             event=self,
             registration_finished=True,
             event_registration_children__isnull=True,
         ).count()
 
-        free_places = self.number_of_places - (registerd_childern + registerd_users)
+        free_places = self.number_of_places - (registered_children + registered_users)
 
         return free_places
 
@@ -305,7 +307,7 @@ class EventListPage(BasePage):
 
 
 # prijavnica (povezava med uporabnikom in dogodkom)
-class EventRegistration(Orderable, ClusterableModel):
+class EventRegistration(Orderable, ClusterableModel, Timestampable):
     user = models.ForeignKey(
         "users.User",
         on_delete=models.CASCADE,

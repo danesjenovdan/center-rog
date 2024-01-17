@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from wkhtmltopdf.views import PDFTemplateResponse
 from decimal import Decimal
+from sentry_sdk import capture_message
 
 from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
@@ -151,13 +152,13 @@ class PaymentPreview(views.APIView):
                 else:
                     price = event_registration.event.price_for_non_member * people_count
 
-                existing_paymetn_plan = event_registration.payment_plans.first()
-                if existing_paymetn_plan:
-                    payment = existing_paymetn_plan.payment
-                    existing_paymetn_plan.price = price
-                    existing_paymetn_plan.original_price = price
-                    existing_paymetn_plan.plan_name=title
-                    existing_paymetn_plan.save()
+                existing_payment_plan = event_registration.payment_plans.first()
+                if existing_payment_plan:
+                    payment = existing_payment_plan.payment
+                    existing_payment_plan.price = price
+                    existing_payment_plan.original_price = price
+                    existing_payment_plan.plan_name=title
+                    existing_payment_plan.save()
                     payment.amount = price
                     payment.original_amount = price
                     payment.save()
@@ -191,6 +192,8 @@ class PaymentPreview(views.APIView):
                 )
             else:
                 return redirect("profile-my")
+        else:
+            return redirect("profile-my")
 
     def post(self, request):
         user = request.user
@@ -278,9 +281,14 @@ class Pay(views.APIView):
     def get(self, request):
         payment_id = request.GET.get("id", 0)
         payment = get_object_or_404(Payment, id=payment_id)
+        if payment.user != request.user:
+            # user is not owner of event registration
+            return redirect("profile-my")
         free_order = False
         if payment.amount == 0:
             # User has 100% discount dont show payment page
+            last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
+            payment.ujp_id = last_ujp_payment.ujp_id + 1
             finish_payment(payment)
             free_order = True
             payment.status = Payment.Status.SUCCESS
@@ -289,7 +297,7 @@ class Pay(views.APIView):
             payment.invoice_number = get_invoice_number()
             payment.save()
         return render(
-            request, "payment.html", {"id": payment_id, "free_order": free_order}
+            request, "payment.html", {"id": payment_id, "ujp_id": payment.ujp_id, "free_order": free_order}
         )
 
     def post(self, request):
@@ -298,8 +306,21 @@ class Pay(views.APIView):
         purchase_type = data.get("purchase_type", "error")
         payment = get_object_or_404(Payment, id=payment_id)
 
+        if payment.user != request.user:
+            # user is not owner of event registration
+            return redirect("profile-my")
+
+        if payment.status == Payment.Status.SUCCESS:
+            return render(request, "payment_failed.html", {"status": _("Plačilo je bilo že sprocesirano.")})
+
         uuid = payment.user.uuid
-        id = payment.id
+
+        # increase ujp id
+        last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
+        payment.ujp_id = last_ujp_payment.ujp_id + 1
+        payment.save()
+
+        id = payment.ujp_id
         redirect_url = f"{settings.PAYMENT_BASE_URL}vstop/index?ids={settings.PAYMENT_IDS}&id={id}&urlpar=args={purchase_type},{uuid}"
 
         response_data = {"redirect_url": redirect_url}
@@ -309,7 +330,7 @@ class Pay(views.APIView):
 class PaymentDataXML(views.APIView):
     def get(self, request):
         print(request.META)
-        payment_id = request.GET.get("id", 0)
+        payment_ujp_id = request.GET.get("id", 0)
         urlpar = request.GET.get("args", "")
         urlpars = urlpar.split(",")
 
@@ -317,7 +338,7 @@ class PaymentDataXML(views.APIView):
             print(urlpars)
             return Response({"status": "Not enough urlpar values"}, status=400)
 
-        payment = get_object_or_404(Payment, id=payment_id)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
 
         if str(payment.user.uuid) != urlpars[1]:
             print("uuid does not match")
@@ -351,13 +372,13 @@ class PaymentDataXML(views.APIView):
 
         year = payment.created_at.year
 
-        reference = f"{year}-369-{payment.id}"
-        sklic = f"SI00{year}369{payment.id}"
+        reference = f"{year}-369-{payment.ujp_id}"
+        sklic = f"SI00{year}369{payment.ujp_id}"
         opis_placila = f"Plačilo računa za {user_name}"
 
         order_body = f"""
             <?xml version="1.0" encoding="UTF-8"?>
-            <narocilo id="{payment_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
+            <narocilo id="{payment_ujp_id}" maticna="{settings.REGISTRATION_NUMBER}" isoValuta="EUR" racun="{payment_ujp_id}" tipRacuna="1" xmlns="http://www.src.si/e-placila/narocilo/1.0">
                 <opisPlacila>{opis_placila}</opisPlacila>
                 <referenca>{reference}</referenca>
                 <sklicDobro>{sklic}</sklicDobro>
@@ -384,7 +405,7 @@ class PaymentSuccessXML(views.APIView):
         data = request.data
         print(data)
 
-        payment_id = request.GET.get("id", 0)
+        payment_ujp_id = request.GET.get("id", 0)
         urlpar = request.GET.get("args", "")
         urlpars = urlpar.split(",")
 
@@ -392,9 +413,9 @@ class PaymentSuccessXML(views.APIView):
             print(urlpars)
             return Response({"status": "Not enough urlpar values"}, status=400)
 
-        payment = get_object_or_404(Payment, id=payment_id)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
 
-        # check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.id}',
+        # check_url = f'{settings.PAYMENT_BASE_URL}cert/rezultat/potrdilo?ids={settings.PAYMENT_IDS}&id={payment.ujp_id}',
         # check_response = requests.get(check_url)
 
         # print('Success')
@@ -407,13 +428,20 @@ class PaymentSuccessXML(views.APIView):
         if payment.successed_at:
             return Response({"status": "Payment is already processed"})
 
-        payment.status = Payment.Status.SUCCESS
+        # payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
-        payment.successed_at = timezone.now()
-        payment.invoice_number = get_invoice_number()
+        if '<rezultat>1</rezultat>' in payment.info:
+            if payment.status == Payment.Status.SUCCESS:
+                capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
+            else:
+                payment.status = Payment.Status.ERROR
+                payment.errored_at = timezone.now()
+                payment.save()
+        elif '<rezultat>0</rezultat>' in payment.info:
+            payment.transaction_success_at = timezone.now()
         payment.save()
 
-        finish_payment(payment)
+        # finish_payment(payment)
 
         return Response({"status": "OK"})
 
@@ -422,6 +450,27 @@ class PaymentSuccess(views.APIView):
     def get(self, request):
         context_vars = {}
         args = request.GET.get("args", "")
+        urlpar = request.GET.get("args", "")
+        urlpars = urlpar.split(",")
+        free_order = request.GET.get("free_order", False)
+
+        # free order has no args and different HTTP_REFERER
+
+        if not free_order and len(urlpars) < 2:
+            return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
+
+        payment = Payment.objects.get(ujp_id=request.GET.get('id'))
+
+        if free_order:
+            if payment.status != Payment.Status.SUCCESS:
+                capture_message(f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!", 'fatal')
+                return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
+
+        referer = request.META.get('HTTP_REFERER')
+        if not free_order and referer != settings.PAYMENT_BASE_URL:
+            capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
+            return render(request, "payment_failed.html", {'status', 'Napaka pri plačilu'})
+
         print(args)
         if "registration" in args:
             purchase_type = "registration"
@@ -429,7 +478,6 @@ class PaymentSuccess(views.APIView):
             purchase_type = "plan"
         elif "event" in args:
             purchase_type = "event"
-            payment = Payment.objects.get(id=request.GET.get('id'))
             event = payment.payment_plans.first().event_registration.event
             context_vars['event'] = event
         else:
@@ -440,16 +488,27 @@ class PaymentSuccess(views.APIView):
         if purchase_type == "registration":
             context_vars["registration_step"] = 5
 
+        if free_order:
+            # Free order has already status.SUCCESS
+            return render(request, "payment_success.html", context_vars)
+
+        if str(payment.user.uuid) != urlpars[1]:
+            return render(request, "payment_failed.html",{"status": "UUID does not match"})
+
+        payment.status = Payment.Status.SUCCESS
+        payment.successed_at = timezone.now()
+        payment.invoice_number = get_invoice_number()
+
+        payment.save()
+        finish_payment(payment)
+
         return render(request, "payment_success.html", context_vars)
 
 
 class PaymentFailure(views.APIView):
     def get(self, request):
-        payment_id = request.GET.get("id", 0)
-        payment = get_object_or_404(Payment, id=payment_id)
-        payment.status = Payment.Status.ERROR
-        payment.finished_at = timezone.now()
-        payment.save()
+        payment_ujp_id = request.GET.get("id", 0)
+        payment = get_object_or_404(Payment, ujp_id=payment_ujp_id)
         return render(request, "payment_failed.html", {})
 
 
@@ -496,7 +555,7 @@ class PaymentInvoicePDF(View):
                     "payment": payment,
                     "user": payment.user,
                 },
-                filename=f"rog-racun-{payment.id}.pdf",
+                filename=f"rog-racun-{payment.ujp_id}.pdf",
                 show_content_in_browser=True,
             )
         else:
