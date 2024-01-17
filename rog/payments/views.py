@@ -18,12 +18,9 @@ from sentry_sdk import capture_message
 from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
-from .pantheon import create_move
-from home.email_utils import send_email
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, finish_payment
 from events.models import EventRegistration
-import requests
 
 # Create your views here.
 
@@ -430,6 +427,7 @@ class PaymentSuccessXML(views.APIView):
 
         # payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
+        payment.save()
         if '<rezultat>1</rezultat>' in payment.info:
             if payment.status == Payment.Status.SUCCESS:
                 capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
