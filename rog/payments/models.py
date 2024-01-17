@@ -260,6 +260,7 @@ class Payment(Timestampable):
         help_text="Items in payment",
         related_name="payments",
         through=PaymentPlanEvent,
+        blank=True,
     )
     user_was_eligible_to_discount = models.BooleanField(default=False)
     objects = ActiveAtQuerySet.as_manager()
@@ -273,10 +274,13 @@ class Payment(Timestampable):
     panels = [
         FieldPanel("user"),
         FieldPanel("ujp_id"),
+        FieldPanel("invoice_number"),
+        FieldPanel("pantheon_id"),
         FieldPanel("amount"),
         FieldPanel("original_amount"),
         FieldPanel("successed_at"),
         FieldPanel("payment_done_at"),
+        FieldPanel("transaction_success_at"),
         FieldPanel("errored_at"),
         FieldPanel("active_to"),
         FieldPanel("status"),
@@ -297,7 +301,7 @@ class Payment(Timestampable):
         return f"{self.payment_plans.first().plan_name}"
 
     def save(self, *args, **kwargs):
-        if self.saved_in_pantheon == False and self.transaction_success_at:
+        if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at:
             super().save(*args, **kwargs)
             try:
                 response = create_move(self)
@@ -305,8 +309,8 @@ class Payment(Timestampable):
                     data = response.json()
                     print(data)
                     self.pantheon_id = data.get('acKey', '')
-                self.saved_in_pantheon = True
-                super().save(*args, **kwargs)
+                    self.saved_in_pantheon = True
+                    super().save(*args, **kwargs)
             except Exception as e:
                 sentry_sdk.capture_exception(e)
         else:
