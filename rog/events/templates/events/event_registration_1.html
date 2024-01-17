@@ -127,6 +127,12 @@
         </div>
         {% endfor %}
 
+        {% if children_formset_error %}
+        <div class="error my-3">
+            {{ children_formset_error }}
+        </div>
+        {% endif %}
+
         <div id="empty-form" class="hide">
             {% include "events/includes/event_registration_child_form.html" with form=children_formset.empty_form child_num="__prefix__" %}
         </div>

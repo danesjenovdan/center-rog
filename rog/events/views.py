@@ -150,6 +150,22 @@ class EventRegistrationView(View):
                     for child in children:
                         child.event_registration = event_registration
                     children = children_formset.save()
+                    # is there enough free places
+                    registered_children = (
+                        event_registration.event_registration_children.all().count()
+                    )
+                    free_places = event.get_free_places()
+                    if registered_children > free_places:
+                        return render(
+                            request,
+                            "events/event_registration_1.html",
+                            context={
+                                "event": event,
+                                "form": form,
+                                "children_formset": children_formset,
+                                "children_formset_error": _("Na voljo ni dovolj prostih mest.")
+                            },
+                        )
                 else:
                     return render(
                         request,

@@ -56,7 +56,6 @@ class TranslatablePage(Page):
 
         # WORKAROUND for model translation
         language_code = translation.get_language()
-
         use_wagtail_i18n = getattr(settings, "WAGTAIL_I18N_ENABLED", False)
 
         if use_wagtail_i18n:
@@ -111,11 +110,11 @@ class BasePage(TranslatablePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Meta slika")
+        verbose_name=_("Meta slika"),
     )
 
     promote_panels = Page.promote_panels + [
-        FieldPanel('meta_image'),
+        FieldPanel("meta_image"),
     ]
 
     def short_title(self):
@@ -130,7 +129,9 @@ class BasePage(TranslatablePage):
 
 class ObjectListPage(BasePage):
     intro_text = models.TextField(blank=True, verbose_name=_("Opis"))
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Poglej več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Poglej več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("intro_text"),
@@ -146,7 +147,9 @@ class ObjectListPage(BasePage):
 
 
 class ObjectArchiveListPage(BasePage):
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Poglej več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Poglej več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("show_see_more_section"),
@@ -164,37 +167,79 @@ class ObjectProfilePage(BasePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Slika")
+        verbose_name=_("Slika"),
     )
-    image_description = models.TextField(blank=True, verbose_name=_("Dodaten opis slike"), max_length=250)
+    image_description = models.TextField(
+        blank=True, verbose_name=_("Dodaten opis slike"), max_length=250
+    )
     # contact information
     email = models.EmailField(blank=True, verbose_name=_("Elektronski naslov"))
-    phone = models.CharField(max_length=12, blank=True, verbose_name=_("Telefonska številka"))
+    phone = models.CharField(
+        max_length=12, blank=True, verbose_name=_("Telefonska številka")
+    )
     instagram = models.URLField(blank=True, verbose_name=_("Instagram"))
     facebook = models.URLField(blank=True, verbose_name=_("Facebook"))
     website = models.URLField(blank=True, verbose_name=_("Spletna stran"))
-    contact_description = models.TextField(blank=True, verbose_name=_("Dodatna informacija"), max_length=50)
+    contact_description = models.TextField(
+        blank=True, verbose_name=_("Dodatna informacija"), max_length=50
+    )
     # working hours
-    working_hours = StreamField([
-        ("time", blocks.StructBlock([
-            ("day", blocks.CharBlock(label=_("Dan"))),
-            ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
-            ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
-        ], label=_("Dan in ura")))
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Delovni čas"))
+    working_hours = StreamField(
+        [
+            (
+                "time",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
+                        ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
+                    ],
+                    label=_("Dan in ura"),
+                ),
+            )
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Delovni čas"),
+    )
     # gallery
-    gallery = StreamField([
-        ("image", blocks.StructBlock([
-            ("image", ImageChooserBlock(label=_("Slika"))),
-            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
-        ]))
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
+    gallery = StreamField(
+        [
+            (
+                "image",
+                blocks.StructBlock(
+                    [
+                        ("image", ImageChooserBlock(label=_("Slika"))),
+                        (
+                            "image_description",
+                            blocks.TextBlock(
+                                label=_("Podnapis k sliki"),
+                                max_length=150,
+                                required=False,
+                            ),
+                        ),
+                    ]
+                ),
+            )
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Galerija"),
+    )
     # archived
     archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
-    archived_from = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval od"))
-    archived_to = models.PositiveSmallIntegerField(blank=True, null=True, verbose_name=_("Deloval do"))
+    archived_from = models.PositiveSmallIntegerField(
+        blank=True, null=True, verbose_name=_("Deloval od")
+    )
+    archived_to = models.PositiveSmallIntegerField(
+        blank=True, null=True, verbose_name=_("Deloval do")
+    )
     # see more
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
@@ -207,7 +252,7 @@ class ObjectProfilePage(BasePage):
                 FieldPanel("website"),
                 FieldPanel("contact_description"),
             ],
-            heading=_("Kontaktni podatki")
+            heading=_("Kontaktni podatki"),
         ),
         FieldPanel("working_hours"),
         MultiFieldPanel(
@@ -215,15 +260,18 @@ class ObjectProfilePage(BasePage):
                 FieldPanel("image"),
                 FieldPanel("image_description"),
             ],
-            heading=_("Slika")
+            heading=_("Slika"),
         ),
         FieldPanel("gallery"),
         FieldPanel("show_see_more_section"),
-        MultiFieldPanel([
-            FieldPanel("archived"),
-            FieldPanel("archived_from"),
-            FieldPanel("archived_to")
-        ], heading=_("Arhivacija"))
+        MultiFieldPanel(
+            [
+                FieldPanel("archived"),
+                FieldPanel("archived_from"),
+                FieldPanel("archived_to"),
+            ],
+            heading=_("Arhivacija"),
+        ),
     ]
 
     subpage_types = []
@@ -252,7 +300,7 @@ class BasicTextPage(TranslatablePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Meta slika")
+        verbose_name=_("Meta slika"),
     )
 
     content_panels = Page.content_panels + [
@@ -260,9 +308,9 @@ class BasicTextPage(TranslatablePage):
     ]
 
     promote_panels = Page.promote_panels + [
-        FieldPanel('meta_image'),
+        FieldPanel("meta_image"),
     ]
-    
+
     subpage_types = []
 
     class Meta:
