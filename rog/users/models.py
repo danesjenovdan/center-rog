@@ -212,6 +212,11 @@ class User(AbstractUser, Timestampable):
         verbose_name=_("Galerija"),
     )
 
+    saved_in_pantheon = models.BooleanField(
+        default=False,
+        help_text=_("Ali je oseba že shranjena v Pantheonu?")
+    )
+
     objects = UserManager()
 
     autocomplete_search_field = "email"
@@ -277,9 +282,12 @@ class User(AbstractUser, Timestampable):
         return "1000"
 
     def save(self, *args, **kwargs):
-        if self.id == None:
+        if self.first_name and not self.saved_in_pantheon:
             super().save(*args, **kwargs)
-            create_subject(self)
+            response = create_subject(self)
+            if response.status_code == 200:
+                self.saved_in_pantheon = True
+                super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
 
