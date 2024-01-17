@@ -142,14 +142,14 @@
                 font-weight: 700;
             }
 
-            #footer #footer-top {
+            #footer {
                 font-size: 10px;
             }
 
             #footer #izdal {
                 float: right;
-                text-align: right;
                 margin-top: 25px;
+                margin-right: 150px;
             }
         </style>
     </head>
@@ -170,7 +170,7 @@
                     </div>
                     <div id="r-info">
                         Matična št.: 8889724000<br>
-                        Davčna št.: SI79671977<br>
+                        Davčna št.: 79671977<br>
                         TRR: 01261-6000002804
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                             {{ user.legal_person_address_1 }}<br>
                             {{ user.legal_person_address_2 }}<br>
                             {% if user.legal_person_vat %}
-                                {% if user.legal_person_vat %}SI{% endif %}{{ user.legal_person_tax_number }}
+                                ID za DDV: {% if user.legal_person_vat %}SI{% endif %}{{ user.legal_person_tax_number }}
                             {% endif %}
                         {% else %}
                             {{ user.first_name }} {{ user.last_name }}<br>
@@ -244,9 +244,16 @@
                 </table>
             </div>
             <div id="footer">
+                <p>
+                    DDV ni obračunan skladno s 1.odst. 94. čl ZDDV-1.
+                </p>
+                <br>
                 <div id="footer-top">
                     Hvala za vaš nakup!<br>
                     Za reklamacije in informacije smo dosegljivi na: info@center-rog.si
+                </div>
+                <div id="izdal">
+                    <p>Račun izdala:<br>Renata Zamida, direktorica</p>
                 </div>
             </div>
         </div>
