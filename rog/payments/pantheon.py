@@ -223,8 +223,7 @@ def create_subject(subject):
         return None
 
     taxer = False
-
-    tax_number = subject.legal_person_tax_number
+    tax_number = str(subject.legal_person_tax_number)
     tax_number = tax_number.replace('SI', '').strip()
     if subject.legal_person_vat:
         taxer = True

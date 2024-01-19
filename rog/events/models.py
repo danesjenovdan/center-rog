@@ -21,6 +21,8 @@ from payments.pantheon import create_ident
 
 from behaviours.models import Timestampable
 
+from sentry_sdk import capture_message
+
 import random
 
 
@@ -143,6 +145,10 @@ class EventPage(BasePage):
     pantheon_ident = models.CharField(
         max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id")
     )
+    saved_in_pantheon = models.BooleanField(
+        default=False,
+        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -204,9 +210,16 @@ class EventPage(BasePage):
         return context
 
     def save(self, *args, **kwargs):
-        if not self.pantheon_ident and self.price > 0 and self.number_of_places:
+        if not self.saved_in_pantheon and self.price > 0 and self.number_of_places:
+            super(EventPage, self).save(*args, **kwargs)
             self.pantheon_ident = f"DELAVNICA{self.id}"
-            create_ident(self.title, float(self.price), 0, self.pantheon_ident)
+            response = create_ident(self.title, float(self.price), 0, self.pantheon_ident)
+            if response and response.status_code == 200:
+                self.saved_in_pantheon = True
+                super(EventPage, self).save(*args, **kwargs)
+            else:
+                if response:
+                    capture_message(f"Error creating event ident {self.title} on pantheon with response {response.content}")
 
         super(EventPage, self).save(*args, **kwargs)
 

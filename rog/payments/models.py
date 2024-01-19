@@ -122,6 +122,10 @@ class Plan(Timestampable):
         unique=True,
         help_text=_("Unique ident id for Pantheon without dashes and spaces")
     )
+    saved_in_pantheon = models.BooleanField(
+        default=False,
+        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
+    )
     payment_item_type = models.CharField(
         max_length=20,
         choices=PaymentItemType.choices,
@@ -167,14 +171,25 @@ class Plan(Timestampable):
         verbose_name_plural = _("Uporabniki - plačilni paketi")
 
     def save(self, *args, **kwargs):
-        if self.id == None:
+        if not self.saved_in_pantheon:
             # create ident by name
             if self.pantheon_ident_id == None:
                 self.pantheon_ident_id = slugify(self.name)[:16]
-            super().save(*args, **kwargs)
-            create_ident(self.name, float(self.price), self.vat, self.get_pantheon_ident_id())
+                super().save(*args, **kwargs)
+            try:
+                response = create_ident(self.name, float(self.price), self.vat, self.get_pantheon_ident_id())
+                if response and response.status_code == 200:
+                    self.saved_in_pantheon = True
+                    super(Plan, self).save(*args, **kwargs)
+                else:
+                    if response:
+                        # send error just on production
+                        sentry_sdk.capture_message(f"Error creating ident on pantheon for plan {self.name} with response {response.content}")
+            except Exception as e:
+                sentry_sdk.capture_exception(e)
         else:
             super().save(*args, **kwargs)
+
 
 class PaymentPlanEvent(models.Model):
     payment_item_type = models.CharField(
@@ -307,10 +322,14 @@ class Payment(Timestampable):
                 response = create_move(self)
                 if response and response.status_code == 200:
                     data = response.json()
-                    print(data)
-                    self.pantheon_id = data.get('acKey', '')
-                    self.saved_in_pantheon = True
-                    super().save(*args, **kwargs)
+                    pk = data.get('acKey', '')
+                    if pk:
+                        print(data)
+                        self.pantheon_id = pk
+                        self.saved_in_pantheon = True
+                        super().save(*args, **kwargs)
+                    else:
+                        sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
             except Exception as e:
                 sentry_sdk.capture_exception(e)
         else:
