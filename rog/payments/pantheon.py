@@ -472,8 +472,8 @@ def create_move(
         "issuer": "Veleprodajno skladišče",
         "issuerId": "Veleprodajno skladišče",
         "thirdParty": payment.user.legal_person_name,
-        "thirdPartyId": payment.user.legal_person_name,
-        "docType": "3690", # poslovni dogodek
+        "thirdPartyId": payment.user.get_pantheon_subject_id() if str(payment.user.legal_person_tax_number) else "",
+        "docType": "3690",
         "date": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "dateDue": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "invoiceDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
