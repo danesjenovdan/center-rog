@@ -20,17 +20,17 @@ msgstr ""
 
 #: events/forms.py:12
 msgid "na dogodek prijavljam otroka"
-msgstr ""
+msgstr "I am registering a child for the event."
 
 #: events/forms.py:36
 msgid "Opremo v delavnicah bom uporabljal_a na lastno odgovornost."
-msgstr ""
+msgstr "I will be using equipment in the workshops at my own risk."
 
 #: events/forms.py:42
 msgid ""
 "Dovoljujem fotografiranje in snemanje izključno za potrebe promocije "
 "programa Centra Rog."
-msgstr ""
+msgstr "I allow photographing and recording exclusively for the purposes of promoting the program of Center Rog."
 
 #: events/forms.py:54 home/forms.py:142
 msgid "Datum rojstva"
@@ -132,7 +132,7 @@ msgstr "Price"
 
 #: events/models.py:127
 msgid "Cena za nečlane"
-msgstr ""
+msgstr "The price for non-members"
 
 #: events/models.py:129
 #, fuzzy
@@ -158,11 +158,11 @@ msgstr "sign up"
 
 #: events/models.py:139
 msgid "Če je označeno, je dogodek brez prijave."
-msgstr ""
+msgstr "If marked, the event is without registration."
 
 #: events/models.py:142
 msgid "Pantheon ident id"
-msgstr ""
+msgstr "Pantheon ident id"
 
 #: events/models.py:212 home/models/blocks.py:134 payments/models.py:18
 msgid "Dogodek"
@@ -204,27 +204,27 @@ msgstr "Phone number"
 
 #: events/models.py:323
 msgid "Na dogodek prijavljam otroka"
-msgstr ""
+msgstr "I am registering a child for the event"
 
 #: events/models.py:325
 msgid "Oviranosti (naštej)"
-msgstr ""
+msgstr "Disabilities (list)"
 
 #: events/models.py:326
 msgid "Alergije (naštej)"
-msgstr ""
+msgstr "Allergies (list)"
 
 #: events/models.py:328
 msgid "Strinjam se z zavrnitvijo odgovornosti"
-msgstr ""
+msgstr "I agree with the disclaimer"
 
 #: events/models.py:331
 msgid "Dovoljujem fotografiranje in snemanje"
-msgstr ""
+msgstr "I allow photography and recording"
 
 #: events/models.py:335
 msgid "Prijava na dogodek je zaključena"
-msgstr ""
+msgstr "Event registration is closed"
 
 #: events/models.py:353
 #, fuzzy
@@ -302,15 +302,15 @@ msgstr "Choice of membership"
 
 #: events/templates/events/event_page.html:68
 msgid "za goste"
-msgstr ""
+msgstr "for guests"
 
 #: events/templates/events/event_page.html:81
 msgid "prijava na dogodek"
-msgstr ""
+msgstr "Event registration"
 
 #: events/templates/events/event_page.html:85
 msgid "Število prostih mest"
-msgstr ""
+msgstr "Number of available spots"
 
 #: events/templates/events/event_page.html:93
 #, fuzzy
@@ -320,7 +320,7 @@ msgstr "view your profile"
 
 #: events/templates/events/event_registration_1.html:136
 msgid "dodaj še enega otroka"
-msgstr ""
+msgstr "Add one more child"
 
 #: events/templates/events/event_registration_1.html:139
 #: events/templates/events/event_registration_2.html:32
@@ -348,7 +348,7 @@ msgstr "start of registration"
 #: payments/templates/payment_success.html:40
 #: payments/templates/registration_payment_preview.html:42
 msgid "morebitne posebnosti"
-msgstr ""
+msgstr "Any specific details"
 
 #: events/templates/events/event_registration_wrapper.html:25
 #: payments/templates/payment_success.html:41
@@ -375,7 +375,7 @@ msgstr "payment"
 
 #: events/templates/events/includes/event_registration_child_form.html:3
 msgid "Otrok"
-msgstr ""
+msgstr "child"
 
 #: events/templates/events/includes/event_registration_child_form.html:60
 #, fuzzy
@@ -385,7 +385,7 @@ msgstr "Remove"
 
 #: events/views.py:112
 msgid "Prosimo, dodajte vsaj enega otroka."
-msgstr ""
+msgstr "Please add at least one child."
 
 #: events/views.py:119 events/views.py:121 events/views.py:123
 #, fuzzy
@@ -1307,7 +1307,7 @@ msgstr "your upcoming events"
 
 #: home/templates/registration/profile.html:118
 msgid "za urejanje prijave kontaktiraj"
-msgstr ""
+msgstr "For application edits, please contact"
 
 #: home/templates/registration/profile.html:135
 #, fuzzy
@@ -1487,7 +1487,7 @@ msgstr "Enter the discount code"
 
 #: payments/models.py:16
 msgid "Clanarina"
-msgstr ""
+msgstr "Membership fee"
 
 #: payments/models.py:17
 #, fuzzy
