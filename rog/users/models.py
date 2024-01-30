@@ -285,7 +285,7 @@ class User(AbstractUser, Timestampable):
         if self.first_name and not self.saved_in_pantheon:
             super().save(*args, **kwargs)
             response = create_subject(self)
-            if response.status_code == 200:
+            if response and response.status_code == 200:
                 self.saved_in_pantheon = True
                 super().save(*args, **kwargs)
         else:
