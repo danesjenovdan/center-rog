@@ -425,7 +425,6 @@ class PaymentSuccessXML(views.APIView):
         if payment.successed_at:
             return Response({"status": "Payment is already processed"})
 
-        # payment.status = Payment.Status.SUCCESS
         payment.info = str(data)
         payment.save()
         if '<rezultat>1</rezultat>' in payment.info:
@@ -437,9 +436,17 @@ class PaymentSuccessXML(views.APIView):
                 payment.save()
         elif '<rezultat>0</rezultat>' in payment.info:
             payment.transaction_success_at = timezone.now()
+            if payment.status != Payment.Status.SUCCESS:
+                """
+                payment is marked as successed on redirect page from UJP,
+                if user closes page before redirect payment is not marked as successed
+                """
+                payment.status = Payment.Status.SUCCESS
+                payment.successed_at = timezone.now()
+                payment.invoice_number = get_invoice_number()
+                payment.save()
+                finish_payment(payment)
         payment.save()
-
-        # finish_payment(payment)
 
         return Response({"status": "OK"})
 
