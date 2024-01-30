@@ -446,7 +446,8 @@ class PaymentSuccessXML(views.APIView):
                 payment.invoice_number = get_invoice_number()
                 payment.save()
                 finish_payment(payment)
-        payment.save()
+            else:
+                payment.save()
 
         return Response({"status": "OK"})
 
