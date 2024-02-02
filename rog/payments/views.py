@@ -472,8 +472,9 @@ class PaymentSuccess(views.APIView):
                 capture_message(f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!", 'fatal')
                 return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
+        # check if referer exists and is valid
         referer = request.META.get('HTTP_REFERER')
-        if not free_order and referer != settings.PAYMENT_BASE_URL:
+        if not free_order and not (referer and referer.startswith(settings.PAYMENT_BASE_URL)):
             capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
             return render(request, "payment_failed.html", {'status': 'Napaka pri plačilu'})
 
