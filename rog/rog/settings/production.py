@@ -20,6 +20,10 @@ ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = os.getenv('BASE_URLS', 'https://center-rog.si').split(',')
 
+# Base URL to use when referring to full URLs within the Wagtail admin backend -
+# e.g. in notification emails. Don't include '/admin' or a trailing slash
+WAGTAILADMIN_BASE_URL = CSRF_TRUSTED_ORIGINS[0]
+
 STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', '/static/')
 STATIC_URL = os.getenv('DJANGO_STATIC_URL_BASE', '/static/')
 
