@@ -5,7 +5,7 @@ from modeltranslation.decorators import register
 
 @register(EventPage)
 class EventPageTR(TranslationOptions):
-    fields = ("body",)
+    fields = ("body", "tag", "location", "notice")
 
 
 @register(EventListArchivePage)
