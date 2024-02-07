@@ -16,10 +16,20 @@ prima_api = PrimaApi()
 def get_invoice_number():
     year = datetime.now().strftime("%y")
     invoice_order = Payment.objects.filter(
-        successed_at__year=datetime.now().year
+        successed_at__year=datetime.now().year,
+        amount__gt=0
     ).count() + 1
-    invoice_order_str = str(invoice_order).zfill(3)
+    invoice_order_str = str(invoice_order).zfill(6)
     return f'{year}-369-{invoice_order_str}'
+
+def get_free_invoice_number():
+    year = datetime.now().strftime("%y")
+    invoice_order = Payment.objects.filter(
+        successed_at__year=datetime.now().year,
+        amount=0
+    ).count() + 1
+    invoice_order_str = str(invoice_order).zfill(6)
+    return f'{year}-000-{invoice_order_str}'
 
 
 def finish_payment(payment):
