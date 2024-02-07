@@ -80,12 +80,12 @@ class EventCategory(models.Model):
         if not self.saved_in_pantheon:
             ident_name = f'{self.name.upper().replace(" ", "")}'
             self.pantheon_ident = ident_name
-            super(EventPage, self).save(*args, **kwargs)
+            super(EventCategory, self).save(*args, **kwargs)
             try:
                 response = create_ident(self.name, float(50), 0, self.pantheon_ident)
                 if response and response.status_code == 200:
                     self.saved_in_pantheon = True
-                    super(EventPage, self).save(*args, **kwargs)
+                    super(EventCategory, self).save(*args, **kwargs)
                 else:
                     if response:
                         sentry_sdk.capture_message(
@@ -94,7 +94,7 @@ class EventCategory(models.Model):
             except Exception as e:
                 sentry_sdk.capture_exception(e)
 
-        super(EventPage, self).save(*args, **kwargs)
+        super(EventCategory, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
