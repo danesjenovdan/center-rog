@@ -78,7 +78,7 @@ class EventCategory(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         if not self.saved_in_pantheon:
-            ident_name = f'{self.name.upper().replace(" ", "")}'
+            ident_name = f'{self.name.upper().replace(" ", "")}'[:16]
             self.pantheon_ident = ident_name
             super(EventCategory, self).save(*args, **kwargs)
             try:
