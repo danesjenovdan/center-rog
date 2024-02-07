@@ -19,7 +19,7 @@ from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .forms import PromoCodeForm
-from .utils import get_invoice_number, finish_payment
+from .utils import get_invoice_number, get_free_invoice_number, finish_payment
 from events.models import EventRegistration
 
 # Create your views here.
@@ -291,7 +291,7 @@ class Pay(views.APIView):
             payment.status = Payment.Status.SUCCESS
             payment.info = "Plačano s promo kodo 100% popust"
             payment.successed_at = timezone.now()
-            payment.invoice_number = get_invoice_number()
+            payment.invoice_number = get_free_invoice_number()
             payment.save()
         return render(
             request, "payment.html", {"id": payment_id, "ujp_id": payment.ujp_id, "free_order": free_order}
