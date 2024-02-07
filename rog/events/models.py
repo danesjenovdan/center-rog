@@ -149,12 +149,20 @@ class EventPage(BasePage):
         default=False,
         help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
     )
+    event_is_for_children = models.BooleanField(
+        default=False,
+        verbose_name=_("Dogodek je za otroke"),
+        help_text=_(
+            "Prijava na dogodek zahteva vpis vsaj enega otroka"
+        ),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
         FieldPanel("category"),
         FieldPanel("body"),
         FieldPanel("tag"),
+        FieldPanel("event_is_for_children"),
         FieldPanel("start_day"),
         FieldPanel("end_day"),
         FieldPanel("start_time"),
