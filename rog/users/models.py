@@ -24,6 +24,7 @@ from datetime import datetime
 import random
 import uuid
 import re
+import sentry_sdk
 
 
 class MembershipType(ClusterableModel):
@@ -259,7 +260,10 @@ class User(AbstractUser, Timestampable):
         return self.payments.all().get_available_workshops()
 
     def get_pantheon_subject_id(self):
-        return str(self.uuid).replace("-", "")[:30]
+        if self.legal_person_receipt:
+            return str(self.uuid).replace("-", "")[:30]
+        else:
+            return 'KUPEC'
 
     def is_eligible_to_discount(self):
         # user is eligible to discount if he is younger than 26 and older than 65
@@ -282,12 +286,15 @@ class User(AbstractUser, Timestampable):
         return "1000"
 
     def save(self, *args, **kwargs):
-        if self.first_name and not self.saved_in_pantheon:
+        if self.first_name and not self.saved_in_pantheon and self.legal_person_receipt:
             super().save(*args, **kwargs)
-            response = create_subject(self)
-            if response and response.status_code == 200:
-                self.saved_in_pantheon = True
-                super().save(*args, **kwargs)
+            try:
+                response = create_subject(self)
+                if response and response.status_code == 200:
+                    self.saved_in_pantheon = True
+                    super().save(*args, **kwargs)
+            except Exception as e:
+                sentry_sdk.capture_exception(e)
         else:
             super().save(*args, **kwargs)
 
