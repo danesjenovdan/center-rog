@@ -114,6 +114,7 @@ class EventRegistrationView(View):
 
         if form.is_valid():
             # user registration
+            # if not event.event_is_for_children
             if not form.cleaned_data["register_child_check"]:
                 if not form.cleaned_data.get("name"):
                     form.add_error("name", _("To polje ne sme biti prazno."))
@@ -346,6 +347,18 @@ class EventRegistrationInformationView(View):
                 f"/placilo?purchase_type=event&event_registration={event_registration.id}"
             )
         else:
-            event_registration.registration_finished = True
-            event_registration.save()
-            return redirect("profile-my")
+            # is there enough free places
+            people_count = event_registration.event_registration_children.all().count()
+            if people_count == 0:
+                people_count = 1
+            free_places = event.get_free_places()
+            if people_count > free_places:
+                return render(
+                    request,
+                    "events/event_registration_failed.html",
+                    context={"registration_step": 4},
+                )
+            else:
+                event_registration.registration_finished = True
+                event_registration.save()
+                return redirect("profile-my")
