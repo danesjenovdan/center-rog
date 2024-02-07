@@ -8,6 +8,7 @@ from home.forms import SplitInputDateWidget
 
 
 class EventRegisterPersonForm(forms.ModelForm):
+    # to do: comment out
     register_child_check = forms.BooleanField(
         label=_("na dogodek prijavljam otroka"), label_suffix="", required=False
     )
@@ -17,6 +18,7 @@ class EventRegisterPersonForm(forms.ModelForm):
 
     class Meta:
         model = EventRegistration
+        # fields = ["name", "surname", "phone"]
         fields = ["name", "surname", "phone", "register_child_check"]
         widgets = {
             "name": forms.TextInput(),
