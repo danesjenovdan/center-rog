@@ -64,6 +64,7 @@ class EventRegistrationAdmin(ModelAdmin):
     add_to_admin_menu = False
     list_filter = (
         "register_child_check",
+        "event__event_is_for_children",
         "registration_finished",
         RelevantEventsListFilter,
     )
