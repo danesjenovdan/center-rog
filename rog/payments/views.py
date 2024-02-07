@@ -144,6 +144,16 @@ class PaymentPreview(views.APIView):
                     people_count = 1
                 else:
                     title = f"{title} x {people_count}"
+
+                # check if there is enough free places
+                free_places = event_registration.event.get_free_places()
+                if people_count > free_places:
+                    return render(
+                        request,
+                        "events/event_registration_failed.html",
+                        context={"registration_step": 4},
+                    )
+
                 if user.membership:
                     price = event_registration.event.price * people_count
                 else:
@@ -174,7 +184,6 @@ class PaymentPreview(views.APIView):
                         price=price,
                         plan_name=title,
                     ).save()
-
 
                 promo_code_form = PromoCodeForm({"payment_id": payment.id})
 
