@@ -168,13 +168,6 @@ class EventPage(BasePage):
         verbose_name=_("Brez prijave"),
         help_text=_("Če je označeno, je dogodek brez prijave."),
     )
-    pantheon_ident = models.CharField(
-        max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id")
-    )
-    saved_in_pantheon = models.BooleanField(
-        default=False,
-        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
-    )
     event_is_for_children = models.BooleanField(
         default=False,
         verbose_name=_("Dogodek je za otroke"),
