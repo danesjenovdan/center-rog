@@ -61,7 +61,12 @@ class LabListPageTR(TranslationOptions):
 
 
 class ObjectProfilePageTR(TranslationOptions):
-    fields = ("description", "image_description", "contact_description")
+    fields = (
+        "description",
+        "image_description",
+        "contact_description",
+        "working_hours",
+    )
 
 
 @register(LabPage)
