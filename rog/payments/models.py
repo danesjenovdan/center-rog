@@ -172,6 +172,7 @@ class Plan(Timestampable):
 
     def save(self, *args, **kwargs):
         if not self.saved_in_pantheon:
+            super().save(*args, **kwargs)
             # create ident by name
             if self.pantheon_ident_id == None:
                 self.pantheon_ident_id = slugify(self.name)[:16]
@@ -224,7 +225,7 @@ class PaymentPlanEvent(models.Model):
 
     def get_pantheon_ident_id(self):
         if self.payment_item_type == PaymentItemType.EVENT:
-            return self.event_registration.event.pantheon_ident
+            return self.event_registration.event.category.pantheon_ident
         return self.plan.get_pantheon_ident_id()
 
 
@@ -316,7 +317,7 @@ class Payment(Timestampable):
         return f"{self.payment_plans.first().plan_name}"
 
     def save(self, *args, **kwargs):
-        if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at:
+        if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at and self.amount > 0:
             super().save(*args, **kwargs)
             try:
                 response = create_move(self)

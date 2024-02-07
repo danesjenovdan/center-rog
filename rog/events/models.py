@@ -21,7 +21,7 @@ from payments.pantheon import create_ident
 
 from behaviours.models import Timestampable
 
-from sentry_sdk import capture_message
+import sentry_sdk
 
 import random
 
@@ -66,9 +66,35 @@ class EventCategory(models.Model):
         FieldPanel("color_scheme"),
     ]
 
+    pantheon_ident = models.CharField(
+        max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id")
+    )
+    saved_in_pantheon = models.BooleanField(
+        default=False,
+        help_text=_("Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon")
+    )
+
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        super(EventCategory, self).save(*args, **kwargs)
+        if not self.saved_in_pantheon:
+            ident_name = f'{self.name.upper().replace(" ", "")}'
+            self.pantheon_ident = ident_name
+            super(EventPage, self).save(*args, **kwargs)
+            try:
+                response = create_ident(self.name, float(50), 0, self.pantheon_ident)
+                if response and response.status_code == 200:
+                    self.saved_in_pantheon = True
+                    super(EventPage, self).save(*args, **kwargs)
+                else:
+                    if response:
+                        sentry_sdk.capture_message(
+                            f"Error creating event ident {self.title} on pantheon with response {response.content}"
+                        )
+            except Exception as e:
+                sentry_sdk.capture_exception(e)
+
+        super(EventPage, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -142,13 +168,6 @@ class EventPage(BasePage):
         verbose_name=_("Brez prijave"),
         help_text=_("Če je označeno, je dogodek brez prijave."),
     )
-    pantheon_ident = models.CharField(
-        max_length=16, blank=True, null=True, verbose_name=_("Pantheon ident id")
-    )
-    saved_in_pantheon = models.BooleanField(
-        default=False,
-        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
-    )
     event_is_for_children = models.BooleanField(
         default=False,
         verbose_name=_("Dogodek je za otroke"),
@@ -216,20 +235,6 @@ class EventPage(BasePage):
         context["current_user_registered"] = current_user_registered
 
         return context
-
-    def save(self, *args, **kwargs):
-        if not self.saved_in_pantheon and self.price > 0 and self.number_of_places:
-            super(EventPage, self).save(*args, **kwargs)
-            self.pantheon_ident = f"DELAVNICA{self.id}"
-            response = create_ident(self.title, float(self.price), 0, self.pantheon_ident)
-            if response and response.status_code == 200:
-                self.saved_in_pantheon = True
-                super(EventPage, self).save(*args, **kwargs)
-            else:
-                if response:
-                    capture_message(f"Error creating event ident {self.title} on pantheon with response {response.content}")
-
-        super(EventPage, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Dogodek")
