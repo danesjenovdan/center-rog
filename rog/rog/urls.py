@@ -39,6 +39,7 @@ urlpatterns = [
     path("admin/autocomplete/", include(autocomplete_admin_urls)),
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("i18n/", include("django.conf.urls.i18n")),
 ]
 
 
