@@ -100,6 +100,11 @@
         }
     }
 
+    button.nav-link.lang-link {
+        border: none;
+        background-color: transparent;
+    }
+
     @include media-breakpoint-down(md) {
         .nav-link {
             @include font-size-lg();
