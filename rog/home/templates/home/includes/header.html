@@ -2,7 +2,7 @@
 {% wagtail_site as current_site %}
 
 <div id="logo-navigation">
-  <a href="/">
+  <a href="{% if LANGUAGE_CODE != 'sl' %}/{{ LANGUAGE_CODE }}/{% else %}/{% endif %}">
     <img src="{% static 'images/Center-Rog-logo.svg' %}" />
   </a>
 </div>
