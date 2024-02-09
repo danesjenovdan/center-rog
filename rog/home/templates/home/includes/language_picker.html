@@ -1,18 +1,34 @@
-{% load i18n wagtailcore_tags wagtail_modeltranslation %}
+{% load i18n wagtailcore_tags wagtail_modeltranslation url_translation %}
 
 {% get_current_language as CURRENT_LANGUAGE %}
 {% get_available_languages as AVAILABLE_LANGUAGES %}
 {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
 {% for language in languages %}
 {% if CURRENT_LANGUAGE != language.code %}
+    {% if page %}
     <a href="{% change_lang language.code page %}" rel="alternate" hreflang="{{ language.code }}" class="nav-link lang-link">
-    {% if language.code == 'en' %}
-    eng
-    {% elif language.code == 'sl' %}
-    slo
-    {% else %}
-    {{ language.name }}
-    {% endif %}
+        {% if language.code == 'en' %}
+        eng
+        {% elif language.code == 'sl' %}
+        slo
+        {% else %}
+        {{ language.name }}
+        {% endif %}
     </a>
+    {% else %}
+    <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path|strip_language }}">
+        <input id="id_language" name="language" value="{{ language.code }}" type="hidden">
+        <button type="submit" class="nav-link lang-link">
+            {% if language.code == 'en' %}
+            eng
+            {% elif language.code == 'sl' %}
+            slo
+            {% else %}
+            {{ language.name }}
+            {% endif %}
+        </button>
+    </form>
+    {% endif %}
 {% endif %}
 {% endfor %}
