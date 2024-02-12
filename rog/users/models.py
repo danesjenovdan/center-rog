@@ -260,10 +260,7 @@ class User(AbstractUser, Timestampable):
         return self.payments.all().get_available_workshops()
 
     def get_pantheon_subject_id(self):
-        if self.legal_person_receipt:
-            return str(self.uuid).replace("-", "")[:30]
-        else:
-            return 'KUPEC'
+        return str(self.uuid).replace("-", "")[:30]
 
     def is_eligible_to_discount(self):
         # user is eligible to discount if he is younger than 26 and older than 65
