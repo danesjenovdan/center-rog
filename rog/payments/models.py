@@ -314,7 +314,11 @@ class Payment(Timestampable):
         return f"{self.user} - {self.amount} - {self.created_at}"
 
     def history_name(self):
-        return f"{self.payment_plans.first().plan_name}"
+        payment_plan = self.payment_plans.first()
+        if payment_plan:
+            return f"{payment_plan.plan_name}"
+        else:
+            return _("Neznani artikel")
 
     def save(self, *args, **kwargs):
         if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at and self.amount > 0:
