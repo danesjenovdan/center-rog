@@ -207,7 +207,7 @@ def create_ident(name, price, vat, ident_id):
         "useAsCostOnVatba": "",
         "descrRtf": "",
         "techProcedureRtf": "",
-        "vatcodeReduced": ""
+        "vatcodeReduced":"NN"
         }
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Ident',
@@ -529,7 +529,7 @@ def create_move(
             {
                 "acKey": "",
                 "ident": item.get_pantheon_ident_id(),
-                "name": item.plan_name[:80],
+                "name": item.plan_name[:80].replace("[", '').replace("]", ''),
                 "anNo": 1,
                 "quantity": 1,
                 "price": float(item.original_price),
@@ -538,7 +538,7 @@ def create_move(
                 "vat": 0,
                 "vatCode": "NN",
                 "vatCodeTR": "NN",
-                "note": item.plan_name,
+                "note": item.plan_name.replace("[", '').replace("]", ''),
                 "measurementUnit": "KOS",
                 "taxPrice": 0,
                 "basisForTax": 0,
