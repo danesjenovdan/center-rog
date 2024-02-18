@@ -241,7 +241,7 @@ def create_subject(subject):
         "dept": "F",
         "school": "F",
         "institution": "F",
-        "name2": subject.legal_person_name,
+        "name2": subject.legal_person_name if subject.legal_person_vat else f'{subject.first_name} {subject.last_name}',
         "address": subject.address_1,
         "name3": f'{subject.first_name} {subject.last_name}',
         "post": f'SI-{subject.get_post()}',

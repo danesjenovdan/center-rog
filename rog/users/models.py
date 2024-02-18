@@ -283,7 +283,7 @@ class User(AbstractUser, Timestampable):
         return "1000"
 
     def save(self, *args, **kwargs):
-        if self.first_name and not self.saved_in_pantheon and self.legal_person_receipt:
+        if self.first_name and not self.saved_in_pantheon:
             super().save(*args, **kwargs)
             try:
                 response = create_subject(self)
