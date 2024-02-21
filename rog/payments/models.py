@@ -335,6 +335,8 @@ class Payment(Timestampable):
                         super().save(*args, **kwargs)
                     else:
                         sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
+                else:
+                    print(self.id, response.json())
             except Exception as e:
                 sentry_sdk.capture_exception(e)
         else:
