@@ -1,0 +1,90 @@
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %}{{ current_year }} calendar{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <style>
+        table.month {
+            margin: 20px;
+        }
+        table.month td, table.month th {
+            padding: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% include "wagtailadmin/shared/header.html" with title="Prihajajoči dogodki" icon="date" %}
+    <div class="main-content">
+        <div class="row">
+            <div class="result-list col12">
+                <table class="listing full-width">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="column-__str__">
+                                Dogodek
+                            </th>
+                            <th scope="col" class="sortable column-st-prijavnic">
+                                {% if order_by_key == 'places' %}
+                                    {% if order == '-' %}
+                                        <a href="?places=1" class="icon icon-arrow-up-after">
+                                    {% else %}
+                                        <a href="?places=-1" class="icon icon-arrow-down-after">
+                                    {% endif %}
+                                {% else %}
+                                    <a href="?places=1" class="icon icon-arrow-up-after">
+                                {% endif %}
+                                    Št. prijavnic
+                                 </a>
+                            </th>
+                            <th scope="col" class="sortable column-st-prijavlenih">
+                                {% if order_by_key == 'booked' %}
+                                    {% if order == '-' %}
+                                        <a href="?booked=1" class="icon icon-arrow-up-after">
+                                    {% else %}
+                                        <a href="?booked=-1" class="icon icon-arrow-down-after">
+                                    {% endif %}
+                                {% else %}
+                                    <a href="?booked=1" class="icon icon-arrow-up-after">
+                                {% endif %}
+                                Št. prijavljenih (otrok)
+                            </th>
+                            <th scope="col" class="sortable column-st-prijavlenih">
+                                {% if order_by_key == 'day' %}
+                                    {% if order == '-' %}
+                                        <a href="?day=1" class="icon icon-arrow-up-after">
+                                    {% else %}
+                                        <a href="?day=-1" class="icon icon-arrow-down-after">
+                                    {% endif %}
+                                {% else %}
+                                    <a href="?day=1" class="icon icon-arrow-up-after">
+                                {% endif %}
+                                Dan
+                            </th>
+                            <th scope="col" class="column-st-prijavlenih">
+                                Ura
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                        <tr class="odd" data-object-pk="{{event.id}}">
+                            <td class="field-__str__ title">
+                                <div class="title-wrapper">
+                                    <a href="http://localhost:8000/admin/events/eventregistration/?relevant_event={{event.id}}" title="Registracije na dogodek">
+                                        {{ event.title }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td class="field-prijavnic title nowrap">{{ event.number_of_places }}</td>
+                            <td class="field-prijavleni title nowrap">{{ event.booked_count }} ({{ event.booked_children }})</td>
+                            <td class="field-date title nowrap">{{ event.start_day }}</td>
+                            <td class="field-time title nowrap">{{ event.start_time }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
