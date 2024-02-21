@@ -1,10 +1,17 @@
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
+from django.urls import path, reverse
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail.admin.menu import MenuItem
+from wagtail import hooks
+
+from datetime import datetime
 
 from .models import EventPage, EventCategory, EventRegistration
+from .views import event_list
+from .export import ExportModelAdminMixin
 
 
 class RelevantEventsListFilter(SimpleListFilter):
@@ -56,12 +63,14 @@ class EventCategoryAdmin(ModelAdmin):
     add_to_admin_menu = False
 
 
-class EventRegistrationAdmin(ModelAdmin):
+class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
+    index_template_name = "admin_export_header.html"
     model = EventRegistration
     menu_icon = "pilcrow"
     menu_order = 300
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_display = ["__str__", "registration_finished", "get_children_count"]
     list_filter = (
         "register_child_check",
         "event__event_is_for_children",
@@ -75,6 +84,29 @@ class EventRegistrationAdmin(ModelAdmin):
         "user__first_name",
         "user__last_name",
     )
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.annotate(
+            booked_children=Count('event_registration_children'),
+        )
+        return qs
+
+    def get_children_count(self, obj):
+        return obj.booked_children
+
+    get_children_count.__name__ = str(_('Stevilo otrok'))
+
+
+@hooks.register('register_admin_urls')
+def register_eventlist_url():
+    return [
+        path('event_list/', event_list, name='event_list'),
+    ]
+
+
+@hooks.register('register_admin_menu_item')
+def register_calendar_menu_item():
+    return MenuItem('Prihajajoči dogodki', reverse('event_list'), icon_name='date')
 
 
 modeladmin_register(EventCategoryAdmin)
