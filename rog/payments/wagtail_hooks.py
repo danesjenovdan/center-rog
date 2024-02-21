@@ -17,6 +17,7 @@ class PaymentAdmin(ModelAdmin):
     menu_order = 201
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_display=['__str__', 'created_at']
 
 
 class PromoCodeAdmin(ModelAdmin):

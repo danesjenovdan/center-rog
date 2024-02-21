@@ -201,7 +201,7 @@ class EventPage(BasePage):
 
     parent_page_types = ["events.EventListPage"]
 
-    def get_free_places(self):
+    def get_booked_count(self):
         registered_children = EventRegistrationChild.objects.filter(
             event_registration__event=self,
             event_registration__registration_finished=True,
@@ -213,8 +213,12 @@ class EventPage(BasePage):
             event_registration_children__isnull=True,
         ).count()
 
-        free_places = self.number_of_places - (registered_children + registered_users)
+        booked_count = registered_children + registered_users
 
+        return booked_count
+
+    def get_free_places(self):
+        free_places = self.number_of_places - self.get_booked_count()
         return free_places
 
     def get_context(self, request, *args, **kwargs):
