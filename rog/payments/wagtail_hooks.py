@@ -13,7 +13,7 @@ from wagtail_rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
 
 import csv
 
-class ExportEventRegistrationView(IndexView):
+class ExportPaymentView(IndexView):
     model_admin = None
     
     def export_csv(self):
@@ -25,8 +25,9 @@ class ExportEventRegistrationView(IndexView):
                 'last_name': payment.user.last_name,
                 'original_amount': payment.original_amount,
                 'amount': payment.amount,
-                'successed_at': payment.successed_at.isoformat(),
-                'transaction_success_at': payment.transaction_success_at.isoformat(),
+                'created_at': payment.created_at.isoformat() if payment.created_at else '',
+                'successed_at': payment.successed_at.isoformat() if payment.successed_at else '',
+                'transaction_success_at': payment.transaction_success_at.isoformat() if payment.transaction_success_at else '',
                 'invoice_number': payment.invoice_number,
                 'ujp_id': payment.ujp_id,
                 'plans': '+'.join(list(payment.payment_plans.all().values_list("plan_name", flat=True))),
@@ -58,13 +59,14 @@ class PlanAdmin(ModelAdmin):
 
 class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
     index_template_name = "admin_export_header.html"
+    export_view_class = ExportPaymentView
     model = Payment
     menu_icon = "form"
     menu_order = 201
     add_to_settings_menu = True
     add_to_admin_menu = False
     list_display=['__str__', 'plan_name', 'status', 'amount', 'successed_at', 'created_at']
-    list_filter = (("created_at", DateRangeFilter),)
+    list_filter = (("created_at", DateRangeFilter),'status', 'items')
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
