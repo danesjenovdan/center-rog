@@ -1,7 +1,7 @@
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from django.db.models import Q, Count
+from django.db.models import Q, Count, OuterRef, Subquery
 from django.urls import path, reverse
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail.admin.menu import MenuItem
@@ -12,6 +12,7 @@ from datetime import datetime
 from .models import EventPage, EventCategory, EventRegistration
 from .views import event_list
 from .export import ExportModelAdminMixin
+from payments.models import PaymentPlanEvent
 
 
 class RelevantEventsListFilter(SimpleListFilter):
@@ -70,7 +71,7 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
     menu_order = 300
     add_to_settings_menu = True
     add_to_admin_menu = False
-    list_display = ["__str__", "registration_finished", "get_children_count"]
+    list_display = ["__str__", "registration_finished", "get_children_count", "created_at", "updated_at", "original_event_name", "price_paid_online"]
     list_filter = (
         "register_child_check",
         "event__event_is_for_children",
@@ -86,13 +87,27 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
     )
     def get_queryset(self, request):
         qs = super().get_queryset(request)
+        plan_name = Subquery(PaymentPlanEvent.objects.filter(
+            event_registration=OuterRef("id"),
+        ).values("plan_name")[:1])
+        paid = Subquery(PaymentPlanEvent.objects.filter(
+            event_registration=OuterRef("id"),
+        ).values("price")[:1])
         qs = qs.annotate(
             booked_children=Count('event_registration_children'),
+            original_name=plan_name,
+            paid=paid
         )
         return qs
 
     def get_children_count(self, obj):
         return obj.booked_children
+    
+    def original_event_name(self, obj):
+        return obj.original_name
+    
+    def price_paid_online(self, obj):
+        return obj.paid
 
     get_children_count.__name__ = str(_('Stevilo otrok'))
 
