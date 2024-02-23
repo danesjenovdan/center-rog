@@ -38,7 +38,10 @@ class ExportPaymentView(IndexView):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
-        writer = csv.DictWriter(response, fieldnames=data[0].keys())
+        try:
+            writer = csv.DictWriter(response, fieldnames=data[0].keys())
+        except IndexError:
+            return response
         writer.writeheader()
         writer.writerows(data)
 
