@@ -58,7 +58,7 @@ class ExportAdminURLHelper(AdminURLHelper):
         return self._get_object_specific_action_url_pattern(action)
     
 
-class ExportView(IndexView):
+class ExportEventRegistrationView(IndexView):
     model_admin = None
     
     def export_csv(self):
@@ -110,7 +110,7 @@ class ExportView(IndexView):
 class ExportModelAdminMixin(object):
     button_helper_class = ExportButtonHelper
     url_helper_class = ExportAdminURLHelper
-    export_view_class = ExportView
+    export_view_class = ExportEventRegistrationView
 
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()        
