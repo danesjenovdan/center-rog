@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "wagtail_rangefilter",
+    "rangefilter",
 ]
 
 MIDDLEWARE = [
