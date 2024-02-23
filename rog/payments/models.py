@@ -199,9 +199,9 @@ class PaymentPlanEvent(models.Model):
         default=PaymentItemType.CLANARINA,
     )
 
-    payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.CASCADE)
-    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
-    event_registration = models.ForeignKey('events.EventRegistration', related_name="payment_plans", on_delete=models.CASCADE, null=True, blank=True)
+    payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.PROTECT)
+    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.PROTECT, null=True, blank=True)
+    event_registration = models.ForeignKey('events.EventRegistration', related_name="payment_plans", on_delete=models.PROTECT, null=True, blank=True)
 
     plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
     original_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
