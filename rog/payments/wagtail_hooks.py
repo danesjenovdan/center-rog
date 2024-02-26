@@ -70,6 +70,15 @@ class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
     add_to_admin_menu = False
     list_display=['__str__', 'plan_name', 'status', 'amount', 'successed_at', 'created_at']
     list_filter = (("created_at", DateRangeFilter),'status', 'items')
+    search_fields = (
+        "user__first_name",
+        "user__last_name",
+        "user__email",
+        "invoice_number",
+        "ujp_id",
+        "pantheon_id",
+        "payment_plans__plan_name",
+    )
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
