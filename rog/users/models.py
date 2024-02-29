@@ -265,8 +265,14 @@ class User(AbstractUser, Timestampable):
     def is_eligible_to_discount(self):
         # user is eligible to discount if he is younger than 26 and older than 65
         now = datetime.now()
-        lower_limit = now.replace(year=now.year - 26)
-        upper_limit = now.replace(year=now.year - 65)
+        try:
+            lower_limit = now.replace(year=now.year - 26)
+            upper_limit = now.replace(year=now.year - 65)
+        except ValueError:
+            # workaround for leap years
+            lower_limit = now.replace(year=now.year - 26, day=28)
+            upper_limit = now.replace(year=now.year - 65, day=28)
+
         if self.birth_date == None:
             return False
         return not (lower_limit.date() > self.birth_date > upper_limit.date())
