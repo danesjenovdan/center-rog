@@ -269,6 +269,7 @@ class User(AbstractUser, Timestampable):
             lower_limit = now.replace(year=now.year - 26)
             upper_limit = now.replace(year=now.year - 65)
         except ValueError:
+            # workaround for leap years
             lower_limit = now.replace(year=now.year - 26, day=28)
             upper_limit = now.replace(year=now.year - 65, day=28)
 
