@@ -430,7 +430,8 @@ def create_subject(subject):
     }
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Subject',
-        json=data
+        json=data,
+        timeout=15
     )
     print(response)
     return response
@@ -569,7 +570,8 @@ def create_move(
     }
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Move/insert',
-        json=data
+        json=data,
+        timeout=15
     )
     print(response)
     return response
