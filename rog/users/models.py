@@ -293,10 +293,10 @@ class User(AbstractUser, Timestampable):
             super().save(*args, **kwargs)
             try:
                 response = create_subject(self)
-                if response and response.status_code == 200:
+                if response.status_code == 200:
                     self.saved_in_pantheon = True
                     super().save(*args, **kwargs)
-                elif response and response.status_code == 500:
+                elif response.status_code == 500:
                     if response.json().get("Message", "").startswith("subject already exists"):
                         self.saved_in_pantheon = True
                         super().save(*args, **kwargs)
