@@ -25,7 +25,7 @@ from events.models import EventRegistration
 # Create your views here.
 
 
-# payments
+@method_decorator(login_required, name="dispatch")
 class PaymentPreview(views.APIView):
     def get(self, request):
         plan_id = request.GET.get("plan_id", False)
