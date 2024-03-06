@@ -296,6 +296,10 @@ class User(AbstractUser, Timestampable):
                 if response and response.status_code == 200:
                     self.saved_in_pantheon = True
                     super().save(*args, **kwargs)
+                elif response and response.status_code == 500:
+                    if response.json().get("Message", "").startswith("subject already exists"):
+                        self.saved_in_pantheon = True
+                        super().save(*args, **kwargs)
                 else:
                     print(self.id, response.json())
             except Exception as e:
