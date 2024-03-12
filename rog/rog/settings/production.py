@@ -65,9 +65,9 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
-        traces_sample_rate=0.1,
+        traces_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', 0.001)),
         # Set profiles_sample_rate to 1.0 to profile 100%
         # of sampled transactions.
         # We recommend adjusting this value in production.
-        profiles_sample_rate=0.1,
+        profiles_sample_rate=float(os.getenv('SENTRY_TRACES_SAMPLE_RATE', 0.001)),
     )
