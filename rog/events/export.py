@@ -77,7 +77,9 @@ class ExportEventRegistrationView(IndexView):
                     "agreement_responsibility": registration.agreement_responsibility,
                     "allow_photos": registration.allow_photos,
                     "gender": "",
-                    "birth_date": "",
+                    "birth_date": (
+                        registration.user.birth_date.isoformat() if registration.user.birth_date else ""
+                    ),
                 }
             )
             for child in registration.event_registration_children.all():
