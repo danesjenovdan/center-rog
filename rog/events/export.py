@@ -88,6 +88,7 @@ class ExportEventRegistrationView(IndexView):
                     'allergies': '',
                     'agreement_responsibility': '',
                     'allow_photos': '',
+                    'birth_date': child.birth_date.isoformat() if child.birth_date else '',
                     'gender': child.gender_other if child.gender == 'O' else child.gender
                 })
 
