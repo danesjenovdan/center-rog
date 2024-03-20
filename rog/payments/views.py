@@ -132,21 +132,21 @@ class PaymentPreview(views.APIView):
             event_registration = get_object_or_404(
                 EventRegistration, id=event_registration_id
             )
-
+            event = event_registration.event
             if event_registration.user != user:
                 # user is not owner of event registration
                 return redirect("profile-my")
 
             if event_registration and user:
                 people_count = event_registration.event_registration_children.count()
-                title = event_registration.event.title
+                title = event.title
                 if people_count == 0:
                     people_count = 1
                 else:
                     title = f"{title} x {people_count}"
 
                 # check if there is enough free places
-                free_places = event_registration.event.get_free_places()
+                free_places = event.get_free_places()
                 if people_count > free_places:
                     return render(
                         request,
@@ -155,9 +155,9 @@ class PaymentPreview(views.APIView):
                     )
 
                 if user.membership:
-                    price = event_registration.event.price * people_count
+                    price = event.price * people_count
                 else:
-                    price = event_registration.event.price_for_non_member * people_count
+                    price = event.price_for_non_member * people_count
 
                 existing_payment_plan = event_registration.payment_plans.first()
                 if existing_payment_plan:
@@ -177,7 +177,11 @@ class PaymentPreview(views.APIView):
                     payment.original_amount = price
                     payment.save()
                     PaymentPlanEvent(
-                        payment_item_type=PaymentItemType.EVENT,
+                        payment_item_type=(
+                            PaymentItemType.TRAINING
+                            if event.category.name == "Usposabljanja"
+                            else PaymentItemType.EVENT
+                        ),
                         event_registration=event_registration,
                         payment=payment,
                         original_price=price,
@@ -222,11 +226,7 @@ class PaymentPreview(views.APIView):
                     if payment_plan.promo_code:
                         continue
                     if PromoCode.check_code_validity(promo_code, payment_plan):
-                        if payment_plan.payment_item_type == PaymentItemType.EVENT:
-                            event = payment_plan.event_registration.event
-                            # check if event is usposabljanje
-                            if event.category.name != "Usposabljanja":
-                                break
+                        if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
                             payment_plan.promo_code = valid_promo_code
                             payment_plan.save()
@@ -361,7 +361,7 @@ class PaymentDataXML(views.APIView):
         items = ""
 
         for pp in payment.payment_plans.all():
-            if pp.payment_item_type == PaymentItemType.EVENT:
+            if pp.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                 sifra = payment.payment_plans.first().event_registration.event.id
             else:
                 sifra = pp.plan.id

@@ -17,6 +17,7 @@ class PaymentItemType(models.TextChoices):
     CLANARINA = "clanarina", _("Clanarina")
     UPORABNINA = "uporabnina", _("Uporabnina")
     EVENT = "event", _("Dogodek")
+    TRAINING = "training", _("Usposabljanje")
 
 
 class ActiveAtQuerySet(models.QuerySet):
@@ -228,7 +229,7 @@ class PaymentPlanEvent(models.Model):
     notification_1_sent = models.BooleanField(default=False)
 
     def get_pantheon_ident_id(self):
-        if self.payment_item_type == PaymentItemType.EVENT:
+        if self.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
             return self.event_registration.event.category.pantheon_ident
         return self.plan.get_pantheon_ident_id()
 

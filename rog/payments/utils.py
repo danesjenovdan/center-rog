@@ -113,7 +113,7 @@ def finish_payment(payment):
                 ) for i in range(plan.workshops)
             ])
 
-        if payment_plan.payment_item_type == PaymentItemType.EVENT:
+        if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
             event_registration = payment_plan.event_registration
             event_registration.registration_finished = True
             event_registration.save()
@@ -137,7 +137,7 @@ def finish_payment(payment):
         promo_code = PromoCode.objects.create(
             valid_to=datetime(day=1, month=1, year=timezone.now().year + 1),
             percent_discount=100,
-            payment_item_type=PaymentItemType.EVENT,
+            payment_item_type=PaymentItemType.TRAINING,
             single_use=True,
         )
         send_email(
