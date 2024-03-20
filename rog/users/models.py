@@ -95,6 +95,7 @@ class Membership(Timestampable):
     notification_30_sent = models.BooleanField(default=False)
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
+    extended_by = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"

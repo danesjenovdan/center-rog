@@ -31,7 +31,6 @@ def get_free_invoice_number():
     invoice_order_str = str(invoice_order).zfill(6)
     return f'{year}-000-{invoice_order_str}'
 
-
 def finish_payment(payment):
     user_fee_plan = None
     event = None
@@ -65,7 +64,6 @@ def finish_payment(payment):
             scope.set_extra("payment", payment.id)
             capture_message(msg, 'fatal')
 
-
     # set valid_to if plan is subscription
     items = []
     for payment_plan in payment.payment_plans.all():
@@ -78,6 +76,20 @@ def finish_payment(payment):
             valid_to = valid_from + timedelta(days=plan.duration)
             payment_plan.valid_to = valid_to
             payment_plan.save()
+
+            # extend membership if plan is expandable and user does not have enough membership
+            if plan.extend_membership:
+                last_active_membership = user.get_last_active_membership()
+                if last_active_membership.valid_to < valid_to:
+                    membership = Membership(
+                        valid_from=last_active_membership.valid_to,
+                        valid_to=valid_to,
+                        type=last_active_membership.type,
+                        active=True,
+                        user=user,
+                        extended_by=plan
+                    )
+                    membership.save()
 
             # always set uporabnina dates on prima from now since there could be an active plan already
             valid_from_prima = timezone.now()
@@ -101,7 +113,7 @@ def finish_payment(payment):
                 ) for i in range(plan.workshops)
             ])
 
-        if payment_plan.payment_item_type == PaymentItemType.EVENT:
+        if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
             event_registration = payment_plan.event_registration
             event_registration.registration_finished = True
             event_registration.save()
@@ -125,7 +137,7 @@ def finish_payment(payment):
         promo_code = PromoCode.objects.create(
             valid_to=datetime(day=1, month=1, year=timezone.now().year + 1),
             percent_discount=100,
-            payment_item_type=PaymentItemType.EVENT,
+            payment_item_type=PaymentItemType.TRAINING,
             single_use=True,
         )
         send_email(
