@@ -8,34 +8,34 @@
 {% block extra_js %}
 <script>
     const user_form = document.getElementById("user_form");
-    const children = document.getElementById("id_register_child_check");
+    // const children = document.getElementById("id_register_child_check");
     const children_formset = document.getElementById("children_formset");
     const total_children_forms = document.getElementById("id_form-TOTAL_FORMS");
     const add_child_button = document.getElementById("add-child-button");
 
     // should children forms initially be shown
-    if (children.checked) {
-        user_form.classList.add("hide");
-        children_formset.classList.remove("hide");
-        add_child_button.classList.remove("hide");
-    } else {
-        user_form.classList.remove("hide")
-        children_formset.classList.add("hide");
-        add_child_button.classList.add("hide");
-    }
+    // if (children.checked) {
+    //     user_form.classList.add("hide");
+    //     children_formset.classList.remove("hide");
+    //     add_child_button.classList.remove("hide");
+    // } else {
+    //     user_form.classList.remove("hide")
+    //     children_formset.classList.add("hide");
+    //     add_child_button.classList.add("hide");
+    // }
 
     // toggle show/hide on children forms
-    children.addEventListener("change", function(event) {
-        if (event.target.checked) {
-            user_form.classList.add("hide");
-            children_formset.classList.remove("hide");
-            add_child_button.classList.remove("hide");
-        } else {
-            user_form.classList.remove("hide")
-            children_formset.classList.add("hide");
-            add_child_button.classList.add("hide");
-        }
-    })
+    // children.addEventListener("change", function(event) {
+    //     if (event.target.checked) {
+    //         user_form.classList.add("hide");
+    //         children_formset.classList.remove("hide");
+    //         add_child_button.classList.remove("hide");
+    //     } else {
+    //         user_form.classList.remove("hide")
+    //         children_formset.classList.add("hide");
+    //         add_child_button.classList.add("hide");
+    //     }
+    // })
     
     // when "add child" button is clicked
     add_child_button.addEventListener("click", () => {
@@ -83,11 +83,12 @@
 <form action="{% url 'event-registration' event.slug %}" autocomplete="off" method="post">
     {% csrf_token %}
 
-    <div class="form-field-wrapper one-line rog-check mb-4">
+    <!-- <div class="form-field-wrapper one-line rog-check mb-4">
         {{ form.register_child_check.errors }}
         {{ form.register_child_check }} {{ form.register_child_check.label_tag }}
-    </div>
+    </div> -->
 
+    {% if not event.event_is_for_children %}
     <div id="user_form">
         <div class="form-field-wrapper {% if form.name.errors %}form-field-error{% endif %}">
             {{ form.name.label_tag }} {{ form.name }}
@@ -111,7 +112,9 @@
         </div>
     </div>
 
-    <div id="children_formset" class="hide">
+    {% else %}
+
+    <div id="children_formset">
 
         {{ children_formset.management_form }}
 
@@ -139,7 +142,9 @@
 
     </div>
 
-    <button id="add-child-button" class="link-plus hide" type="button">{% translate 'dodaj še enega otroka' %} +</button>
+    <button id="add-child-button" class="link-plus" type="button">{% translate 'dodaj še enega otroka' %} +</button>
+
+    {% endif %}
 
     <div class="d-flex justify-content-end my-4">
         <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
