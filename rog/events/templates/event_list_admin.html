@@ -14,7 +14,34 @@
 {% endblock %}
 
 {% block content %}
-    {% include "wagtailadmin/shared/header.html" with title="Prihajajoči dogodki" icon="date" %}
+    <header class="w-header w-header--hasform">
+        <div class="row">
+            <div class="left">
+                <div class="col">
+                    <h1 class="w-header__title" id="header-title">
+                        Prihajajoči dogodki <span class="w-header__subtitle">{{ subtitle }}</span>
+                    </h1>
+                </div>
+                <form id="changelist-search" class="col search-form" action="{{ request.get_full_path }}" method="get">
+                    <div class="w-field__wrapper w-mb-0" data-field-wrapper="">                            
+                        <label class="w-field__label w-sr-only" for="id_q" id="id_q-label">
+                            Išči
+                        </label>
+                        <div class="w-field" data-field="" data-contentpath="">
+                            <div class="w-field__errors" data-field-errors="">
+                            </div>
+                            <div class="w-field__input" data-field-input="">
+                                <svg class="icon icon-search w-field__icon" aria-hidden="true"><use href="#icon-search"></use></svg>      
+                                <input id="id_q" name="q" value="sdf" placeholder="Iskanje po imenu dogodka" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-sr-only">Iskanje</button>
+                </form>
+            </div>
+        </div>
+        {% block extra_rows %}{{ extra_rows }}{% endblock %}
+    </header>
     <div class="main-content">
         <div class="row">
             <div class="result-list col12">
