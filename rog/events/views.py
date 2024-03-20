@@ -118,8 +118,7 @@ class EventRegistrationView(View):
 
         if form.is_valid():
             # user registration
-            # if not event.event_is_for_children
-            if not form.cleaned_data["register_child_check"]:
+            if not event.event_is_for_children:
                 if not form.cleaned_data.get("name"):
                     form.add_error("name", _("To polje ne sme biti prazno."))
                 if not form.cleaned_data.get("surname"):
