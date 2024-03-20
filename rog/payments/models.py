@@ -392,6 +392,7 @@ class PromoCode(Timestampable):
         default=PaymentItemType.CLANARINA,
     )
     single_use = models.BooleanField(blank=False, null=False)
+    usage_limit = models.IntegerField(null=False, blank=False, default=0)
     number_of_uses = models.IntegerField(null=False, blank=False, default=0)
 
     def __str__(self):
@@ -405,15 +406,23 @@ class PromoCode(Timestampable):
             code = code_filter.first()
             now = timezone.now()
 
+            # check if code is still valid
             if code.valid_to < now:
                 return False
 
+            # check if code is single use and has been used
             if code.single_use and code.number_of_uses > 0:
                 return False
+            
+            # check if code has been used more than the limit
+            if code.number_of_uses >= code.usage_limit:
+                return False
 
+            # check if code is for the right payment item type
             if code.payment_item_type != payment_plan.payment_item_type:
                 return False
 
+            # check if code is used for this payment plan
             if payment_plan.promo_code == code:
                 return False
 
