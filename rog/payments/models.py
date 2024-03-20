@@ -132,6 +132,10 @@ class Plan(Timestampable):
         default=PaymentItemType.CLANARINA,
     )
     vat = models.IntegerField(default=22) # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
+    extend_membership = models.BooleanField(
+        default=False,
+        help_text=_("Should this plan extend the membership if needed?")
+    )
 
     def __str__(self):
         return f"{self.name}"

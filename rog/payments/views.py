@@ -81,7 +81,7 @@ class PaymentPreview(views.APIView):
                     # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
                     if (
                         not last_active_membership
-                    ) or new_uporabnina_valid_to > last_active_membership.valid_to:
+                    ) or ((new_uporabnina_valid_to > last_active_membership.valid_to) and not plan.extend_membership):
                         today = datetime.now()
                         one_year_from_now = today + timedelta(days=365)
                         paid_membership_type = MembershipType.objects.filter(
