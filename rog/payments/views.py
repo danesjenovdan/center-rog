@@ -511,9 +511,10 @@ class PaymentSuccess(views.APIView):
         if str(payment.user.uuid) != urlpars[1]:
             return render(request, "payment_failed.html",{"status": "UUID does not match"})
 
-        payment.status = Payment.Status.SUCCESS
-        payment.successed_at = timezone.now()
-        payment.invoice_number = get_invoice_number()
+        if payment.status != Payment.Status.SUCCESS:
+            payment.status = Payment.Status.SUCCESS
+            payment.successed_at = timezone.now()
+            payment.invoice_number = get_invoice_number()
 
         payment.save()
         finish_payment(payment)
