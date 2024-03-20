@@ -375,7 +375,7 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         FieldPanel("event"),
         FieldPanel("name"),
         FieldPanel("surname"),
-        FieldPanel("register_child_check"),
+        # FieldPanel("register_child_check"),
         FieldPanel("phone"),
         FieldPanel("disabilities"),
         FieldPanel("allergies"),
