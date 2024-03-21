@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.forms.models import WagtailAdminModelForm
 
 from .pantheon import create_ident, create_move
 from behaviours.models import Timestampable
@@ -11,6 +12,29 @@ from behaviours.models import Timestampable
 import random
 from string import ascii_uppercase
 import sentry_sdk
+
+
+
+class WagtailAdminModelFormExtended(WagtailAdminModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # The form-meta does now receive a list of disabled fields
+        for name in getattr(self.Meta, "disabled", []):
+            # set the fields to readonly (--> excluded from form validation and so on)
+            self.fields[name].disabled = True
+
+
+class ReadOnlyFieldPanel(FieldPanel):
+    
+    def get_form_options(self):
+        opts = super().get_form_options()
+        
+        # store the field (there is only one) in a list of disabled fields
+        opts["disabled"] = opts['fields'].copy()
+        
+        return opts
 
 
 class PaymentItemType(models.TextChoices):
@@ -379,6 +403,8 @@ def generate_promo_code(length: int = 10) -> str:
         return ''.join(random.choice(characters) for i in range(length))
 
 class PromoCode(Timestampable):
+    base_form_class = WagtailAdminModelFormExtended
+
     code = models.CharField(max_length=100, null=False, blank=False, default=generate_promo_code)
     valid_to = models.DateTimeField(
         help_text=_("When does the code expire?"),
@@ -393,7 +419,17 @@ class PromoCode(Timestampable):
     )
     single_use = models.BooleanField(blank=False, null=False)
     usage_limit = models.IntegerField(null=False, blank=False, default=0)
-    number_of_uses = models.IntegerField(null=False, blank=False, default=0)
+    number_of_uses = models.IntegerField(null=False, blank=True, default=0)
+
+    panels = [
+        FieldPanel("code"),
+        FieldPanel("valid_to"),
+        FieldPanel("percent_discount"),
+        FieldPanel("payment_item_type"),
+        FieldPanel("single_use"),
+        FieldPanel("usage_limit"),
+        ReadOnlyFieldPanel("number_of_uses"),
+    ]
 
     def __str__(self):
         return f"{self.code}"
