@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from django.utils import timezone
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.forms.models import WagtailAdminModelForm
 
 from .pantheon import create_ident, create_move
 from behaviours.models import Timestampable
@@ -13,10 +14,34 @@ from string import ascii_uppercase
 import sentry_sdk
 
 
+
+class WagtailAdminModelFormExtended(WagtailAdminModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # The form-meta does now receive a list of disabled fields
+        for name in getattr(self.Meta, "disabled", []):
+            # set the fields to readonly (--> excluded from form validation and so on)
+            self.fields[name].disabled = True
+
+
+class ReadOnlyFieldPanel(FieldPanel):
+    
+    def get_form_options(self):
+        opts = super().get_form_options()
+        
+        # store the field (there is only one) in a list of disabled fields
+        opts["disabled"] = opts['fields'].copy()
+        
+        return opts
+
+
 class PaymentItemType(models.TextChoices):
     CLANARINA = "clanarina", _("Clanarina")
     UPORABNINA = "uporabnina", _("Uporabnina")
     EVENT = "event", _("Dogodek")
+    TRAINING = "training", _("Usposabljanje")
 
 
 class ActiveAtQuerySet(models.QuerySet):
@@ -132,6 +157,10 @@ class Plan(Timestampable):
         default=PaymentItemType.CLANARINA,
     )
     vat = models.IntegerField(default=22) # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
+    extend_membership = models.BooleanField(
+        default=False,
+        help_text=_("Should this plan extend the membership if needed?")
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -224,7 +253,7 @@ class PaymentPlanEvent(models.Model):
     notification_1_sent = models.BooleanField(default=False)
 
     def get_pantheon_ident_id(self):
-        if self.payment_item_type == PaymentItemType.EVENT:
+        if self.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
             return self.event_registration.event.category.pantheon_ident
         return self.plan.get_pantheon_ident_id()
 
@@ -374,6 +403,8 @@ def generate_promo_code(length: int = 10) -> str:
         return ''.join(random.choice(characters) for i in range(length))
 
 class PromoCode(Timestampable):
+    base_form_class = WagtailAdminModelFormExtended
+
     code = models.CharField(max_length=100, null=False, blank=False, default=generate_promo_code)
     valid_to = models.DateTimeField(
         help_text=_("When does the code expire?"),
@@ -387,7 +418,18 @@ class PromoCode(Timestampable):
         default=PaymentItemType.CLANARINA,
     )
     single_use = models.BooleanField(blank=False, null=False)
-    number_of_uses = models.IntegerField(null=False, blank=False, default=0)
+    usage_limit = models.IntegerField(null=False, blank=False, default=0)
+    number_of_uses = models.IntegerField(null=False, blank=True, default=0)
+
+    panels = [
+        FieldPanel("code"),
+        FieldPanel("valid_to"),
+        FieldPanel("percent_discount"),
+        FieldPanel("payment_item_type"),
+        FieldPanel("single_use"),
+        FieldPanel("usage_limit"),
+        ReadOnlyFieldPanel("number_of_uses"),
+    ]
 
     def __str__(self):
         return f"{self.code}"
@@ -400,15 +442,23 @@ class PromoCode(Timestampable):
             code = code_filter.first()
             now = timezone.now()
 
+            # check if code is still valid
             if code.valid_to < now:
                 return False
 
+            # check if code is single use and has been used
             if code.single_use and code.number_of_uses > 0:
                 return False
+            
+            # check if code has been used more than the limit
+            if code.number_of_uses >= code.usage_limit:
+                return False
 
+            # check if code is for the right payment item type
             if code.payment_item_type != payment_plan.payment_item_type:
                 return False
 
+            # check if code is used for this payment plan
             if payment_plan.promo_code == code:
                 return False
 
