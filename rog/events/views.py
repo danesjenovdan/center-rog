@@ -118,8 +118,7 @@ class EventRegistrationView(View):
 
         if form.is_valid():
             # user registration
-            # if not event.event_is_for_children
-            if not form.cleaned_data["register_child_check"]:
+            if not event.event_is_for_children:
                 if not form.cleaned_data.get("name"):
                     form.add_error("name", _("To polje ne sme biti prazno."))
                 if not form.cleaned_data.get("surname"):
@@ -372,11 +371,14 @@ def event_list(request):
     sort_by_palces = request.GET.get('places', False)
     sort_by_booked = request.GET.get('booked', False)
     sort_by_day = request.GET.get('day', False)
+    q = request.GET.get('q', None)
 
     future_events = EventPage.objects.filter(
         without_registrations=False,
         start_day__gte=datetime.now().date()
     )
+    if q:
+        future_events = future_events.filter(title__icontains=q)
 
     future_events = future_events.annotate(
         booked_users=Count('event_registrations', filter=Q(event_registrations__registration_finished=True, event_registrations__event_registration_children__isnull=True)),

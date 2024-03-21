@@ -9,17 +9,17 @@ from home.forms import SplitInputDateWidget
 
 class EventRegisterPersonForm(forms.ModelForm):
     # to do: comment out
-    register_child_check = forms.BooleanField(
-        label=_("na dogodek prijavljam otroka"), label_suffix="", required=False
-    )
+    # register_child_check = forms.BooleanField(
+    #     label=_("na dogodek prijavljam otroka"), label_suffix="", required=False
+    # )
 
     def get_deletion_widget(self):
         return forms.HiddenInput(attrs={"class": "deletion"})
 
     class Meta:
         model = EventRegistration
-        # fields = ["name", "surname", "phone"]
-        fields = ["name", "surname", "phone", "register_child_check"]
+        fields = ["name", "surname", "phone"]
+        # fields = ["name", "surname", "phone", "register_child_check"]
         widgets = {
             "name": forms.TextInput(),
             "surname": forms.TextInput(),
