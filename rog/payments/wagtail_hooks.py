@@ -100,6 +100,8 @@ class PromoCodeAdmin(ModelAdmin):
     menu_order = 203
     add_to_settings_menu = True
     add_to_admin_menu = False
+    readonly_fields=('number_of_uses',)
+
 
 
 modeladmin_register(PlanAdmin)
