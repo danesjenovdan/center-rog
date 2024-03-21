@@ -71,7 +71,7 @@ class ObjectProfilePageTR(TranslationOptions):
 
 @register(LabPage)
 class LabPageTR(TranslationOptions):
-    fields = ("description",)
+    fields = ("description", "button_text",)
 
 
 @register(LibraryPage)
