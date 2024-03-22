@@ -451,7 +451,7 @@ class PromoCode(Timestampable):
                 return False
             
             # check if code has been used more than the limit
-            if code.number_of_uses >= code.usage_limit:
+            if (not code.single_use) and (code.number_of_uses >= code.usage_limit):
                 return False
 
             # check if code is for the right payment item type
