@@ -96,7 +96,7 @@ spec:
               cpu: 500m
             limits:
               memory: 1Gi
-              cpu: 500m
+              cpu: 1500m
         - name: rog-nginx
           ports:
             - name: http
