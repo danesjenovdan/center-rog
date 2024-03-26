@@ -405,7 +405,13 @@ def generate_promo_code(length: int = 10) -> str:
 class PromoCode(Timestampable):
     base_form_class = WagtailAdminModelFormExtended
 
-    code = models.CharField(max_length=100, null=False, blank=False, default=generate_promo_code)
+    code = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+        default=generate_promo_code,
+        unique=True,
+    )
     valid_to = models.DateTimeField(
         help_text=_("When does the code expire?"),
         null=False,
@@ -418,7 +424,12 @@ class PromoCode(Timestampable):
         default=PaymentItemType.CLANARINA,
     )
     single_use = models.BooleanField(blank=False, null=False)
-    usage_limit = models.IntegerField(null=False, blank=False, default=0)
+    usage_limit = models.IntegerField(
+        null=False,
+        blank=False,
+        default=0,
+        help_text=_("How many times can the code be used? 0 means unlimited."),
+    )
     number_of_uses = models.IntegerField(null=False, blank=True, default=0)
 
     panels = [
@@ -442,32 +453,31 @@ class PromoCode(Timestampable):
             code = code_filter.first()
             now = timezone.now()
 
-            # check if code is still valid
-            if code.valid_to < now:
-                return False
-
-            # check if code is single use and has been used
-            if code.single_use and code.number_of_uses > 0:
-                return False
-            
-            # check if code has been used more than the limit
-            if (not code.single_use) and (code.number_of_uses >= code.usage_limit):
-                return False
-
-            # check if code is for the right payment item type
-            if code.payment_item_type != payment_plan.payment_item_type:
-                return False
-
-            # check if code is used for this payment plan
-            if payment_plan.promo_code == code:
-                return False
-
-            return True
-
-        if code_filter.count() == 0:
+        # check if code is still valid
+        if code.valid_to < now:
+            return False
+        
+        # check if code is for the right payment item type
+        if code.payment_item_type != payment_plan.payment_item_type:
             return False
 
-        raise Exception(f"Weird number of codes: {code}.")
+        # check if code is used for this payment plan
+        if payment_plan.promo_code == code:
+            return False
+
+        # check if code is single use and has been used
+        if code.single_use:
+            if code.number_of_uses > 0:
+                return False
+        else:
+            if code.usage_limit == 0:
+                return True
+            # check if code has been used more than the limit
+            if code.number_of_uses >= code.usage_limit:
+                return False
+
+        return True
+
 
     def use_code(self) -> None:
         self.number_of_uses += 1
