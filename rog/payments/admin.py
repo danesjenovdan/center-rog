@@ -24,6 +24,8 @@ class PromoCodeAdmin(admin.ModelAdmin):
     list_filter = ('payment_item_type', 'single_use',)
 
     readonly_fields = ['created_at', 'updated_at']
+    search_fields = ('code',)
+    list_filter = ('payment_item_type', 'single_use',)
 
 
     def get_changeform_initial_data(self, request):
