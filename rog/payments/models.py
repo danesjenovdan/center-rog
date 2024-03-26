@@ -452,6 +452,8 @@ class PromoCode(Timestampable):
         if code_filter.count() == 1:
             code = code_filter.first()
             now = timezone.now()
+        else:
+            return False
 
         # check if code is still valid
         if code.valid_to < now:
