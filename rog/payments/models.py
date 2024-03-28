@@ -254,7 +254,10 @@ class PaymentPlanEvent(models.Model):
 
     def get_pantheon_ident_id(self):
         if self.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
-            return self.event_registration.event.category.pantheon_ident
+            if self.event_registration.event.category:
+                return self.event_registration.event.category.pantheon_ident
+            else:
+                return 'DOGODKI'
         return self.plan.get_pantheon_ident_id()
 
 
