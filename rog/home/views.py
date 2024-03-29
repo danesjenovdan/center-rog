@@ -21,10 +21,10 @@ from home.forms import (
     PurchasePlanForm,
 )
 
-from users.models import User, Membership, MembershipType
+from users.models import User, Membership, MembershipType, ConfirmEmail
 from users.prima_api import PrimaApi
 from users.tokens import get_token_for_user
-from home.email_utils import send_email
+from home.email_utils import send_email, id_generator
 
 from payments.models import Plan
 from events.models import EventRegistration
@@ -234,13 +234,23 @@ class RegistrationView(View):
                     prima_id=int(prima_id),
                     is_active=True,  # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
                 )
+
+                # tukaj pošljemo mail za potrditev računa
+                # najprej naredimo ConfirmEmail objekt in generiramo ključ
+                not_unique = True
+                while not_unique:
+                    key_gen = id_generator(size=32)
+                    not_unique = ConfirmEmail.objects.filter(key=key_gen)
+                confirm_email = ConfirmEmail(user=user, key=key_gen)
+                confirm_email.save()
+                # potem pošljemo mail
                 send_email(
                     user.email,
-                    "emails/registration.html",
-                    _("Center Rog – vaša registracija je uspela"),
-                    {},
+                    "emails/email_confirmation.html",
+                    _("Center Rog – potrdite račun"),
+                    {"key": confirm_email.key},
                 )
-                print("Novi user", user)
+
                 login(request, user)
             else:
                 print(
@@ -255,11 +265,20 @@ class RegistrationView(View):
                     },
                 )
 
-            return redirect("registration-membership")
+            return redirect("registration-email-confirmation")
         else:
             return render(
                 request, "registration/registration.html", context={"form": form}
             )
+
+
+class RegistrationMailConfirmationView(View):
+    def get(self, request):
+        
+        return render(
+            request,
+            "registration/registration_mail_confirmation.html",
+        )
 
 
 @method_decorator(login_required, name="dispatch")

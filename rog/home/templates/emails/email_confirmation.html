@@ -1,0 +1,15 @@
+{% extends 'emails/base.html' %}
+{% block body %}
+    <p>
+        Živijo!
+    </p>
+    <p>
+        Svoj e-poštni naslov lahko potrdiš na spodnji povezavi:
+    </p>
+    <p>
+        <a href="https://center-rog.si/users/confirm-user?key={{ key }}">https://center-rog.si/users/confirm-user?key={{ key }}</a>
+    </p>
+    <p>
+        Ekipa Centra Rog
+    </p>
+{% endblock body %}

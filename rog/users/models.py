@@ -156,6 +156,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser, Timestampable):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
+    email_confirmed = models.BooleanField(default=False)
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
@@ -319,3 +320,17 @@ class BookingToken(models.Model):
 
     def __str__(self):
         return f"{self.email} - {self.token}"
+
+
+class ConfirmEmail(Timestampable):
+    user = models.ForeignKey(
+        User,
+        verbose_name=_("User"),
+        related_name="confirm_emails",
+        on_delete=models.CASCADE,
+    )
+    key = models.CharField(_("key"), max_length=50)
+
+    class Meta:
+        verbose_name = _("Confirm email")
+        verbose_name_plural = _("Confirm emails")

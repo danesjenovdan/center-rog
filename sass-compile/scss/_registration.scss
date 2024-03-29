@@ -11,6 +11,15 @@
         @include font-size-xs();
     }
 
+    .mail-confirmation {
+        @include font-size-sm();
+
+        a {
+            @include font-size-sm();
+            color: $cs-dark-gray;
+        }
+    }
+
     a {
         @include underline-text-on-hover();
     }
@@ -73,6 +82,12 @@
     h1 {
         @include font-size-md();
         margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        @include font-size-md();
+        margin-top: 20px;
         margin-bottom: 20px;
     }
 
