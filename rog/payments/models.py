@@ -193,6 +193,7 @@ class Plan(Timestampable):
         FieldPanel("workshops"),
         FieldPanel("pantheon_ident_id"),
         FieldPanel("payment_item_type"),
+        FieldPanel("extend_membership"),
     ]
 
     class Meta:
