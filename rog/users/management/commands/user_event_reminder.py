@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Start sending notifications for user fee expiration.")
         events = EventPage.objects.filter(
-            start_day__range=(datetime.now().date(), datetime.now() + timedelta(days=2).date())
+            start_day__range=(datetime.now().date(), (datetime.now() + timedelta(days=2)).date())
         )
         for event in events:
             for event_registration in event.event_registrations.all():
