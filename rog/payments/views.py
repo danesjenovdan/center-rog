@@ -297,7 +297,7 @@ class Pay(views.APIView):
             payment.ujp_id = last_ujp_payment.ujp_id + 1
             finish_payment(payment)
             free_order = True
-            payment.status = Payment.Status.SUCCESS
+            payment.status = Payment.Status.SUCCESS.value
             payment.info = "Plačano s promo kodo 100% popust"
             payment.successed_at = timezone.now()
             payment.invoice_number = get_free_invoice_number()
@@ -440,17 +440,18 @@ class PaymentSuccessXML(views.APIView):
             if payment.status == Payment.Status.SUCCESS:
                 capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
             else:
-                payment.status = Payment.Status.ERROR
+                payment.status = Payment.Status.ERROR.value
                 payment.errored_at = timezone.now()
                 payment.save()
         elif '<rezultat>0</rezultat>' in payment.info:
             payment.transaction_success_at = timezone.now()
+            payment.refresh_from_db()
             if payment.status != Payment.Status.SUCCESS:
                 """
                 payment is marked as successed on redirect page from UJP,
                 if user closes page before redirect payment is not marked as successed
                 """
-                payment.status = Payment.Status.SUCCESS
+                payment.status = Payment.Status.SUCCESS.value
                 payment.successed_at = timezone.now()
                 payment.invoice_number = get_invoice_number()
                 payment.save()
@@ -511,13 +512,13 @@ class PaymentSuccess(views.APIView):
         if str(payment.user.uuid) != urlpars[1]:
             return render(request, "payment_failed.html",{"status": "UUID does not match"})
 
+        payment.refresh_from_db()
         if payment.status != Payment.Status.SUCCESS:
-            payment.status = Payment.Status.SUCCESS
+            payment.status = Payment.Status.SUCCESS.value
             payment.successed_at = timezone.now()
             payment.invoice_number = get_invoice_number()
-
-        payment.save()
-        finish_payment(payment)
+            payment.save()
+            finish_payment(payment)
 
         return render(request, "payment_success.html", context_vars)
 
