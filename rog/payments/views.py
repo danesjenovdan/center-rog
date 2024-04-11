@@ -450,10 +450,13 @@ class PaymentSuccessXML(views.APIView):
                 payment is marked as successed on redirect page from UJP,
                 if user closes page before redirect payment is not marked as successed
                 """
-                payment.status = Payment.Status.SUCCESS
+                payment.status = Payment.Status.SUCCESS.value
+                print("pre save", payment.status)
                 payment.successed_at = timezone.now()
                 payment.invoice_number = get_invoice_number()
                 payment.save()
+                payment.refresh_from_db()
+                print("post save", payment.status)
                 finish_payment(payment)
             else:
                 payment.save()
@@ -512,12 +515,11 @@ class PaymentSuccess(views.APIView):
             return render(request, "payment_failed.html",{"status": "UUID does not match"})
 
         if payment.status != Payment.Status.SUCCESS:
-            payment.status = Payment.Status.SUCCESS
+            payment.status = Payment.Status.SUCCESS.value
             payment.successed_at = timezone.now()
             payment.invoice_number = get_invoice_number()
-
-        payment.save()
-        finish_payment(payment)
+            payment.save()
+            finish_payment(payment)
 
         return render(request, "payment_success.html", context_vars)
 
