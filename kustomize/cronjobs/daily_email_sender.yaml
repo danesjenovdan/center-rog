@@ -15,7 +15,8 @@ spec:
             - name: rog-daily-email-sander
               image: rog
               command:
-                - source reminders.sh
+                - bash
+                - reminders.sh
               env:
                 - name: DJANGO_SETTINGS_MODULE
                   value: rog.settings.production
