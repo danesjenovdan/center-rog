@@ -49,7 +49,7 @@ class Command(BaseCommand):
             Membership.objects.filter(
                 active=True,
                 valid_to__range=(
-                    datetime.now().date() - timedelta(days=7),
+                    datetime.now().date() + timedelta(days=7),
                     datetime.now(),
                 ),
             )
@@ -87,7 +87,7 @@ class Command(BaseCommand):
             Membership.objects.filter(
                 active=True,
                 valid_to__range=(
-                    datetime.now().date() - timedelta(days=30),
+                    datetime.now().date() + timedelta(days=30),
                     datetime.now(),
                 ),
             )
