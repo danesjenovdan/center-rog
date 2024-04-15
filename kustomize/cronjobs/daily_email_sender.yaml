@@ -43,6 +43,9 @@ spec:
           containers:
             - name: rog-daily-email-sander
               image: rog
+              volumeMounts:
+                - name: rog-storage
+                  mountPath: /storage
               command:
                 - bash
                 - reminders.sh
