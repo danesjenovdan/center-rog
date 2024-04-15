@@ -19,7 +19,7 @@ class Command(BaseCommand):
             )
         )
         for event in events:
-            for event_registration in event.event_registrations.all():
+            for event_registration in event.event_registrations.filter(registration_finished=True):
                 if event_registration.user:
                     payment_plan_event = PaymentPlanEvent.objects.filter(
                         event_registration=event_registration
@@ -39,7 +39,7 @@ class Command(BaseCommand):
                         payment_plan_event.notification_1_sent = True
                         payment_plan_event.save()
                         self.stdout.write(
-                            f"Email sent for event registration: {event_registration.id}"
+                            f"Email sent for event registration: {event_registration.id}, {event.start_day} {event.title} {event.start_time}"
                         )
 
         self.stdout.write("End sending notifications for event.")

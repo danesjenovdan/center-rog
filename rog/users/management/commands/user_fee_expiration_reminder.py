@@ -54,7 +54,7 @@ class Command(BaseCommand):
         payment_plans_7 = (
             PaymentPlanEvent.objects.filter(
                 valid_to__range=(
-                    datetime.now().date() - timedelta(days=7),
+                    datetime.now().date() + timedelta(days=7),
                     datetime.now(),
                 ),
                 payment_item_type=PaymentItemType.UPORABNINA,
@@ -98,7 +98,7 @@ class Command(BaseCommand):
         payment_plans_30 = (
             PaymentPlanEvent.objects.filter(
                 valid_to__range=(
-                    datetime.now().date() - timedelta(days=30),
+                    datetime.now().date() + timedelta(days=30),
                     datetime.now(),
                 ),
                 payment_item_type=PaymentItemType.UPORABNINA,
