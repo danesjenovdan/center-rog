@@ -284,10 +284,10 @@ class User(AbstractUser, Timestampable):
     def get_post(self):
         all_addresses = f"{self.address_1} {self.address_2} {self.legal_person_address_1} {self.legal_person_address_2}"
         print(all_addresses)
-        maybe_post = re.search(r"\d{4}", all_addresses)
+        maybe_post = re.search(r"\s\d{4}\s", all_addresses)
         if maybe_post:
-            return maybe_post.group()
-        return "1000"
+            return maybe_post.group().strip()
+        return None
 
     def save(self, *args, **kwargs):
         if self.first_name and not self.saved_in_pantheon:
