@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = "Setup testing data"
 
     def handle(self, *args, **options):
-        for user in User.objects.filter(saved_in_pantheon=False).exclude(first_name=""):
+        for user in User.objects.filter(saved_in_pantheon=False):
             user.save()
 
         for event in EventCategory.objects.filter(saved_in_pantheon=False):
