@@ -230,6 +230,9 @@ def create_subject(subject):
 
     post = subject.get_post()
 
+    subject_name = f'{subject.first_name} {subject.last_name}'
+    if not subject_name.strip():
+        subject_name = " ".join(subject.email.split("@")[0].split("."))
 
     data = {
         "subject": subject.get_pantheon_subject_id(),
@@ -246,7 +249,7 @@ def create_subject(subject):
         "institution": "F",
         "name2": subject.legal_person_name if subject.legal_person_vat else f'{subject.first_name} {subject.last_name}',
         "address": subject.address_1,
-        "name3": f'{subject.first_name} {subject.last_name}',
+        "name3": subject_name,
         "post": f'SI-{post}' if post else "",
         "country": "Slovenija",
         "km": 0,
