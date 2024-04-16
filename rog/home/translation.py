@@ -5,6 +5,7 @@ from .models.pages import (
     ResidenceListPage,
     LabListPage,
     LabPage,
+    WorkingStationPage,
     LibraryPage,
     StudioPage,
     ResidencePage,
@@ -71,7 +72,12 @@ class ObjectProfilePageTR(TranslationOptions):
 
 @register(LabPage)
 class LabPageTR(TranslationOptions):
-    fields = ("description", "button_text",)
+    fields = ("description", "button_text", "working_hours", "notice")
+
+
+@register(WorkingStationPage)
+class WorkingStationPageTR(TranslationOptions):
+    fields = ("description", "modules", "tag",)
 
 
 @register(LibraryPage)

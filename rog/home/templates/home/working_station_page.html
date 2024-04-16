@@ -1,0 +1,96 @@
+{% extends "home/object_profile_page.html" %}
+{% load i18n static wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}{{ block.super }} template-lab{% endblock %}
+
+{% block container_class %}working-station-container{% endblock %}
+
+
+{% block profile_page_body %}
+
+{% if page.image %}
+<div class="col-12 pb-3">
+    {% image page.image original class="img-fluid" %}
+</div>
+{% endif %}
+
+<div class="rich-text-module">
+{% for block in page.modules %}
+
+{% if block.value.title %}
+<h6>
+    {{ block.value.title }}
+</h6>
+{% endif %}
+
+{% if block.block_type == "bulletpoints" %}
+<ul>
+    {% for point in block.value.points %}
+    <li>{{ point }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if block.block_type == "description" %}
+<p>{{ block.value.description }}</p>
+{% endif %}
+
+{% if block.block_type == "specifications" %}
+<div class="specifications">
+{% for spec in block.value.points %}
+<p>
+    <span>{{ spec.name }}</span><br />
+    <span>{{ spec.value }}</span>
+</p>
+{% endfor %}
+</div>
+{% endif %}
+<hr class="my-3" />
+{% endfor %}
+</div>
+
+{% if page.prima_location_id or page.prima_group_id %}
+    {% if user.is_authenticated %}
+        {% if page.required_workshop %}
+            {% if page.required_workshop in user.workshops_attended.all %}
+                <div>
+                    <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% elif page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
+                        class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+                </div>
+                <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
+            {% else %}
+                <div>
+                    <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
+                </div>
+                <p class="mt-3">{% translate 'Za rezervacijo potrebuješ usposabljanje.' %}</p>
+                {% if page.workshop_event %}
+                <p class="more-information">
+                    <a class="link" href="{% pageurl page.workshop_event %}">
+                        <span class="link-text">{% translate 'Prijava na usposabljanje' %}</span>
+                        <span class="link-icon"></span>
+                    </a>
+                </p>
+                {% endif %}
+            {% endif %}
+        {% else %}
+            <div>
+                <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% elif page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
+                    class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+            </div>
+        {% endif %}
+    {% else %}
+        <div>
+            <a class="secondary-button button-medium disabled">{% translate 'rezerviraj' %}</a>
+        </div>
+        <p>
+            {% translate 'Za rezervacijo orodja se je potrebno' %}
+            <a class="link" href="{% url 'login' %}">
+                <span class="link-text">{% translate 'prijaviti' %}</span>
+                <span class="link-icon"></span>
+            </a>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% endblock profile_page_body %}
+

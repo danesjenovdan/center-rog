@@ -8,14 +8,16 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.edit_handlers import MediaChooserPanel
+from modelcluster.fields import ParentalKey
 
 from .base_pages import BasePage, ObjectProfilePage, ObjectListPage, ObjectArchiveListPage
 from .image import CustomImage
+from .workshop import Workshop
 from news.models import NewsPage
 from events.models import EventPage
 
 import random
-from datetime import date
+from datetime import date, datetime
 
 
 def add_see_more_fields(context):
@@ -158,6 +160,28 @@ class LabPage(BasePage):
     training_dates_link = models.URLField(blank=True, verbose_name=_("Termini usposabljanj"))
     online_trainings_link = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
     optional_button = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
+    working_hours = StreamField(
+        [
+            (
+                "time",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
+                        ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
+                    ],
+                    label=_("Dan in ura"),
+                ),
+            )
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Delovni čas"),
+    )
+    notice = models.CharField(
+        max_length=50, blank=True, verbose_name=_("Dodatno obvestilo")
+    )
     button = StreamField([
         ("external", blocks.URLBlock(label=_("Zunanji URL"))),
         ("page", blocks.PageChooserBlock(label=_("Podstran"))),
@@ -174,17 +198,21 @@ class LabPage(BasePage):
         FieldPanel("lab_lead_email"),
         FieldPanel("training_dates_link"),
         FieldPanel("online_trainings_link"),
+        FieldPanel("working_hours"),
+        FieldPanel("notice"),
         FieldPanel("button"),
         FieldPanel("button_text"),
         InlinePanel("related_tools", label="Orodja"),
-        FieldPanel("show_see_more_section")
+        FieldPanel("show_see_more_section"),
     ]
 
     parent_page_types = [
         "home.LabListPage"
     ]
 
-    subpage_types = []
+    subpage_types = [
+        "home.WorkingStationPage"
+    ]
 
     def short_description(self):
         if len(self.description) > 240:
@@ -199,6 +227,10 @@ class LabPage(BasePage):
         # see more
         context = add_see_more_fields(context)
 
+        # working station pages
+        working_stations = WorkingStationPage.objects.live().descendant_of(self)
+        context["working_stations"] = working_stations
+
         return context
 
     class Meta:
@@ -206,6 +238,152 @@ class LabPage(BasePage):
         verbose_name_plural = _("Laboratoriji")
 
 LabPage._meta.get_field("color_scheme").default = "light-green"
+
+
+class WorkingStationPage(BasePage):
+    thumbnail = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Predogledna slika"),
+    )
+    description = models.TextField(blank=True, verbose_name=_("Kratek opis na kartici"))
+    image = models.ForeignKey(
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Slika"),
+    )
+    modules = StreamField(
+        [
+            (
+                "bulletpoints",
+                blocks.StructBlock(
+                    [
+                        (
+                            "title",
+                            blocks.TextBlock(
+                                label=_("Naslov"),
+                                required=False,
+                            ),
+                        ),
+                        (
+                            "points",
+                            blocks.ListBlock(blocks.TextBlock(), label=_("Točka"), min=1),
+                        ),
+                    ],
+                    label=_("Modul s točkami"),
+                ),
+            ),
+            (
+                "description",
+                blocks.StructBlock(
+                    [
+                        (
+                            "title",
+                            blocks.TextBlock(
+                                label=_("Naslov"),
+                                required=False,
+                            ),
+                        ),
+                        (
+                            "description",
+                            blocks.TextBlock(
+                                label=_("Opis"),
+                            ),
+                        ),
+                    ],
+                    label=_("Modul z opisom"),
+                ),
+            ),
+            (
+                "specifications",
+                blocks.StructBlock(
+                    [
+                        (
+                            "title",
+                            blocks.TextBlock(
+                                label=_("Naslov"),
+                                required=False,
+                            ),
+                        ),
+                        (
+                            "points",
+                            blocks.ListBlock(blocks.StructBlock([
+                                ("name", blocks.TextBlock(label=_("Specifikacija"))),
+                                ("value", blocks.TextBlock(label=_("Vrednost"))),
+                            ]), label=_("Specifikacije"), min=1),
+                        ),
+                    ],
+                    label=_("Modul s specifikacijami"),
+                ),
+            ),
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Moduli"),
+    )
+    required_workshop = models.ForeignKey(
+        Workshop,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Zahteva usposabljanje?"),
+    )
+    tag = models.CharField(
+        max_length=12, blank=True, null=True, verbose_name=_("Oznaka na kartici")
+    )
+    prima_location_id = models.IntegerField(
+        null=True, blank=True, verbose_name=_("Prima location id")
+    )
+    prima_group_id = models.IntegerField(
+        null=True, blank=True, verbose_name=_("Prima group id")
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("description"),
+        FieldPanel("thumbnail"),
+        FieldPanel("image"),
+        FieldPanel("modules"),
+        FieldPanel("required_workshop"),
+        FieldPanel("tag"),
+        FieldPanel("prima_location_id"),
+        FieldPanel("prima_group_id"),
+    ]
+
+    parent_page_types = ["home.LabPage"]
+
+    def workshop_event(self):
+        today = datetime.today()
+        events = EventPage.objects.filter(
+            event_is_workshop=self.required_workshop, start_day__gte=today
+        ).order_by("start_day")
+        if len(events) > 0:
+            return events.first()
+        else:
+            return None
+
+    # def get_context(self, request, *args, **kwargs):
+    #     context = super().get_context(request, *args, **kwargs)
+    #     context["object_profile_page_type"] = self.__class__.__name__
+
+    #     # see more
+    #     context = add_see_more_fields(context)
+
+    #     return context
+
+    class Meta:
+        verbose_name = _("Delovna postaja")
+        verbose_name_plural = _("Delovne postaje")
+
+
+WorkingStationPage._meta.get_field("color_scheme").default = "light-green"
 
 
 class LibraryPage(ObjectProfilePage):
