@@ -4,6 +4,9 @@ import requests
 import json
 
 
+def filter_letters(input):
+    return ''.join(filter(str.isalpha, input))
+
 def create_ident(name, price, vat, ident_id):
     if not settings.PANTHEON_URL:
         return None
@@ -232,7 +235,7 @@ def create_subject(subject):
 
     subject_name = f'{subject.first_name} {subject.last_name}'
     if not subject_name.strip():
-        subject_name = " ".join(subject.email.split("@")[0].split("."))
+        subject_name = filter_letters(" ".join(subject.email.split("@")[0].split(".")))
 
     data = {
         "subject": subject.get_pantheon_subject_id(),
