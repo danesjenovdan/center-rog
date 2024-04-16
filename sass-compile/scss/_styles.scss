@@ -790,6 +790,75 @@ form {
             color: inherit;
         }
     }
+
+    .link {
+        @include font-size-xs();
+    }
+
+    .card-tag {
+        position: absolute;
+        top: -10px;
+        left: -16px;
+        padding: 12px 24px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230081ED' preserveAspectRatio='none' viewBox='0 0 114.85 48.2'%3E%3Cpath opacity='0.85' d='m0 48.19 1.85-1.86L0 44.5l1.86-1.86L0 40.78l1.86-1.86-1.85-1.85 1.84-1.86L0 33.37l1.86-1.86L0 29.66l1.86-1.86-1.85-1.85 1.84-1.86L0 22.25l1.86-1.86L0 18.54l1.86-1.86-1.85-1.85 1.85-1.86-1.85-1.84 1.85-1.86L0 7.42l1.86-1.86L.01 3.71l1.85-1.86L.01.01h89.88L91.04 0h23.8l-1.85 1.86 1.86 1.86-1.86 1.85 1.85 1.85L113 9.27l1.85 1.86-1.85 1.85 1.86 1.86-1.86 1.85 1.85 1.85-1.85 1.85 1.85 1.86L113 24.1l1.85 1.86-1.85 1.85 1.85 1.85L113 31.5l1.85 1.86-1.85 1.85 1.85 1.86-1.85 1.85 1.85 1.85-1.85 1.85 1.85 1.86-1.86 1.85 1.86 1.86H7.93z' /%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        span {
+            color: $cs-white;
+            @include font-size-xs();
+        }
+    }
+}
+
+.tool-card-wrapper {
+    &:nth-child(1n) {
+        .card-tag {
+            transform: rotate(-15deg);
+        }
+    }
+
+    &:nth-child(2n) {
+        .card-tag {
+            transform: rotate(-44deg);
+        }
+    }
+
+    &:nth-child(3n) {
+        .card-tag {
+            transform: rotate(-23deg);
+        }
+    }
+
+    &:nth-child(4n) {
+        .card-tag {
+            transform: rotate(-10deg);
+        }
+    }
+
+    &:nth-child(5n) {
+        .card-tag {
+            transform: rotate(-32deg);
+        }
+    }
+
+    &:nth-child(6n) {
+        .card-tag {
+            transform: rotate(-39deg);
+        }
+    }
+
+    &:nth-child(7n) {
+        .card-tag {
+            transform: rotate(-6deg);
+        }
+    }
+
+    &:nth-child(8n) {
+        .card-tag {
+            transform: rotate(-12deg);
+        }
+    }
 }
 
 .scrolling-dots {
@@ -2002,14 +2071,20 @@ section.image-embed {
                 p:last-child {
                     margin-bottom: 0;
                 }
-            }
-
+            }                
+            
             .lab-contact-information {
+                padding: 20px;
                 margin-bottom: 30px;
+                position: relative;
 
                 p {
-                    margin-bottom: 0;
+                    // margin-bottom: 0;
                     @include font-size-xs();
+
+                    &.large {
+                        @include font-size-sm();
+                    }
 
                     a.button-small, a.button-medium, a.button-large {
                         margin: 10px 0;
@@ -2021,6 +2096,32 @@ section.image-embed {
 
                         @include underline-text-on-hover();
                     }
+                }
+
+                .tape {
+                    background: rgba(0, 140, 240, 0.8);
+                    width: 100px;
+                    height: 25px;
+                    position: absolute;
+                    z-index: 1;
+                }
+
+                .tape:first-child {
+                    transform: rotate(-7deg);
+                    top: -15px;
+                    left: -10px;
+                }
+
+                .tape:nth-child(2) {
+                    transform: rotate(43deg);
+                    top: 0;
+                    right: -30px;
+                }
+
+                .content+.tape {
+                    transform: rotate(-3deg);
+                    bottom: -12px;
+                    left: 30%;
                 }
             }
         }
@@ -2276,6 +2377,22 @@ section.image-embed {
 
             .row:nth-child(2) {
                 margin-bottom: 30px;
+            }
+        }
+
+        &.working-station-container {
+            h6 {
+                @include font-size-md();
+            }
+
+            .specifications p {
+                span:first-child {
+                    @include font-size-xs();
+                }
+
+                span:last-child {
+                    @include font-size-sm();
+                }
             }
         }
     }
