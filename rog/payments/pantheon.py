@@ -228,6 +228,9 @@ def create_subject(subject):
     if subject.legal_person_vat:
         taxer = True
 
+    post = subject.get_post()
+
+
     data = {
         "subject": subject.get_pantheon_subject_id(),
         "buyer": "T",
@@ -244,7 +247,7 @@ def create_subject(subject):
         "name2": subject.legal_person_name if subject.legal_person_vat else f'{subject.first_name} {subject.last_name}',
         "address": subject.address_1,
         "name3": f'{subject.first_name} {subject.last_name}',
-        "post": f'SI-{subject.get_post()}',
+        "post": f'SI-{post}' if post else "",
         "country": "Slovenija",
         "km": 0,
         "vatcodePrefix": "SI" if taxer else "",
