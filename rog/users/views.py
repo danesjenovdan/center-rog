@@ -48,10 +48,11 @@ class EditGalleryView(View):
         for image in current_user.gallery:
             print(image.value)
             new_gallery.append(("image", image.value))
-        
+
         for uploaded_file in uploaded_images:
             image = models.CustomImage(title=uploaded_file.name, file=uploaded_file)
             image.save()
+            image.tags.add("__user_gallery__")
             new_gallery.append(('image', image))
             new_images.append({
                 'id': image.id,
@@ -66,7 +67,7 @@ class EditGalleryView(View):
 
 @method_decorator(login_required, name='dispatch')
 class DeleteGalleryView(View):
-    
+
     def post(self, request):
         current_user = request.user
 
@@ -78,11 +79,11 @@ class DeleteGalleryView(View):
             for image in current_user.gallery:
                 if image.value.id != int(image_id):
                     new_gallery.append(("image", image.value))
-            
+
             current_user.gallery = new_gallery
             current_user.save()
 
             return JsonResponse({"message": "DELETE OK"})
-        
+
         except:
             return HttpResponseBadRequest()
