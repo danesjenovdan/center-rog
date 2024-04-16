@@ -241,6 +241,14 @@ class EventPage(BasePage):
 
         return context
 
+    def get_admin_display_title(self):
+        title = super().get_admin_display_title()
+        if not self.start_day:
+            return title
+
+        formatted_date = self.start_day.strftime("%d. %m. %Y")
+        return f"{title} • [{formatted_date}]"
+
     class Meta:
         verbose_name = _("Dogodek")
         verbose_name = _("Dogodki")
