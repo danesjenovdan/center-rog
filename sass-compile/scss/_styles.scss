@@ -507,6 +507,15 @@ form {
         }
     }
 
+    .event-lab {
+        span {
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 2px;
+            padding: 2px;
+        }
+    }
+
     .card-tag {
         position: absolute;
         top: 0;

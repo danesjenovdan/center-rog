@@ -7,6 +7,11 @@
   <div class="card-body p-md-0">
     <p class="event-category">{{ event.category.name }}</p>
     <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {{ event.start_time }}</p>
+    <p class="event-lab">
+    {% for lab in event.labs.all %}
+      <span>{{ lab }}</span>
+    {% endfor %}
+    </p>
     <h4 class="card-title">{{ event.short_title }}</h4>
   </div>
   {% if event.tag %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.db.models import Q
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -9,7 +10,7 @@ from wagtail.models import Page, Orderable
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 
 from wagtailautocomplete.edit_handlers import AutocompletePanel
@@ -160,8 +161,8 @@ class EventPage(BasePage):
     contact_email = models.EmailField(
         verbose_name=_("Kontaktni email"), null=True, blank=True
     )
-    labs = models.ManyToManyField(
-        "home.LabPage", blank=True, verbose_name=_("Laboratorij")
+    labs = ParentalManyToManyField(
+        "home.LabPage", blank=True, verbose_name=_("Laboratoriji")
     )
     without_registrations = models.BooleanField(
         default=False,
@@ -195,7 +196,7 @@ class EventPage(BasePage):
         FieldPanel("price_for_non_member"),
         FieldPanel("number_of_places"),
         FieldPanel("contact_email"),
-        FieldPanel("labs"),
+        FieldPanel("labs", widget=forms.CheckboxSelectMultiple),
         FieldPanel("without_registrations"),
     ]
 
