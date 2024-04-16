@@ -8,6 +8,7 @@ resources:
   - ingress.yaml
   - cronjobs/publish_scheduled.yaml
   - cronjobs/daily_email_sender.yaml
+  - cronjobs/resend_data_to_pantheon.yaml
 images:
   - name: rog
     newName: rg.fr-par.scw.cloud/djnd/rog
