@@ -231,7 +231,7 @@ def create_subject(subject):
     post = subject.get_post()
 
     subject_name = f'{subject.first_name} {subject.last_name}'
-    if not subject_name:
+    if not subject_name.strip():
         subject_name = " ".join(subject.email.split("@")[0].split("."))
 
     data = {
