@@ -6,7 +6,7 @@
 {% block container_class %}working-station-container{% endblock %}
 
 
-{% block profile_page_body %}
+{% block profile_page_intro %}
 
 {% if page.image %}
 <div class="col-12 pb-3">
@@ -92,5 +92,11 @@
     {% endif %}
 {% endif %}
 
-{% endblock profile_page_body %}
+{% endblock profile_page_intro %}
 
+{% block profile_page_content %}
+{% endblock profile_page_content %}
+
+{% block profile_page_see_more %}
+{% include "home/includes/see_more_lab.html" %}
+{% endblock profile_page_see_more %}
