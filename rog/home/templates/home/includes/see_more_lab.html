@@ -1,0 +1,18 @@
+{% load static i18n wagtailcore_tags wagtailimages_tags %}
+
+{% if events %}
+<section class="color-scheme-light-gray see-more-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <h2>{% translate 'Prihajajoči dogodki v labu' %}</h2>
+      </div>
+      {% for event in events %}
+      <div class="col-md-4 col-xxl-3 mb-4 mb-md-0">
+        {% include "events/includes/card.html" with event=event %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

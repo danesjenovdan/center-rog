@@ -62,7 +62,7 @@
                 </svg>
             </p>
             {% endif %}
-            
+
             {% if page.working_hours %}
             <div class="my-1">
                 <p class="mb-0">{% translate "Delovni čas" %}</p>
@@ -74,13 +74,13 @@
                 {% endfor %}
             </div>
             {% endif %}
-            
+
             {% if page.notice %}
             <p class="my-1">
                 {{ page.notice }}
             </p>
             {% endif %}
-            
+
             {% if page.button and page.button_text %}
             <p class="mb-0">
                 {% for link in page.button %}
@@ -92,7 +92,7 @@
         </div>
         <div class="tape"></div>
     </div>
-    
+
 </div>
 {% endblock profile_page_contact_information %}
 
@@ -266,3 +266,7 @@
 {% endif %}
 
 {% endblock profile_page_content %}
+
+{% block profile_page_see_more %}
+{% include "home/includes/see_more_lab.html" %}
+{% endblock profile_page_see_more %}
