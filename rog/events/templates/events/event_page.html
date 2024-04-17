@@ -27,35 +27,39 @@
                 <span class="pin"></span>
                 <div class="notice">
                     {% if page.start_day and page.end_day %}
-                    <p>
-                        <small>{% translate 'začetek' %}</small><br>
-                        {{ page.start_day|date:"j. n. Y" }}<br>
-                        <small>{% translate 'konec' %}</small><br>
+                    <div class="notice-info">
+                        <div class="small">{% translate 'datum' %}</div>
+                        {{ page.start_day|date:"j. n. Y" }} - <br>
                         {{ page.end_day|date:"j. n. Y" }}
-                    </p>
+                    </div>
                     {% elif page.start_day %}
-                    <p>
-                        <small>{{ page.start_day|date:"l" }}</small><br>
+                    <div class="notice-info">
+                        <div class="small">{% translate 'datum' %}</div>
+                        {{ page.start_day|date:"l" }} <br>
                         {{ page.start_day|date:"j. n. Y" }}
-                    </p>
+                    </div>
                     {% endif %}
-                    <p>
+                    <div class="notice-info">
+                        <div class="small">{% translate 'ura' %}</div>
                         <span>{{ page.start_time }}</span> - <span>{{ page.end_time }}</span>
-                    </p>
-                    <p>{{ page.location }}</p>
+                    </div>
+                    <div class="notice-info">
+                        <div class="small">{% translate 'lokacija' %}</div>
+                        {{ page.location }}
+                    </div>
                     {% if page.apply_url %}
                         <a href="{{ page.apply_url }}" class="primary-button button-medium" target="_blank">{% translate 'prijava' %}</a>
-                    {% elif not page.without_registrations and page.number_of_places > 0 and not current_user_registered %}
-                        <div class="text-center">
+                    {% elif not page.without_registrations and not current_user_registered %}
+                        <div class="mt-3">
                             <div>
                                 {% if page.price == 0 and page.price_for_non_member == 0 %}
-                                <div class="event-price">
+                                <div class="event-price event-price--free">
                                     {% translate "brezplačno" %}
                                 </div>
                                 {% else %}
                                 <div class="event-price">
                                     <div>
-                                        <small>{% translate "za člane" %}</small>
+                                        <div class="small">{% translate "za člane" %}</div>
                                         <div>
                                             {% if page.price == 0 %}
                                                 {% translate "brezplačno" %}
@@ -65,7 +69,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <small>{% translate "za goste" %}</small>
+                                        <div class="small">{% translate "za goste" %}</div>
                                         <div>
                                             {% if page.price_for_non_member == 0 %}
                                                 {% translate "brezplačno" %}
@@ -77,18 +81,29 @@
                                 </div>
                                 {% endif %}
                             </div>
+                            {% if page.number_of_places > 0 %}
                             <div>
-                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if free_places < 1 %}disabled{% endif %}" target="_blank">{% translate 'prijava na dogodek' %}</a>
-                            </div>
-                            <div>
-                                <div class="event-free-places">
-                                    <span class="text">{% translate 'Število prostih mest' %}</span>
-                                    <span class="number">{{ free_places|stringformat:"02d" }}</span>
+                                <div class="event-free-places {% if free_places < 1 %}event-free-places--none{% endif %}">
+                                    <span class="text">{% translate 'Prosta mesta:' %}</span>
+                                    <span class="number">{{ free_places }}/{{ page.number_of_places }}</span>
+                                    {% if free_places < 1 %}
+                                    <span class="sad-face">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0.2 0.95 29.4 29.4">
+                                            <path fill="#FFD3DF" stroke="#A50000" stroke-width="1.5" d="M15.703 29.536c7.676-.435 13.545-7.01 13.11-14.685-.434-7.675-7.009-13.545-14.684-13.11C6.454 2.175.584 8.75 1.019 16.425c.434 7.676 7.009 13.545 14.684 13.11Z"/>
+                                            <path fill="#A50000" d="M11.226 16.212c1.045-.06 1.814-1.475 1.718-3.163-.095-1.688-1.02-3.008-2.064-2.949-1.045.06-1.815 1.476-1.72 3.163.096 1.688 1.021 3.008 2.066 2.95Zm7.766-.44c1.045-.059 1.815-1.475 1.72-3.163-.096-1.688-1.021-3.008-2.066-2.949-1.045.06-1.814 1.476-1.719 3.163.096 1.688 1.02 3.008 2.065 2.95Z"/>
+                                            <path stroke="#A50000" stroke-linecap="round" stroke-width="1.5" d="M8.118 22.945a9.683 9.683 0 0 1 14.028-.204"/>
+                                        </svg>
+                                    </span>
+                                    {% endif %}
                                 </div>
+                            </div>
+                            {% endif %}
+                            <div>
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places > 0 and free_places < 1 %}disabled{% endif %}" target="_blank">{% translate 'prijava na dogodek' %}</a>
                             </div>
                         </div>
                     {% elif current_user_registered %}
-                        <div class="text-center">
+                        <div class="mt-3">
                             <div>
                                 <a href="{% url 'profile-my' %}" class="primary-button button-medium">{% translate 'poglej svojo prijavo' %}</a>
                             </div>

@@ -2080,8 +2080,8 @@ section.image-embed {
                 p:last-child {
                     margin-bottom: 0;
                 }
-            }                
-            
+            }
+
             .lab-contact-information {
                 padding: 20px;
                 margin-bottom: 30px;
@@ -2293,39 +2293,58 @@ section.image-embed {
                 .notice {
                     padding: 25px;
 
-                    p {
+                    .notice-info {
                         @include font-size-lg();
-                        margin-bottom: 12px;
+                        margin-bottom: 0;
+                        line-height: 1.2;
 
-                        small {
-                            @include font-size-sm();
+                        .small {
+                            @include font-size-xs();
+                            line-height: 1.4;
                         }
                     }
 
                     .event-price {
                         display: inline-flex;
-                        gap: 0.5em;
-                        padding: 0.5em;
-                        margin-bottom: 0.75rem;
-                        background-color: $cs-dark-blue;
+                        gap: 0.75em;
+                        margin-bottom: 0.5rem;
+                        padding: 0.25em 0.5em;
+                        border: 1.5px solid $cs-orange;
                         border-radius: 3px;
                         @include font-size-sm();
-                        color: $cs-light-green;
+                        color: $cs-orange;
                         text-align: left;
+
+                        &.event-price--free {
+                            padding-block: 0.75em;
+                        }
+
+                        .small {
+                            @include font-size-xs();
+                        }
                     }
 
                     .event-free-places {
                         display: inline-flex;
                         align-items: center;
-                        padding: 0.5em 0.5em 0.5em 1em;
-                        margin-top: 0.75rem;
-                        background-color: $cs-yellow;
-                        @include font-size-xs();
-                        border: 1.5px solid $cs-dark-gray;
+                        margin-bottom: 0.5rem;
+                        padding: 0.5em 0.5em;
+                        border: 1.5px solid $cs-dark-green;
                         border-radius: 3px;
+                        color: $cs-dark-green;
+
+                        &.event-free-places--none {
+                            color: $cs-red;
+                            border-color: $cs-red;
+
+                            .number {
+                                border-color: $cs-red;
+                            }
+                        }
 
                         .text {
-                            margin-top: 2px;
+                            @include font-size-xs();
+                            width: min-content;
                         }
 
                         .number {
@@ -2333,9 +2352,21 @@ section.image-embed {
                             padding: 0.15em 0.25em 0.10em 0.20em;
                             margin-left: 0.5em;
                             @include font-size-md();
+                            font-family: "Courier New";
                             font-weight: bold;
-                            border: 1.5px solid $cs-dark-gray;
+                            border: 1.5px solid $cs-dark-green;
                             border-radius: 3px;
+                        }
+
+                        .sad-face {
+                            margin-left: 0.5em;
+                            width: 1.75rem;
+                            height: 1.75rem;
+
+                            svg {
+                                width: 100%;
+                                height: 100%;
+                            }
                         }
                     }
                 }

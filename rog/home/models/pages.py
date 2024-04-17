@@ -38,6 +38,21 @@ def add_see_more_fields(context):
     return context
 
 
+def add_see_more_lab_events(context):
+    if context["object_profile_page_type"] == "LabPage":
+        page = context["page"]
+    elif context["object_profile_page_type"] == "WorkingStationPage":
+        page = context["page"].get_parent()
+    else:
+        return context
+
+    # 3 random events from this lab
+    today = date.today()
+    events = list(EventPage.objects.live().filter(labs=page, start_day__gte=today).order_by("start_day"))
+    context["events"] = random.sample(events, min(3, len(events)))
+
+    return context
+
 ### OBJECT PROFILE PAGES ###
 
 class StudioPage(ObjectProfilePage):
@@ -225,7 +240,7 @@ class LabPage(BasePage):
         context["object_profile_page_type"] = self.__class__.__name__
 
         # see more
-        context = add_see_more_fields(context)
+        context = add_see_more_lab_events(context)
 
         # working station pages
         working_stations = WorkingStationPage.objects.live().descendant_of(self)
@@ -345,6 +360,7 @@ class WorkingStationPage(BasePage):
     prima_group_id = models.IntegerField(
         null=True, blank=True, verbose_name=_("Prima group id")
     )
+    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
@@ -355,6 +371,7 @@ class WorkingStationPage(BasePage):
         FieldPanel("tag"),
         FieldPanel("prima_location_id"),
         FieldPanel("prima_group_id"),
+        FieldPanel("show_see_more_section"),
     ]
 
     parent_page_types = ["home.LabPage"]
@@ -369,14 +386,14 @@ class WorkingStationPage(BasePage):
         else:
             return None
 
-    # def get_context(self, request, *args, **kwargs):
-    #     context = super().get_context(request, *args, **kwargs)
-    #     context["object_profile_page_type"] = self.__class__.__name__
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["object_profile_page_type"] = self.__class__.__name__
 
-    #     # see more
-    #     context = add_see_more_fields(context)
+        # see more
+        context = add_see_more_lab_events(context)
 
-    #     return context
+        return context
 
     class Meta:
         verbose_name = _("Delovna postaja")
