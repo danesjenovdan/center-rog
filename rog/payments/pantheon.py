@@ -490,8 +490,8 @@ def create_move(
         "taxDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "expectedDeliveryDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "wayOfSale": "Z" if payment.user.legal_person_vat else "K",
-        "paymentMethod": "1",
-        "paymentMethodId": "1",
+        "paymentMethod": "",
+        "paymentMethodId": "",
         "paymentMethods": [
             {
                 "acPayMethod": "1",
@@ -529,7 +529,7 @@ def create_move(
         "sale": "",
         "statement": "",
         "currency": "EUR",
-        "deliveryType": "5",
+        "deliveryType": "",
         "deliveryPlace": "",
         "fxRate": 1,
         "corrType": "",
