@@ -444,8 +444,8 @@ class PaymentSuccessXML(views.APIView):
                 payment.errored_at = timezone.now()
                 payment.save()
         elif '<rezultat>0</rezultat>' in payment.info:
-            payment.transaction_success_at = timezone.now()
             payment.refresh_from_db()
+            payment.transaction_success_at = timezone.now()
             if payment.status != Payment.Status.SUCCESS:
                 """
                 payment is marked as successed on redirect page from UJP,
