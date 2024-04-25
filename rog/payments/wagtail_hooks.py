@@ -23,11 +23,11 @@ class ExportPaymentView(IndexView):
             data.append({
                 'first_name': payment.user.first_name,
                 'last_name': payment.user.last_name,
-                'original_amount': payment.original_amount,
-                'amount': payment.amount,
+                'original_amount': str(payment.original_amount).replace('.', ','),
+                'amount': str(payment.amount).replace('.', ','),
                 'created_at': payment.created_at.isoformat() if payment.created_at else '',
                 'successed_at': payment.successed_at.isoformat() if payment.successed_at else '',
-                'transaction_success_at': payment.transaction_success_at.isoformat() if payment.transaction_success_at else '',
+                'transaction_successed_at': payment.transaction_success_at.isoformat() if payment.transaction_success_at else '',
                 'invoice_number': payment.invoice_number,
                 'ujp_id': payment.ujp_id,
                 'plans': '+'.join(list(payment.payment_plans.all().values_list("plan_name", flat=True))),
@@ -39,7 +39,7 @@ class ExportPaymentView(IndexView):
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
         try:
-            writer = csv.DictWriter(response, fieldnames=data[0].keys())
+            writer = csv.DictWriter(response, fieldnames=data[0].keys(), delimiter=';')
         except IndexError:
             return response
         writer.writeheader()
