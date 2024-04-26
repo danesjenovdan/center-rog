@@ -39,7 +39,7 @@ class ExportPaymentView(IndexView):
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
         try:
-            writer = csv.DictWriter(response, fieldnames=data[0].keys(), delimiter=';')
+            writer = csv.DictWriter(response, fieldnames=data[0].keys(), dialect='excel-tab', delimiter='\t')
         except IndexError:
             return response
         writer.writeheader()
