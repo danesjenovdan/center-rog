@@ -40,5 +40,5 @@ class Command(BaseCommand):
             successed_at__year__gte=2024,
             successed_at__isnull=False,
             transaction_success_at__isnull=False,
-        ):
+        ).order_by("invoice_number"):
             payment.save()
