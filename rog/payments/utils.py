@@ -16,9 +16,9 @@ prima_api = PrimaApi()
 def get_invoice_number():
     year = datetime.now().strftime("%y")
     invoice_order = Payment.objects.filter(
-        successed_at__year=datetime.now().year,
+        transaction_success_at__year=datetime.now().year,
         amount__gt=0
-    ).count() + 1
+    ).count() + 1  + 28 # WORKAROUND shift invoice number 
     invoice_order_str = str(invoice_order).zfill(6)
     return f'{year}-369-{invoice_order_str}'
 
