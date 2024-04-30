@@ -18,7 +18,7 @@ def get_invoice_number():
     invoice_order = Payment.objects.filter(
         transaction_success_at__year=datetime.now().year,
         amount__gt=0
-    ).count() + 1
+    ).count() + 1  + 28 # WORKAROUND shift invoice number 
     invoice_order_str = str(invoice_order).zfill(6)
     return f'{year}-369-{invoice_order_str}'
 
