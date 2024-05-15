@@ -35,8 +35,8 @@ def create_ident(name, price, vat, ident_id):
         "um": "KOS",
         "umtoUm2": 0,
         "um2": "",
-        "vatcode": "NN",
-        "vatcodeLow": "NN",
+        "vatcode": "2S",
+        "vatcodeLow": "2S",
         "discount": 0,
         "warrenty": 0,
         "serialNo": "",
@@ -210,7 +210,7 @@ def create_ident(name, price, vat, ident_id):
         "useAsCostOnVatba": "",
         "descrRtf": "",
         "techProcedureRtf": "",
-        "vatcodeReduced":"NN"
+        "vatcodeReduced":"NN",
         }
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Ident',
@@ -546,8 +546,8 @@ def create_move(
                 "priceCurrency": 0,
                 "rabate": item.promo_code.percent_discount if item.promo_code else 0,
                 "vat": 0,
-                "vatCode": "NN",
-                "vatCodeTR": "NN",
+                "vatCode": "2S",
+                "vatCodeTR": "2S",
                 "note": item.plan_name.replace("[", '').replace("]", ''),
                 "measurementUnit": "KOS",
                 "taxPrice": 0,
