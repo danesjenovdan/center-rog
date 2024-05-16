@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core import validators
 from django.db.models import F
 
-from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage
+from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage, LibraryPage
 from .settings import ExternalLinkBlock, PageLinkBlock
 from users.models import MembershipType
 from news.models import NewsPage, NewsListPage
@@ -104,6 +104,170 @@ class BulletinBoardBlock(blocks.StructBlock):
     class Meta:
         label = _("Oglasna deska")
         template = "home/blocks/bulletin_board.html"
+
+
+class CollageBlock(blocks.StructBlock):
+    cta_text = blocks.CharBlock(label=_("Obvestilo (največ 350 znakov)"), max_length=350, required=False)
+    cta_button = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Gumb"),
+    )
+    cta_image = ImageChooserBlock(label=_("Slika"), required=False)
+    # gumbi/kvadrati s tekstom
+    notices_left = blocks.StreamBlock(
+        [
+            (
+                "notice",
+                blocks.StructBlock(
+                    [
+                        (
+                            "text",
+                            blocks.CharBlock(
+                                label=_("Besedilo (največ 100 znakov)"), max_length=100
+                            ),
+                        ),
+                        (
+                            "color",
+                            blocks.ChoiceBlock(
+                                choices=settings.COLOR_SCHEMES,
+                                label=_("Barva"),
+                            ),
+                        ),
+                    ],
+                    label=_("Obvestilo"),
+                ),
+            ),
+            (
+                "external_link",
+                blocks.StructBlock(
+                    [
+                        ("url", blocks.URLBlock(label=_("URL"))),
+                        (
+                            "text",
+                            blocks.CharBlock(
+                                label=_("Besedilo (največ 100 znakov)"), max_length=100
+                            ),
+                        ),
+                        (
+                            "color",
+                            blocks.ChoiceBlock(
+                                choices=settings.COLOR_SCHEMES,
+                                label=_("Barva"),
+                            ),
+                        ),
+                    ],
+                    label=_("Zunanja povezava"),
+                ),
+            ),
+            (
+                "page_link",
+                blocks.StructBlock(
+                    [
+                        (
+                            "page",
+                            blocks.PageChooserBlock(label=_("Podstran")),
+                        ),
+                        (
+                            "text",
+                            blocks.CharBlock(
+                                label=_("Besedilo (največ 100 znakov)"), max_length=100
+                            ),
+                        ),
+                        (
+                            "color",
+                            blocks.ChoiceBlock(
+                                choices=settings.COLOR_SCHEMES,
+                                label=_("Barva"),
+                            ),
+                        ),
+                    ],
+                    label=_("Povezava na podstran"),
+                ),
+            ),
+        ],
+        min_num=3,
+        max_num=3,
+        label=_("Kvadrati/gumbi"),
+    )
+    # marketi override
+    markets_override = blocks.ListBlock(
+        blocks.PageChooserBlock(page_type="home.MarketStorePage"),
+        label=_("Izpostavljene trgovine"),
+    )
+    # park izbrisanih
+    notice_right = blocks.StructBlock(
+        [
+            (
+                "text",
+                blocks.CharBlock(label=_("Besedilo (največ 15 znakov)"), max_length=15),
+            ),
+            (
+                "image",
+                ImageChooserBlock(label=_("Slika"), required=False),
+            ),
+            (
+                "external_link",
+                blocks.URLBlock(label=_("Zunanja povezava"), required=False),
+            ),
+            (
+                "page_link",
+                blocks.PageChooserBlock(
+                    label=_("Povezava na podstran"), required=False
+                ),
+            ),
+            (
+                "color",
+                blocks.ChoiceBlock(
+                    choices=settings.COLOR_SCHEMES,
+                    label=_("Barva"),
+                ),
+            ),
+        ],
+        label=_("Gumb na desni"),
+    )
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+
+        # random lab
+        labs = list(LabPage.objects.live())
+        if len(labs) > 0:
+            context["lab"] = random.choice(labs)
+        # link to labs
+        context["labs_list"] = LabListPage.objects.live().first()
+
+        # random markets
+        market_overrides = [market.id for market in value["markets_override"]]
+        markets = list(MarketStorePage.objects.live().exclude(id__in=market_overrides))
+        if len(markets) > 2:
+            context["markets"] = random.sample(markets, 3)
+        elif len(markets) > 1:
+            context["markets"] = random.sample(markets, 2)
+        elif len(markets) > 0:
+            context["markets"] = random.sample(markets, 1)
+        # link to markets
+        context["markets_list"] = MarketStoreListPage.objects.live().first()
+
+        # link to studios
+        context["studios_list"] = StudioListPage.objects.live().first()
+
+        # link to residences
+        context["residents_list"] = ResidenceListPage.objects.live().first()
+
+        # knjižnica
+        context["library"] = LibraryPage.objects.live().first()
+
+        return context
+
+    class Meta:
+        label = _("Kolaž")
+        template = "home/blocks/collage.html"
 
 
 class NewsBlock(blocks.StructBlock):
@@ -377,6 +541,7 @@ class PlansBlock(ColoredStructBlock):
 
 class ModuleBlock(blocks.StreamBlock):
     bulletin_board = BulletinBoardBlock()
+    collage = CollageBlock()
     labs_section = LabsBlock()
     news_section = NewsBlock()
     events_section = EventsBlock()
