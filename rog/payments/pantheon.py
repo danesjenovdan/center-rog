@@ -10,9 +10,9 @@ def filter_letters(input):
 def create_ident(name, price, vat, ident_id):
     if not settings.PANTHEON_URL:
         return None
+    vat=22
     price = float(price)
-    vat = int(vat)
-    total_price = price + (price * vat / 100)
+    rtprice = price / 1.22
     data = {
         "ident": ident_id,
         "name": name,
@@ -23,10 +23,10 @@ def create_ident(name, price, vat, ident_id):
         "setOfItem": "700",
         "supplier": "",
         "formula": "",
-        "vat": 0,
+        "vat": 22,
         "currency": "EUR",
         "salePrice": price,
-        "rtprice": total_price,
+        "rtprice": rtprice,
         "wsprice": 0,
         "wsprice2": 0,
         "prStPrice": 0,
@@ -210,7 +210,7 @@ def create_ident(name, price, vat, ident_id):
         "useAsCostOnVatba": "",
         "descrRtf": "",
         "techProcedureRtf": "",
-        "vatcodeReduced":"NN",
+        "vatcodeReduced":"2S",
         }
     response = requests.post(
         f'{settings.PANTHEON_URL}/api/Ident',
@@ -505,7 +505,7 @@ def create_move(
         "clerkId": 1,
         "clerk": "Administrator",
         "price": float(payment.amount),
-        "vat": 0.0,
+        "vat": 22,
         "discount": 0,
         "department": "",
         "status": "P",
@@ -545,7 +545,7 @@ def create_move(
                 "price": float(item.original_price),
                 "priceCurrency": 0,
                 "rabate": item.promo_code.percent_discount if item.promo_code else 0,
-                "vat": 0,
+                "vat": 22,
                 "vatCode": "2S",
                 "vatCodeTR": "2S",
                 "note": item.plan_name.replace("[", '').replace("]", ''),
