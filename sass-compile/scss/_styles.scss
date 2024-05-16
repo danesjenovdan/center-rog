@@ -1368,12 +1368,14 @@ form {
             .labs-section {
                 margin: 10px 0;
 
+                span {
+                    @include font-size-md();
+                    padding-top: 10px;
+                    text-align: center;
+                    display: block;
+                }
+
                 .lab {
-                    span {
-                        @include font-size-md();
-                        margin-top: 10px;
-                    }
-                    
                     img {
                         grid-row: 2/2;
                     }

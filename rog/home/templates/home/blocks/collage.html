@@ -68,12 +68,13 @@
           <div class="col-6">
             <!-- labi -->
             <div class="labs-section color-scheme-light-green">
-              <a href="{% pageurl labs_list %}" class="lab text-center mb-md-4">
-                <span>{% translate 'Naši labi' %}</span>
-                {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
-                {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
+              <a href="{% pageurl labs_list %}" class="text-center mb-md-4 color-scheme-light-green">
+                <span class="">{% translate 'Naši labi' %}</span>
+                <div class="lab">
+                  {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
+                  {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
+                </div>
               </a>
-              
             </div>
             <!-- market -->
             <div class="market-section color-scheme-brown">
