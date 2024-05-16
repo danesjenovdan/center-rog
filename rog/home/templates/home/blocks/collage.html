@@ -1,0 +1,165 @@
+{% load i18n static wagtailcore_tags wagtailimages_tags percentage %}
+
+{% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
+<section class="collage">
+  <div class="container">
+    {% if value.cta_text %}
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <div class="color-scheme-white cta">
+          <span class="pin"></span>
+          <span class="pin"></span>
+          <span class="pin"></span>
+          <span class="pin"></span>
+          <span class="pin"></span>
+          <div class="notice">
+            <p>{{ value.cta_text }}</p>
+            {% if value.cta_button %}
+            {% include "home/includes/bottom_button.html" with value_link=value.cta_button align='left' %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 cta-image">
+        <span class="tape"></span>
+        {% image value.cta_image original class="img-fluid" %}
+        <span class="tape"></span>
+      </div>
+    </div>
+    {% endif %}
+    <div class="row mt-3">
+      <div class="col-12 col-md-6">
+        {% for notice in value.notices_left %}
+          {% if notice.value.page %}
+          <a href="{% pageurl notice.value.page %}" class="notice-button color-scheme-{{ notice.value.color }}">
+            {{ notice.value.text }}
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="tape"></span>
+            <span class="tape"></span>
+          </a>
+          {% elif notice.value.url %}
+          <a href="{{ notice.value.url }}" target="_blank" class="notice-button color-scheme-{{ notice.value.color }}">
+            {{ notice.value.text }}
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="tape"></span>
+            <span class="tape"></span>
+          </a>
+          {% else %}
+          <div class="notice-button color-scheme-{{ notice.value.color }}">
+            {{ notice.value.text }}
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="pushpin"></span>
+            <span class="tape"></span>
+            <span class="tape"></span>
+          </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col-6">
+            <!-- labi -->
+            <div class="labs-section color-scheme-light-green">
+              <a href="{% pageurl labs_list %}" class="text-center mb-md-4 color-scheme-light-green">
+                <span class="">{% translate 'Naši labi' %}</span>
+                <div class="lab">
+                  {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
+                  {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
+                </div>
+              </a>
+            </div>
+            <!-- market -->
+            <div class="market-section color-scheme-brown">
+              <div class="title">
+                <span class="color-scheme-white">{% translate 'Market' %}</span>
+              </div>
+              <div class="markets-container">
+                {% for market in value.markets_override %}
+                <div class="color-scheme-{{ market.card_color_scheme }} card-hover">
+                  <a
+                    href="{% pageurl market.localized %}"
+                    class="text-center p-3 d-block"
+                  >
+                    <h4 class="m-0">{{ market.localized }}</h4>
+                  </a>
+                </div>
+                {% endfor %}
+
+                {% for market in markets %}
+                  {% if forloop.counter0 < value.markets_override|length|add:"-3"|multiply:"-1" %}
+                    <div class="color-scheme-{{ market.card_color_scheme }} card-hover">
+                      <a
+                        href="{% pageurl market.localized %}"
+                        class="text-center p-3 d-block"
+                      >
+                        <h4 class="m-0">{{ market.localized }}</h4>
+                      </a>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+              <div class="text-center">
+                <a class="link" href="{% pageurl markets_list %}">
+                  <span class="link-text">{% translate 'Poglej več' %}</span>
+                  <span class="link-icon"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <!-- studio -->
+            <a
+              href="{% pageurl studios_list %}"
+              class="color-scheme-dark-green studios-link"
+            >
+            {% translate 'Rog studii' %}
+            </a>
+            <!-- rezidence -->
+            <div class="residents-section">
+              <div class="doorbell">
+                <a href="{% pageurl residents_list %}" class="resident">
+                  <span class="doorbell-button"></span>
+                  <div class="resident-name">
+                    <div class="paper">{% translate 'Rezidence' %}</div>
+                    <div class="tape"></div>
+                    <div class="tape"></div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="notice-right">
+              {% if value.notice_right.page_link %}
+              <a href="{% pageurl value.notice_right.page_link %}" class="notice-button color-scheme-{{ value.notice_right.color }}">
+                {{ value.notice_right.text }}
+                {% image value.notice_right.image fill-60x60 class="" %}
+              </a>
+              {% elif value.notice_right.external_link %}
+              <a href="{{ value.notice_right.external_link }}" class="notice-button color-scheme-{{ value.notice_right.color }}">
+                {{ value.notice_right.text }}
+                {% image value.notice_right.image fill-60x60 class="" %}
+              </a>
+              {% else %}
+              <div class="notice-button color-scheme-{{ value.notice_right.color }}">
+                {{ value.notice_right.text }}
+                {% image value.notice_right.image fill-60x60 class="" %}
+              </div>
+              {% endif %}
+            </div>
+            <a href="{% pageurl library %}" class="library-section color-scheme-yellow">
+              <span>{% translate 'Knjižnica' %}</span>
+              <img src="{% static 'images/knjiznica.png' %}" class="img-fluid" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
