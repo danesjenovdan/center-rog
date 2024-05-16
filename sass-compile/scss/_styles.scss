@@ -1198,6 +1198,287 @@ form {
             }
         }
 
+        &.collage {
+            padding-top: 120px;
+
+            .cta {
+                padding: 25px;
+                position: relative;
+                height: 360px;
+
+                @include media-breakpoint-down(sm) {
+                    height: 300px;
+                    margin-bottom: 20px;
+                }
+
+                .pin {
+                    position: absolute;
+                    width: 22px;
+                    height: 1px;
+                    background-color: #000000;
+                    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.40);
+
+                    &:nth-child(1) {
+                        left: 10px;
+                        top: 10px;
+                        transform: rotate(-15deg);
+                    }
+
+                    &:nth-child(2) {
+                        top: 10px;
+                        right: 8px;
+                        transform: rotate(20deg);
+                    }
+
+                    &:nth-child(3) {
+                        right: 15px;
+                        top: 13px;
+                        transform: rotate(15deg);
+                    }
+
+                    &:nth-child(4) {
+                        right: 8px;
+                        bottom: 10px;
+                        transform: rotate(-8deg);
+                    }
+
+                    &:nth-child(5) {
+                        left: 6px;
+                        bottom: 10px;
+                        transform: rotate(-24deg);
+                    }
+                }
+            }
+
+            .cta-image {
+                position: relative;
+
+                img {
+                    height: 360px;
+                    object-fit: cover;
+                    transform: rotate(-2deg);
+
+                    @include media-breakpoint-down(sm) {
+                        height: 360px;
+                    }
+                }
+
+                .tape {
+                    background: rgba(255, 255, 255, 0.5);
+                    width: 65px;
+                    height: 25px;
+                    position: absolute;
+                }
+
+                .tape:first-child {
+                    transform: rotate(-2deg) translateX(-50%);
+                    top: -15px;
+                    left: 50%;
+                    z-index: 1;
+                }
+
+                img + .tape {
+                    transform: rotate(2deg) translateX(-50%);
+                    bottom: -10px;
+                    left: 50%;
+                }
+            }
+
+            .notice-button {
+                display: block;
+                margin: 10px 0;
+                padding: 25px;
+                text-align: center;
+                position: relative;
+
+                @include font-size-md();
+
+                @include media-breakpoint-down(sm) {
+                    @include font-size-sm();
+                }
+
+                .pushpin {
+                    display: none;
+                    width: 20px;
+                    height: 20px;
+                    background-image: url("/static/icons/pushpin.svg");
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    position: absolute;
+
+                    &:nth-child(1) {
+                        left: 5px;
+                        top: 5px;
+                    }
+                    &:nth-child(2) {
+                        right: 8px;
+                        top: 5px;
+                    }
+                    &:nth-child(3) {
+                        left: 5px;
+                        bottom: 2px;
+                    }
+                    &:nth-child(4) {
+                        right: 3px;
+                        bottom: -1px;
+                    }
+                }
+
+                .tape {
+                    display: none;
+                    width: 25px;
+                    height: 50%;
+                    max-height: 70px;
+                    position: absolute;
+                    background-color: #DBC5AB;
+                    opacity: 0.8;
+
+                    &:nth-child(5) {
+                        left: -10px;
+                        top: 20px;
+                    }
+                    &:nth-child(6) {
+                        right: -10px;
+                        top: 20px;
+                    }
+                }
+
+                &:first-child {
+                    .pushpin {
+                        display: block;
+                    }
+                }
+
+                &:nth-child(2) {
+                    transform: rotate(1deg);
+                }
+
+                &:nth-child(3) {
+                    .tape {
+                        display: block;
+                    }
+                }
+            }
+
+            a.notice-button:hover {
+                background-color: white;
+                color: inherit;
+            }
+
+            .labs-section {
+                margin: 10px 0;
+
+                .lab {
+                    span {
+                        @include font-size-md();
+                        margin-top: 10px;
+                    }
+                    
+                    img {
+                        grid-row: 2/2;
+                    }
+                }
+            }
+
+            .market-section {
+                padding: 10px;
+
+                .title {
+                    @include font-size-sm();
+                    text-align: center;
+
+                    span {
+                        display: inline-block;
+                        transform: rotate(-3deg);
+                        padding: 10px;
+                        margin-bottom: -10px;
+                    }
+                }
+
+                .markets-container {
+                    position: relative;
+                    z-index: 1;
+
+                    &> div {
+                        // border-radius: 3px;
+                        // box-shadow: 3px 3px 3px 0 #000000;
+                    }
+
+                }
+
+                .link {
+                    margin-top: 5px;
+                }
+            }
+
+            .studios-link {
+                display: block;
+                margin: 10px 0;
+                padding: 15px 10px;
+                text-align: center;
+
+                @include font-size-md();
+
+                &:hover {
+                    background-color: white;
+                    color: inherit;
+                }
+            }
+
+            .residents-section {
+                margin: 20px 0;
+
+                .doorbell {
+                    padding: 15px 10px 20px;
+                }
+
+                @include media-breakpoint-down(sm) {
+                    .doorbell-button {
+                        width: 50px;
+                        height: 50px;
+                        margin-right: 5px;
+                    }
+
+                    .resident-name {
+                        padding: 5px;
+
+                        .paper {
+                            padding: 5px;
+                        }
+                    }
+                }
+            }
+
+            .notice-right {
+                margin: 20px 0;
+
+                .notice-button {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px;
+                }
+            }
+
+            .library-section {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                span {
+                    @include font-size-md();
+                    text-align: center;
+                    padding-top: 10px;
+                    padding-bottom: 5px;
+                }
+
+                &:hover {
+                    background-color: white;
+                    color: inherit;
+                }
+            }
+            
+        }
+
         &.white-list-section {
             background-color: white;
 
