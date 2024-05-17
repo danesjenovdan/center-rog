@@ -1368,6 +1368,10 @@ form {
             .labs-section {
                 margin: 10px 0;
 
+                &>a:hover {
+                    color: inherit
+                }
+
                 span {
                     @include font-size-md();
                     padding-top: 10px;
