@@ -41,4 +41,4 @@ class Command(BaseCommand):
             successed_at__isnull=False,
             transaction_success_at__isnull=False,
         ).order_by("invoice_number"):
-            payment.save()
+            payment.save_to_pantheon()
