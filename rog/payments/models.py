@@ -353,9 +353,8 @@ class Payment(Timestampable):
         else:
             return _("Neznani artikel")
 
-    def save(self, *args, **kwargs):
+    def save_to_pantheon(self):
         if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at and self.amount > 0:
-            super().save(*args, **kwargs)
             try:
                 response = create_move(self)
                 if response and response.status_code == 200:
@@ -365,15 +364,14 @@ class Payment(Timestampable):
                         print(data)
                         self.pantheon_id = pk
                         self.saved_in_pantheon = True
-                        super().save(*args, **kwargs)
+                        self.save()
                     else:
                         sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
                 else:
+                    sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
                     print(self.id, response.json())
             except Exception as e:
                 sentry_sdk.capture_exception(e)
-        else:
-            super().save(*args, **kwargs)
 
 
 class Token(Timestampable):
