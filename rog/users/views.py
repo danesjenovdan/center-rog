@@ -1,11 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
 
 from home import models
+from home.email_utils import send_email, id_generator
+from users.models import ConfirmEmail
 from .tokens import get_email_for_token, get_token_for_user
 
 
@@ -87,3 +90,45 @@ class DeleteGalleryView(View):
 
         except:
             return HttpResponseBadRequest()
+
+
+class ResendConfirmationMailView(View):
+    def get(self, request):
+        user = request.user
+        # tukaj pošljemo mail za potrditev računa
+        # najprej naredimo ConfirmEmail objekt in generiramo ključ
+        not_unique = True
+        while not_unique:
+            key_gen = id_generator(size=32)
+            not_unique = ConfirmEmail.objects.filter(key=key_gen)
+        confirm_email = ConfirmEmail(user=user, key=key_gen)
+        confirm_email.save()
+        # potem pošljemo mail
+        send_email(
+            user.email,
+            "emails/email_confirmation.html",
+            _("Center Rog – potrdite račun"),
+            {"key": confirm_email.key, "name": user.first_name},
+        )
+
+        return redirect("registration-email-confirmation")
+
+
+class ConfirmUserView(View):
+    def get(self, request):
+        key = request.GET.get("key", None)
+        print("key confirm user", key)
+        confirm_email = get_object_or_404(ConfirmEmail, key=key)
+        user = confirm_email.user
+        user.email_confirmed = True
+        user.save()
+        confirm_email.delete()
+        send_email(
+            user.email,
+            "emails/registration.html",
+            _(
+                "Center Rog – vaša registracija je uspela // your registration was successful"
+            ),
+            {"name": user.first_name},
+        )
+        return redirect("registration-membership")

@@ -6,7 +6,12 @@
 {% block body_class %}template-register{% endblock %}
 
 {% block form_title %}
-<h1>{% translate 'Izberi tip članstva:' %}</h1>
+<h1>
+    {% translate 'Vaš elektronski naslov je bil potrjen.' %}
+    <br/>
+    {% translate 'Registracija še ni zaključena, nadaljujte spodaj:' %}
+</h1>
+<h2>{% translate 'Izberi tip članstva:' %}</h2>
 {% endblock form_title %}
 
 {% block form_block %}
