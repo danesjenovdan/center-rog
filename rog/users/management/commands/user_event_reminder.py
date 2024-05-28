@@ -31,10 +31,8 @@ class Command(BaseCommand):
                         send_email(
                             event_registration.user.email,
                             "emails/user_event_reminder.html",
-                            f"Center Rog – obvestilo prihajajočem dogodku: {event.title}",
-                            {
-                                "event": event,
-                            },
+                            f"Center Rog – obvestilo prihajajočem dogodku // upcoming event notification: {event.title}",
+                            {"event": event, "name": event_registration.user.first_name},
                         )
                         payment_plan_event.notification_1_sent = True
                         payment_plan_event.save()

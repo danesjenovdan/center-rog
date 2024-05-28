@@ -3,19 +3,52 @@
 {% block body %}
 
     <p>
-        Živijo!
+        Živijo, {{ name }},
     </p>
     <p>
-        Obveščamo te, da bo dne {{ event.start_day }} ob {{ event.start_time }} v prostorih Centra Rog v {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} potekal {{ event.title }}.
+        še 2 dni in v Centru Rog se bo v {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} odvil/-a {{ event.title }}.
+    </p>
+    <p>
+        Se vidimo v {{ event.start_day }} ob {{ event.start_time }} v Centru Rog.
     </p>
     <p>
         Več informacij o dogodku najdeš na <a href="{{ event.full_url }}">spletni strani</a>.
     </p>
     <p>
-        Lep pozdrav,
+        Veselimo se tvojega obiska!
     </p>
     <p>
         Ekipa Centra Rog
     </p>
+    <p>
+        To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav se obrni na <a href=''mailto:info@center-rog.si''>info@center-rog.si</a>.
+    </p>
+
+    <br />
+    <hr />
+    <br />
+
+    <p>
+        Hi {{ name }},
+    </p>
+    <p>
+        In 2 days, {{ event.title }} at {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} will take place.
+    </p>
+    <p>
+        See you on {{ event.start_day }} at {{ event.start_time }} in Center Rog.
+    </p>
+    <p>
+        More information about the event can be found <a href="{{ event.full_url }}">here</a>.
+    </p>
+    <p>
+        We're looking forward to your visit!
+    </p>
+    <p>
+        Center Rog Team
+    </p>
+    <p>
+        This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+    </p>
+
 
 {% endblock body %}
