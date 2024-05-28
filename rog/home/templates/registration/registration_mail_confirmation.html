@@ -1,0 +1,27 @@
+{% extends "registration/registration_wrapper.html" %}
+{% load static i18n %}
+
+{% block title %}{% translate 'Registracija' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block form_title %}
+<h1>{% translate 'Na vaš elektronski naslov ste prejeli sporočilo. Kliknite na povezavo za potrditev vašega elektronskega naslova.' %}</h1>
+{% endblock form_title %}
+
+{% block form_block %}
+
+{% if resent %}
+<p class="mail-confirmation">
+    {% translate "Sporočilo poslano ponovno." %}
+</p>
+{% endif %}
+
+<p class="mail-confirmation">
+    {% translate "Niste prejeli sporočila?" %}<br/>
+    <a href="{% url 'resend-confirm-user' %}"><span class="link-text">{% translate "Kliknite tukaj za ponovno pošiljanje" %}</span></a>
+</p>
+
+
+
+{% endblock form_block %}
