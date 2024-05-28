@@ -1,15 +1,44 @@
 {% extends 'emails/base.html' %}
 {% block body %}
     <p>
-        Živijo!
+        Živijo, {{ name }}, 
     </p>
     <p>
-        Svoj e-poštni naslov lahko potrdiš na spodnji povezavi:
+        Prosim, potrdi svoj e-naslov na spodnji povezavi:
     </p>
     <p>
         <a href="https://center-rog.si/users/confirm-user?key={{ key }}">https://center-rog.si/users/confirm-user?key={{ key }}</a>
     </p>
     <p>
-        Ekipa Centra Rog
+        Pozdrave iz Centra Rog,
+    </p>
+    <p>
+        Ekipa Centra Rog 
+    </p>
+    <p>
+        To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+    </p>
+
+    <br />
+    <hr />
+    <br />
+
+    <p>
+        Hi {{ name }},
+    </p>
+    <p>
+        Please, confirm you e-mail via this link:
+    </p>
+    <p>
+        <a href="https://center-rog.si/users/confirm-user?key={{ key }}">https://center-rog.si/users/confirm-user?key={{ key }}</a>
+    </p>
+    <p>
+        Kind regards from Center Rog!
+    </p>
+    <p>
+        Center Rog Team
+    </p>
+    <p>
+        This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
     </p>
 {% endblock body %}
