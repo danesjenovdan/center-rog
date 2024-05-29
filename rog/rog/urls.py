@@ -21,6 +21,7 @@ from home.views import (
     PurchasePlanView,
     PurchaseMembershipView,
     RegistrationView,
+    RegistrationMailConfirmationView,
     RegistrationMembershipView,
     RegistrationInformationView,
     RegistrationProfileView,
@@ -81,6 +82,11 @@ urlpatterns = urlpatterns + i18n_patterns(
         name="password_reset_complete",
     ),
     path("registracija/", RegistrationView.as_view(), name="registration"),
+    path(
+        "registracija/potrditev",
+        RegistrationMailConfirmationView.as_view(),
+        name="registration-email-confirmation",
+    ),
     path(
         "registracija/clanarina",
         RegistrationMembershipView.as_view(),

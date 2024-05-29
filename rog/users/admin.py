@@ -1,5 +1,5 @@
 from django.contrib import admin
-from users.models import User, Membership
+from users.models import User, Membership, ConfirmEmail
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -10,3 +10,8 @@ class UserAdmin(admin.ModelAdmin):
 class MembershipAdmin(admin.ModelAdmin):
     list_display = ['type', 'valid_from', 'valid_to', 'active']
     list_filter = ()
+
+
+@admin.register(ConfirmEmail)
+class ConfirmEmailAdmin(admin.ModelAdmin):
+    pass

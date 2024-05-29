@@ -3,6 +3,9 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
 
+import string
+import random
+
 
 def send_email(to_email, template_name, subject, context):
     html_body = render_to_string(template_name, context)
@@ -16,3 +19,7 @@ def send_email(to_email, template_name, subject, context):
     )
     msg.attach_alternative(html_body, "text/html")
     msg.send()
+
+
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return "".join(random.choice(chars) for _ in range(size))
