@@ -33,7 +33,7 @@ class Command(BaseCommand):
             send_email(
                 membership.user.email,
                 "emails/membership_expired.html",
-                "Center Rog – obvestilo o poteku članstva",
+                "Center Rog – obvestilo o poteku članstva // your membership has expired",
                 {
                     "membership": membership,
                 },
@@ -70,10 +70,10 @@ class Command(BaseCommand):
             send_email(
                 membership.user.email,
                 "emails/membership_expiration_reminder.html",
-                "Center Rog – obvestilo o skorajšnjem poteku članstva – še en teden",
+                "Center Rog – čez en teden se izteče tvoje članstvo // in 1 Week your membership will expire",
                 {
-                    "how_many": "en teden",
                     "membership": membership,
+                    "name": membership.user.first_name,
                 },
             )
 
@@ -108,11 +108,11 @@ class Command(BaseCommand):
 
             send_email(
                 membership.user.email,
-                "emails/membership_expiration_reminder.html",
-                "Center Rog – obvestilo o skorajšnjem poteku članstva – še en mesec",
+                "emails/membership_expiration_reminder_30.html",
+                "Center Rog – čez en mesec se izteče tvoje članstvo // in 1 Month your membership will expire",
                 {
-                    "how_many": "en mesec",
                     "membership": membership,
+                    "name": membership.user.first_name
                 },
             )
 

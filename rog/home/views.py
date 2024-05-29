@@ -248,7 +248,7 @@ class RegistrationView(View):
                     user.email,
                     "emails/email_confirmation.html",
                     _("Center Rog – potrditev e-naslova // e-mail confirmation"),
-                    {"key": confirm_email.key, "name": user.first_name},
+                    {"key": confirm_email.key},
                 )
 
                 login(request, user)

@@ -39,7 +39,7 @@ class Command(BaseCommand):
             send_email(
                 payment_plan.payment.user.email,
                 "emails/user_fee_expired.html",
-                "Center Rog – obvestilo o poteku uporabnine",
+                "Center Rog – obvestilo o poteku uporabnine // your user package has expired",
                 {
                     "payment_plan": payment_plan,
                 },
@@ -81,11 +81,11 @@ class Command(BaseCommand):
 
             send_email(
                 payment_plan.payment.user.email,
-                "emails/user_fee_expiration_reminder.html",
-                "Center Rog - obvestilo o skorajšnjem poteku paketa – še en teden",
+                "emails/user_fee_expiration_reminder_7.html",
+                "Center Rog - čez en teden poteče tvoj uporabniški paket // in 1 Week your user package will expire",
                 {
-                    "how_many": "en teden",
                     "payment_plan": payment_plan,
+                    "name": payment_plan.payment.user.first_name,
                 },
             )
 
@@ -126,11 +126,11 @@ class Command(BaseCommand):
 
             send_email(
                 payment_plan.payment.user.email,
-                "emails/user_fee_expiration_reminder.html",
-                "Center Rog - obvestilo o skorajšnjem poteku paketa – še en mesec",
+                "emails/user_fee_expiration_reminder_30.html",
+                "Center Rog - čez en mesec poteče tvoj uporabniški paket // in 1 Month your user package will expire",
                 {
-                    "how_many": "en mesec",
                     "payment_plan": payment_plan,
+                    "name": payment_plan.payment.user.first_name
                 },
             )
 
