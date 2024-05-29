@@ -2,19 +2,63 @@
 {% block body %}
 
     <p>
-        Živijo!
+        Živijo, {{ name }},
     </p>
     <p>
-        Zahvaljujemo se ti za zakup paketa {{ plan.name }} za odprte termine v proizvodnih labih.  Tvoj paket velja {{ plan.duration }} dni od dneva nakupa. Več informacij o tem, kaj omogoča zakupljen paket, si lahko prebereš <a href="https://center-rog.si/paketi-za-samostojno-delo/">TUKAJ</a>.
+        z zakupom paketa {{ plan.name }} si si odklenil_a dostop do <strong>vseh 9 proizvodnih laboratorijev Centra Rog</strong>! Tvoj paket velja {{ plan.duration }} dni od dneva nakupa. 
     </p>
     <p>
-        Za dodatna pojasnila nam lahko pišeš na info@center-rog.si ali nas pokličeš na telefonsko številko, ki je objavljena na spletni strani.
+        Vse informacije o tem, kaj ti zakupljen paket omogoča, najdeš <a href="https://center-rog.si/paketi-za-samostojno-delo/">TU</a>.  
     </p>
     <p>
-        Lep pozdrav,
+        Ne pozabi, da moraš svoj termin v labih Centra Rog rezervirati v svojem profilu. Pri delu ti bo za pomoč in usmeritve vedno na voljo eden od mentorjev.
+    </p>
+    <p>
+        Srečno pri ustvarjanju! Mi se že veselimo, kaj bo nastalo.
+    </p>
+    <p>
+        Za dodatna pojasnila nam lahko pišeš na <a href="mailto:info@center-rog.si">info@center-rog.si</a> ali nas pokličeš na telefonsko številko +386 (0)1 320 56 10.
+    </p>
+    <p>
+        Se vidimo v Centru Rog. Veselimo se tvojega obiska!
     </p>
     <p>
         Ekipa Centra Rog
+    </p>
+    <p>
+        To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+    </p>
+
+    <br/>
+    <hr/>
+    <br/>
+
+    <p>
+        Hi {{ name }},
+    </p>
+    <p>
+        By purchasing a {{ plan.name }} user package you unlocked access to all <strong>9 production labs</strong> at Center Rog. Your user package is valid for {{ plan.duration }} days from the day of purchase.
+    </p>
+    <p>
+        All about user packages and its benefits can be found <a href="https://center-rog.si/paketi-za-samostojno-delo/">HERE</a>.  
+    </p>
+    <p>
+        Don't forget to book your open slot through your user profile. In our production labs, there will always be a mentor present to help and guide you.  
+    </p>
+    <p>
+        Happy creating! We're looking forward to seeing the end result. 
+    </p>
+    <p>
+        For additional information, you can write us at <a href="mailto:info@center-rog.si">info@center-rog.si</a> or call us at +386 (0)1 320 56 10.
+    </p>
+    <p>
+        See you at Center Rog. We're looking forward to your visit!
+    </p>
+    <p>
+        Center Rog Team
+    </p>
+    <p>
+        This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
     </p>
 
 {% endblock body %}

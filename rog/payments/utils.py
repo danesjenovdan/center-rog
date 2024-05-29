@@ -142,31 +142,27 @@ def finish_payment(payment):
         )
         send_email(
             payment.user.email,
-            'emails/first_membership_paid.html',
-            f'Center Rog – uspešen zakup članstva',
+            "emails/first_membership_paid.html",
+            f"Center Rog – uspešen zakup članstva // successful membership purchase",
             {
-                'membership': membership,
-                'code': promo_code.code
-
-            }
+                "membership": membership,
+                "code": promo_code.code,
+                "name": payment.user.first_name,
+            },
         )
 
     if user_fee_plan:
         send_email(
             payment.user.email,
-            'emails/order_user_fee.html',
-            f'Center Rog – uspešen zakup paketa {user_fee_plan.name} za odprte termine',
-            {
-                'plan': user_fee_plan
-            }
+            "emails/order_user_fee.html",
+            f"Center Rog – uspešen zakup paketa { user_fee_plan.name } za odprte termine v labih Centra Rog // successful purchase of user package { user_fee_plan.name } for individual work at Center Rog labs",
+            {"plan": user_fee_plan, "name": payment.user.first_name},
         )
 
     if event:
         send_email(
             payment.user.email,
-            'emails/order_event.html',
-            f'Center Rog – uspešna prijava na dogodek',
-            {
-                'event': event
-            }
+            "emails/order_event.html",
+            f"Center Rog – uspešna prijava na dogodek // successful sign-up to the event",
+            {"event": event, "name": payment.user.first_name},
         )
