@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: rog-resend-data-to-pantheon
 spec:
-  schedule: "5 * * * *"
+  schedule: "5 5 * * *"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
