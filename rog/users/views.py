@@ -128,6 +128,7 @@ class ConfirmUserView(View):
             "emails/registration.html",
             _(
                 "Center Rog – vaša registracija je uspela // your registration was successful"
-            )
+            ),
+            {},
         )
         return redirect("registration-membership")
