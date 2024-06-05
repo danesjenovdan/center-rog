@@ -39,6 +39,9 @@ class MyProfileView(TemplateView):
     def get(self, request, *args, **kwargs):
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         prima_user_id = current_user.prima_id
         # print(f"Prima user ID: {prima_user_id}")
 
@@ -80,6 +83,11 @@ class UserProfileView(TemplateView):
     template_name = "registration/user_profile.html"
 
     def get(self, request, id):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+    
         try:
             user = User.objects.get(id=id)
             return render(request, self.template_name, {"user": user})
@@ -88,19 +96,15 @@ class UserProfileView(TemplateView):
 
 
 @method_decorator(login_required, name="dispatch")
-class EditProfileView(TemplateView):
-    template_name = "registration/edit_profile.html"
-
-    def get(self, request, *args, **kwargs):
-        current_user = request.user
-        return render(request, self.template_name, {"user": current_user})
-
-
-@method_decorator(login_required, name="dispatch")
 class SearchProfileView(TemplateView):
     template_name = "registration/search_profile.html"
 
     def get(self, request, *args, **kwargs):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         users = User.objects.filter(public_profile=True)
 
         form = UserInterestsForm()
@@ -108,6 +112,11 @@ class SearchProfileView(TemplateView):
         return render(request, self.template_name, {"users": users, "form": form})
 
     def post(self, request):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+        
         form = UserInterestsForm(request.POST)
 
         if form.is_valid():
@@ -126,6 +135,9 @@ class PurchasePlanView(TemplateView):
     def get(self, request, *args, **kwargs):
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         form = PurchasePlanForm()
         membership_plans = MembershipType.objects.filter(
             plan__isnull=False
@@ -137,6 +149,11 @@ class PurchasePlanView(TemplateView):
         return render(request, self.template_name, {"user": current_user, "form": form})
 
     def post(self, request):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+        
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(
             plan__isnull=False
@@ -162,6 +179,9 @@ class PurchaseMembershipView(TemplateView):
     def get(self, request, *args, **kwargs):
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         form = RegistrationMembershipForm()
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=False)
@@ -175,6 +195,10 @@ class PurchaseMembershipView(TemplateView):
 
     def post(self, request):
         user = request.user
+
+        if not user.email_confirmed:
+            return redirect("registration-email-confirmation")
+        
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=False)
         )
@@ -516,11 +540,18 @@ class EditProfileView(View):
     def get(self, request):
         user = request.user
 
+        if not user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         form = EditProfileForm(instance=user)
         return render(request, "registration/edit_profile.html", context={"form": form})
 
     def post(self, request):
         user = request.user
+
+        if not user.email_confirmed:
+            return redirect("registration-email-confirmation")
+        
         form = EditProfileForm(request.POST, request.FILES)
 
         if form.is_valid():
