@@ -156,7 +156,9 @@ class UserManager(BaseUserManager):
 class User(AbstractUser, Timestampable):
     username = None
     email = models.EmailField(unique=True, verbose_name="elektronski naslov")
-    email_confirmed = models.BooleanField(default=False)
+    email_confirmed = models.BooleanField(
+        default=False, verbose_name="e-pošta je potrjena?"
+    )
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")

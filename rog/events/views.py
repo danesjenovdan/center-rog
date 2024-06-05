@@ -41,6 +41,9 @@ class EventRegistrationView(View):
         # user
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         # event
         try:
             event = EventPage.objects.get(slug=event)
@@ -87,6 +90,9 @@ class EventRegistrationView(View):
     def post(self, request, event):
         # user
         current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
 
         # event
         try:
@@ -202,6 +208,9 @@ class EventRegistrationAdditionalView(View):
         # user
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         # check for event
         try:
             event = EventPage.objects.get(slug=event)
@@ -230,6 +239,9 @@ class EventRegistrationAdditionalView(View):
     def post(self, request, event):
         # user
         current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
 
         # check for event
         try:
@@ -274,6 +286,9 @@ class EventRegistrationInformationView(View):
         # user
         current_user = request.user
 
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
         # check for event
         try:
             event = EventPage.objects.get(slug=event)
@@ -302,6 +317,9 @@ class EventRegistrationInformationView(View):
     def post(self, request, event):
         # user
         current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
 
         # check for event
         try:
