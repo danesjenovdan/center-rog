@@ -128,7 +128,7 @@ class BasePage(TranslatablePage):
 
 
 class ObjectListPage(BasePage):
-    intro_text = models.TextField(blank=True, verbose_name=_("Opis"))
+    intro_text = RichTextField(blank=True, null=True, verbose_name=_("Opis"))
     show_see_more_section = models.BooleanField(
         default=True, verbose_name=_("Poglej več")
     )
