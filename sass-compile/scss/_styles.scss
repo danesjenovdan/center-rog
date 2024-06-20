@@ -2131,8 +2131,13 @@ section.image-embed {
         @include font-size-xl();
     }
 
-    p.intro {
+    .intro {
         @include font-size-sm();
+    }
+
+    .intro a {
+        color: inherit;
+        text-decoration: underline;
     }
 
     .list-container {

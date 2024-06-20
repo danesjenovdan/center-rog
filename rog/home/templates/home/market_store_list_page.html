@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-12">
         {% block list_page_desc %}
-        <p class="intro">{{ page.intro_text }}</p>
+        <div class="intro">{{ page.intro_text|richtext }}</div>
         {% endblock list_page_desc %}
     </div>
 </div>
