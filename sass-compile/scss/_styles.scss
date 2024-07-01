@@ -2850,6 +2850,9 @@ section.image-embed {
         }
 
         .membership {
+            h2 {
+                @include font-size-xxl();
+            }
             .subtitle {
                 margin-top: 15px;
             }
