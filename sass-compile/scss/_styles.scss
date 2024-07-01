@@ -230,9 +230,14 @@ body.safari {
 
 .link-plus {
     @include font-size-sm();
-    text-decoration: underline;
     background: unset;
     border: none;
+    color: $cs-dark-gray;
+    padding-bottom: 0.0625em;
+
+    span {
+        border-bottom: 0.0625em solid $cs-dark-gray;
+    }
 
     &.small {
         @include font-size-xs();
@@ -328,6 +333,10 @@ body.safari {
     &.form-field-error textarea {
         border-color: $cs-red;
     }
+}
+
+.select-date {
+    text-align: center;
 }
 
 .registration-gender-row {
@@ -3281,6 +3290,11 @@ section.image-embed {
 .child-form {
     h4 {
         margin-top: 30px;
+        margin-bottom: 0;
+    }
+
+    h4 + div {
+        margin-bottom: 20px;
     }
 }
 
