@@ -64,7 +64,7 @@
                                             {% if page.price == 0 %}
                                                 {% translate "brezplačno" %}
                                             {% else %}
-                                                {{ page.price|floatformat:"2g" }}&nbsp;€
+                                                €{{ page.price|floatformat }}
                                             {% endif %}
                                         </div>
                                     </div>
@@ -74,7 +74,7 @@
                                             {% if page.price_for_non_member == 0 %}
                                                 {% translate "brezplačno" %}
                                             {% else %}
-                                                {{ page.price_for_non_member|floatformat:"2g" }}&nbsp;€
+                                                €{{ page.price_for_non_member|floatformat }}
                                             {% endif %}
                                         </div>
                                     </div>

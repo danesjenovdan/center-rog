@@ -4,19 +4,22 @@
     <div class="row mb-xl-5">
         <div class="col-12 col-md-6">
             <div class="row">
-                <div class="col-12 col-md-6 col-xxl-5">
+                <div class="col-12 col-lg-6 col-xxl-5">
                     <div class="row">
-                        <div class="col-6 col-md-12">
+                        <div class="col-12">
                             <p>
                                 {{ settings.home.MetaSettings.organization_name }}<br />
                                 {{ settings.home.MetaSettings.organization_address }}<br />
                                 {{ settings.home.MetaSettings.organization_postal_number }} {{ settings.home.MetaSettings.organization_post }}<br />
-                                {{ settings.home.MetaSettings.organization_country }}<br />
+                                {{ settings.home.MetaSettings.organization_country }}
+                            </p>
+                            <p>
                                 <a href="mailto:{{ settings.home.MetaSettings.organization_email }}">{{ settings.home.MetaSettings.organization_email }}</a><br />
-                                {{ settings.home.MetaSettings.organization_phone_number }}
+                                {{ settings.home.MetaSettings.organization_phone_number }}<br />
+                                {{ settings.home.MetaSettings.organization_notice }}
                             </p>
                         </div>
-                        <div class="col-6 col-md-12">
+                        <div class="col-12">
                             <div class="working-hours">
                                 {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
                                 <p>
@@ -31,9 +34,25 @@
                                 <br />
                             </div>
                         </div>
+                        <div class="col-12">
+                            <div class="working-hours">
+                                <p>{% translate "Proizvodni labi" %}</p>
+                                {% for working_hours in settings.home.MetaSettings.labs_working_hours %}
+                                <p>
+                                    <span>{{ working_hours.value.day }}</span>
+                                    {% if working_hours.value.start_time and working_hours.value.end_time %}
+                                    <span>{{ working_hours.value.start_time|time:"G:i" }} – {{ working_hours.value.end_time|time:"G:i" }}</span>
+                                    {% elif working_hours.value.text %}
+                                    <span>{{ working_hours.value.text }}</span>
+                                    {% endif %}
+                                </p>
+                                {% endfor %}
+                                <br />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-6 col-xxl-5">
+                <div class="col-12 col-lg-6 col-xxl-5">
                     <p>
                         {% for link in settings.home.MetaSettings.footer_links %}
                         <a href="{% if link.value.url %}{{ link.value.url }}{% elif link.value.page %}{% pageurl link.value.page.specific %}{% endif %}">{% if link.value.name %}{{ link.value.name }}{% elif link.value.page %}{{ link.value.page.title }}{% endif %}</a><br />

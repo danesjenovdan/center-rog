@@ -52,6 +52,21 @@ class EventRegisterInformationForm(forms.ModelForm):
 
 
 class EventRegistrationChildForm(forms.ModelForm):
+    child_name = forms.CharField(
+        label=_("Ime otroka"),
+        label_suffix="",
+        required=True,
+    )
+    child_surname = forms.CharField(
+        label=_("Priimek otroka"),
+        label_suffix="",
+        required=True,
+    )
+    parent_phone = forms.CharField(
+        label=_("Telefonska številka zakonitega skrbnika"),
+        label_suffix="",
+        required=True,
+    )
     birth_date = forms.DateField(
         label=_("Datum rojstva"),
         label_suffix="",

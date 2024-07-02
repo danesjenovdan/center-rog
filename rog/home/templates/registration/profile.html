@@ -20,41 +20,17 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-lg-4 mb-40">
+        <div class="col-12 col-lg-6 mb-40">
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
-                <div>
-                    <p class="mb-1">{% translate 'tip članstva' %}</p>
-                    {% if user.membership %}
-                    <h6>{{ user.membership.type }}</h6>
-                    {% else %}
-                    <h6>{% translate 'Gost' %}</h6>
-                    {% endif %}
-                    <p class="subtitle">
-                        {% translate 'veljavnost članarine do:' %} <br />
-                        {% if user.membership and user.membership.type and user.membership.type.plan %}
-                        {{ obnovitev_clanarine|date:"j. n. Y" }}
-                        {% else %}
-                        /
-                        {% endif %}
-                    </p>
-                </div>
-                <div>
-                    <a href="{% url 'profile-purchase-membership' %}" class="secondary-button button-medium">{% translate 'uredi članstvo' %}</a>
-                </div>
-            </section>
-        </div>
-
-        <div class="col-12 col-lg-4 mb-40">
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
                 <div>
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
                     {% if user.get_last_active_subscription_payment_plan %}
-                    <h6>{{ user.get_last_active_subscription_payment_plan.plan_name }}</h6>
+                    <h2>{{ user.get_last_active_subscription_payment_plan.plan_name }}</h2>
                     {% else %}
-                    <h6>/</h6>
+                    <h2 class="m-0">/</h2>
                     {% endif %}
                     <p class="subtitle">
-                        {% translate 'veljavnost paketa do:' %} <br />
+                        {% translate 'veljavno do:' %} 
                         {% if user.get_last_active_subscription_payment_plan %}
                         {{ user.get_last_active_subscription_payment_plan.valid_to|date:"j. n. Y" }}
                         {% else %}
@@ -63,43 +39,44 @@
                     </p>
                 </div>
                 <div>
-                    <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium">{% translate 'izberi paket' %}</a>
-                </div>
-            </section>
-        </div>
-
-        <div class="col-12 col-lg-4 mb-40">
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
-                <div>
-                    <p class="mb-1">
+                    <div>
+                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium">{% translate 'zakupi paket' %}</a>
+                    </div>
+                    <p class="mt-3 mb-0">
                         <a class="link" href="{% url 'history' %}">
                             <span class="link-text">{% translate 'pretekla poraba' %}</span>
                             <span class="link-icon"></span>
                         </a>
                     </p>
-                    <p class="mb-1">
-                        <a class="link" href="{% url 'profile-edit' %}">
-                            <span class="link-text">{% translate 'uredi profil' %}</span>
-                            <span class="link-icon"></span>
-                        </a>
-                    </p>
-                    <p class="mb-1">
-                        <a class="link" href="/profil/{{ user.id }}">
-                            <span class="link-text">{% translate 'poglej svoj profil' %}</span>
-                            <span class="link-icon"></span>
-                        </a>
-                    </p>
-                    <p class="mb-1">
-                        <a class="link" href="{% url 'logout' %}">
-                            <span class="link-text">{% translate 'odjava' %}</span>
-                            <span class="link-icon"></span>
-                        </a>
-                    </p>
                 </div>
-                <div class="d-flex align-items-end justify-content-between">
-                    <div>
-                        <a href="{% url 'profile-search' %}" class="secondary-button button-medium">{% translate 'drugi člani' %}</a>
+            </section>
+        </div>
+
+        <div class="col-12 col-lg-6 mb-40">
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+                <div>
+                    {% if user.membership %}
+                    <h6>{{ user.membership.type }}</h6>
+                    {% else %}
+                    <h6>{% translate 'Gost' %}</h6>
+                    {% endif %}
+                    <p class="subtitle mb-2">
+                        {% translate 'Članarina se avtomatsko obnovi:' %} <br/>
+                        {% if user.membership and user.membership.type and user.membership.type.plan %}
+                        {{ obnovitev_clanarine|date:"j. n. Y" }}
+                        {% else %}
+                        /
+                        {% endif %}
+                    </p>
+                    <div class="mb-2">
+                        <a href="{% url 'profile-edit' %}" class="secondary-button button-small">{% translate 'uredi profil' %}</a>
                     </div>
+                    <div class="mb-2">
+                        <a href="{% url 'logout' %}" class="secondary-button button-small">{% translate 'odjava' %}</a>
+                    </div>
+                </div>
+                <div class="mt-5">
+                    <a href="{% url 'profile-search' %}" class="primary-button button-medium">{% translate 'poišči druge uporabnike' %}</a>
                 </div>
             </section>
         </div>

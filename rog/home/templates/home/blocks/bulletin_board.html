@@ -46,11 +46,14 @@
               {% if lab %}
               <div class="col-6 col-md-12">
                 <div class="labs-section">
-                  <a href="{% pageurl lab %}" class="lab">
-                    {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
-                    {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
+                  <a href="{% pageurl lab %}" class="d-block color-scheme-light-green">
+                    <p class="py-3 m-0 text-center">{{ lab.title }}</p>
+                    <div class="lab">
+                      {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
+                      {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}
+                    </div>
                   </a>
-                  <div class="mb-md-4 text-center">
+                  <div class="text-center">
                     <a class="link" href="{% pageurl labs_list %}">
                       <span class="link-text">{% translate 'vsi labi' %}</span>
                       <span class="link-icon"></span>
@@ -102,11 +105,19 @@
                 </a>
               </div>
               <div class="col-6 col-md-12 d-flex flex-column justify-content-center">
+                {% if value.notice_link or value.notice_page %}
+                <a href="{% if value.notice_page %}{% pageurl value.notice_page %}{% else %}{{ value.notice_link }}{% endif %}" class="notice-wrapper color-scheme-white">
+                  <div class="tape"></div>
+                  <div class="notice text-center">{{ value.notice }}</div>
+                  <div class="tape"></div>
+                </a>
+                {% else %}
                 <div class="notice-wrapper color-scheme-white">
                   <div class="tape"></div>
                   <div class="notice text-center">{{ value.notice }}</div>
                   <div class="tape"></div>
                 </div>
+                {% endif %}
               </div>
               <div class="col-12">
                 <div class="residents-section">
