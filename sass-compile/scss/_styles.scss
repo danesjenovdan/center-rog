@@ -171,9 +171,9 @@ a.primary-button {
         outline-offset: 0;
     }
 
-    &:active {
-        color: $cs-black;
-    }
+    // &:active {
+    //     color: $cs-black;
+    // }
 }
 
 .button-small {
@@ -556,7 +556,7 @@ form {
         }
 
         .card-title {
-            @include font-size-md();
+            @include font-size-lg();
         }
     }
 
@@ -691,7 +691,7 @@ form {
 
     // END FLIP EFFECT
 
-    &:focus-within .card-inner {
+    &:has(:focus-visible) .card-inner {
         outline: 2px solid $cs-focus-green;
         outline-offset: 0;
     }
