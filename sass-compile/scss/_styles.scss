@@ -1107,6 +1107,8 @@ form {
 
             .market-section {
                 .markets-container {
+                    margin-bottom: 4px;
+                    
                     h4 {
                         @include font-size-sm();
                     }
@@ -1202,7 +1204,7 @@ form {
 
             a {
                 @include font-size-xs();
-                margin: 10px 0;
+                margin: 4px 0;
             }
 
             @include media-breakpoint-down(sm) {
@@ -1859,13 +1861,33 @@ form {
     //     padding-right: 13px;
     // }
 
+    a:hover {
+        p {
+            color: $cs-dark-blue;
+        }
+        
+        img, video {
+            &:first-child {
+                opacity: 0;
+            }
+
+            &:not(:first-child) {
+                opacity: 1;
+            }
+        }
+    }
+
+    a:focus-visible {
+        outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
+    }
+
     .lab {
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
         color: $cs-dark-blue;
         text-decoration: none;
-        margin-bottom: 20px;
         border-radius: 3px;
         overflow: hidden;
 
@@ -1881,23 +1903,6 @@ form {
             &:not(:first-child) {
                 opacity: 0;
             }
-        }
-
-        &:hover {
-            img, video {
-                &:first-child {
-                    opacity: 0;
-                }
-
-                &:not(:first-child) {
-                    opacity: 1;
-                }
-            }
-        }
-
-        &:focus-visible {
-            outline: 2px solid $cs-focus-green;
-            outline-offset: 0;
         }
 
         h6 {
