@@ -1170,6 +1170,11 @@ form {
                 }
             }
 
+            a.notice-wrapper:hover {
+                color: inherit;
+                transform: rotate(5deg);
+            }
+
             @include media-breakpoint-down(md) {
                 .events-stack,
                 .news-stack {

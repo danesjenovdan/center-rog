@@ -102,11 +102,19 @@
                 </a>
               </div>
               <div class="col-6 col-md-12 d-flex flex-column justify-content-center">
+                {% if value.notice_link or value.notice_page %}
+                <a href="{% if value.notice_page %}{% pageurl value.notice_page %}{% else %}{{ value.notice_link }}{% endif %}" class="notice-wrapper color-scheme-white">
+                  <div class="tape"></div>
+                  <div class="notice text-center">{{ value.notice }}</div>
+                  <div class="tape"></div>
+                </a>
+                {% else %}
                 <div class="notice-wrapper color-scheme-white">
                   <div class="tape"></div>
                   <div class="notice text-center">{{ value.notice }}</div>
                   <div class="tape"></div>
                 </div>
+                {% endif %}
               </div>
               <div class="col-12">
                 <div class="residents-section">

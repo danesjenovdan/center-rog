@@ -43,7 +43,11 @@ class ColoredStructBlock(ModuleBlock):
 
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov sekcije"))
-    notice = blocks.TextBlock(label=_("Obvestilo"))
+    notice = blocks.TextBlock(label=_("Obvestilo"), max_length=65)
+    notice_link = blocks.TextBlock(label=_("Obvestilo - zunanja povezava"), required=False)
+    notice_page = blocks.PageChooserBlock(
+        label=_("Obvestilo - povezava na stran"), required=False
+    )
     event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek (če pustite prazno, se izbere naključni)"), page_type="events.EventPage", required=False)
     news = blocks.PageChooserBlock(label=_("Izpostavljena novica (če pustite prazno, se izbere naključna)"), page_type="news.NewsPage", required=False)
 
