@@ -1,4 +1,4 @@
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags i18n %}
 
 <a href="{% pageurl event.localized %}" class="card events-card card-hover {% if wide %}card-wide{% endif %} {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
   <div class="card-img">
@@ -6,7 +6,7 @@
   </div>
   <div class="card-body p-md-0">
     <p class="event-category">{{ event.category.name }}</p>
-    <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {{ event.start_time }}</p>
+    <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {% if not event.end_day %}{{ event.start_time }} {% else %}{% translate "do" %} {{ event.end_day }}{% endif %}</p>
     <p class="event-lab">
     {% for lab in event.labs.all %}
       <span>{{ lab }}</span>
