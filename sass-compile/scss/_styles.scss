@@ -171,9 +171,9 @@ a.primary-button {
         outline-offset: 0;
     }
 
-    &:active {
-        color: $cs-black;
-    }
+    // &:active {
+    //     color: $cs-black;
+    // }
 }
 
 .button-small {
@@ -230,9 +230,14 @@ body.safari {
 
 .link-plus {
     @include font-size-sm();
-    text-decoration: underline;
     background: unset;
     border: none;
+    color: $cs-dark-gray;
+    padding-bottom: 0.0625em;
+
+    span {
+        border-bottom: 0.0625em solid $cs-dark-gray;
+    }
 
     &.small {
         @include font-size-xs();
@@ -328,6 +333,10 @@ body.safari {
     &.form-field-error textarea {
         border-color: $cs-red;
     }
+}
+
+.select-date {
+    text-align: center;
 }
 
 .registration-gender-row {
@@ -512,7 +521,10 @@ form {
             border-width: 1px;
             border-style: solid;
             border-radius: 2px;
-            padding: 2px;
+            padding: 5px;
+            margin-top: 10px;
+            margin-right: 5px;
+            display: inline-block;
         }
     }
 
@@ -544,7 +556,7 @@ form {
         }
 
         .card-title {
-            @include font-size-md();
+            @include font-size-lg();
         }
     }
 
@@ -679,7 +691,7 @@ form {
 
     // END FLIP EFFECT
 
-    &:focus-within .card-inner {
+    &:has(:focus-visible) .card-inner {
         outline: 2px solid $cs-focus-green;
         outline-offset: 0;
     }
@@ -1095,6 +1107,8 @@ form {
 
             .market-section {
                 .markets-container {
+                    margin-bottom: 4px;
+                    
                     h4 {
                         @include font-size-sm();
                     }
@@ -1158,6 +1172,11 @@ form {
                 }
             }
 
+            a.notice-wrapper:hover {
+                color: inherit;
+                transform: rotate(5deg);
+            }
+
             @include media-breakpoint-down(md) {
                 .events-stack,
                 .news-stack {
@@ -1185,7 +1204,7 @@ form {
 
             a {
                 @include font-size-xs();
-                margin: 10px 0;
+                margin: 4px 0;
             }
 
             @include media-breakpoint-down(sm) {
@@ -1842,13 +1861,33 @@ form {
     //     padding-right: 13px;
     // }
 
+    a:hover {
+        p {
+            color: $cs-dark-blue;
+        }
+        
+        img, video {
+            &:first-child {
+                opacity: 0;
+            }
+
+            &:not(:first-child) {
+                opacity: 1;
+            }
+        }
+    }
+
+    a:focus-visible {
+        outline: 2px solid $cs-focus-green;
+        outline-offset: 0;
+    }
+
     .lab {
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto;
         color: $cs-dark-blue;
         text-decoration: none;
-        margin-bottom: 20px;
         border-radius: 3px;
         overflow: hidden;
 
@@ -1864,23 +1903,6 @@ form {
             &:not(:first-child) {
                 opacity: 0;
             }
-        }
-
-        &:hover {
-            img, video {
-                &:first-child {
-                    opacity: 0;
-                }
-
-                &:not(:first-child) {
-                    opacity: 1;
-                }
-            }
-        }
-
-        &:focus-visible {
-            outline: 2px solid $cs-focus-green;
-            outline-offset: 0;
         }
 
         h6 {
@@ -2378,6 +2400,7 @@ section.image-embed {
                 padding: 20px;
                 margin-bottom: 30px;
                 position: relative;
+                min-height: 250px;
 
                 p {
                     // margin-bottom: 0;
@@ -2641,7 +2664,7 @@ section.image-embed {
 
                         .number {
                             display: inline-block;
-                            padding: 0.15em 0.25em 0.10em 0.20em;
+                            padding: 0.15em 0.25em 0.15em 0.2em;
                             margin-left: 0.5em;
                             @include font-size-md();
                             font-family: "Courier New";
@@ -2841,6 +2864,9 @@ section.image-embed {
         }
 
         .membership {
+            h2 {
+                @include font-size-xxl();
+            }
             .subtitle {
                 margin-top: 15px;
             }
@@ -3281,6 +3307,11 @@ section.image-embed {
 .child-form {
     h4 {
         margin-top: 30px;
+        margin-bottom: 0;
+    }
+
+    h4 + div {
+        margin-bottom: 20px;
     }
 }
 
