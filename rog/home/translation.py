@@ -113,7 +113,11 @@ class HomePageTR(TranslationOptions):
 @register(MetaSettings)
 class MetaSettingsTR(TranslationOptions):
     fields = (
+        "organization_working_hours_title",
         "organization_working_hours",
+        "organization_notice",
+        "labs_working_hours_title",
+        "labs_working_hours",
         "footer_links",
         "footer_logos",
         "header_marquee",

@@ -119,6 +119,14 @@ class MetaSettings(BaseGenericSetting):
     organization_phone_number = models.CharField(
         verbose_name=_("Telefonska številka"), max_length=20, blank=True, null=True
     )
+    organization_notice = models.TextField(
+        verbose_name=_("Delovni čas info"), blank=True, null=True
+    )
+    organization_working_hours_title = models.TextField(
+        verbose_name=_("Delovni čas organizacije - naslov stolpca"),
+        blank=True,
+        null=True,
+    )
     organization_working_hours = StreamField(
         [
             (
@@ -148,6 +156,38 @@ class MetaSettings(BaseGenericSetting):
         use_json_field=True,
         verbose_name=_("Delovni čas organizacije"),
     )
+    labs_working_hours_title = models.TextField(
+        verbose_name=_("Delovni čas laboratorijev - naslov stolpca"), blank=True, null=True
+    )
+    labs_working_hours = StreamField(
+        [
+            (
+                "time",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("start_time", blocks.TimeBlock(label=_("Začetna ura"))),
+                        ("end_time", blocks.TimeBlock(label=_("Končna ura"))),
+                    ],
+                    label=_("Dan in ura"),
+                ),
+            ),
+            (
+                "notice",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("text", blocks.CharBlock(label=_("Opomba"))),
+                    ],
+                    label=_("Dan in opomba"),
+                ),
+            ),
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Delovni čas laboratorijev"),
+    )
 
     basic_information_tab_panels = [
         FieldPanel("organization_name"),
@@ -157,7 +197,11 @@ class MetaSettings(BaseGenericSetting):
         FieldPanel("organization_country"),
         FieldPanel("organization_email"),
         FieldPanel("organization_phone_number"),
+        FieldPanel("organization_notice"),
+        FieldPanel("organization_working_hours_title"),
         FieldPanel("organization_working_hours"),
+        FieldPanel("labs_working_hours_title"),
+        FieldPanel("labs_working_hours"),
     ]
 
     social_media_links = StreamField(
