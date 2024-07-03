@@ -9,7 +9,7 @@
 
 <div class="row labs-section">
     {% for lab in labs %}
-    <div class="col-6 col-md-4 col-xxl-3">
+    <div class="col-6 col-md-4">
         <a href="{{ lab.get_url }}" class="lab">
             {% image lab.thumbnail original format-png class="img-fluid" alt=lab.title %}
             {% image lab.thumbnail original            class="img-fluid" alt=lab.title %}

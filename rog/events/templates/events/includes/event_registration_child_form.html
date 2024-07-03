@@ -1,6 +1,9 @@
 {% load i18n %}
 
-<h4>{% translate 'Otrok' %} {{ child_num }}:</h4>
+<h4>{% translate 'Otrok' %} {{ child_num }}</h4>
+<div>
+    <button class="link-plus px-0 small" type="button" onclick="hide_form('{{ form.DELETE.auto_id }}')"><span>{% translate 'odstrani osebo' %}</span></button>
+</div>
 
 {% for field in form.hidden_fields %}
 {{ field }}
@@ -56,6 +59,3 @@
 
 </div>
 
-<div class="text-end">
-    <button class="link-plus small" type="button" onclick="hide_form('{{ form.DELETE.auto_id }}')">{% translate 'odstrani osebo' %}</button>
-</div>

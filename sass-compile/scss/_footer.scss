@@ -34,12 +34,6 @@ footer.container-fluid {
                 width: 100px;
                 padding-right: 10px;
             }
-
-            @include media-breakpoint-down(sm) {
-                span:first-of-type {
-                    width: 100%;
-                }
-            }
         }
     }
 
