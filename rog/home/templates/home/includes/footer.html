@@ -21,6 +21,9 @@
                         </div>
                         <div class="col-12">
                             <div class="working-hours">
+                                {% if settings.home.MetaSettings.organization_working_hours_title %}
+                                <p>{{ settings.home.MetaSettings.organization_working_hours_title }}</p>
+                                {% endif %}
                                 {% for working_hours in settings.home.MetaSettings.organization_working_hours %}
                                 <p>
                                     <span>{{ working_hours.value.day }}</span>
@@ -36,7 +39,9 @@
                         </div>
                         <div class="col-12">
                             <div class="working-hours">
-                                <p>{% translate "Proizvodni labi" %}</p>
+                                {% if settings.home.MetaSettings.labs_working_hours_title %}
+                                <p>{{ settings.home.MetaSettings.labs_working_hours_title }}</p>
+                                {% endif %}
                                 {% for working_hours in settings.home.MetaSettings.labs_working_hours %}
                                 <p>
                                     <span>{{ working_hours.value.day }}</span>

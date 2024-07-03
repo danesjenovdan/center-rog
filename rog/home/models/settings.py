@@ -122,6 +122,11 @@ class MetaSettings(BaseGenericSetting):
     organization_notice = models.TextField(
         verbose_name=_("Delovni čas info"), blank=True, null=True
     )
+    organization_working_hours_title = models.TextField(
+        verbose_name=_("Delovni čas organizacije - naslov stolpca"),
+        blank=True,
+        null=True,
+    )
     organization_working_hours = StreamField(
         [
             (
@@ -151,7 +156,9 @@ class MetaSettings(BaseGenericSetting):
         use_json_field=True,
         verbose_name=_("Delovni čas organizacije"),
     )
-
+    labs_working_hours_title = models.TextField(
+        verbose_name=_("Delovni čas laboratorijev - naslov stolpca"), blank=True, null=True
+    )
     labs_working_hours = StreamField(
         [
             (
@@ -191,7 +198,9 @@ class MetaSettings(BaseGenericSetting):
         FieldPanel("organization_email"),
         FieldPanel("organization_phone_number"),
         FieldPanel("organization_notice"),
+        FieldPanel("organization_working_hours_title"),
         FieldPanel("organization_working_hours"),
+        FieldPanel("labs_working_hours_title"),
         FieldPanel("labs_working_hours"),
     ]
 
