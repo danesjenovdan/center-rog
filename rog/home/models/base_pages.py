@@ -229,13 +229,11 @@ class ObjectProfilePage(BasePage):
         verbose_name=_("Galerija"),
     )
     # archived
-    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj"))
-    archived_from = models.PositiveSmallIntegerField(
-        blank=True, null=True, verbose_name=_("Deloval od")
+    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj? (brez določitve datuma)"))
+    active_from = models.DateField(
+        blank=True, null=True, verbose_name=_("Začetek delovanja")
     )
-    archived_to = models.PositiveSmallIntegerField(
-        blank=True, null=True, verbose_name=_("Deloval do")
-    )
+    active_to = models.DateField(blank=True, null=True, verbose_name=_("Konec delovanja (po tem datumu bo avtomatsko arhiviran)"))
     # see more
     show_see_more_section = models.BooleanField(
         default=True, verbose_name=_("Pokaži več")
@@ -266,11 +264,11 @@ class ObjectProfilePage(BasePage):
         FieldPanel("show_see_more_section"),
         MultiFieldPanel(
             [
+                FieldPanel("active_from"),
+                FieldPanel("active_to"),
                 FieldPanel("archived"),
-                FieldPanel("archived_from"),
-                FieldPanel("archived_to"),
             ],
-            heading=_("Arhivacija"),
+            heading=_("Čas delovanja"),
         ),
     ]
 
