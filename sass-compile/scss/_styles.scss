@@ -1613,6 +1613,17 @@ form {
                         padding: 0;
                     }
                 }
+
+                @include media-breakpoint-up(lg) {
+                    .card {
+                        max-width: 300px;
+                        height: 480px;
+
+                        .card-title {
+                            @include font-size-md();
+                        }
+                    }
+                }
             }
         }
 
