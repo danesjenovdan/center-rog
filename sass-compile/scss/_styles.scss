@@ -1223,7 +1223,7 @@ form {
             .cta {
                 padding: 25px;
                 position: relative;
-                height: 360px;
+                min-height: 360px;
 
                 @include media-breakpoint-down(sm) {
                     height: 300px;
@@ -1305,10 +1305,12 @@ form {
 
             .notice-button {
                 display: block;
+                min-height: 120px;
                 margin: 10px 0;
                 padding: 25px;
                 text-align: center;
                 position: relative;
+                align-content: center;
 
                 @include font-size-md();
 
@@ -1354,11 +1356,13 @@ form {
 
                     &:nth-child(5) {
                         left: -10px;
-                        top: 20px;
+                        top: 50%;
+                        transform: translateY(-50%);
                     }
                     &:nth-child(6) {
                         right: -10px;
-                        top: 20px;
+                        top: 50%;
+                        transform: translateY(-50%);
                     }
                 }
 
@@ -1425,8 +1429,8 @@ form {
                     z-index: 1;
 
                     &> div {
-                        // border-radius: 3px;
-                        // box-shadow: 3px 3px 3px 0 #000000;
+                        border-radius: 3px;
+                        box-shadow: inset -3px -3px 3px 0 rgba(0, 0, 0, 0.25), inset 3px 3px 3px 0 rgba(255, 255, 255, 0.25);
                     }
 
                 }
@@ -1607,6 +1611,17 @@ form {
                 @include media-breakpoint-down(sm) {
                     .card-body {
                         padding: 0;
+                    }
+                }
+
+                @include media-breakpoint-up(lg) {
+                    .card {
+                        max-width: 300px;
+                        height: 480px;
+
+                        .card-title {
+                            @include font-size-md();
+                        }
                     }
                 }
             }
