@@ -111,7 +111,7 @@ class BulletinBoardBlock(blocks.StructBlock):
 
 
 class CollageBlock(blocks.StructBlock):
-    cta_text = blocks.CharBlock(label=_("Obvestilo (največ 350 znakov)"), max_length=350, required=False)
+    cta_text = blocks.TextBlock(label=_("CTA obvestilo (največ 350 znakov)"), max_length=350, required=False)
     cta_button = blocks.StreamBlock(
         [
             ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
@@ -120,7 +120,7 @@ class CollageBlock(blocks.StructBlock):
         max_num=1,
         blank=True,
         required=False,
-        label=_("Gumb"),
+        label=_("CTA gumb"),
     )
     cta_image = ImageChooserBlock(label=_("Slika"), required=False)
     # gumbi/kvadrati s tekstom
@@ -144,7 +144,7 @@ class CollageBlock(blocks.StructBlock):
                             ),
                         ),
                     ],
-                    label=_("Obvestilo"),
+                    label=_("Obvestilo - samo tekst"),
                 ),
             ),
             (
@@ -166,7 +166,7 @@ class CollageBlock(blocks.StructBlock):
                             ),
                         ),
                     ],
-                    label=_("Zunanja povezava"),
+                    label=_("Obvestilo - zunanja povezava"),
                 ),
             ),
             (
@@ -191,13 +191,13 @@ class CollageBlock(blocks.StructBlock):
                             ),
                         ),
                     ],
-                    label=_("Povezava na podstran"),
+                    label=_("Obvestilo - interna povezava"),
                 ),
             ),
         ],
         min_num=3,
         max_num=3,
-        label=_("Kvadrati/gumbi"),
+        label=_("Obvestila"),
     )
     # marketi override
     markets_override = blocks.ListBlock(
@@ -233,7 +233,7 @@ class CollageBlock(blocks.StructBlock):
                 ),
             ),
         ],
-        label=_("Gumb na desni"),
+        label=_("Gumb na desni (s sliko)"),
     )
 
     def get_context(self, value, parent_context=None):
@@ -270,7 +270,7 @@ class CollageBlock(blocks.StructBlock):
         return context
 
     class Meta:
-        label = _("Kolaž")
+        label = _("Oglasna deska 2")
         template = "home/blocks/collage.html"
 
 

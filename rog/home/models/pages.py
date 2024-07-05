@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -48,7 +49,11 @@ def add_see_more_lab_events(context):
 
     # 3 random events from this lab
     today = date.today()
-    events = list(EventPage.objects.live().filter(labs=page, start_day__gte=today).order_by("start_day"))
+    events = list(
+        EventPage.objects.live()
+        .filter(labs=page, start_day__gte=today, event_is_workshop__isnull=False)
+        .order_by("start_day")
+    )
     context["events"] = random.sample(events, min(3, len(events)))
 
     return context
@@ -428,7 +433,9 @@ class StudioArchiveListPage(ObjectArchiveListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["list"] = StudioPage.objects.live().filter(archived=True)
+        context["list"] = StudioPage.objects.live().filter(
+            Q(archived=True) | Q(active_to__lt=date.today())
+        )
 
         # see more
         context = add_see_more_fields(context)
@@ -448,7 +455,9 @@ class ResidenceArchiveListPage(ObjectArchiveListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["list"] = ResidencePage.objects.live().filter(archived=True)
+        context["list"] = ResidencePage.objects.live().filter(
+            Q(archived=True) | Q(active_to__lt=date.today())
+        )
 
         # see more
         context = add_see_more_fields(context)
@@ -472,7 +481,14 @@ class StudioListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["studios"] = StudioPage.objects.child_of(self).live().filter(archived=False)
+        context["studios"] = (
+            StudioPage.objects.child_of(self)
+            .live()
+            .filter(
+                Q(archived=False) &
+                (Q(active_to=None) | Q(active_to__gte=datetime.today())),
+            )
+        )
         context["archive_page"] = StudioArchiveListPage.objects.live().first()
 
         # see more
@@ -495,7 +511,10 @@ class MarketStoreListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["markets"] = MarketStorePage.objects.child_of(self).live().filter(archived=False)
+        context["markets"] = MarketStorePage.objects.child_of(self).live().filter(
+                Q(archived=False) &
+                (Q(active_to=None) | Q(active_to__gte=datetime.today())),
+            )
 
         # see more
         context = add_see_more_fields(context)
@@ -517,7 +536,14 @@ class ResidenceListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["residents"] = ResidencePage.objects.child_of(self).live().filter(archived=False)
+        context["residents"] = (
+            ResidencePage.objects.child_of(self)
+            .live()
+            .filter(
+                Q(archived=False)
+                & (Q(active_to=None) | Q(active_to__gte=datetime.today())),
+            )
+        )
         context["archive_page"] = ResidenceArchiveListPage.objects.live().first()
 
         # see more
