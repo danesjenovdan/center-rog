@@ -16,7 +16,8 @@ class Command(BaseCommand):
             start_day__range=(
                 datetime.now().date(),
                 (datetime.now() + timedelta(days=2)).date(),
-            )
+            ),
+            live=True
         )
         for event in events:
             for event_registration in event.event_registrations.filter(registration_finished=True):
