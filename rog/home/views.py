@@ -243,7 +243,7 @@ class RegistrationView(View):
         form = RegisterForm(request.POST)
 
         if form.is_valid():
-            email = form.cleaned_data["email"]
+            email = form.cleaned_data["email"].lower()
             password = form.cleaned_data["password"]
 
             # create PRIMA user
