@@ -229,7 +229,6 @@ class PaymentPreview(views.APIView):
                         if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
                             payment_plan.promo_code = valid_promo_code
-                            payment_plan.save()
                             payment.amount -= payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
                             )
