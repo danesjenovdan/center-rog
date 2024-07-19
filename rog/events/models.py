@@ -307,7 +307,7 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
-            .order_by("start_day", "start_time")
+            .order_by("start_day", "start_time", "id")
         )
 
         # filtering
