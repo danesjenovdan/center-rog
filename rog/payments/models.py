@@ -433,6 +433,7 @@ class PromoCode(Timestampable):
         help_text=_("How many times can the code be used? 0 means unlimited."),
     )
     number_of_uses = models.IntegerField(null=False, blank=True, default=0)
+    last_entry_at = models.DateTimeField(null=True, blank=True)
 
     panels = [
         FieldPanel("code"),
@@ -441,6 +442,7 @@ class PromoCode(Timestampable):
         FieldPanel("payment_item_type"),
         FieldPanel("single_use"),
         FieldPanel("usage_limit"),
+        FieldPanel("last_entry_at"),
         ReadOnlyFieldPanel("number_of_uses"),
     ]
 
@@ -453,9 +455,10 @@ class PromoCode(Timestampable):
 
         if code_filter.count() == 1:
             code = code_filter.first()
-            now = timezone.now()
         else:
             return False
+        
+        now = timezone.now()
 
         # check if code is still valid
         if code.valid_to < now:
@@ -473,6 +476,11 @@ class PromoCode(Timestampable):
         if code.single_use:
             if code.number_of_uses > 0:
                 return False
+            
+            # check if code has been used in the last 24 hours
+            if code.payment_plans.count() > 0 and code.last_entry_at:
+                if code.last_entry_at > (now - timezone.timedelta(days=1)):
+                    return False
         else:
             if code.usage_limit == 0:
                 return True
