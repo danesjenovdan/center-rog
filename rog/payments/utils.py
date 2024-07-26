@@ -42,6 +42,11 @@ def finish_payment(payment):
         valid_from = timezone.now()
 
         last_active_membership = user.get_last_active_membership()
+
+        # check if it's first payable membership
+        if not last_active_membership:
+            first_membership_paid = True
+
         if last_active_membership:
             # user has active membership
             valid_from = last_active_membership.valid_to
@@ -53,9 +58,7 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
-        # check if it's first payable membership
-        if not user.get_last_active_membership():
-            first_membership_paid = True
+
     elif membership_fee or membership:
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
