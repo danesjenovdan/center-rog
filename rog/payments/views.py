@@ -239,6 +239,8 @@ class PaymentPreview(views.APIView):
                             payment_plan.save()
                             promo_code_error = False
                             promo_code_success = True
+                            valid_promo_code.last_entry_at = datetime.now()
+                            valid_promo_code.save()
 
                             break
                         else:
@@ -261,6 +263,8 @@ class PaymentPreview(views.APIView):
                             payment_plan.save()
                             promo_code_error = False
                             promo_code_success = True
+                            valid_promo_code.last_entry_at = datetime.now()
+                            valid_promo_code.save()
 
                             break
 
