@@ -53,7 +53,8 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
-        if user.memberships.count() == 1:
+        # check if it's first payable membership
+        if not user.get_last_active_membership():
             first_membership_paid = True
     elif membership_fee or membership:
         # send error to sentry
