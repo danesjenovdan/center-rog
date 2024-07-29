@@ -165,9 +165,17 @@ class PaymentPreview(views.APIView):
                     existing_payment_plan.price = price
                     existing_payment_plan.original_price = price
                     existing_payment_plan.plan_name=title
-                    existing_payment_plan.save()
                     payment.amount = price
                     payment.original_amount = price
+
+                    if promo_code := existing_payment_plan.promo_code:
+                        payment.amount -= price * Decimal(
+                            promo_code.percent_discount / 100
+                        )
+                        existing_payment_plan.price = price - price * Decimal(
+                            promo_code.percent_discount / 100
+                        )
+                    existing_payment_plan.save()
                     payment.save()
                 else:
                     payment = Payment(
@@ -228,15 +236,18 @@ class PaymentPreview(views.APIView):
                     if PromoCode.check_code_validity(promo_code, payment_plan):
                         if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
+
                             payment_plan.promo_code = valid_promo_code
-                            payment.amount -= payment_plan.price * Decimal(
-                                valid_promo_code.percent_discount / 100
-                            )
-                            payment.save()
                             payment_plan.price = payment_plan.price - payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
                             )
                             payment_plan.save()
+
+                            payment.amount -= payment_plan.price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment.save()
+
                             promo_code_error = False
                             promo_code_success = True
                             valid_promo_code.last_entry_at = datetime.now()
