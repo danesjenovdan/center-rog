@@ -479,7 +479,7 @@ class PromoCode(Timestampable):
             
             # check if code has been used in the last 24 hours
             if code.payment_plans.count() > 0 and code.last_entry_at:
-                if code.last_entry_at > (now - timezone.timedelta(days=1)):
+                if code.last_entry_at > (now - timezone.timedelta(days=7)):
                     return False
         else:
             if code.usage_limit == 0:
