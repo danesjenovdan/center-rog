@@ -2227,6 +2227,12 @@ section.image-embed {
         border-radius: 3px;
         // border: 1px solid $cs-dark-green;
 
+        @include media-breakpoint-down(sm) {
+            span:first-child {
+                margin-right: 20px;
+            }
+        }
+
         &:hover {
             background-color: $cs-white;
             border-color: $cs-white;
