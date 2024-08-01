@@ -1500,6 +1500,12 @@ form {
                     padding-bottom: 5px;
                 }
 
+                img {
+                    max-height: 200px;
+                    width: auto;
+                    align-self: center;
+                }
+
                 &:hover {
                     background-color: white;
                     color: inherit;
