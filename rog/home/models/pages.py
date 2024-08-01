@@ -177,6 +177,9 @@ class LabPage(BasePage):
         blank=True,
         verbose_name=_("E-mail vodje laboratorija")
     )
+    lab_lead_phone = models.TextField(
+        blank=True, verbose_name=_("Telefonska številka vodje laboratorija")
+    )
     training_dates_link = models.URLField(blank=True, verbose_name=_("Termini usposabljanj"))
     online_trainings_link = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
     optional_button = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
@@ -192,7 +195,17 @@ class LabPage(BasePage):
                     ],
                     label=_("Dan in ura"),
                 ),
-            )
+            ),
+            (
+                "notice",
+                blocks.StructBlock(
+                    [
+                        ("day", blocks.CharBlock(label=_("Dan"))),
+                        ("text", blocks.CharBlock(label=_("Opomba"))),
+                    ],
+                    label=_("Dan in opomba"),
+                ),
+            ),
         ],
         blank=True,
         null=True,
@@ -202,11 +215,35 @@ class LabPage(BasePage):
     notice = models.CharField(
         max_length=50, blank=True, verbose_name=_("Dodatno obvestilo")
     )
-    button = StreamField([
-        ("external", blocks.URLBlock(label=_("Zunanji URL"))),
-        ("page", blocks.PageChooserBlock(label=_("Podstran"))),
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Gumb"), max_num=1)
-    button_text = models.TextField(verbose_name=_("Besedilo na gumbu"), blank=True, null=True)
+    button = StreamField(
+        [
+            (
+                "external",
+                blocks.StructBlock(
+                    [
+                        ("button_text", blocks.TextBlock(label="Besedilo na gumbu")),
+                        ("link", blocks.URLBlock(label="Povezava")),
+                    ],
+                    label=_("Zunanji URL"),
+                )
+            ),
+            (
+                "page",
+                blocks.StructBlock(
+                    [
+                        ("button_text", blocks.TextBlock(label="Besedilo na gumbu")),
+                        ("page", blocks.PageChooserBlock(label="Podstran")),
+                    ],
+                    label=_("Podstran"),
+                ),
+            ),
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Gumb"),
+        max_num=1,
+    )
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
     content_panels = Page.content_panels + [
@@ -216,12 +253,12 @@ class LabPage(BasePage):
         FieldPanel("gallery"),
         FieldPanel("lab_lead"),
         FieldPanel("lab_lead_email"),
+        FieldPanel("lab_lead_phone"),
         FieldPanel("training_dates_link"),
         FieldPanel("online_trainings_link"),
         FieldPanel("working_hours"),
         FieldPanel("notice"),
         FieldPanel("button"),
-        FieldPanel("button_text"),
         InlinePanel("related_tools", label="Orodja"),
         FieldPanel("show_see_more_section"),
     ]

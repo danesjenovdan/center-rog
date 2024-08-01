@@ -2344,7 +2344,7 @@ section.image-embed {
             }
         }
 
-        .working-hours {
+        .working-hours-notice {
             width: 270px;
             position: relative;
             // margin-top: 30px;
@@ -2461,6 +2461,16 @@ section.image-embed {
                     transform: rotate(-3deg);
                     bottom: -12px;
                     left: 30%;
+                }
+                
+                p.working-hours {
+                    margin-bottom: 0;
+
+                    span:first-of-type {
+                        display: inline-block;
+                        width: 100px;
+                        padding-right: 10px;
+                    }
                 }
             }
         }
