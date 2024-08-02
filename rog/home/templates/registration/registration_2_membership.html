@@ -26,12 +26,14 @@
             <input type="radio" name="type" value="{{ membership_type.id }}" required="" id="id_type_{{ membership_type.id }}" class="btn-check">
             <label for="id_type_{{ membership_type.id }}" class="radio-square btn">
                 <h4>{{ membership_type.name }}</h4>
+                <p><small class="mb-0">{% translate 'cena' %}</small></p>
+                <p class="price">{{ membership_type.price }}€</p>
+                <hr />
                 <ul>
                     {% for specification in membership_type.related_specifications.all %}
                     <li>{{ specification }}</li>
                     {% endfor %}
                 </ul>
-                <h3>{{ membership_type.price }}€</h3>
             </label>
         </div>
         {% endfor %}

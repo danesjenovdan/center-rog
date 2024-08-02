@@ -241,6 +241,11 @@ class EventPage(BasePage):
 
         return context
 
+    @property
+    def show_start_day(self):
+        today = date.today()
+        return self.start_day > today
+
     def get_admin_display_title(self):
         title = super().get_admin_display_title()
         if not self.start_day:
