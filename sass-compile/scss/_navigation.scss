@@ -346,7 +346,7 @@
     height: 32px;
 
     &.spin > div {
-        animation: spin 30s linear infinite;
+        animation: spin 60s linear infinite;
     }
 
     & > div {
@@ -357,7 +357,31 @@
 
         &:last-child {
             transform: translateX(100%);
-            animation-delay: -15s;
+            animation-delay: -30s;
+        }
+    }
+
+    @include media-breakpoint-down(md) {
+        &.spin > div {
+            animation: spin 40s linear infinite;
+        }
+
+        & > div {
+            &:last-child {
+                animation-delay: -20s;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        &.spin > div {
+            animation: spin 30s linear infinite;
+        }
+
+        & > div {
+            &:last-child {
+                animation-delay: -15s;
+            }
         }
     }
 

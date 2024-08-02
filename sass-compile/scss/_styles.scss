@@ -1195,9 +1195,9 @@ form {
                             width: 50%;
                         }
 
-                        img {
-                            width: 50%;
-                        }
+                        // img {
+                        //     width: 50%;
+                        // }
                     }
                 }
             }
@@ -1220,6 +1220,12 @@ form {
         &.collage {
             padding-top: 120px;
 
+            &>.container {
+                @media screen and (min-width:992px) and (max-width:1200px){
+                    max-width: 920px;
+                }
+            }
+
             .cta {
                 padding: 25px;
                 position: relative;
@@ -1227,7 +1233,7 @@ form {
 
                 @include media-breakpoint-down(sm) {
                     height: 300px;
-                    margin-bottom: 20px;
+                    margin-top: 20px;
                 }
 
                 .pin {
@@ -1485,6 +1491,7 @@ form {
                     display: flex;
                     align-items: center;
                     padding: 10px;
+                    min-height: unset;
                 }
             }
 
@@ -1498,6 +1505,12 @@ form {
                     text-align: center;
                     padding-top: 10px;
                     padding-bottom: 5px;
+                }
+
+                img {
+                    max-height: 200px;
+                    width: auto;
+                    align-self: center;
                 }
 
                 &:hover {
@@ -2227,6 +2240,12 @@ section.image-embed {
         border-radius: 3px;
         // border: 1px solid $cs-dark-green;
 
+        @include media-breakpoint-down(sm) {
+            span:first-child {
+                margin-right: 20px;
+            }
+        }
+
         &:hover {
             background-color: $cs-white;
             border-color: $cs-white;
@@ -2344,7 +2363,7 @@ section.image-embed {
             }
         }
 
-        .working-hours {
+        .working-hours-notice {
             width: 270px;
             position: relative;
             // margin-top: 30px;
@@ -2461,6 +2480,16 @@ section.image-embed {
                     transform: rotate(-3deg);
                     bottom: -12px;
                     left: 30%;
+                }
+                
+                p.working-hours {
+                    margin-bottom: 0;
+
+                    span:first-of-type {
+                        display: inline-block;
+                        width: 100px;
+                        padding-right: 10px;
+                    }
                 }
             }
         }
