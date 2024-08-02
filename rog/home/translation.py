@@ -72,7 +72,7 @@ class ObjectProfilePageTR(TranslationOptions):
 
 @register(LabPage)
 class LabPageTR(TranslationOptions):
-    fields = ("description", "button_text", "working_hours", "notice")
+    fields = ("description", "button", "working_hours", "notice")
 
 
 @register(WorkingStationPage)

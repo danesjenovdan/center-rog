@@ -203,12 +203,12 @@
 
 .color-scheme-orange {
     background-color: $cs-orange;
-    color: $cs-white;
+    color: $cs-yellow;
 
     @include primary-button-blue();
-    @include secondary-button($cs-white);
-    @include link($cs-white);
-    @include card-img-bg($cs-white);
+    @include secondary-button($cs-yellow);
+    @include link($cs-yellow);
+    @include card-img-bg($cs-yellow);
 }
 
 .color-scheme-dark-blue {

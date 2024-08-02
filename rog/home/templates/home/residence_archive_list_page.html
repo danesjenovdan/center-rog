@@ -1,5 +1,5 @@
 {% extends "home/object_archive_list_page.html" %}
-{% load static %}
+{% load i18n static %}
 
 {% block list_page_body %}
 <div class="row">
@@ -8,7 +8,7 @@
         <a href="{{ element.url }}" class="color-scheme-light-gray list-element">
             <span>{{ element }}</span>
             {% if element.active_from and element.active_to %}
-            <span>{{ element.active_from|date:"Y" }}{% if element.active_to %} - {{ element.active_to|date:"Y" }}{% endif %}</span>
+            <span>{% translate "od" %} {{ element.active_from|date:"j. n. Y" }}{% if element.active_to %} {% translate "do" %} {{ element.active_to|date:"j. n. Y" }}{% endif %}</span>
             {% endif %}
         </a>
         {% endfor %}

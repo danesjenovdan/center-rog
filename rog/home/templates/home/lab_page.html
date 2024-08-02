@@ -31,7 +31,7 @@
             </p>
             {% endif %}
             {% if page.lab_lead_email %}
-            <p class="mb-1">
+            <p class="mb-0">
                 <a href="mailto:{{ page.lab_lead_email }}" target="_blank">{% translate 'e-pošta' %}</a>
                 <button type="button" class="copy-email-button" data-email="{{ page.email }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 21" width="19" height="23">
@@ -42,6 +42,11 @@
                     </svg>
                 </button>
                 <span class="copy-email-confirmation small d-none">{% translate 'kopirano!' %}</span>
+            </p>
+            {% endif %}
+            {% if page.lab_lead_phone %}
+            <p class="mb-0">
+                <a href="tel:{{ page.lab_lead_phone }}">{{ page.lab_lead_phone }}</a>
             </p>
             {% endif %}
             {% if page.training_dates_link %}
@@ -64,12 +69,16 @@
             {% endif %}
 
             {% if page.working_hours %}
-            <div class="my-2">
-                <p class="mb-0">{% translate "Delovni čas" %}</p>
+            <div class="my-3">
+                <p class="mb-1">{% translate "Delovni čas" %}</p>
                 {% for working_hours in page.working_hours %}
-                <p class="mb-0">
+                <p class="mb-0 working-hours">
                     <span>{{ working_hours.value.day }}</span>
-                    <span>{{ working_hours.value.start_time|time:"G:i" }} - {{ working_hours.value.end_time|time:"G:i" }}</span>
+                    {% if working_hours.value.start_time and working_hours.value.end_time %}
+                    <span>{{ working_hours.value.start_time|time:"G:i" }} – {{ working_hours.value.end_time|time:"G:i" }}</span>
+                    {% elif working_hours.value.text %}
+                    <span>{{ working_hours.value.text }}</span>
+                    {% endif %}
                 </p>
                 {% endfor %}
             </div>
@@ -81,11 +90,14 @@
             </p>
             {% endif %}
 
-            {% if page.button and page.button_text %}
+            {% if page.button %}
             <p class="mb-0">
-                {% for link in page.button %}
-                <a href="{% if link.type == 'external' %}{{ link }}{% else %}{{ link.url }}{% endif %}" target="_blank"
-                    class="secondary-button button-small mb-0">{{ page.button_text }}</a>
+                {% for button in page.button %}
+                    {% if button.value.link %}
+                    <a href="{{ button.value.link }}" target="_blank" class="secondary-button button-small mb-0">{{ button.value.button_text }}</a>
+                    {% elif button.value.page %}
+                    <a href="{% pageurl button.value.page %}" target="_blank" class="secondary-button button-small mb-0">{{ button.value.button_text }}</a>
+                    {% endif %}
                 {% endfor %}
             </p>
             {% endif %}
