@@ -1220,6 +1220,12 @@ form {
         &.collage {
             padding-top: 120px;
 
+            &>.container {
+                @media screen and (min-width:992px) and (max-width:1200px){
+                    max-width: 920px;
+                }
+            }
+
             .cta {
                 padding: 25px;
                 position: relative;
@@ -1227,7 +1233,7 @@ form {
 
                 @include media-breakpoint-down(sm) {
                     height: 300px;
-                    margin-bottom: 20px;
+                    margin-top: 20px;
                 }
 
                 .pin {
@@ -1485,6 +1491,7 @@ form {
                     display: flex;
                     align-items: center;
                     padding: 10px;
+                    min-height: unset;
                 }
             }
 
