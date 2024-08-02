@@ -5,7 +5,7 @@
   <div class="container">
     {% if value.cta_text %}
     <div class="row">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 order-2 order-md-1">
         <div class="color-scheme-white cta">
           <span class="pin"></span>
           <span class="pin"></span>
@@ -20,7 +20,7 @@
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6 order-1 order-md-2">
         <div class="cta-image">
           <span class="tape"></span>
           {% image value.cta_image original class="img-fluid" %}
@@ -65,7 +65,7 @@
           {% endif %}
         {% endfor %}
       </div>
-      <div class="col-12 col-lg-6">
+      <div class="col-12 col-lg-6 d-none d-md-block">
         <div class="row">
           <div class="col-12 col-xsm-6">
             <!-- labi -->

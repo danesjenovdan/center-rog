@@ -238,15 +238,16 @@ class PaymentPreview(views.APIView):
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
 
                             payment_plan.promo_code = valid_promo_code
-                            payment_plan.price = payment_plan.price - payment_plan.price * Decimal(
-                                valid_promo_code.percent_discount / 100
-                            )
-                            payment_plan.save()
 
                             payment.amount -= payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
                             )
                             payment.save()
+
+                            payment_plan.price = payment_plan.price - payment_plan.price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment_plan.save()
 
                             promo_code_error = False
                             promo_code_success = True

@@ -1,7 +1,7 @@
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load i18n wagtailcore_tags wagtailimages_tags %}
 
 {% if value.title and value.show_link_in_secondary_menu %}<a name="{{ value.title|slugify }}" class="scroll-anchor"></a>{% endif %}
-<section  class="color-scheme-{{ value.color }} memberships-section">
+<section  class="color-scheme-{{ value.color }} memberships-section user-purchase-plan">
 
 <div class="container">
     <div class="row">
@@ -21,12 +21,14 @@
         <div class="col-12 col-md-6 col-xl-4 my-4">
             <div class="radio-square">
                 <h3>{{ membership_type.name }}</h3>
+                <p><small class="mb-0">{% translate 'cena' %}</small></p>
+                <p class="price">{{ membership_type.price }}€</p>
+                <hr />
                 <ul>
                     {% for specification in membership_type.related_specifications.all %}
                     <li>{{ specification }}</li>
                     {% endfor %}
                 </ul>
-                <h3>{{ membership_type.price }}€</h3>
             </div>
         </div>
         {% endfor %}
