@@ -6,7 +6,7 @@
   </div>
   <div class="card-body p-md-0">
     <p class="event-category">{{ event.category.name }}</p>
-    <p class="event-time">{{ event.start_day|date:"j. n. Y" }} {% if not event.end_day %}{{ event.start_time }} {% else %}{% translate "do" %} {{ event.end_day }}{% endif %}</p>
+    <p class="event-time">{% if event.show_start_day %}{{ event.start_day|date:"j. n. Y" }} {% endif %}{% if not event.end_day %}{{ event.start_time }} {% else %}{% translate "do" %} {{ event.end_day|date:"j. n. Y" }}{% endif %}</p>
     <p class="event-lab">
     {% for lab in event.labs.all %}
       <span>{{ lab }}</span>
