@@ -153,7 +153,6 @@ class MetaSettings(BaseGenericSetting):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Delovni čas organizacije"),
     )
     labs_working_hours_title = models.TextField(
@@ -185,7 +184,6 @@ class MetaSettings(BaseGenericSetting):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Delovni čas laboratorijev"),
     )
 
@@ -209,7 +207,6 @@ class MetaSettings(BaseGenericSetting):
             ("external_link", ExternalLinkBlock()),
         ],
         verbose_name="Družbena omrežja",
-        use_json_field=True,
         blank=True,
     )
 
@@ -226,7 +223,6 @@ class MetaSettings(BaseGenericSetting):
             ("external_link", ExternalLinkBlock()),
         ],
         verbose_name="Povezave v navigacijski vrstici",
-        use_json_field=True,
         blank=True,
     )
 
@@ -241,7 +237,6 @@ class MetaSettings(BaseGenericSetting):
             ("external_link", ExternalLinkBlock()),
         ],
         verbose_name=_("Povezave v nogi"),
-        use_json_field=True,
         blank=True,
     )
 
@@ -266,7 +261,6 @@ class MetaSettings(BaseGenericSetting):
             "logo": {"max_num": 4},
         },
         verbose_name=_("Logotipi"),
-        use_json_field=True,
         blank=True,
     )
 
@@ -283,7 +277,6 @@ class MetaSettings(BaseGenericSetting):
             )
         ],
         verbose_name=_("Naključne slike v nogi"),
-        use_json_field=True,
         blank=True,
     )
 
