@@ -246,48 +246,29 @@ class RegistrationView(View):
             email = form.cleaned_data["email"].lower()
             password = form.cleaned_data["password"]
 
-            # create PRIMA user
-            data, message = prima_api.createUser(email)
-            print(data)
+            user = User.objects.create_user(
+                email=email,
+                password=password,
+                is_active=True,  # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
+            )
 
-            if data:
-                prima_id = data["UsrID"]
-                user = User.objects.create_user(
-                    email=email,
-                    password=password,
-                    prima_id=int(prima_id),
-                    is_active=True,  # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
-                )
+            # tukaj pošljemo mail za potrditev računa
+            # najprej naredimo ConfirmEmail objekt in generiramo ključ
+            not_unique = True
+            while not_unique:
+                key_gen = id_generator(size=32)
+                not_unique = ConfirmEmail.objects.filter(key=key_gen)
+            confirm_email = ConfirmEmail(user=user, key=key_gen)
+            confirm_email.save()
+            # potem pošljemo mail
+            send_email(
+                user.email,
+                "emails/email_confirmation.html",
+                _("Center Rog – potrditev e-naslova // e-mail confirmation"),
+                {"key": confirm_email.key},
+            )
 
-                # tukaj pošljemo mail za potrditev računa
-                # najprej naredimo ConfirmEmail objekt in generiramo ključ
-                not_unique = True
-                while not_unique:
-                    key_gen = id_generator(size=32)
-                    not_unique = ConfirmEmail.objects.filter(key=key_gen)
-                confirm_email = ConfirmEmail(user=user, key=key_gen)
-                confirm_email.save()
-                # potem pošljemo mail
-                send_email(
-                    user.email,
-                    "emails/email_confirmation.html",
-                    _("Center Rog – potrditev e-naslova // e-mail confirmation"),
-                    {"key": confirm_email.key},
-                )
-
-                login(request, user)
-            else:
-                print(
-                    "Prišlo je do napake pri ustvarjanju novega uporabnika na Prima sistemu."
-                )
-                return render(
-                    request,
-                    "registration/registration.html",
-                    context={
-                        "form": form,
-                        "error": _("Uporabnika ni bilo mogoče ustvariti."),
-                    },
-                )
+            login(request, user)
 
             return redirect("registration-email-confirmation")
         else:
