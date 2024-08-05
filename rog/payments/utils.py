@@ -59,6 +59,21 @@ def finish_payment(payment):
         membership.active = True
         membership.save()
 
+        # create PRIMA user
+        data, message = prima_api.createUser(user.email)
+        print(data)
+        if data:
+            prima_id = data["UsrID"]
+            user.prima_id = prima_id
+            user.save()
+        else:
+            msg = f"Prima user was not created successfully: {message}"
+            with push_scope() as scope:
+                scope.user = {"user": user}
+                scope.set_extra("membership", membership.id)
+                scope.set_extra("payment", payment.id)
+                capture_message(msg, "fatal")
+
     elif membership_fee or membership:
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
