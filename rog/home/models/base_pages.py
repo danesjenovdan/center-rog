@@ -200,7 +200,6 @@ class ObjectProfilePage(BasePage):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Delovni čas"),
     )
     # gallery
@@ -225,7 +224,6 @@ class ObjectProfilePage(BasePage):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Galerija"),
     )
     # archived

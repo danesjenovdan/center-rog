@@ -210,7 +210,6 @@ class User(AbstractUser, Timestampable):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     gallery = StreamField(
         [("image", ImageChooserBlock())],
-        use_json_field=True,
         blank=True,
         default=[],
         max_num=10,
