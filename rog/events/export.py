@@ -1,5 +1,5 @@
-from wagtail.contrib.modeladmin.helpers import ButtonHelper, AdminURLHelper
-from wagtail.contrib.modeladmin.views import IndexView
+from wagtail_modeladmin.helpers import ButtonHelper, AdminURLHelper
+from wagtail_modeladmin.views import IndexView
 
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
