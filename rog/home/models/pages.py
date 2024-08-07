@@ -167,7 +167,7 @@ class LabPage(BasePage):
             ("image", ImageChooserBlock(label=_("Slika"))),
             ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
         ]))
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
+    ], blank=True, null=True, verbose_name=_("Galerija"))
     lab_lead = models.CharField(
         max_length=255,
         blank=True,
@@ -209,7 +209,6 @@ class LabPage(BasePage):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Delovni čas"),
     )
     notice = models.CharField(
@@ -240,7 +239,6 @@ class LabPage(BasePage):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Gumb"),
         max_num=1,
     )
@@ -382,7 +380,6 @@ class WorkingStationPage(BasePage):
         ],
         blank=True,
         null=True,
-        use_json_field=True,
         verbose_name=_("Moduli"),
     )
     required_workshop = models.ForeignKey(

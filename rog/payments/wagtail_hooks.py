@@ -1,6 +1,5 @@
-from wagtail.contrib.modeladmin.options import (
-    ModelAdmin, modeladmin_register)
-from wagtail.contrib.modeladmin.views import IndexView
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.views import IndexView
 
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
