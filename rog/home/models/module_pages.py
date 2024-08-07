@@ -15,7 +15,6 @@ class HomePage(TranslatablePage):
         ModuleBlock(),
         verbose_name="Telo",
         null=True,
-        use_json_field=True
     )
 
     meta_image = models.ForeignKey(
@@ -57,7 +56,6 @@ class ContentPage(TranslatablePage):
     body = StreamField(
         ModuleBlock(),
         verbose_name="Telo",
-        use_json_field=True
     )
     show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
 
