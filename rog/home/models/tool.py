@@ -38,7 +38,6 @@ class Tool(Orderable, ClusterableModel):
 
     def __str__(self):
         return self.name
-    
 
     def workshop_event(self):
         today = datetime.datetime.today()
@@ -52,6 +51,7 @@ class Tool(Orderable, ClusterableModel):
     class Meta:
         verbose_name = _("Orodje")
         verbose_name_plural = _("Orodja")
+        ordering = ["sort_order"]
 
 
 class ToolSpecification(Orderable):
@@ -70,3 +70,4 @@ class ToolSpecification(Orderable):
     class Meta:
         verbose_name = _("Specifikacija orodja")
         verbose_name_plural = _("Specifikacije orodja")
+        ordering = ["sort_order"]
