@@ -780,6 +780,7 @@ form {
     margin-bottom: var(--bs-gutter-x);
     border-radius: 3px;
     border: none;
+    color: $cs-dark-blue;
 
     h4 {
         @include font-size-md();
@@ -788,6 +789,16 @@ form {
 
     img, .specifications, .button-medium {
         margin-bottom: 15px;
+    }
+
+    .empty-image {
+        height: 200px;
+        background-color: $cs-dark-blue;
+        margin-bottom: 15px;
+    }
+
+    img, .empty-image {
+        border-radius: 2px;
     }
 
     p {
@@ -800,6 +811,8 @@ form {
 
         span:last-child {
             @include font-size-sm();
+            margin-left: 10px;
+            display: block;
         }
     }
 
