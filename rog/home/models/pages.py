@@ -5,7 +5,7 @@ from django.conf import settings
 
 from wagtail import blocks
 from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.edit_handlers import MediaChooserPanel
@@ -249,14 +249,19 @@ class LabPage(BasePage):
         FieldPanel("image"),
         FieldPanel("thumbnail"),
         FieldPanel("gallery"),
-        FieldPanel("lab_lead"),
-        FieldPanel("lab_lead_email"),
-        FieldPanel("lab_lead_phone"),
-        FieldPanel("training_dates_link"),
-        FieldPanel("online_trainings_link"),
-        FieldPanel("working_hours"),
-        FieldPanel("notice"),
-        FieldPanel("button"),
+        MultiFieldPanel(
+            [
+                FieldPanel("lab_lead"),
+                FieldPanel("lab_lead_email"),
+                FieldPanel("lab_lead_phone"),
+                FieldPanel("training_dates_link"),
+                FieldPanel("online_trainings_link"),
+                FieldPanel("working_hours"),
+                FieldPanel("notice"),
+                FieldPanel("button"),
+            ],
+            heading=_("Informacije in kontakt"),
+        ),
         InlinePanel("related_tools", label="Orodja"),
         FieldPanel("show_see_more_section"),
     ]
@@ -302,7 +307,7 @@ class WorkingStationPage(BasePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Predogledna slika"),
+        verbose_name=_("Predogledna slika (če je prazno, se bo uporabila zgornja slika)"),
     )
     description = models.TextField(blank=True, verbose_name=_("Kratek opis na kartici"))
     image = models.ForeignKey(
@@ -403,8 +408,8 @@ class WorkingStationPage(BasePage):
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
-        FieldPanel("thumbnail"),
         FieldPanel("image"),
+        FieldPanel("thumbnail"),
         FieldPanel("modules"),
         FieldPanel("required_workshop"),
         FieldPanel("tag"),

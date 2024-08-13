@@ -119,6 +119,10 @@
                 <a class="display-block" href="{% pageurl station %}">
                     {% image station.thumbnail original class="img-fluid" %}
                 </a>
+                {% elif station.image %}
+                <a class="display-block" href="{% pageurl station %}">
+                    {% image station.image original class="img-fluid" %}
+                </a>
                 {% else %}
                 <div class="empty-image"></div>
                 {% endif %}
