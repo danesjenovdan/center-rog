@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.forms.models import WagtailAdminModelForm
@@ -424,6 +425,9 @@ class PromoCode(Timestampable):
         max_length=20,
         choices=PaymentItemType.choices,
         default=PaymentItemType.CLANARINA,
+        null=True,
+        blank=True,
+        verbose_name=_("Tip storitve"),
     )
     single_use = models.BooleanField(blank=False, null=False)
     usage_limit = models.IntegerField(
@@ -435,19 +439,49 @@ class PromoCode(Timestampable):
     number_of_uses = models.IntegerField(null=False, blank=True, default=0)
     last_entry_at = models.DateTimeField(null=True, blank=True)
 
+    event_page = models.ForeignKey(
+        "events.EventPage",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="promo_codes",
+        help_text="Select event to limit promo code to",
+        verbose_name=_("Dogodek"),
+    )
+    plan = models.ForeignKey(
+        "Plan",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="promo_codes",
+        help_text="Select plan to limit promo code to",
+        verbose_name=_("Plan"),
+    )
+
     panels = [
         FieldPanel("code"),
         FieldPanel("valid_to"),
         FieldPanel("percent_discount"),
-        FieldPanel("payment_item_type"),
         FieldPanel("single_use"),
         FieldPanel("usage_limit"),
-        FieldPanel("last_entry_at"),
+        MultiFieldPanel(
+            [
+                FieldPanel("payment_item_type"),
+                FieldPanel("event_page"),
+                FieldPanel("plan"),
+            ],
+            heading=_("Spodaj izberi, za kateri del ponudbe se bo uporabljala promo koda. Izbereš lahko samo eno možnost (ali polje tip storitev, ali polje dogodek, ali polje plan)."),
+        ),
         ReadOnlyFieldPanel("number_of_uses"),
+        ReadOnlyFieldPanel("last_entry_at"),
     ]
 
     def __str__(self):
         return f"{self.code}"
+    
+    def clean(self):
+        if [bool(self.event_page), bool(self.plan), bool(self.payment_item_type)].count(True) != 1:
+            raise ValidationError(_("Izberi natanko eno polje od 'tip storitve'ali 'dogodek' ali 'plan'."))
 
     @staticmethod
     def check_code_validity(code_string: str, payment_plan: PaymentPlanEvent) -> bool:
@@ -464,9 +498,18 @@ class PromoCode(Timestampable):
         if code.valid_to < now:
             return False
         
-        # check if code is for the right payment item type
-        if code.payment_item_type != payment_plan.payment_item_type:
-            return False
+        # check if code is for the right payment item typeđ
+        if code.payment_item_type:
+            if code.payment_item_type != payment_plan.payment_item_type:
+                return False
+        
+        if code.event_page:
+            if code.event_page != payment_plan.event_registration.event:
+                return False
+            
+        if code.plan:
+            if code.plan != payment_plan.plan:
+                return False
 
         # check if code is used for this payment plan
         if payment_plan.promo_code == code:
