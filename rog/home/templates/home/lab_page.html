@@ -115,9 +115,17 @@
         <div class="col-12 col-md-4 col-xxl-3 tool-card-wrapper">
             <div class="card tool-card color-scheme-white">
                 <h4 class="card-title text-center">{{ station.title }}</h4>
+                {% if station.thumbnail %}
                 <a class="display-block" href="{% pageurl station %}">
                     {% image station.thumbnail original class="img-fluid" %}
                 </a>
+                {% elif station.image %}
+                <a class="display-block" href="{% pageurl station %}">
+                    {% image station.image original class="img-fluid" %}
+                </a>
+                {% else %}
+                <div class="empty-image"></div>
+                {% endif %}
                 {% if station.description %}
                 <p>{{ station.description }}</p>
                 {% endif %}
@@ -179,9 +187,13 @@
         <div class="col-12 col-md-4 col-xxl-3">
             <div class="card tool-card color-scheme-white">
                 <h4 class="card-title text-center">{{ tool.name }}</h4>
+                {% if tool.image %}
                 <div class="text-center">
                     {% image tool.image original class="img-fluid" alt="..." %}
                 </div>
+                {% else %}
+                <div class="empty-image"></div>
+                {% endif %}
                 {% if tool.related_tool_specifications.all %}
                 <div class="specifications">
                     {% for spec in tool.related_tool_specifications.all %}
