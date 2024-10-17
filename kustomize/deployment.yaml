@@ -38,8 +38,8 @@ spec:
                 name: rog-credentials
           resources:
             requests:
-              memory: 500Mi
-              cpu: 300m
+              memory: 400Mi
+              cpu: 100m
             limits:
               memory: 500Mi
               cpu: 300m
@@ -58,8 +58,8 @@ spec:
                 name: rog-credentials
           resources:
             requests:
-              memory: 500Mi
-              cpu: 300m
+              memory: 400Mi
+              cpu: 100m
             limits:
               memory: 500Mi
               cpu: 300m
@@ -92,8 +92,8 @@ spec:
               value: rog.settings.production
           resources:
             requests:
-              memory: 500Mi
-              cpu: 300m
+              memory: 400Mi
+              cpu: 100m
             limits:
               memory: 500Mi
               cpu: 300m
