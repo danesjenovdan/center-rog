@@ -303,8 +303,10 @@ class User(AbstractUser, Timestampable):
                     if response.json().get("Message", "").startswith("subject already exists"):
                         self.saved_in_pantheon = True
                         super().save(*args, **kwargs)
-                else:
+                elif response:
                     print(self.id, response.json())
+                else:
+                    print(self.id)
             except Exception as e:
                 sentry_sdk.capture_exception(e)
         else:
