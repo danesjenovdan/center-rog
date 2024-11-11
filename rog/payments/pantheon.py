@@ -212,10 +212,14 @@ def create_ident(name, price, vat, ident_id):
         "techProcedureRtf": "",
         "vatcodeReduced":"2S",
         }
-    response = requests.post(
-        f'{settings.PANTHEON_URL}/api/Ident',
-        json=data
-    )
+    try:
+        response = requests.post(
+            f'{settings.PANTHEON_URL}/api/Ident',
+            json=data
+        )
+    except requests.exceptions.Timeout as e:
+        print(e)
+        return None
     print(response)
     return response
 
@@ -437,11 +441,15 @@ def create_subject(subject):
         "deliveryDays": 0,
         "priceRatePos": True
     }
-    response = requests.post(
-        f'{settings.PANTHEON_URL}/api/Subject',
-        json=data,
-        timeout=15
-    )
+    try:
+        response = requests.post(
+            f'{settings.PANTHEON_URL}/api/Subject',
+            json=data,
+            timeout=15
+        )
+    except requests.exceptions.Timeout as e:
+        print(e)
+        return None
     print(response)
     return response
 
@@ -577,10 +585,14 @@ def create_move(
             } for item in payment.payment_plans.all()
         ]
     }
-    response = requests.post(
-        f'{settings.PANTHEON_URL}/api/Move/insert',
-        json=data,
-        timeout=15
-    )
+    try:
+        response = requests.post(
+            f'{settings.PANTHEON_URL}/api/Move/insert',
+            json=data,
+            timeout=15
+        )
+    except requests.exceptions.Timeout as e:
+        print(e)
+        return None
     print(response)
     return response
