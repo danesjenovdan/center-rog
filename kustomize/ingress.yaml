@@ -10,6 +10,13 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-ciphers: "ALL:!aNULL:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP"
     # nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "false"
     # nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    
+    # type of authentication
+    nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropriate context why the authentication is required
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - djnd'
 spec:
   ingressClassName: nginx
   tls:
@@ -51,6 +58,13 @@ metadata:
     nginx.ingress.kubernetes.io/cors-allow-origin: "*" # TODO
     nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
     nginx.ingress.kubernetes.io/proxy-body-size: 10m
+
+    # type of authentication
+    nginx.ingress.kubernetes.io/auth-type: basic
+    # name of the secret that contains the user/password definitions
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    # message to display with an appropriate context why the authentication is required
+    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - djnd'
 spec:
   ingressClassName: nginx
   tls:
