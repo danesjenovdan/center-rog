@@ -1,6 +1,7 @@
-from .models import Plan
-from modeltranslation.translator import TranslationOptions
 from modeltranslation.decorators import register
+from modeltranslation.translator import TranslationOptions
+
+from .models import Plan
 
 
 @register(Plan)

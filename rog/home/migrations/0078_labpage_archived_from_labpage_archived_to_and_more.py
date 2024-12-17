@@ -6,58 +6,78 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0077_alter_labpage_contact_description_and_more'),
+        ("home", "0077_alter_labpage_contact_description_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='labpage',
-            name='archived_from',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval od'),
+            model_name="labpage",
+            name="archived_from",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval od"
+            ),
         ),
         migrations.AddField(
-            model_name='labpage',
-            name='archived_to',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval do'),
+            model_name="labpage",
+            name="archived_to",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval do"
+            ),
         ),
         migrations.AddField(
-            model_name='librarypage',
-            name='archived_from',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval od'),
+            model_name="librarypage",
+            name="archived_from",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval od"
+            ),
         ),
         migrations.AddField(
-            model_name='librarypage',
-            name='archived_to',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval do'),
+            model_name="librarypage",
+            name="archived_to",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval do"
+            ),
         ),
         migrations.AddField(
-            model_name='marketstorepage',
-            name='archived_from',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval od'),
+            model_name="marketstorepage",
+            name="archived_from",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval od"
+            ),
         ),
         migrations.AddField(
-            model_name='marketstorepage',
-            name='archived_to',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval do'),
+            model_name="marketstorepage",
+            name="archived_to",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval do"
+            ),
         ),
         migrations.AddField(
-            model_name='residencepage',
-            name='archived_from',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval od'),
+            model_name="residencepage",
+            name="archived_from",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval od"
+            ),
         ),
         migrations.AddField(
-            model_name='residencepage',
-            name='archived_to',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval do'),
+            model_name="residencepage",
+            name="archived_to",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval do"
+            ),
         ),
         migrations.AddField(
-            model_name='studiopage',
-            name='archived_from',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval od'),
+            model_name="studiopage",
+            name="archived_from",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval od"
+            ),
         ),
         migrations.AddField(
-            model_name='studiopage',
-            name='archived_to',
-            field=models.PositiveSmallIntegerField(blank=True, null=True, verbose_name='Deloval do'),
+            model_name="studiopage",
+            name="archived_to",
+            field=models.PositiveSmallIntegerField(
+                blank=True, null=True, verbose_name="Deloval do"
+            ),
         ),
     ]

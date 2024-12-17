@@ -6,44 +6,54 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0020_alter_payment_options_and_more'),
+        ("payments", "0020_alter_payment_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='plan',
-            name='description',
-            field=models.CharField(default='Opis', max_length=300, verbose_name='Opis'),
+            model_name="plan",
+            name="description",
+            field=models.CharField(default="Opis", max_length=300, verbose_name="Opis"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_1',
-            field=models.CharField(default='Postavka', max_length=300, verbose_name='Postavka 1'),
+            model_name="plan",
+            name="description_item_1",
+            field=models.CharField(
+                default="Postavka", max_length=300, verbose_name="Postavka 1"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_2',
-            field=models.CharField(default='Postavka', max_length=300, verbose_name='Postavka 2'),
+            model_name="plan",
+            name="description_item_2",
+            field=models.CharField(
+                default="Postavka", max_length=300, verbose_name="Postavka 2"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_3',
-            field=models.CharField(default='Postavka', max_length=300, verbose_name='Postavka 3'),
+            model_name="plan",
+            name="description_item_3",
+            field=models.CharField(
+                default="Postavka", max_length=300, verbose_name="Postavka 3"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_4',
-            field=models.CharField(default='Postavka', max_length=300, verbose_name='Postavka 4'),
+            model_name="plan",
+            name="description_item_4",
+            field=models.CharField(
+                default="Postavka", max_length=300, verbose_name="Postavka 4"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_5',
-            field=models.CharField(default='Postavka', max_length=300, verbose_name='Postavka 5'),
+            model_name="plan",
+            name="description_item_5",
+            field=models.CharField(
+                default="Postavka", max_length=300, verbose_name="Postavka 5"
+            ),
             preserve_default=False,
         ),
     ]

@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0030_alter_eventpage_number_of_places'),
+        ("events", "0030_alter_eventpage_number_of_places"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventpage',
-            name='pantheon_ident',
-            field=models.CharField(blank=True, max_length=16, null=True, verbose_name='Pantheon ident id'),
+            model_name="eventpage",
+            name="pantheon_ident",
+            field=models.CharField(
+                blank=True, max_length=16, null=True, verbose_name="Pantheon ident id"
+            ),
         ),
     ]

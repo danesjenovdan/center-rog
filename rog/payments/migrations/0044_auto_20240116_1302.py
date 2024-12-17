@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_payment_ujp_fix(apps, schema_editor):
     Payment = apps.get_model("payments", "Payment")
 
@@ -17,9 +18,7 @@ def migrate_payment_ujp_fix(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0043_payment_ujp_id'),
+        ("payments", "0043_payment_ujp_id"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_payment_ujp_fix)
-    ]
+    operations = [migrations.RunPython(migrate_payment_ujp_fix)]

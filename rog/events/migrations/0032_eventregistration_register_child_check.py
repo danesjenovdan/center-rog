@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0031_eventpage_pantheon_ident'),
+        ("events", "0031_eventpage_pantheon_ident"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventregistration',
-            name='register_child_check',
-            field=models.BooleanField(default=False, verbose_name='Na dogodek prijavljam otroka'),
+            model_name="eventregistration",
+            name="register_child_check",
+            field=models.BooleanField(
+                default=False, verbose_name="Na dogodek prijavljam otroka"
+            ),
         ),
     ]

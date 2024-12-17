@@ -7,50 +7,65 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0018_alter_homepage_body'),
+        ("home", "0018_alter_homepage_body"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_address',
-            field=models.TextField(default='Trubarjeva 72', verbose_name='Ulica in hišna številka'),
+            model_name="metasettings",
+            name="organization_address",
+            field=models.TextField(
+                default="Trubarjeva 72", verbose_name="Ulica in hišna številka"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_country',
-            field=models.TextField(default='Slovenija', verbose_name='Država'),
+            model_name="metasettings",
+            name="organization_country",
+            field=models.TextField(default="Slovenija", verbose_name="Država"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_email',
-            field=models.EmailField(default='info@center-rog.si', max_length=254, verbose_name='E-pošta'),
+            model_name="metasettings",
+            name="organization_email",
+            field=models.EmailField(
+                default="info@center-rog.si", max_length=254, verbose_name="E-pošta"
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_name',
-            field=models.TextField(default='Center Rog', verbose_name='Ime'),
+            model_name="metasettings",
+            name="organization_name",
+            field=models.TextField(default="Center Rog", verbose_name="Ime"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_phone_number',
-            field=models.CharField(default='+386 1 251 6301', max_length=20, verbose_name='Telefonska številka'),
+            model_name="metasettings",
+            name="organization_phone_number",
+            field=models.CharField(
+                default="+386 1 251 6301",
+                max_length=20,
+                verbose_name="Telefonska številka",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_post',
-            field=models.TextField(default=1000, verbose_name='Pošta'),
+            model_name="metasettings",
+            name="organization_post",
+            field=models.TextField(default=1000, verbose_name="Pošta"),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_postal_number',
-            field=models.IntegerField(default=1000, validators=[django.core.validators.MinValueValidator(1000), django.core.validators.MaxValueValidator(9999)], verbose_name='Poštna številka'),
+            model_name="metasettings",
+            name="organization_postal_number",
+            field=models.IntegerField(
+                default=1000,
+                validators=[
+                    django.core.validators.MinValueValidator(1000),
+                    django.core.validators.MaxValueValidator(9999),
+                ],
+                verbose_name="Poštna številka",
+            ),
             preserve_default=False,
         ),
     ]

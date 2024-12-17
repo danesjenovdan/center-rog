@@ -1,29 +1,16 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-
-from django.core.validators import (
-    MaxValueValidator,
-    MinValueValidator,
-)
-
-from wagtail.admin.panels import (
-    FieldPanel,
-    ObjectList,
-    TabbedInterface,
-)
-from wagtail.contrib.settings.models import (
-    BaseGenericSetting,
-    register_setting,
-)
-from wagtail.snippets.models import register_snippet
-from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail.fields import StreamField
-
-from .image import CustomImage
-
 import random
 
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
+from wagtail.contrib.settings.models import BaseGenericSetting, register_setting
+from wagtail.fields import StreamField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.snippets.models import register_snippet
+
+from .image import CustomImage
 
 # @register_snippet
 # class Infopush(models.Model):
@@ -156,7 +143,9 @@ class MetaSettings(BaseGenericSetting):
         verbose_name=_("Delovni čas organizacije"),
     )
     labs_working_hours_title = models.TextField(
-        verbose_name=_("Delovni čas laboratorijev - naslov stolpca"), blank=True, null=True
+        verbose_name=_("Delovni čas laboratorijev - naslov stolpca"),
+        blank=True,
+        null=True,
     )
     labs_working_hours = StreamField(
         [

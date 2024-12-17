@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0001_initial'),
+        ("payments", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='plan',
-            name='valid_from',
-            field=models.DateTimeField(auto_now_add=True, help_text='When the plan starts', null=True),
+            model_name="plan",
+            name="valid_from",
+            field=models.DateTimeField(
+                auto_now_add=True, help_text="When the plan starts", null=True
+            ),
         ),
     ]

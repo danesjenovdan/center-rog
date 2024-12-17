@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0011_alter_newscategory_color_scheme_and_more'),
+        ("news", "0011_alter_newscategory_color_scheme_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='newspage',
-            name='tag',
-            field=models.CharField(blank=True, max_length=16, null=True, verbose_name='Oznaka'),
+            model_name="newspage",
+            name="tag",
+            field=models.CharField(
+                blank=True, max_length=16, null=True, verbose_name="Oznaka"
+            ),
         ),
     ]

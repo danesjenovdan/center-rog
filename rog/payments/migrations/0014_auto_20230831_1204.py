@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_plans(apps, schema_editor):
     Payment = apps.get_model("payments", "Payment")
     PaymentPlan = apps.get_model("payments", "PaymentPlan")
@@ -16,9 +17,7 @@ def migrate_plans(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0013_payment_items'),
+        ("payments", "0013_payment_items"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_plans)
-    ]
+    operations = [migrations.RunPython(migrate_plans)]

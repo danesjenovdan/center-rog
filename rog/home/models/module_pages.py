@@ -1,14 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import StreamField
+from wagtail.models import Page
 
-from .blocks import (ModuleBlock)
 from .base_pages import BasePage, TranslatablePage
+from .blocks import ModuleBlock
 from .image import CustomImage
 from .pages import add_see_more_fields
+
 
 class HomePage(TranslatablePage):
     body = StreamField(
@@ -23,41 +23,45 @@ class HomePage(TranslatablePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Meta slika")
+        verbose_name=_("Meta slika"),
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('body'),
+        FieldPanel("body"),
     ]
 
     promote_panels = Page.promote_panels + [
-        FieldPanel('meta_image'),
+        FieldPanel("meta_image"),
     ]
 
     subpage_types = [
-        'home.StudioListPage',
-        'home.StudioArchiveListPage',
-        'home.MarketStoreListPage',
-        'home.ResidenceListPage',
-        'home.ResidenceArchiveListPage',
-        'home.LabListPage',
-        'home.LibraryPage',
-        'home.BasicTextPage',
-        'home.ContentPage',
-        'events.EventListPage',
-        'events.EventListArchivePage',
-        'news.NewsListPage',
+        "home.StudioListPage",
+        "home.StudioArchiveListPage",
+        "home.MarketStoreListPage",
+        "home.ResidenceListPage",
+        "home.ResidenceArchiveListPage",
+        "home.LabListPage",
+        "home.LibraryPage",
+        "home.BasicTextPage",
+        "home.ContentPage",
+        "events.EventListPage",
+        "events.EventListArchivePage",
+        "news.NewsListPage",
         # 'news.NewsListArchivePage'
     ]
 
 
 class ContentPage(TranslatablePage):
-    secondary_navigation = models.BooleanField(default=False, verbose_name="Sekundarni meni")
+    secondary_navigation = models.BooleanField(
+        default=False, verbose_name="Sekundarni meni"
+    )
     body = StreamField(
         ModuleBlock(),
         verbose_name="Telo",
     )
-    show_see_more_section = models.BooleanField(default=False, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=False, verbose_name=_("Pokaži več")
+    )
 
     meta_image = models.ForeignKey(
         CustomImage,
@@ -65,17 +69,17 @@ class ContentPage(TranslatablePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Meta slika")
+        verbose_name=_("Meta slika"),
     )
 
     content_panels = Page.content_panels + [
-        FieldPanel('secondary_navigation'),
-        FieldPanel('body'),
-        FieldPanel('show_see_more_section')
+        FieldPanel("secondary_navigation"),
+        FieldPanel("body"),
+        FieldPanel("show_see_more_section"),
     ]
 
     promote_panels = Page.promote_panels + [
-        FieldPanel('meta_image'),
+        FieldPanel("meta_image"),
     ]
 
     subpage_types = []

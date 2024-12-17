@@ -1,10 +1,9 @@
-from django.core.management.base import BaseCommand
-
 from datetime import datetime, timedelta
 
-from payments.models import PaymentPlanEvent
+from django.core.management.base import BaseCommand
 from events.models import EventPage
 from home.email_utils import send_email
+from payments.models import PaymentPlanEvent
 
 
 class Command(BaseCommand):
@@ -17,10 +16,12 @@ class Command(BaseCommand):
                 datetime.now().date(),
                 (datetime.now() + timedelta(days=2)).date(),
             ),
-            live=True
+            live=True,
         )
         for event in events:
-            for event_registration in event.event_registrations.filter(registration_finished=True):
+            for event_registration in event.event_registrations.filter(
+                registration_finished=True
+            ):
                 if event_registration.user:
                     payment_plan_event = PaymentPlanEvent.objects.filter(
                         event_registration=event_registration
@@ -33,7 +34,10 @@ class Command(BaseCommand):
                             event_registration.user.email,
                             "emails/user_event_reminder.html",
                             f"Center Rog – obvestilo prihajajočem dogodku // upcoming event notification: {event.title}",
-                            {"event": event, "name": event_registration.user.first_name},
+                            {
+                                "event": event,
+                                "name": event_registration.user.first_name,
+                            },
                         )
                         payment_plan_event.notification_1_sent = True
                         payment_plan_event.save()

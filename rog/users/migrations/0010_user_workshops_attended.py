@@ -6,14 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0033_workshop_delete_training_alter_tool_options_and_more'),
-        ('users', '0009_alter_user_email'),
+        ("home", "0033_workshop_delete_training_alter_tool_options_and_more"),
+        ("users", "0009_alter_user_email"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='workshops_attended',
-            field=models.ManyToManyField(to='home.workshop', verbose_name='Opravljena usposabljanja'),
+            model_name="user",
+            name="workshops_attended",
+            field=models.ManyToManyField(
+                to="home.workshop", verbose_name="Opravljena usposabljanja"
+            ),
         ),
     ]

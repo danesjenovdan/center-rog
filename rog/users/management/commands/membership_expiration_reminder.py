@@ -1,9 +1,8 @@
-from django.core.management.base import BaseCommand
-
 from datetime import datetime, timedelta
 
-from users.models import Membership
+from django.core.management.base import BaseCommand
 from home.email_utils import send_email
+from users.models import Membership
 
 
 class Command(BaseCommand):
@@ -110,10 +109,7 @@ class Command(BaseCommand):
                 membership.user.email,
                 "emails/membership_expiration_reminder_30.html",
                 "Center Rog – čez en mesec se izteče tvoje članstvo // in 1 Month your membership will expire",
-                {
-                    "membership": membership,
-                    "name": membership.user.first_name
-                },
+                {"membership": membership, "name": membership.user.first_name},
             )
 
             membership.notification_30_sent = True

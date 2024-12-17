@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0032_eventregistration_register_child_check'),
+        ("events", "0032_eventregistration_register_child_check"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventcategory',
-            name='name_en',
-            field=models.TextField(null=True, verbose_name='Ime kategorije'),
+            model_name="eventcategory",
+            name="name_en",
+            field=models.TextField(null=True, verbose_name="Ime kategorije"),
         ),
         migrations.AddField(
-            model_name='eventcategory',
-            name='name_sl',
-            field=models.TextField(null=True, verbose_name='Ime kategorije'),
+            model_name="eventcategory",
+            name="name_sl",
+            field=models.TextField(null=True, verbose_name="Ime kategorije"),
         ),
     ]

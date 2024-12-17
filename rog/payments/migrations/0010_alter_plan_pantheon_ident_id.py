@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0009_alter_payment_options_and_more'),
+        ("payments", "0009_alter_payment_options_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='plan',
-            name='pantheon_ident_id',
-            field=models.CharField(help_text='Unique ident id for Pantheon without dashes and spaces', max_length=16, unique=True),
+            model_name="plan",
+            name="pantheon_ident_id",
+            field=models.CharField(
+                help_text="Unique ident id for Pantheon without dashes and spaces",
+                max_length=16,
+                unique=True,
+            ),
         ),
     ]

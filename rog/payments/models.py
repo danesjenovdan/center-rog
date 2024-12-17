@@ -1,26 +1,24 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-from django.utils import timezone
-from django.core.exceptions import ValidationError
-
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.admin.forms.models import WagtailAdminModelForm
-
-from .pantheon import create_ident, create_move
-from behaviours.models import Timestampable
-
 import random
 from string import ascii_uppercase
-import sentry_sdk
 
+import sentry_sdk
+from behaviours.models import Timestampable
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils import timezone
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from wagtail.admin.forms.models import WagtailAdminModelForm
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+
+from .pantheon import create_ident, create_move
 
 
 class WagtailAdminModelFormExtended(WagtailAdminModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         # The form-meta does now receive a list of disabled fields
         for name in getattr(self.Meta, "disabled", []):
             # set the fields to readonly (--> excluded from form validation and so on)
@@ -28,13 +26,13 @@ class WagtailAdminModelFormExtended(WagtailAdminModelForm):
 
 
 class ReadOnlyFieldPanel(FieldPanel):
-    
+
     def get_form_options(self):
         opts = super().get_form_options()
-        
+
         # store the field (there is only one) in a list of disabled fields
-        opts["disabled"] = opts['fields'].copy()
-        
+        opts["disabled"] = opts["fields"].copy()
+
         return opts
 
 
@@ -54,7 +52,12 @@ class ActiveAtQuerySet(models.QuerySet):
             payment_plans__valid_to__gte=now,
         )
         if active_payments:
-            return active_payments.latest('successed_at').payment_plans.all().filter(plan__payment_item_type=PaymentItemType.UPORABNINA).last()
+            return (
+                active_payments.latest("successed_at")
+                .payment_plans.all()
+                .filter(plan__payment_item_type=PaymentItemType.UPORABNINA)
+                .last()
+            )
         return None
 
     def get_valid_tokens(self):
@@ -64,7 +67,7 @@ class ActiveAtQuerySet(models.QuerySet):
             valid_to__gte=timestamp,
             is_used=False,
             type_of=Token.Type.LAB,
-            payment__in=self
+            payment__in=self,
         )
 
     def get_available_workshops(self):
@@ -74,40 +77,46 @@ class ActiveAtQuerySet(models.QuerySet):
             valid_to__gte=timestamp,
             is_used=False,
             type_of=Token.Type.WORKSHOP,
-            payment__in=self
+            payment__in=self,
         )
-
-
-
-
 
 
 # payments
 class Plan(Timestampable):
-    name = models.CharField(max_length=100, verbose_name=_("Ime paketa"), help_text=_("Npr. letna uporabnina"),)
+    name = models.CharField(
+        max_length=100,
+        verbose_name=_("Ime paketa"),
+        help_text=_("Npr. letna uporabnina"),
+    )
     discounted_price = models.DecimalField(
         decimal_places=2,
         max_digits=10,
         verbose_name=_("Discounted price"),
-        help_text=_("Price for younger than 26 years old and older than 65")
+        help_text=_("Price for younger than 26 years old and older than 65"),
     )
     is_subscription = models.BooleanField(default=False)
     price = models.DecimalField(decimal_places=2, max_digits=10, verbose_name=_("Cena"))
     description = models.CharField(max_length=300, verbose_name=_("Opis"))
-    description_item_1 = models.CharField(max_length=300, verbose_name=_("Postavka 1"), blank=True, null=True)
-    description_item_2 = models.CharField(max_length=300, verbose_name=_("Postavka 2"), blank=True, null=True)
-    description_item_3 = models.CharField(max_length=300, verbose_name=_("Postavka 3"), blank=True, null=True)
-    description_item_4 = models.CharField(max_length=300, verbose_name=_("Postavka 4"), blank=True, null=True)
-    description_item_5 = models.CharField(max_length=300, verbose_name=_("Postavka 5"), blank=True, null=True)
+    description_item_1 = models.CharField(
+        max_length=300, verbose_name=_("Postavka 1"), blank=True, null=True
+    )
+    description_item_2 = models.CharField(
+        max_length=300, verbose_name=_("Postavka 2"), blank=True, null=True
+    )
+    description_item_3 = models.CharField(
+        max_length=300, verbose_name=_("Postavka 3"), blank=True, null=True
+    )
+    description_item_4 = models.CharField(
+        max_length=300, verbose_name=_("Postavka 4"), blank=True, null=True
+    )
+    description_item_5 = models.CharField(
+        max_length=300, verbose_name=_("Postavka 5"), blank=True, null=True
+    )
     valid_from = models.DateTimeField(
-        auto_now_add=True, help_text=_("When the plan starts"),
-        null=True,
-        blank=True
+        auto_now_add=True, help_text=_("When the plan starts"), null=True, blank=True
     )
     valid_to = models.DateTimeField(
-        help_text=_("When the plan expires"),
-        null=True,
-        blank=True
+        help_text=_("When the plan expires"), null=True, blank=True
     )
     duration = models.IntegerField(
         verbose_name=_("Koliko dni traja paket?"),
@@ -116,58 +125,61 @@ class Plan(Timestampable):
     tokens = models.IntegerField(
         verbose_name=_("Koliko žetonov dobi uporabnik?"),
         # help_text=_("How many tokens a user gets"),
-        default=0
+        default=0,
     )
     week_token_limit = models.IntegerField(
         verbose_name=_("Tedenska omejitev porabe žetonov"),
         # help_text=_("How many tokens a user can use in a week"),
         null=True,
-        blank=True
+        blank=True,
     )
     month_token_limit = models.IntegerField(
         verbose_name=_("Mesečna omejitev porabe žetonov"),
         # help_text=_("How many tokens a user can use in a month"),
         null=True,
-        blank=True
+        blank=True,
     )
     year_token_limit = models.IntegerField(
         verbose_name=_("Letna omejitev porabe žetonov"),
         # help_text=_("How many tokens a user can use in a year"),
         null=True,
-        blank=True
+        blank=True,
     )
     workshops = models.IntegerField(
         verbose_name=_("Koliko delavnic dobi uporabnik v paketu?"),
         # help_text=_("How many workshops the user receives"),
         null=True,
         blank=True,
-        default=0
+        default=0,
     )
     pantheon_ident_id = models.CharField(
         max_length=16,
         unique=True,
-        help_text=_("Unique ident id for Pantheon without dashes and spaces")
+        help_text=_("Unique ident id for Pantheon without dashes and spaces"),
     )
     saved_in_pantheon = models.BooleanField(
         default=False,
-        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
+        help_text=_(
+            "Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon"
+        ),
     )
     payment_item_type = models.CharField(
         max_length=20,
         choices=PaymentItemType.choices,
         default=PaymentItemType.CLANARINA,
     )
-    vat = models.IntegerField(default=22) # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
+    vat = models.IntegerField(
+        default=22
+    )  # TODO: če se bo kdaj rabilo 9.5% ddv je treba spremenit v DecimalField
     extend_membership = models.BooleanField(
-        default=False,
-        help_text=_("Should this plan extend the membership if needed?")
+        default=False, help_text=_("Should this plan extend the membership if needed?")
     )
 
     def __str__(self):
         return f"{self.name}"
 
     def get_pantheon_ident_id(self):
-        return self.pantheon_ident_id.replace('-', ' ')
+        return self.pantheon_ident_id.replace("-", " ")
 
     panels = [
         FieldPanel("name"),
@@ -184,7 +196,7 @@ class Plan(Timestampable):
                 FieldPanel("description_item_4"),
                 FieldPanel("description_item_5"),
             ],
-            heading=_("Opis paketa")
+            heading=_("Opis paketa"),
         ),
         FieldPanel("duration"),
         FieldPanel("tokens"),
@@ -209,14 +221,18 @@ class Plan(Timestampable):
                 self.pantheon_ident_id = slugify(self.name)[:16]
                 super().save(*args, **kwargs)
             try:
-                response = create_ident(self.name, float(self.price), self.vat, self.get_pantheon_ident_id())
+                response = create_ident(
+                    self.name, float(self.price), self.vat, self.get_pantheon_ident_id()
+                )
                 if response and response.status_code == 200:
                     self.saved_in_pantheon = True
                     super(Plan, self).save(*args, **kwargs)
                 else:
                     if response:
                         # send error just on production
-                        sentry_sdk.capture_message(f"Error creating ident on pantheon for plan {self.name} with response {response.content}")
+                        sentry_sdk.capture_message(
+                            f"Error creating ident on pantheon for plan {self.name} with response {response.content}"
+                        )
             except Exception as e:
                 sentry_sdk.capture_exception(e)
         else:
@@ -230,12 +246,32 @@ class PaymentPlanEvent(models.Model):
         default=PaymentItemType.CLANARINA,
     )
 
-    payment = models.ForeignKey('Payment', related_name="payment_plans", on_delete=models.PROTECT)
-    plan = models.ForeignKey('Plan', related_name="payment_plans", on_delete=models.PROTECT, null=True, blank=True)
-    event_registration = models.ForeignKey('events.EventRegistration', related_name="payment_plans", on_delete=models.PROTECT, null=True, blank=True)
+    payment = models.ForeignKey(
+        "Payment", related_name="payment_plans", on_delete=models.PROTECT
+    )
+    plan = models.ForeignKey(
+        "Plan",
+        related_name="payment_plans",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    event_registration = models.ForeignKey(
+        "events.EventRegistration",
+        related_name="payment_plans",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
 
-    plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
-    original_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    plan_name = models.CharField(
+        max_length=100,
+        verbose_name=_("Ime paketa na dan nakupa"),
+        help_text=_("Npr. letna uporabnina"),
+    )
+    original_price = models.DecimalField(
+        decimal_places=2, max_digits=10, null=True, blank=True
+    )
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     promo_code = models.ForeignKey(
         "PromoCode",
@@ -259,7 +295,7 @@ class PaymentPlanEvent(models.Model):
             if self.event_registration.event.category:
                 return self.event_registration.event.category.pantheon_ident
             else:
-                return 'DOGODKI'
+                return "DOGODKI"
         return self.plan.get_pantheon_ident_id()
 
 
@@ -277,7 +313,13 @@ class Payment(Timestampable):
         help_text="Select a user",
     )
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    original_amount = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True, help_text="Original amount before discount")
+    original_amount = models.DecimalField(
+        decimal_places=2,
+        max_digits=10,
+        null=True,
+        blank=True,
+        help_text="Original amount before discount",
+    )
     successed_at = models.DateTimeField(
         null=True,
         blank=True,
@@ -293,7 +335,8 @@ class Payment(Timestampable):
         null=True,
         blank=True,
         verbose_name=_("Done at"),
-        help_text="When payment was done",)
+        help_text="When payment was done",
+    )
     active_to = models.DateTimeField(
         null=True,
         blank=True,
@@ -306,7 +349,7 @@ class Payment(Timestampable):
     )
     info = models.TextField(blank=True, null=True)
     items = models.ManyToManyField(
-        'Plan',
+        "Plan",
         help_text="Items in payment",
         related_name="payments",
         through=PaymentPlanEvent,
@@ -316,11 +359,15 @@ class Payment(Timestampable):
     objects = ActiveAtQuerySet.as_manager()
     saved_in_pantheon = models.BooleanField(
         default=False,
-        help_text=_("Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon")
+        help_text=_(
+            "Ali račun že shranjen v Pantheon ali preprečite shranjevanje računa v Pantheon"
+        ),
     )
     pantheon_id = models.CharField(max_length=100, null=True, blank=True)
     invoice_number = models.CharField(max_length=100, null=True, blank=True)
-    membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
+    membership = models.ForeignKey(
+        "users.Membership", null=True, blank=True, on_delete=models.SET_NULL
+    )
     panels = [
         FieldPanel("user"),
         FieldPanel("ujp_id"),
@@ -355,19 +402,26 @@ class Payment(Timestampable):
             return _("Neznani artikel")
 
     def save_to_pantheon(self):
-        if self.saved_in_pantheon == False and self.transaction_success_at and self.successed_at and self.amount > 0:
+        if (
+            self.saved_in_pantheon == False
+            and self.transaction_success_at
+            and self.successed_at
+            and self.amount > 0
+        ):
             try:
                 response = create_move(self)
                 if response and response.status_code == 200:
                     data = response.json()
-                    pk = data.get('acKey', '')
+                    pk = data.get("acKey", "")
                     if pk:
                         print(data)
                         self.pantheon_id = pk
                         self.saved_in_pantheon = True
                         self.save()
                     else:
-                        sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
+                        sentry_sdk.capture_message(
+                            f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}"
+                        )
                 else:
                     sentry_sdk.capture_message(f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}")
                     print(self.id, response.json())
@@ -379,11 +433,8 @@ class Token(Timestampable):
     class Type(models.TextChoices):
         LAB = "LAB", _("Lab")
         WORKSHOP = "WORKSHOP", _("Workshop")
-    type_of = models.CharField(
-        max_length=20,
-        choices=Type.choices,
-        default=Type.LAB
-    )
+
+    type_of = models.CharField(max_length=20, choices=Type.choices, default=Type.LAB)
     valid_from = models.DateField(auto_now_add=True)
     valid_to = models.DateField(auto_now_add=True)
     payment = models.ForeignKey(
@@ -401,9 +452,11 @@ class Token(Timestampable):
     def __str__(self):
         return f"{self.type_of} - {self.is_used}"
 
+
 def generate_promo_code(length: int = 10) -> str:
-        characters = ascii_uppercase + '0123456789'
-        return ''.join(random.choice(characters) for i in range(length))
+    characters = ascii_uppercase + "0123456789"
+    return "".join(random.choice(characters) for i in range(length))
+
 
 class PromoCode(Timestampable):
     base_form_class = WagtailAdminModelFormExtended
@@ -470,7 +523,9 @@ class PromoCode(Timestampable):
                 FieldPanel("event_page"),
                 FieldPanel("plan"),
             ],
-            heading=_("Spodaj izberi, za kateri del ponudbe se bo uporabljala promo koda. Izbereš lahko samo eno možnost (ali polje tip storitev, ali polje dogodek, ali polje plan)."),
+            heading=_(
+                "Spodaj izberi, za kateri del ponudbe se bo uporabljala promo koda. Izbereš lahko samo eno možnost (ali polje tip storitev, ali polje dogodek, ali polje plan)."
+            ),
         ),
         ReadOnlyFieldPanel("number_of_uses"),
         ReadOnlyFieldPanel("last_entry_at"),
@@ -478,10 +533,14 @@ class PromoCode(Timestampable):
 
     def __str__(self):
         return f"{self.code}"
-    
+
     def clean(self):
-        if [bool(self.event_page), bool(self.plan), bool(self.payment_item_type)].count(True) != 1:
-            raise ValidationError(_("Izberi natanko eno polje od 'tip storitve'ali 'dogodek' ali 'plan'."))
+        if [bool(self.event_page), bool(self.plan), bool(self.payment_item_type)].count(
+            True
+        ) != 1:
+            raise ValidationError(
+                _("Izberi natanko eno polje od 'tip storitve'ali 'dogodek' ali 'plan'.")
+            )
 
     @staticmethod
     def check_code_validity(code_string: str, payment_plan: PaymentPlanEvent) -> bool:
@@ -491,22 +550,22 @@ class PromoCode(Timestampable):
             code = code_filter.first()
         else:
             return False
-        
+
         now = timezone.now()
 
         # check if code is still valid
         if code.valid_to < now:
             return False
-        
+
         # check if code is for the right payment item typeđ
         if code.payment_item_type:
             if code.payment_item_type != payment_plan.payment_item_type:
                 return False
-        
+
         if code.event_page:
             if code.event_page != payment_plan.event_registration.event:
                 return False
-            
+
         if code.plan:
             if code.plan != payment_plan.plan:
                 return False
@@ -519,7 +578,7 @@ class PromoCode(Timestampable):
         if code.single_use:
             if code.number_of_uses > 0:
                 return False
-            
+
             # check if code has been used in the last 24 hours
             if code.payment_plans.count() > 0 and code.last_entry_at:
                 if code.last_entry_at > (now - timezone.timedelta(days=7)):
@@ -532,7 +591,6 @@ class PromoCode(Timestampable):
                 return False
 
         return True
-
 
     def use_code(self) -> None:
         self.number_of_uses += 1

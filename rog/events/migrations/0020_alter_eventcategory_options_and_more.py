@@ -6,30 +6,58 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0019_alter_eventpage_show_see_more_section'),
+        ("events", "0019_alter_eventpage_show_see_more_section"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='eventcategory',
-            options={'verbose_name': 'Kategorija dogodkov', 'verbose_name_plural': 'Dogodki - kategorije'},
+            name="eventcategory",
+            options={
+                "verbose_name": "Kategorija dogodkov",
+                "verbose_name_plural": "Dogodki - kategorije",
+            },
         ),
         migrations.AlterModelOptions(
-            name='eventlistarchivepage',
-            options={'verbose_name': 'Arhiv programa', 'verbose_name_plural': 'Arhivi programov'},
+            name="eventlistarchivepage",
+            options={
+                "verbose_name": "Arhiv programa",
+                "verbose_name_plural": "Arhivi programov",
+            },
         ),
         migrations.AlterModelOptions(
-            name='eventlistpage',
-            options={'verbose_name': 'Program', 'verbose_name_plural': 'Programi'},
+            name="eventlistpage",
+            options={"verbose_name": "Program", "verbose_name_plural": "Programi"},
         ),
         migrations.AlterField(
-            model_name='eventcategory',
-            name='color_scheme',
-            field=models.CharField(choices=[('brown', 'Rjava'), ('light-gray', 'Svetlo siva'), ('dark-gray', 'Temno siva'), ('light-blue', 'Svetlo modra'), ('dark-blue', 'Temno modra'), ('light-green', 'Svetlo zelena'), ('dark-green', 'Temno zelena'), ('dark-purple', 'Temno vijolična'), ('light-purple', 'Svetlo vijolična'), ('red', 'Rdeča'), ('beige', 'Bež'), ('beige-gray', 'Umazana siva'), ('orange', 'Oranžna'), ('pink', 'Roza'), ('yellow', 'Rumena'), ('white', 'Bela')], default='light-gray', max_length=20, verbose_name='Barvna shema'),
+            model_name="eventcategory",
+            name="color_scheme",
+            field=models.CharField(
+                choices=[
+                    ("brown", "Rjava"),
+                    ("light-gray", "Svetlo siva"),
+                    ("dark-gray", "Temno siva"),
+                    ("light-blue", "Svetlo modra"),
+                    ("dark-blue", "Temno modra"),
+                    ("light-green", "Svetlo zelena"),
+                    ("dark-green", "Temno zelena"),
+                    ("dark-purple", "Temno vijolična"),
+                    ("light-purple", "Svetlo vijolična"),
+                    ("red", "Rdeča"),
+                    ("beige", "Bež"),
+                    ("beige-gray", "Umazana siva"),
+                    ("orange", "Oranžna"),
+                    ("pink", "Roza"),
+                    ("yellow", "Rumena"),
+                    ("white", "Bela"),
+                ],
+                default="light-gray",
+                max_length=20,
+                verbose_name="Barvna shema",
+            ),
         ),
         migrations.AlterField(
-            model_name='eventcategory',
-            name='name',
-            field=models.TextField(verbose_name='Ime kategorije'),
+            model_name="eventcategory",
+            name="name",
+            field=models.TextField(verbose_name="Ime kategorije"),
         ),
     ]

@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0016_alter_newspage_gallery'),
+        ("news", "0016_alter_newspage_gallery"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='newslistarchivepage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="newslistarchivepage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
         migrations.AddField(
-            model_name='newslistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="newslistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
     ]

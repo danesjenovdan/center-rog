@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_original_amount(apps, schema_editor):
     Payment = apps.get_model("payments", "Payment")
 
@@ -25,13 +26,14 @@ def migrate_original_price(apps, schema_editor):
             payment_plan.original_price = payment_plan.event_registration.event.price
             payment_plan.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0040_payment_original_amount_and_more'),
+        ("payments", "0040_payment_original_amount_and_more"),
     ]
 
     operations = [
         migrations.RunPython(migrate_original_amount),
-        migrations.RunPython(migrate_original_price)
+        migrations.RunPython(migrate_original_price),
     ]

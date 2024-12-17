@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0018_eventpage_body_en_eventpage_body_sl'),
+        ("events", "0018_eventpage_body_en_eventpage_body_sl"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='eventpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="eventpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
     ]

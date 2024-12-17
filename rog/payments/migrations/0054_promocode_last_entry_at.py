@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0053_alter_promocode_code_alter_promocode_number_of_uses_and_more'),
+        (
+            "payments",
+            "0053_alter_promocode_code_alter_promocode_number_of_uses_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='promocode',
-            name='last_entry_at',
+            model_name="promocode",
+            name="last_entry_at",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]

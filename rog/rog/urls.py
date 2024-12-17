@@ -1,38 +1,27 @@
 from django.conf import settings
-from django.urls import include, path
-from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
-
-from wagtail.admin import urls as wagtailadmin_urls
-from wagtail import urls as wagtail_urls
-from wagtail.documents import urls as wagtaildocs_urls
-
-from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
-
-from search import views as search_views
-
+from django.contrib import admin
 from django.contrib.auth import views as auth_views
-
-from home.views import (
-    MyProfileView,
+from django.urls import include, path
+from home.views import (  # RegistrationPaymentView,; RegistrationSuccessView,
     EditProfileView,
-    SearchProfileView,
-    UserProfileView,
-    PurchasePlanView,
+    MyProfileView,
     PurchaseMembershipView,
-    RegistrationView,
+    PurchasePlanView,
+    RegistrationInformationView,
     RegistrationMailConfirmationView,
     RegistrationMembershipView,
-    RegistrationInformationView,
     RegistrationProfileView,
-    # RegistrationPaymentView,
-    # RegistrationSuccessView,
+    RegistrationView,
+    SearchProfileView,
+    UserProfileView,
 )
-
-from users.views import (
-    CheckTokenView,
-    TestCalendarTemplateView,
-)
+from search import views as search_views
+from users.views import CheckTokenView, TestCalendarTemplateView
+from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtailautocomplete.urls.admin import urlpatterns as autocomplete_admin_urls
 
 # Non-translatable URLs
 urlpatterns = [

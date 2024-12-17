@@ -1,35 +1,38 @@
-from django.utils import timezone
-
-from .models import Payment, PromoCode, Token, PaymentPlanEvent, PaymentItemType
-from users.models import Membership, MembershipType
-from home.email_utils import send_email
-
 from datetime import datetime, timedelta
 
+from django.utils import timezone
+from home.email_utils import send_email
 from sentry_sdk import capture_message, push_scope
-
+from users.models import Membership, MembershipType
 from users.prima_api import PrimaApi
+
+from .models import Payment, PaymentItemType, PaymentPlanEvent, PromoCode, Token
 
 prima_api = PrimaApi()
 
 
 def get_invoice_number():
     year = datetime.now().strftime("%y")
-    invoice_order = Payment.objects.filter(
-        transaction_success_at__year=datetime.now().year,
-        amount__gt=0
-    ).count() + 1  + 28 # WORKAROUND shift invoice number 
+    invoice_order = (
+        Payment.objects.filter(
+            transaction_success_at__year=datetime.now().year, amount__gt=0
+        ).count()
+        + 1
+        + 28
+    )  # WORKAROUND shift invoice number
     invoice_order_str = str(invoice_order).zfill(6)
-    return f'{year}-369-{invoice_order_str}'
+    return f"{year}-369-{invoice_order_str}"
+
 
 def get_free_invoice_number():
     year = datetime.now().strftime("%y")
-    invoice_order = Payment.objects.filter(
-        successed_at__year=datetime.now().year,
-        amount=0
-    ).count() + 1
+    invoice_order = (
+        Payment.objects.filter(successed_at__year=datetime.now().year, amount=0).count()
+        + 1
+    )
     invoice_order_str = str(invoice_order).zfill(6)
-    return f'{year}-000-{invoice_order_str}'
+    return f"{year}-000-{invoice_order_str}"
+
 
 def finish_payment(payment):
     user_fee_plan = None
@@ -79,10 +82,10 @@ def finish_payment(payment):
         # send error to sentry
         msg = f"Integrity error: payment.membership or payment.items.clanarina_fee is missing"
         with push_scope() as scope:
-            scope.user = { "user" : user}
+            scope.user = {"user": user}
             scope.set_extra("membership", membership.id)
             scope.set_extra("payment", payment.id)
-            capture_message(msg, 'fatal')
+            capture_message(msg, "fatal")
 
     # set valid_to if plan is subscription
     items = []
@@ -91,8 +94,14 @@ def finish_payment(payment):
         # create tokens
         if payment_plan.payment_item_type == PaymentItemType.UPORABNINA:
             user_fee_plan = plan
-            last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
-            valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+            last_payment_plan = (
+                user.payments.get_last_active_subscription_payment_plan()
+            )
+            valid_from = (
+                last_payment_plan.valid_to
+                if last_payment_plan and last_payment_plan.valid_to
+                else timezone.now()
+            )
             valid_to = valid_from + timedelta(days=plan.duration)
             payment_plan.valid_to = valid_to
             payment_plan.save()
@@ -107,43 +116,55 @@ def finish_payment(payment):
                         type=last_active_membership.type,
                         active=True,
                         user=user,
-                        extended_by=plan
+                        extended_by=plan,
                     )
                     membership.save()
 
             # always set uporabnina dates on prima from now since there could be an active plan already
             valid_from_prima = timezone.now()
             valid_to_prima = valid_to
-            valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
-            valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
-            prima_api.setUporabninaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
+            valid_from_prima_string = valid_from_prima.strftime("%Y-%m-%d %H:%M:%S")
+            valid_to_prima_string = valid_to_prima.strftime("%Y-%m-%d %H:%M:%S")
+            prima_api.setUporabninaDates(
+                user.prima_id, valid_from_prima_string, valid_to_prima_string
+            )
 
-            Token.objects.bulk_create([
-                Token(
-                    payment=payment,
-                    valid_from=valid_from,
-                    valid_to=valid_from + timedelta(days=plan.duration)
-                ) for i in range(plan.tokens)
-            ] + [
-                Token(
-                    payment=payment,
-                    valid_from=valid_from,
-                    valid_to=valid_from + timedelta(days=plan.duration),
-                    type_of=Token.Type.WORKSHOP
-                ) for i in range(plan.workshops)
-            ])
+            Token.objects.bulk_create(
+                [
+                    Token(
+                        payment=payment,
+                        valid_from=valid_from,
+                        valid_to=valid_from + timedelta(days=plan.duration),
+                    )
+                    for i in range(plan.tokens)
+                ]
+                + [
+                    Token(
+                        payment=payment,
+                        valid_from=valid_from,
+                        valid_to=valid_from + timedelta(days=plan.duration),
+                        type_of=Token.Type.WORKSHOP,
+                    )
+                    for i in range(plan.workshops)
+                ]
+            )
 
-        if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
+        if payment_plan.payment_item_type in [
+            PaymentItemType.EVENT,
+            PaymentItemType.TRAINING,
+        ]:
             event_registration = payment_plan.event_registration
             event_registration.registration_finished = True
             event_registration.save()
             event = event_registration.event
 
-        items.append({
-            'quantity': 1,
-            'name': payment_plan.plan_name,
-            'price': payment_plan.price,
-        })
+        items.append(
+            {
+                "quantity": 1,
+                "name": payment_plan.plan_name,
+                "price": payment_plan.price,
+            }
+        )
 
     payment_plans = PaymentPlanEvent.objects.filter(payment=payment)
     for payment_plan in payment_plans:

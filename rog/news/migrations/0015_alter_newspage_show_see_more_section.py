@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0014_alter_newscategory_options_and_more'),
+        ("news", "0014_alter_newscategory_options_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='newspage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="newspage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
     ]

@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0063_contentpage_body_en_contentpage_body_sl_and_more'),
+        ("home", "0063_contentpage_body_en_contentpage_body_sl_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='studiolistpage',
-            name='intro_text_en',
+            model_name="studiolistpage",
+            name="intro_text_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='studiolistpage',
-            name='intro_text_sl',
+            model_name="studiolistpage",
+            name="intro_text_sl",
             field=models.TextField(blank=True, null=True),
         ),
     ]

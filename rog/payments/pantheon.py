@@ -1,16 +1,17 @@
-from django.conf import settings
+import json
 
 import requests
-import json
+from django.conf import settings
 
 
 def filter_letters(input):
-    return ''.join(filter(str.isalpha, input))
+    return "".join(filter(str.isalpha, input))
+
 
 def create_ident(name, price, vat, ident_id):
     if not settings.PANTHEON_URL:
         return None
-    vat=22
+    vat = 22
     price = float(price)
     rtprice = price / 1.22
     data = {
@@ -210,13 +211,10 @@ def create_ident(name, price, vat, ident_id):
         "useAsCostOnVatba": "",
         "descrRtf": "",
         "techProcedureRtf": "",
-        "vatcodeReduced":"2S",
-        }
+        "vatcodeReduced": "2S",
+    }
     try:
-        response = requests.post(
-            f'{settings.PANTHEON_URL}/api/Ident',
-            json=data
-        )
+        response = requests.post(f"{settings.PANTHEON_URL}/api/Ident", json=data)
     except requests.exceptions.Timeout as e:
         print(e)
         return None
@@ -231,13 +229,13 @@ def create_subject(subject):
 
     taxer = False
     tax_number = str(subject.legal_person_tax_number)
-    tax_number = tax_number.replace('SI', '').strip()
+    tax_number = tax_number.replace("SI", "").strip()
     if subject.legal_person_vat:
         taxer = True
 
     post = subject.get_post()
 
-    subject_name = f'{subject.first_name} {subject.last_name}'
+    subject_name = f"{subject.first_name} {subject.last_name}"
     if not subject_name.strip():
         subject_name = filter_letters(" ".join(subject.email.split("@")[0].split(".")))
 
@@ -254,10 +252,14 @@ def create_subject(subject):
         "dept": "F",
         "school": "F",
         "institution": "F",
-        "name2": subject.legal_person_name if subject.legal_person_vat else f'{subject.first_name} {subject.last_name}',
+        "name2": (
+            subject.legal_person_name
+            if subject.legal_person_vat
+            else f"{subject.first_name} {subject.last_name}"
+        ),
         "address": subject.address_1,
         "name3": subject_name,
-        "post": f'SI-{post}' if post else "",
+        "post": f"SI-{post}" if post else "",
         "country": "Slovenija",
         "km": 0,
         "vatcodePrefix": "SI" if taxer else "",
@@ -439,13 +441,11 @@ def create_subject(subject):
         "webShopSubject": "",
         "deliveryPriority": 1,
         "deliveryDays": 0,
-        "priceRatePos": True
+        "priceRatePos": True,
     }
     try:
         response = requests.post(
-            f'{settings.PANTHEON_URL}/api/Subject',
-            json=data,
-            timeout=15
+            f"{settings.PANTHEON_URL}/api/Subject", json=data, timeout=15
         )
     except requests.exceptions.Timeout as e:
         print(e)
@@ -454,10 +454,7 @@ def create_subject(subject):
     return response
 
 
-
-def create_move(
-        payment,
-        vat=22):
+def create_move(payment, vat=22):
     if not settings.PANTHEON_URL:
         return None
     """
@@ -485,7 +482,11 @@ def create_move(
     data = {
         "acKey": "",
         "receiver": "",
-        "receiverId": payment.user.get_pantheon_subject_id() if payment.user.legal_person_vat else "SPLETNI KUPEC",
+        "receiverId": (
+            payment.user.get_pantheon_subject_id()
+            if payment.user.legal_person_vat
+            else "SPLETNI KUPEC"
+        ),
         "receiverAddress": payment.user.address_1,
         "issuer": "Veleprodajno skladišče",
         "issuerId": "Veleprodajno skladišče",
@@ -507,7 +508,7 @@ def create_move(
                 "amount": float(payment.amount),
                 "code": "",
                 "isRefund": True,
-                "fiscalGroup": ""
+                "fiscalGroup": "",
             }
         ],
         "clerkId": 1,
@@ -520,7 +521,7 @@ def create_move(
         "order": "369",
         "orderDate": payment.created_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "orderForm": str(payment.invoice_number),
-        "orderFormDate":  payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
+        "orderFormDate": payment.successed_at.strftime("%Y-%m-%dT00:00:00.000Z"),
         "credited": "",
         "note": str(payment.ujp_id),
         "title": "",
@@ -547,7 +548,7 @@ def create_move(
             {
                 "acKey": "",
                 "ident": item.get_pantheon_ident_id(),
-                "name": item.plan_name[:80].replace("[", '').replace("]", ''),
+                "name": item.plan_name[:80].replace("[", "").replace("]", ""),
                 "anNo": 1,
                 "quantity": 1,
                 "price": float(item.original_price) / 1.22,
@@ -556,7 +557,7 @@ def create_move(
                 "vat": 22,
                 "vatCode": "2S",
                 "vatCodeTR": "2S",
-                "note": item.plan_name.replace("[", '').replace("]", ''),
+                "note": item.plan_name.replace("[", "").replace("]", ""),
                 "measurementUnit": "KOS",
                 "taxPrice": 0,
                 "basisForTax": 0,
@@ -581,15 +582,14 @@ def create_move(
                 "allowedShortagePercent": 0,
                 "turnoverQuantity": 0,
                 "isSerialNo": True,
-                "author": ""
-            } for item in payment.payment_plans.all()
-        ]
+                "author": "",
+            }
+            for item in payment.payment_plans.all()
+        ],
     }
     try:
         response = requests.post(
-            f'{settings.PANTHEON_URL}/api/Move/insert',
-            json=data,
-            timeout=15
+            f"{settings.PANTHEON_URL}/api/Move/insert", json=data, timeout=15
         )
     except requests.exceptions.Timeout as e:
         print(e)

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0029_eventpage_contact_email_eventpage_labs_and_more'),
+        ("events", "0029_eventpage_contact_email_eventpage_labs_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='eventpage',
-            name='number_of_places',
-            field=models.IntegerField(default=0, verbose_name='Število mest'),
+            model_name="eventpage",
+            name="number_of_places",
+            field=models.IntegerField(default=0, verbose_name="Število mest"),
         ),
     ]

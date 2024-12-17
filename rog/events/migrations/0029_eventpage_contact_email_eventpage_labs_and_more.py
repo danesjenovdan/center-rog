@@ -6,39 +6,56 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0101_alter_metasettings_meta_image'),
-        ('events', '0028_alter_eventregistrationchild_options_and_more'),
+        ("home", "0101_alter_metasettings_meta_image"),
+        ("events", "0028_alter_eventregistrationchild_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventpage',
-            name='contact_email',
-            field=models.EmailField(blank=True, max_length=254, null=True, verbose_name='Kontaktni email'),
+            model_name="eventpage",
+            name="contact_email",
+            field=models.EmailField(
+                blank=True, max_length=254, null=True, verbose_name="Kontaktni email"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='labs',
-            field=models.ManyToManyField(blank=True, to='home.labpage', verbose_name='Laboratorij'),
+            model_name="eventpage",
+            name="labs",
+            field=models.ManyToManyField(
+                blank=True, to="home.labpage", verbose_name="Laboratorij"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='number_of_places',
-            field=models.ImageField(default=0, upload_to='', verbose_name='Število mest'),
+            model_name="eventpage",
+            name="number_of_places",
+            field=models.ImageField(
+                default=0, upload_to="", verbose_name="Število mest"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='price',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Cena'),
+            model_name="eventpage",
+            name="price",
+            field=models.DecimalField(
+                decimal_places=2, default=0, max_digits=10, verbose_name="Cena"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='price_for_non_member',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Cena za nečlane'),
+            model_name="eventpage",
+            name="price_for_non_member",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0,
+                max_digits=10,
+                verbose_name="Cena za nečlane",
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='without_registrations',
-            field=models.BooleanField(default=False, help_text='Če je označeno, je dogodek brez prijave.', verbose_name='Brez prijave'),
+            model_name="eventpage",
+            name="without_registrations",
+            field=models.BooleanField(
+                default=False,
+                help_text="Če je označeno, je dogodek brez prijave.",
+                verbose_name="Brez prijave",
+            ),
         ),
     ]

@@ -6,83 +6,113 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0073_alter_metasettings_organization_address_and_more'),
+        ("home", "0073_alter_metasettings_organization_address_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='labpage',
-            name='image_description',
-            field=models.TextField(blank=True, max_length=250, verbose_name='Dodaten opis slike'),
+            model_name="labpage",
+            name="image_description",
+            field=models.TextField(
+                blank=True, max_length=250, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='labpage',
-            name='image_description_en',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="labpage",
+            name="image_description_en",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='labpage',
-            name='image_description_sl',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="labpage",
+            name="image_description_sl",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='librarypage',
-            name='image_description',
-            field=models.TextField(blank=True, max_length=250, verbose_name='Dodaten opis slike'),
+            model_name="librarypage",
+            name="image_description",
+            field=models.TextField(
+                blank=True, max_length=250, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='librarypage',
-            name='image_description_en',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="librarypage",
+            name="image_description_en",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='librarypage',
-            name='image_description_sl',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="librarypage",
+            name="image_description_sl",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='marketstorepage',
-            name='image_description',
-            field=models.TextField(blank=True, max_length=250, verbose_name='Dodaten opis slike'),
+            model_name="marketstorepage",
+            name="image_description",
+            field=models.TextField(
+                blank=True, max_length=250, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='marketstorepage',
-            name='image_description_en',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="marketstorepage",
+            name="image_description_en",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='marketstorepage',
-            name='image_description_sl',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="marketstorepage",
+            name="image_description_sl",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='residencepage',
-            name='image_description',
-            field=models.TextField(blank=True, max_length=250, verbose_name='Dodaten opis slike'),
+            model_name="residencepage",
+            name="image_description",
+            field=models.TextField(
+                blank=True, max_length=250, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='residencepage',
-            name='image_description_en',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="residencepage",
+            name="image_description_en",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='residencepage',
-            name='image_description_sl',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="residencepage",
+            name="image_description_sl",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='studiopage',
-            name='image_description',
-            field=models.TextField(blank=True, max_length=250, verbose_name='Dodaten opis slike'),
+            model_name="studiopage",
+            name="image_description",
+            field=models.TextField(
+                blank=True, max_length=250, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='studiopage',
-            name='image_description_en',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="studiopage",
+            name="image_description_en",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
         migrations.AlterField(
-            model_name='studiopage',
-            name='image_description_sl',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Dodaten opis slike'),
+            model_name="studiopage",
+            name="image_description_sl",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Dodaten opis slike"
+            ),
         ),
     ]

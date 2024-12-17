@@ -3,6 +3,7 @@ from django.conf import settings
 
 register = template.Library()
 
+
 @register.filter
 def strip_language(value):
     """

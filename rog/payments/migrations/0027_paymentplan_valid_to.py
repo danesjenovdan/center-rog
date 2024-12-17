@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0026_auto_20230919_1207'),
+        ("payments", "0026_auto_20230919_1207"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='paymentplan',
-            name='valid_to',
-            field=models.DateTimeField(blank=True, help_text='When subscription expires', null=True),
+            model_name="paymentplan",
+            name="valid_to",
+            field=models.DateTimeField(
+                blank=True, help_text="When subscription expires", null=True
+            ),
         ),
     ]

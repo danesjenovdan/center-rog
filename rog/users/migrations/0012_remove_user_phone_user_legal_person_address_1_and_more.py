@@ -6,37 +6,37 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0011_membershiptype_remove_membership_end_day_and_more'),
+        ("users", "0011_membershiptype_remove_membership_end_day_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='user',
-            name='phone',
+            model_name="user",
+            name="phone",
         ),
         migrations.AddField(
-            model_name='user',
-            name='legal_person_address_1',
+            model_name="user",
+            name="legal_person_address_1",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='legal_person_address_2',
+            model_name="user",
+            name="legal_person_address_2",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='legal_person_name',
+            model_name="user",
+            name="legal_person_name",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='legal_person_tax_number',
+            model_name="user",
+            name="legal_person_tax_number",
             field=models.CharField(blank=True, max_length=200),
         ),
         migrations.AddField(
-            model_name='user',
-            name='legal_person_vat',
+            model_name="user",
+            name="legal_person_vat",
             field=models.CharField(blank=True, max_length=200),
         ),
     ]

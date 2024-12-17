@@ -1,32 +1,47 @@
 from django.contrib import admin
-from .models import Plan, Payment, PromoCode
+
+from .models import Payment, Plan, PromoCode
 
 # Register your models here.
 
+
 @admin.register(Plan)
 class PlanAdmin(admin.ModelAdmin):
-    list_display = ['name', 'valid_from', 'valid_to']
+    list_display = ["name", "valid_from", "valid_to"]
     list_filter = ()
 
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ["created_at", "updated_at"]
 
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ['user', 'status', 'amount', 'created_at']
-    list_filter = ('status', 'items')
+    list_display = ["user", "status", "amount", "created_at"]
+    list_filter = ("status", "items")
 
-    readonly_fields = ['created_at', 'updated_at']
+    readonly_fields = ["created_at", "updated_at"]
+
 
 @admin.register(PromoCode)
 class PromoCodeAdmin(admin.ModelAdmin):
-    list_display = ['code', 'valid_to', 'percent_discount', 'payment_item_type', 'single_use', 'number_of_uses']
-    list_filter = ('payment_item_type', 'single_use',)
+    list_display = [
+        "code",
+        "valid_to",
+        "percent_discount",
+        "payment_item_type",
+        "single_use",
+        "number_of_uses",
+    ]
+    list_filter = (
+        "payment_item_type",
+        "single_use",
+    )
 
-    readonly_fields = ['created_at', 'updated_at']
-    search_fields = ('code',)
-    list_filter = ('payment_item_type', 'single_use',)
-
+    readonly_fields = ["created_at", "updated_at"]
+    search_fields = ("code",)
+    list_filter = (
+        "payment_item_type",
+        "single_use",
+    )
 
     def get_changeform_initial_data(self, request):
-        return {'code': 'custom_initial_value'}
+        return {"code": "custom_initial_value"}

@@ -1,9 +1,8 @@
-from django.core.management.base import BaseCommand
-
 from datetime import datetime, timedelta
 
-from payments.models import PaymentPlanEvent, PaymentItemType, Payment
+from django.core.management.base import BaseCommand
 from home.email_utils import send_email
+from payments.models import Payment, PaymentItemType, PaymentPlanEvent
 
 
 class Command(BaseCommand):
@@ -130,7 +129,7 @@ class Command(BaseCommand):
                 "Center Rog - čez en mesec poteče tvoj uporabniški paket // in 1 Month your user package will expire",
                 {
                     "payment_plan": payment_plan,
-                    "name": payment_plan.payment.user.first_name
+                    "name": payment_plan.payment.user.first_name,
                 },
             )
 

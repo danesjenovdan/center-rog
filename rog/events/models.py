@@ -1,30 +1,23 @@
-from django.db import models
-from django import forms
-from django.db.models import Q
-from django.conf import settings
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-
-from wagtail.models import Page, Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
-
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.models import ClusterableModel
-
-from wagtailautocomplete.edit_handlers import AutocompletePanel
-
+import random
 from datetime import date
 
-from home.models import BasePage, CustomImage, Workshop
-from payments.pantheon import create_ident
-
-from behaviours.models import Timestampable
-
 import sentry_sdk
-
-import random
+from behaviours.models import Timestampable
+from django import forms
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import models
+from django.db.models import Q
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from home.models import BasePage, CustomImage, Workshop
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.models import ClusterableModel
+from payments.pantheon import create_ident
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable, Page
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 
 def add_see_more_fields(context):
@@ -72,9 +65,10 @@ class EventCategory(models.Model):
     )
     saved_in_pantheon = models.BooleanField(
         default=False,
-        help_text=_("Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon")
+        help_text=_(
+            "Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon"
+        ),
     )
-
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -172,9 +166,7 @@ class EventPage(BasePage):
     event_is_for_children = models.BooleanField(
         default=False,
         verbose_name=_("Dogodek je za otroke"),
-        help_text=_(
-            "Prijava na dogodek zahteva vpis vsaj enega otroka"
-        ),
+        help_text=_("Prijava na dogodek zahteva vpis vsaj enega otroka"),
     )
 
     content_panels = Page.content_panels + [

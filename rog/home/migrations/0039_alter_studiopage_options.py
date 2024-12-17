@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0038_metasettings_header_marquee'),
+        ("home", "0038_metasettings_header_marquee"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='studiopage',
-            options={'verbose_name': 'Studio', 'verbose_name_plural': 'Studii'},
+            name="studiopage",
+            options={"verbose_name": "Studio", "verbose_name_plural": "Studii"},
         ),
     ]

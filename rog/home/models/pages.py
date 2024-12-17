@@ -1,30 +1,36 @@
+import random
+from datetime import date, datetime
+
+from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
-
+from events.models import EventPage
+from modelcluster.fields import ParentalKey
+from news.models import NewsPage
 from wagtail import blocks
-from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page
 from wagtailmedia.edit_handlers import MediaChooserPanel
-from modelcluster.fields import ParentalKey
 
-from .base_pages import BasePage, ObjectProfilePage, ObjectListPage, ObjectArchiveListPage
+from .base_pages import (
+    BasePage,
+    ObjectArchiveListPage,
+    ObjectListPage,
+    ObjectProfilePage,
+)
 from .image import CustomImage
 from .workshop import Workshop
-from news.models import NewsPage
-from events.models import EventPage
-
-import random
-from datetime import date, datetime
 
 
 def add_see_more_fields(context):
     # random event
     today = date.today()
-    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
+    events = list(
+        EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")
+    )[:5]
     context["event"] = random.choice(events) if events else None
     # random news
     news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
@@ -58,7 +64,9 @@ def add_see_more_lab_events(context):
 
     return context
 
+
 ### OBJECT PROFILE PAGES ###
+
 
 class StudioPage(ObjectProfilePage):
     thumbnail = models.ForeignKey(
@@ -67,16 +75,14 @@ class StudioPage(ObjectProfilePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Predogledna slika")
+        verbose_name=_("Predogledna slika"),
     )
 
     content_panels = ObjectProfilePage.content_panels + [
         FieldPanel("thumbnail"),
     ]
 
-    parent_page_types = [
-        "home.StudioListPage"
-    ]
+    parent_page_types = ["home.StudioListPage"]
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -90,13 +96,12 @@ class StudioPage(ObjectProfilePage):
         verbose_name = _("Studio")
         verbose_name_plural = _("Studii")
 
+
 StudioPage._meta.get_field("color_scheme").default = "yellow"
 
 
 class ResidencePage(ObjectProfilePage):
-    parent_page_types = [
-        "home.ResidenceListPage"
-    ]
+    parent_page_types = ["home.ResidenceListPage"]
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -110,6 +115,7 @@ class ResidencePage(ObjectProfilePage):
         verbose_name = _("Rezident")
         verbose_name_plural = _("Rezidenti")
 
+
 ResidencePage._meta.get_field("color_scheme").default = "dark-gray"
 
 
@@ -118,12 +124,10 @@ class MarketStorePage(ObjectProfilePage):
         max_length=20,
         choices=settings.COLOR_SCHEMES,
         default="white",
-        verbose_name=_("Barvna shema kartice na seznamu")
+        verbose_name=_("Barvna shema kartice na seznamu"),
     )
 
-    parent_page_types = [
-        "home.MarketStoreListPage"
-    ]
+    parent_page_types = ["home.MarketStoreListPage"]
 
     content_panels = ObjectProfilePage.content_panels + [
         FieldPanel("card_color_scheme"),
@@ -141,6 +145,7 @@ class MarketStorePage(ObjectProfilePage):
         verbose_name = _("Trgovina")
         verbose_name_plural = _("Trgovine")
 
+
 MarketStorePage._meta.get_field("color_scheme").default = "brown"
 
 
@@ -152,7 +157,7 @@ class LabPage(BasePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Slika")
+        verbose_name=_("Slika"),
     )
     thumbnail = models.ForeignKey(
         CustomImage,
@@ -160,29 +165,49 @@ class LabPage(BasePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Predogledna slika")
+        verbose_name=_("Predogledna slika"),
     )
-    gallery = StreamField([
-        ("image", blocks.StructBlock([
-            ("image", ImageChooserBlock(label=_("Slika"))),
-            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
-        ]))
-    ], blank=True, null=True, verbose_name=_("Galerija"))
-    lab_lead = models.CharField(
-        max_length=255,
+    gallery = StreamField(
+        [
+            (
+                "image",
+                blocks.StructBlock(
+                    [
+                        ("image", ImageChooserBlock(label=_("Slika"))),
+                        (
+                            "image_description",
+                            blocks.TextBlock(
+                                label=_("Podnapis k sliki"),
+                                max_length=150,
+                                required=False,
+                            ),
+                        ),
+                    ]
+                ),
+            )
+        ],
         blank=True,
-        verbose_name=_("Vodja laboratorija")
+        null=True,
+        verbose_name=_("Galerija"),
+    )
+    lab_lead = models.CharField(
+        max_length=255, blank=True, verbose_name=_("Vodja laboratorija")
     )
     lab_lead_email = models.EmailField(
-        blank=True,
-        verbose_name=_("E-mail vodje laboratorija")
+        blank=True, verbose_name=_("E-mail vodje laboratorija")
     )
     lab_lead_phone = models.TextField(
         blank=True, verbose_name=_("Telefonska številka vodje laboratorija")
     )
-    training_dates_link = models.URLField(blank=True, verbose_name=_("Termini usposabljanj"))
-    online_trainings_link = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
-    optional_button = models.URLField(blank=True, verbose_name=_("Spletna usposabljanja"))
+    training_dates_link = models.URLField(
+        blank=True, verbose_name=_("Termini usposabljanj")
+    )
+    online_trainings_link = models.URLField(
+        blank=True, verbose_name=_("Spletna usposabljanja")
+    )
+    optional_button = models.URLField(
+        blank=True, verbose_name=_("Spletna usposabljanja")
+    )
     working_hours = StreamField(
         [
             (
@@ -224,7 +249,7 @@ class LabPage(BasePage):
                         ("link", blocks.URLBlock(label="Povezava")),
                     ],
                     label=_("Zunanji URL"),
-                )
+                ),
             ),
             (
                 "page",
@@ -242,7 +267,9 @@ class LabPage(BasePage):
         verbose_name=_("Gumb"),
         max_num=1,
     )
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
@@ -266,13 +293,9 @@ class LabPage(BasePage):
         FieldPanel("show_see_more_section"),
     ]
 
-    parent_page_types = [
-        "home.LabListPage"
-    ]
+    parent_page_types = ["home.LabListPage"]
 
-    subpage_types = [
-        "home.WorkingStationPage"
-    ]
+    subpage_types = ["home.WorkingStationPage"]
 
     def short_description(self):
         if len(self.description) > 240:
@@ -297,6 +320,7 @@ class LabPage(BasePage):
         verbose_name = _("Laboratorij")
         verbose_name_plural = _("Laboratoriji")
 
+
 LabPage._meta.get_field("color_scheme").default = "light-green"
 
 
@@ -307,7 +331,9 @@ class WorkingStationPage(BasePage):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        verbose_name=_("Predogledna slika (če je prazno, se bo uporabila zgornja slika)"),
+        verbose_name=_(
+            "Predogledna slika (če je prazno, se bo uporabila zgornja slika)"
+        ),
     )
     description = models.TextField(blank=True, verbose_name=_("Kratek opis na kartici"))
     image = models.ForeignKey(
@@ -333,7 +359,9 @@ class WorkingStationPage(BasePage):
                         ),
                         (
                             "points",
-                            blocks.ListBlock(blocks.TextBlock(), label=_("Točka"), min=1),
+                            blocks.ListBlock(
+                                blocks.TextBlock(), label=_("Točka"), min=1
+                            ),
                         ),
                     ],
                     label=_("Modul s točkami"),
@@ -373,10 +401,22 @@ class WorkingStationPage(BasePage):
                         ),
                         (
                             "points",
-                            blocks.ListBlock(blocks.StructBlock([
-                                ("name", blocks.TextBlock(label=_("Specifikacija"))),
-                                ("value", blocks.TextBlock(label=_("Vrednost"))),
-                            ]), label=_("Specifikacije"), min=1),
+                            blocks.ListBlock(
+                                blocks.StructBlock(
+                                    [
+                                        (
+                                            "name",
+                                            blocks.TextBlock(label=_("Specifikacija")),
+                                        ),
+                                        (
+                                            "value",
+                                            blocks.TextBlock(label=_("Vrednost")),
+                                        ),
+                                    ]
+                                ),
+                                label=_("Specifikacije"),
+                                min=1,
+                            ),
                         ),
                     ],
                     label=_("Modul s specifikacijami"),
@@ -404,7 +444,9 @@ class WorkingStationPage(BasePage):
     prima_group_id = models.IntegerField(
         null=True, blank=True, verbose_name=_("Prima group id")
     )
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
@@ -461,10 +503,12 @@ class LibraryPage(ObjectProfilePage):
         verbose_name = _("Knjižnica")
         verbose_name_plural = _("Knjižnice")
 
+
 LibraryPage._meta.get_field("color_scheme").default = "pink"
 
 
 ## OBJECT ARCHIVE LIST PAGES
+
 
 class StudioArchiveListPage(ObjectArchiveListPage):
     subpage_types = []
@@ -484,6 +528,7 @@ class StudioArchiveListPage(ObjectArchiveListPage):
     class Meta:
         verbose_name = _("Arhiv studiev")
         verbose_name_plural = _("Arhivi studiev")
+
 
 StudioArchiveListPage._meta.get_field("color_scheme").default = "yellow"
 
@@ -507,10 +552,12 @@ class ResidenceArchiveListPage(ObjectArchiveListPage):
         verbose_name = _("Arhiv rezidentov")
         verbose_name_plural = _("Arhivi rezidentov")
 
+
 ResidenceArchiveListPage._meta.get_field("color_scheme").default = "dark-gray"
 
 
 ### OBJECT LIST PAGES ###
+
 
 class StudioListPage(ObjectListPage):
     subpage_types = [
@@ -524,8 +571,8 @@ class StudioListPage(ObjectListPage):
             StudioPage.objects.child_of(self)
             .live()
             .filter(
-                Q(archived=False) &
-                (Q(active_to=None) | Q(active_to__gte=datetime.today())),
+                Q(archived=False)
+                & (Q(active_to=None) | Q(active_to__gte=datetime.today())),
             )
         )
         context["archive_page"] = StudioArchiveListPage.objects.live().first()
@@ -539,6 +586,7 @@ class StudioListPage(ObjectListPage):
         verbose_name = _("Studii")
         verbose_name_plural = _("Studii")
 
+
 StudioListPage._meta.get_field("color_scheme").default = "yellow"
 
 
@@ -550,10 +598,14 @@ class MarketStoreListPage(ObjectListPage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        context["markets"] = MarketStorePage.objects.child_of(self).live().filter(
-                Q(archived=False) &
-                (Q(active_to=None) | Q(active_to__gte=datetime.today())),
+        context["markets"] = (
+            MarketStorePage.objects.child_of(self)
+            .live()
+            .filter(
+                Q(archived=False)
+                & (Q(active_to=None) | Q(active_to__gte=datetime.today())),
             )
+        )
 
         # see more
         context = add_see_more_fields(context)
@@ -563,6 +615,7 @@ class MarketStoreListPage(ObjectListPage):
     class Meta:
         verbose_name = _("Market")
         verbose_name_plural = _("Market")
+
 
 MarketStoreListPage._meta.get_field("color_scheme").default = "brown"
 
@@ -594,6 +647,7 @@ class ResidenceListPage(ObjectListPage):
         verbose_name = _("Rezidenti")
         verbose_name_plural = _("Rezidenti")
 
+
 ResidenceListPage._meta.get_field("color_scheme").default = "dark-gray"
 
 
@@ -607,7 +661,7 @@ class LabListPage(ObjectListPage):
 
         context["labs"] = LabPage.objects.child_of(self).live()
 
-       # see more
+        # see more
         context = add_see_more_fields(context)
 
         return context
@@ -615,5 +669,6 @@ class LabListPage(ObjectListPage):
     class Meta:
         verbose_name = _("Laboratoriji")
         verbose_name_plural = _("Laboratoriji")
+
 
 LabListPage._meta.get_field("color_scheme").default = "light-green"

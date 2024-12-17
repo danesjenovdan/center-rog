@@ -6,46 +6,46 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0006_user_address_1_user_address_2'),
+        ("users", "0006_user_address_1_user_address_2"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='description',
+            model_name="user",
+            name="description",
             field=models.TextField(blank=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='link',
+            model_name="user",
+            name="link",
             field=models.URLField(blank=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='public_profile',
+            model_name="user",
+            name="public_profile",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='user',
-            name='public_username',
+            model_name="user",
+            name="public_username",
             field=models.CharField(blank=True, max_length=20),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='address_1',
-            field=models.CharField(blank=True, default='', max_length=200),
+            model_name="user",
+            name="address_1",
+            field=models.CharField(blank=True, default="", max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='user',
-            name='address_2',
-            field=models.CharField(blank=True, default='', max_length=200),
+            model_name="user",
+            name="address_2",
+            field=models.CharField(blank=True, default="", max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='user',
-            name='phone',
-            field=models.CharField(blank=True, default='', max_length=20),
+            model_name="user",
+            name="phone",
+            field=models.CharField(blank=True, default="", max_length=20),
             preserve_default=False,
         ),
     ]

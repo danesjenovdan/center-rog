@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0014_alter_eventpage_end_day'),
+        ("events", "0014_alter_eventpage_end_day"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='eventpage',
-            name='short_description',
+            model_name="eventpage",
+            name="short_description",
         ),
     ]

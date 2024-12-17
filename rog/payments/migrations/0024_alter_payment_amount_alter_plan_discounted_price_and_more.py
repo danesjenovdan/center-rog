@@ -6,23 +6,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0023_alter_plan_description_item_1_and_more'),
+        ("payments", "0023_alter_plan_description_item_1_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='payment',
-            name='amount',
+            model_name="payment",
+            name="amount",
             field=models.DecimalField(decimal_places=2, max_digits=10),
         ),
         migrations.AlterField(
-            model_name='plan',
-            name='discounted_price',
-            field=models.DecimalField(decimal_places=2, help_text='Price for younger than 26 years old and older than 65', max_digits=10, verbose_name='Discounted price'),
+            model_name="plan",
+            name="discounted_price",
+            field=models.DecimalField(
+                decimal_places=2,
+                help_text="Price for younger than 26 years old and older than 65",
+                max_digits=10,
+                verbose_name="Discounted price",
+            ),
         ),
         migrations.AlterField(
-            model_name='plan',
-            name='price',
-            field=models.DecimalField(decimal_places=2, max_digits=10, verbose_name='Cena'),
+            model_name="plan",
+            name="price",
+            field=models.DecimalField(
+                decimal_places=2, max_digits=10, verbose_name="Cena"
+            ),
         ),
     ]

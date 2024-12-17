@@ -1,6 +1,7 @@
-from .models import EventPage, EventListArchivePage, EventListPage, EventCategory
-from modeltranslation.translator import TranslationOptions
 from modeltranslation.decorators import register
+from modeltranslation.translator import TranslationOptions
+
+from .models import EventCategory, EventListArchivePage, EventListPage, EventPage
 
 
 @register(EventPage)

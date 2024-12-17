@@ -6,63 +6,63 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0081_alter_contentpage_options_alter_lablistpage_options_and_more'),
+        ("home", "0081_alter_contentpage_options_alter_lablistpage_options_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='lablistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="lablistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='labpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="labpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
         migrations.AlterField(
-            model_name='librarypage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="librarypage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
         migrations.AlterField(
-            model_name='marketstorelistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="marketstorelistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='marketstorepage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="marketstorepage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
         migrations.AlterField(
-            model_name='residencearchivelistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="residencearchivelistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='residencelistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="residencelistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='residencepage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="residencepage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
         migrations.AlterField(
-            model_name='studioarchivelistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="studioarchivelistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='studiolistpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Poglej več'),
+            model_name="studiolistpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Poglej več"),
         ),
         migrations.AlterField(
-            model_name='studiopage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=True, verbose_name='Pokaži več'),
+            model_name="studiopage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=True, verbose_name="Pokaži več"),
         ),
     ]

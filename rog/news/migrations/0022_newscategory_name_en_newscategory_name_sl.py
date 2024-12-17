@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0021_newslistpage_meta_image_newspage_meta_image'),
+        ("news", "0021_newslistpage_meta_image_newspage_meta_image"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='newscategory',
-            name='name_en',
-            field=models.TextField(null=True, verbose_name='Ime kategorije'),
+            model_name="newscategory",
+            name="name_en",
+            field=models.TextField(null=True, verbose_name="Ime kategorije"),
         ),
         migrations.AddField(
-            model_name='newscategory',
-            name='name_sl',
-            field=models.TextField(null=True, verbose_name='Ime kategorije'),
+            model_name="newscategory",
+            name="name_sl",
+            field=models.TextField(null=True, verbose_name="Ime kategorije"),
         ),
     ]

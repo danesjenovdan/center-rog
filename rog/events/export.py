@@ -1,14 +1,12 @@
-from wagtail_modeladmin.helpers import ButtonHelper, AdminURLHelper
-from wagtail_modeladmin.views import IndexView
+import csv
 
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.urls import path, reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-from django.urls import path
-from django.http import HttpResponse
-
-import csv
+from wagtail_modeladmin.helpers import AdminURLHelper, ButtonHelper
+from wagtail_modeladmin.views import IndexView
 
 
 class ExportButtonHelper(ButtonHelper):
@@ -78,7 +76,9 @@ class ExportEventRegistrationView(IndexView):
                     "allow_photos": registration.allow_photos,
                     "gender": "",
                     "birth_date": (
-                        registration.user.birth_date.isoformat() if registration.user.birth_date else ""
+                        registration.user.birth_date.isoformat()
+                        if registration.user.birth_date
+                        else ""
                     ),
                 }
             )

@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0031_payment_payment_done_at_alter_payment_successed_at'),
+        ("payments", "0031_payment_payment_done_at_alter_payment_successed_at"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='payment',
-            name='payment_done_at',
-            field=models.DateTimeField(blank=True, help_text='When payment was done', null=True, verbose_name='Done at'),
+            model_name="payment",
+            name="payment_done_at",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="When payment was done",
+                null=True,
+                verbose_name="Done at",
+            ),
         ),
     ]

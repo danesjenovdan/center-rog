@@ -1,26 +1,26 @@
-from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import get_object_or_404, render, redirect
-from django.conf import settings
-from django.utils import timezone
-from django.views import View
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from datetime import datetime, timedelta
+from decimal import Decimal
 
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
+from django.views import View
+from events.models import EventRegistration
 from rest_framework import views
 from rest_framework.response import Response
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from wkhtmltopdf.views import PDFTemplateResponse
-from decimal import Decimal
 from sentry_sdk import capture_message
-
-from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
-from .parsers import XMLParser
+from wkhtmltopdf.views import PDFTemplateResponse
+
 from .forms import PromoCodeForm
-from .utils import get_invoice_number, get_free_invoice_number, finish_payment
-from events.models import EventRegistration
+from .models import Payment, PaymentItemType, PaymentPlanEvent, Plan, PromoCode
+from .parsers import XMLParser
+from .utils import finish_payment, get_free_invoice_number, get_invoice_number
 
 # Create your views here.
 
@@ -79,9 +79,10 @@ class PaymentPreview(views.APIView):
                     last_active_membership = user.get_last_active_membership()
 
                     # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
-                    if (
-                        not last_active_membership
-                    ) or ((new_uporabnina_valid_to > last_active_membership.valid_to) and not plan.extend_membership):
+                    if (not last_active_membership) or (
+                        (new_uporabnina_valid_to > last_active_membership.valid_to)
+                        and not plan.extend_membership
+                    ):
                         today = datetime.now()
                         one_year_from_now = today + timedelta(days=365)
                         paid_membership_type = MembershipType.objects.filter(
@@ -164,7 +165,7 @@ class PaymentPreview(views.APIView):
                     payment = existing_payment_plan.payment
                     existing_payment_plan.price = price
                     existing_payment_plan.original_price = price
-                    existing_payment_plan.plan_name=title
+                    existing_payment_plan.plan_name = title
                     payment.amount = price
                     payment.original_amount = price
 
@@ -187,7 +188,8 @@ class PaymentPreview(views.APIView):
                     PaymentPlanEvent(
                         payment_item_type=(
                             PaymentItemType.TRAINING
-                            if event.category and (event.category.name == "Usposabljanja")
+                            if event.category
+                            and (event.category.name == "Usposabljanja")
                             else PaymentItemType.EVENT
                         ),
                         event_registration=event_registration,
@@ -214,6 +216,8 @@ class PaymentPreview(views.APIView):
             return redirect("profile-my")
 
     def post(self, request):
+        # TODO mogoče transakcija?
+
         user = request.user
 
         purchase_type = request.GET.get("purchase_type", "")
@@ -234,18 +238,22 @@ class PaymentPreview(views.APIView):
                     if payment_plan.promo_code:
                         continue
                     if PromoCode.check_code_validity(promo_code, payment_plan):
-                        if payment_plan.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
+                        if payment_plan.payment_item_type in [
+                            PaymentItemType.EVENT,
+                            PaymentItemType.TRAINING,
+                        ]:
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
 
                             payment_plan.promo_code = valid_promo_code
-
                             payment.amount -= payment_plan.price * Decimal(
                                 valid_promo_code.percent_discount / 100
                             )
                             payment.save()
 
-                            payment_plan.price = payment_plan.price - payment_plan.price * Decimal(
-                                valid_promo_code.percent_discount / 100
+                            payment_plan.price = (
+                                payment_plan.price
+                                - payment_plan.price
+                                * Decimal(valid_promo_code.percent_discount / 100)
                             )
                             payment_plan.save()
 
@@ -308,7 +316,9 @@ class Pay(views.APIView):
         free_order = False
         if payment.amount == 0:
             # User has 100% discount dont show payment page
-            last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
+            last_ujp_payment = (
+                Payment.objects.all().exclude(ujp_id=None).order_by("-ujp_id")[0]
+            )
             payment.ujp_id = last_ujp_payment.ujp_id + 1
             finish_payment(payment)
             free_order = True
@@ -318,7 +328,9 @@ class Pay(views.APIView):
             payment.invoice_number = get_free_invoice_number()
             payment.save()
         return render(
-            request, "payment.html", {"id": payment_id, "ujp_id": payment.ujp_id, "free_order": free_order}
+            request,
+            "payment.html",
+            {"id": payment_id, "ujp_id": payment.ujp_id, "free_order": free_order},
         )
 
     def post(self, request):
@@ -332,12 +344,18 @@ class Pay(views.APIView):
             return redirect("profile-my")
 
         if payment.status == Payment.Status.SUCCESS:
-            return render(request, "payment_failed.html", {"status": _("Plačilo je bilo že sprocesirano.")})
+            return render(
+                request,
+                "payment_failed.html",
+                {"status": _("Plačilo je bilo že sprocesirano.")},
+            )
 
         uuid = payment.user.uuid
 
         # increase ujp id
-        last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
+        last_ujp_payment = (
+            Payment.objects.all().exclude(ujp_id=None).order_by("-ujp_id")[0]
+        )
         payment.ujp_id = last_ujp_payment.ujp_id + 1
         payment.save()
 
@@ -376,7 +394,10 @@ class PaymentDataXML(views.APIView):
         items = ""
 
         for pp in payment.payment_plans.all():
-            if pp.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
+            if pp.payment_item_type in [
+                PaymentItemType.EVENT,
+                PaymentItemType.TRAINING,
+            ]:
                 sifra = payment.payment_plans.first().event_registration.event.id
             else:
                 sifra = pp.plan.id
@@ -451,14 +472,17 @@ class PaymentSuccessXML(views.APIView):
 
         payment.info = str(data)
         payment.save()
-        if '<rezultat>1</rezultat>' in payment.info:
+        if "<rezultat>1</rezultat>" in payment.info:
             if payment.status == Payment.Status.SUCCESS:
-                capture_message(f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!", 'fatal')
+                capture_message(
+                    f"Payment {payment.id} is SUCCESSED and UJP result is 1. Investigete it!",
+                    "fatal",
+                )
             else:
                 payment.status = Payment.Status.ERROR.value
                 payment.errored_at = timezone.now()
                 payment.save()
-        elif '<rezultat>0</rezultat>' in payment.info:
+        elif "<rezultat>0</rezultat>" in payment.info:
             payment.refresh_from_db()
             payment.transaction_success_at = timezone.now()
             if payment.status != Payment.Status.SUCCESS:
@@ -488,20 +512,34 @@ class PaymentSuccess(views.APIView):
         # free order has no args and different HTTP_REFERER
 
         if not free_order and len(urlpars) < 2:
-            return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
+            return render(
+                request, "payment_failed.html", {"status": _("Napaka pri plačilu.")}
+            )
 
-        payment = Payment.objects.get(ujp_id=request.GET.get('id'))
+        payment = Payment.objects.get(ujp_id=request.GET.get("id"))
 
         if free_order:
             if payment.status != Payment.Status.SUCCESS:
-                capture_message(f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!", 'fatal')
-                return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
+                capture_message(
+                    f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!",
+                    "fatal",
+                )
+                return render(
+                    request, "payment_failed.html", {"status": _("Napaka pri plačilu.")}
+                )
 
         # check if referer exists and is valid
-        referer = request.META.get('HTTP_REFERER')
-        if not free_order and not (referer and referer.startswith(settings.PAYMENT_BASE_URL)):
-            capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
-            return render(request, "payment_failed.html", {'status': 'Napaka pri plačilu'})
+        referer = request.META.get("HTTP_REFERER")
+        if not free_order and not (
+            referer and referer.startswith(settings.PAYMENT_BASE_URL)
+        ):
+            capture_message(
+                f"Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!",
+                "fatal",
+            )
+            return render(
+                request, "payment_failed.html", {"status": "Napaka pri plačilu"}
+            )
 
         print(args)
         if "registration" in args:
@@ -511,7 +549,7 @@ class PaymentSuccess(views.APIView):
         elif "event" in args:
             purchase_type = "event"
             event = payment.payment_plans.first().event_registration.event
-            context_vars['event'] = event
+            context_vars["event"] = event
         else:
             purchase_type = "membership"
 
@@ -525,7 +563,9 @@ class PaymentSuccess(views.APIView):
             return render(request, "payment_success.html", context_vars)
 
         if str(payment.user.uuid) != urlpars[1]:
-            return render(request, "payment_failed.html",{"status": "UUID does not match"})
+            return render(
+                request, "payment_failed.html", {"status": "UUID does not match"}
+            )
 
         payment.refresh_from_db()
         if payment.status != Payment.Status.SUCCESS:

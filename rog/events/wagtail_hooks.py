@@ -1,18 +1,18 @@
-from django.contrib.admin import SimpleListFilter
-from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
-from django.db.models import Q, Count, OuterRef, Subquery
-from django.urls import path, reverse
-from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
-from wagtail.admin.menu import MenuItem
-from wagtail import hooks
-
 from datetime import datetime
 
-from .models import EventPage, EventCategory, EventRegistration
-from .views import event_list
-from .export import ExportModelAdminMixin
+from django.contrib.admin import SimpleListFilter
+from django.db.models import Count, OuterRef, Q, Subquery
+from django.urls import path, reverse
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from payments.models import PaymentPlanEvent
+from wagtail import hooks
+from wagtail.admin.menu import MenuItem
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
+
+from .export import ExportModelAdminMixin
+from .models import EventCategory, EventPage, EventRegistration
+from .views import event_list
 
 
 class RelevantEventsListFilter(SimpleListFilter):
@@ -51,9 +51,7 @@ class RelevantEventsListFilter(SimpleListFilter):
         # to decide how to filter the queryset.
 
         if self.value():
-            return queryset.filter(
-                event=self.value()
-            )
+            return queryset.filter(event=self.value())
 
 
 class EventCategoryAdmin(ModelAdmin):
@@ -71,7 +69,15 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
     menu_order = 300
     add_to_settings_menu = True
     add_to_admin_menu = False
-    list_display = ["__str__", "registration_finished", "get_children_count", "created_at", "updated_at", "original_event_name", "price_paid_online"]
+    list_display = [
+        "__str__",
+        "registration_finished",
+        "get_children_count",
+        "created_at",
+        "updated_at",
+        "original_event_name",
+        "price_paid_online",
+    ]
     list_filter = (
         "register_child_check",
         "event__event_is_for_children",
@@ -85,43 +91,52 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
         "user__first_name",
         "user__last_name",
     )
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        plan_name = Subquery(PaymentPlanEvent.objects.filter(
-            event_registration=OuterRef("id"),
-        ).values("plan_name")[:1])
-        paid = Subquery(PaymentPlanEvent.objects.filter(
-            event_registration=OuterRef("id"),
-        ).values("price")[:1])
+        plan_name = Subquery(
+            PaymentPlanEvent.objects.filter(
+                event_registration=OuterRef("id"),
+            ).values(
+                "plan_name"
+            )[:1]
+        )
+        paid = Subquery(
+            PaymentPlanEvent.objects.filter(
+                event_registration=OuterRef("id"),
+            ).values(
+                "price"
+            )[:1]
+        )
         qs = qs.annotate(
-            booked_children=Count('event_registration_children'),
+            booked_children=Count("event_registration_children"),
             original_name=plan_name,
-            paid=paid
+            paid=paid,
         )
         return qs
 
     def get_children_count(self, obj):
         return obj.booked_children
-    
+
     def original_event_name(self, obj):
         return obj.original_name
-    
+
     def price_paid_online(self, obj):
         return obj.paid
 
-    get_children_count.__name__ = str(_('Stevilo otrok'))
+    get_children_count.__name__ = str(_("Stevilo otrok"))
 
 
-@hooks.register('register_admin_urls')
+@hooks.register("register_admin_urls")
 def register_eventlist_url():
     return [
-        path('event_list/', event_list, name='event_list'),
+        path("event_list/", event_list, name="event_list"),
     ]
 
 
-@hooks.register('register_admin_menu_item')
+@hooks.register("register_admin_menu_item")
 def register_calendar_menu_item():
-    return MenuItem('Prihajajoči dogodki', reverse('event_list'), icon_name='date')
+    return MenuItem("Prihajajoči dogodki", reverse("event_list"), icon_name="date")
 
 
 modeladmin_register(EventCategoryAdmin)

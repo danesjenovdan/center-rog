@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0047_labpage_lab_lead'),
+        ("home", "0047_labpage_lab_lead"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='tool',
-            name='prima_group_id',
-            field=models.IntegerField(blank=True, null=True, verbose_name='Prima group id'),
+            model_name="tool",
+            name="prima_group_id",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="Prima group id"
+            ),
         ),
         migrations.AddField(
-            model_name='tool',
-            name='prima_location_id',
-            field=models.IntegerField(blank=True, null=True, verbose_name='Prima location id'),
+            model_name="tool",
+            name="prima_location_id",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="Prima location id"
+            ),
         ),
     ]

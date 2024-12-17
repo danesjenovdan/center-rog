@@ -1,24 +1,24 @@
-from .models import HomePage, ContentPage
+from modeltranslation.decorators import register
+from modeltranslation.translator import TranslationOptions
+
+from .models import ContentPage, HomePage
+from .models.base_pages import BasicTextPage
 from .models.pages import (
-    StudioListPage,
-    MarketStoreListPage,
-    ResidenceListPage,
     LabListPage,
     LabPage,
-    WorkingStationPage,
     LibraryPage,
-    StudioPage,
-    ResidencePage,
+    MarketStoreListPage,
     MarketStorePage,
     ResidenceArchiveListPage,
+    ResidenceListPage,
+    ResidencePage,
     StudioArchiveListPage,
+    StudioListPage,
+    StudioPage,
+    WorkingStationPage,
 )
-from .models.base_pages import BasicTextPage
-from .models.workshop import Workshop
 from .models.settings import MetaSettings
-
-from modeltranslation.translator import TranslationOptions
-from modeltranslation.decorators import register
+from .models.workshop import Workshop
 
 
 @register(HomePage)
@@ -77,7 +77,11 @@ class LabPageTR(TranslationOptions):
 
 @register(WorkingStationPage)
 class WorkingStationPageTR(TranslationOptions):
-    fields = ("description", "modules", "tag",)
+    fields = (
+        "description",
+        "modules",
+        "tag",
+    )
 
 
 @register(LibraryPage)

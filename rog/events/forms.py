@@ -1,9 +1,7 @@
 from django import forms
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
+from django.utils.translation import gettext_lazy as _
 from events.models import EventRegistration, EventRegistrationChild
-
 from home.forms import SplitInputDateWidget
 
 
@@ -41,7 +39,9 @@ class EventRegisterInformationForm(forms.ModelForm):
     )
 
     allow_photos = forms.BooleanField(
-        label=_("Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."),
+        label=_(
+            "Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."
+        ),
         label_suffix="",
         required=False,
     )

@@ -6,23 +6,77 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0001_initial'),
+        ("news", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='newslistarchivepage',
-            name='color_scheme',
-            field=models.CharField(choices=[('brown', 'Rjava'), ('light-gray', 'Svetlo siva'), ('dark-gray', 'Temno siva'), ('light-blue', 'Svetlo modra'), ('dark-blue', 'Temno modra'), ('light-green', 'Svetlo zelena'), ('dark-green', 'Temno zelena'), ('purple', 'Vijolična'), ('red', 'Rdeča'), ('orange', 'Oranžna'), ('pink', 'Roza'), ('yellow', 'Rumena'), ('white', 'Bela')], default='white', max_length=20),
+            model_name="newslistarchivepage",
+            name="color_scheme",
+            field=models.CharField(
+                choices=[
+                    ("brown", "Rjava"),
+                    ("light-gray", "Svetlo siva"),
+                    ("dark-gray", "Temno siva"),
+                    ("light-blue", "Svetlo modra"),
+                    ("dark-blue", "Temno modra"),
+                    ("light-green", "Svetlo zelena"),
+                    ("dark-green", "Temno zelena"),
+                    ("purple", "Vijolična"),
+                    ("red", "Rdeča"),
+                    ("orange", "Oranžna"),
+                    ("pink", "Roza"),
+                    ("yellow", "Rumena"),
+                    ("white", "Bela"),
+                ],
+                default="white",
+                max_length=20,
+            ),
         ),
         migrations.AddField(
-            model_name='newslistpage',
-            name='color_scheme',
-            field=models.CharField(choices=[('brown', 'Rjava'), ('light-gray', 'Svetlo siva'), ('dark-gray', 'Temno siva'), ('light-blue', 'Svetlo modra'), ('dark-blue', 'Temno modra'), ('light-green', 'Svetlo zelena'), ('dark-green', 'Temno zelena'), ('purple', 'Vijolična'), ('red', 'Rdeča'), ('orange', 'Oranžna'), ('pink', 'Roza'), ('yellow', 'Rumena'), ('white', 'Bela')], default='white', max_length=20),
+            model_name="newslistpage",
+            name="color_scheme",
+            field=models.CharField(
+                choices=[
+                    ("brown", "Rjava"),
+                    ("light-gray", "Svetlo siva"),
+                    ("dark-gray", "Temno siva"),
+                    ("light-blue", "Svetlo modra"),
+                    ("dark-blue", "Temno modra"),
+                    ("light-green", "Svetlo zelena"),
+                    ("dark-green", "Temno zelena"),
+                    ("purple", "Vijolična"),
+                    ("red", "Rdeča"),
+                    ("orange", "Oranžna"),
+                    ("pink", "Roza"),
+                    ("yellow", "Rumena"),
+                    ("white", "Bela"),
+                ],
+                default="white",
+                max_length=20,
+            ),
         ),
         migrations.AddField(
-            model_name='newspage',
-            name='color_scheme',
-            field=models.CharField(choices=[('brown', 'Rjava'), ('light-gray', 'Svetlo siva'), ('dark-gray', 'Temno siva'), ('light-blue', 'Svetlo modra'), ('dark-blue', 'Temno modra'), ('light-green', 'Svetlo zelena'), ('dark-green', 'Temno zelena'), ('purple', 'Vijolična'), ('red', 'Rdeča'), ('orange', 'Oranžna'), ('pink', 'Roza'), ('yellow', 'Rumena'), ('white', 'Bela')], default='white', max_length=20),
+            model_name="newspage",
+            name="color_scheme",
+            field=models.CharField(
+                choices=[
+                    ("brown", "Rjava"),
+                    ("light-gray", "Svetlo siva"),
+                    ("dark-gray", "Temno siva"),
+                    ("light-blue", "Svetlo modra"),
+                    ("dark-blue", "Temno modra"),
+                    ("light-green", "Svetlo zelena"),
+                    ("dark-green", "Temno zelena"),
+                    ("purple", "Vijolična"),
+                    ("red", "Rdeča"),
+                    ("orange", "Oranžna"),
+                    ("pink", "Roza"),
+                    ("yellow", "Rumena"),
+                    ("white", "Bela"),
+                ],
+                default="white",
+                max_length=20,
+            ),
         ),
     ]

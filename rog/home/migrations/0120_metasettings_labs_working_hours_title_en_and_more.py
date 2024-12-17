@@ -6,28 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0119_metasettings_labs_working_hours_title_and_more'),
+        ("home", "0119_metasettings_labs_working_hours_title_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='metasettings',
-            name='labs_working_hours_title_en',
-            field=models.TextField(blank=True, null=True, verbose_name='Delovni čas laboratorijev - naslov'),
+            model_name="metasettings",
+            name="labs_working_hours_title_en",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Delovni čas laboratorijev - naslov"
+            ),
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='labs_working_hours_title_sl',
-            field=models.TextField(blank=True, null=True, verbose_name='Delovni čas laboratorijev - naslov'),
+            model_name="metasettings",
+            name="labs_working_hours_title_sl",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Delovni čas laboratorijev - naslov"
+            ),
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_working_hours_title_en',
-            field=models.TextField(blank=True, null=True, verbose_name='Delovni čas organizacije - naslov'),
+            model_name="metasettings",
+            name="organization_working_hours_title_en",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Delovni čas organizacije - naslov"
+            ),
         ),
         migrations.AddField(
-            model_name='metasettings',
-            name='organization_working_hours_title_sl',
-            field=models.TextField(blank=True, null=True, verbose_name='Delovni čas organizacije - naslov'),
+            model_name="metasettings",
+            name="organization_working_hours_title_sl",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Delovni čas organizacije - naslov"
+            ),
         ),
     ]

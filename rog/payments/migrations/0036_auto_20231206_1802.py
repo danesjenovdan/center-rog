@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_payment_item_type(apps, schema_editor):
     Plan = apps.get_model("payments", "Plan")
     PromoCode = apps.get_model("payments", "PromoCode")
@@ -16,12 +17,11 @@ def migrate_payment_item_type(apps, schema_editor):
         promo_code.payment_item_type = promo_code.item_type.name
         promo_code.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0035_remove_paymentplanevent_event_and_more'),
+        ("payments", "0035_remove_paymentplanevent_event_and_more"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_payment_item_type)
-    ]
+    operations = [migrations.RunPython(migrate_payment_item_type)]

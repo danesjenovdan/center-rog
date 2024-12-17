@@ -1,44 +1,62 @@
-from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
-from wagtail_modeladmin.views import IndexView
+import csv
 
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.http import HttpResponse
 from django.db.models import OuterRef, Subquery
-
-from .models import Plan, Payment, PromoCode, PaymentPlanEvent
+from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from events.export import ExportModelAdminMixin
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.views import IndexView
 from wagtail_rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
 
-import csv
+from .models import Payment, PaymentPlanEvent, Plan, PromoCode
+
 
 class ExportPaymentView(IndexView):
     model_admin = None
-    
+
     def export_csv(self):
         data = []
         payments = self.queryset.all()
         for payment in payments:
-            data.append({
-                'first_name': payment.user.first_name,
-                'last_name': payment.user.last_name,
-                'original_amount': str(payment.original_amount).replace('.', ','),
-                'amount': str(payment.amount).replace('.', ','),
-                'created_at': payment.created_at.isoformat() if payment.created_at else '',
-                'successed_at': payment.successed_at.isoformat() if payment.successed_at else '',
-                'transaction_successed_at': payment.transaction_success_at.isoformat() if payment.transaction_success_at else '',
-                'invoice_number': payment.invoice_number,
-                'ujp_id': payment.ujp_id,
-                'plans': '+'.join(list(payment.payment_plans.all().values_list("plan_name", flat=True))),
-                'pantheon_id': payment.pantheon_id,
-            })
+            data.append(
+                {
+                    "first_name": payment.user.first_name,
+                    "last_name": payment.user.last_name,
+                    "original_amount": str(payment.original_amount).replace(".", ","),
+                    "amount": str(payment.amount).replace(".", ","),
+                    "created_at": (
+                        payment.created_at.isoformat() if payment.created_at else ""
+                    ),
+                    "successed_at": (
+                        payment.successed_at.isoformat() if payment.successed_at else ""
+                    ),
+                    "transaction_successed_at": (
+                        payment.transaction_success_at.isoformat()
+                        if payment.transaction_success_at
+                        else ""
+                    ),
+                    "invoice_number": payment.invoice_number,
+                    "ujp_id": payment.ujp_id,
+                    "plans": "+".join(
+                        list(
+                            payment.payment_plans.all().values_list(
+                                "plan_name", flat=True
+                            )
+                        )
+                    ),
+                    "pantheon_id": payment.pantheon_id,
+                }
+            )
 
         response = HttpResponse(
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
         try:
-            writer = csv.DictWriter(response, fieldnames=data[0].keys(), dialect='excel-tab', delimiter='\t')
+            writer = csv.DictWriter(
+                response, fieldnames=data[0].keys(), dialect="excel-tab", delimiter="\t"
+            )
         except IndexError:
             return response
         writer.writeheader()
@@ -50,6 +68,7 @@ class ExportPaymentView(IndexView):
     def dispatch(self, request, *args, **kwargs):
         super().dispatch(request, *args, **kwargs)
         return self.export_csv()
+
 
 class PlanAdmin(ModelAdmin):
     model = Plan
@@ -67,8 +86,15 @@ class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
     menu_order = 201
     add_to_settings_menu = True
     add_to_admin_menu = False
-    list_display=['__str__', 'plan_name', 'status', 'amount', 'successed_at', 'created_at']
-    list_filter = (("created_at", DateRangeFilter),'status', 'items')
+    list_display = [
+        "__str__",
+        "plan_name",
+        "status",
+        "amount",
+        "successed_at",
+        "created_at",
+    ]
+    list_filter = (("created_at", DateRangeFilter), "status", "items")
     search_fields = (
         "user__first_name",
         "user__last_name",
@@ -81,14 +107,18 @@ class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        plan_name = Subquery(PaymentPlanEvent.objects.filter(
-            payment=OuterRef("id"),
-        ).values("plan_name")[:1])
+        plan_name = Subquery(
+            PaymentPlanEvent.objects.filter(
+                payment=OuterRef("id"),
+            ).values(
+                "plan_name"
+            )[:1]
+        )
         qs = qs.annotate(
             plan_name=plan_name,
         )
         return qs
-    
+
     def plan_name(self, obj):
         return obj.plan_name
 

@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_promocodes_types(apps, schema_editor):
     PromoCode = apps.get_model("payments", "PromoCode")
 
@@ -12,9 +13,7 @@ def migrate_promocodes_types(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0050_promocode_usage_limit'),
+        ("payments", "0050_promocode_usage_limit"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_promocodes_types)
-    ]
+    operations = [migrations.RunPython(migrate_promocodes_types)]

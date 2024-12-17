@@ -6,15 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0017_newslistarchivepage_show_see_more_section_and_more'),
+        ("news", "0017_newslistarchivepage_show_see_more_section_and_more"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='newspage',
-            name='archived',
+            model_name="newspage",
+            name="archived",
         ),
         migrations.DeleteModel(
-            name='NewsListArchivePage',
+            name="NewsListArchivePage",
         ),
     ]

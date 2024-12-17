@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0078_labpage_archived_from_labpage_archived_to_and_more'),
+        ("home", "0078_labpage_archived_from_labpage_archived_to_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contentpage',
-            name='show_see_more_section',
-            field=models.BooleanField(default=False, verbose_name='Pokaži več'),
+            model_name="contentpage",
+            name="show_see_more_section",
+            field=models.BooleanField(default=False, verbose_name="Pokaži več"),
         ),
     ]

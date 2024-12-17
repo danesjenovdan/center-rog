@@ -6,38 +6,38 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0064_studiolistpage_intro_text_en_and_more'),
+        ("home", "0064_studiolistpage_intro_text_en_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lablistpage',
-            name='intro_text_en',
+            model_name="lablistpage",
+            name="intro_text_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='lablistpage',
-            name='intro_text_sl',
+            model_name="lablistpage",
+            name="intro_text_sl",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='marketstorelistpage',
-            name='intro_text_en',
+            model_name="marketstorelistpage",
+            name="intro_text_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='marketstorelistpage',
-            name='intro_text_sl',
+            model_name="marketstorelistpage",
+            name="intro_text_sl",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='residencelistpage',
-            name='intro_text_en',
+            model_name="residencelistpage",
+            name="intro_text_en",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='residencelistpage',
-            name='intro_text_sl',
+            model_name="residencelistpage",
+            name="intro_text_sl",
             field=models.TextField(blank=True, null=True),
         ),
     ]

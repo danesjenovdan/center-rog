@@ -6,17 +6,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0007_user_description_user_link_user_public_profile_and_more'),
+        ("users", "0007_user_description_user_link_user_public_profile_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='BookingToken',
+            name="BookingToken",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('token', models.CharField(max_length=100)),
-                ('created', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("token", models.CharField(max_length=100)),
+                ("created", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

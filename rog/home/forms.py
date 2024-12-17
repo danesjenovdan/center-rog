@@ -1,12 +1,11 @@
 from django import forms
-from django.forms import widgets
-from django.utils.translation import gettext_lazy as _
-from django.db import ProgrammingError
-from django.utils import timezone
 from django.core.exceptions import ValidationError
-
-from users.models import User, MembershipType, Membership, UserInterest
+from django.db import ProgrammingError
+from django.forms import widgets
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 from payments.models import Plan
+from users.models import Membership, MembershipType, User, UserInterest
 
 
 class MultipleFileInput(forms.ClearableFileInput):
@@ -33,19 +32,15 @@ class RegisterForm(forms.ModelForm):
         label_suffix="",
     )
     newsletter = forms.BooleanField(
-        label=_("prijavi me na novičnik"),
-        label_suffix="",
-        required=False
+        label=_("prijavi me na novičnik"), label_suffix="", required=False
     )
     password = forms.CharField(
         widget=forms.PasswordInput,
         label=_("geslo (vsaj 8 znakov, vsaj ena številka)"),
-        label_suffix=""
+        label_suffix="",
     )
     password_check = forms.CharField(
-        widget=forms.PasswordInput,
-        label=_("ponovi geslo"),
-        label_suffix=""
+        widget=forms.PasswordInput, label=_("ponovi geslo"), label_suffix=""
     )
 
     def clean(self):
@@ -66,12 +61,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = [
-            "email",
-            "newsletter",
-            "password",
-            "password_check"
-        ]
+        fields = ["email", "newsletter", "password", "password_check"]
 
 
 class RegistrationMembershipForm(forms.ModelForm):
@@ -104,7 +94,11 @@ class SplitInputDateWidget(forms.SelectDateWidget):
         ).get_context(
             name=year_name,
             value=context["widget"]["value"]["year"],
-            attrs={**context["widget"]["attrs"], "id": "id_%s" % year_name, "placeholder": "1989"},
+            attrs={
+                **context["widget"]["attrs"],
+                "id": "id_%s" % year_name,
+                "placeholder": "1989",
+            },
         )
         month_name = self.month_field % name
         date_context["month"] = self.select_widget(
@@ -112,7 +106,11 @@ class SplitInputDateWidget(forms.SelectDateWidget):
         ).get_context(
             name=month_name,
             value=context["widget"]["value"]["month"],
-            attrs={**context["widget"]["attrs"], "id": "id_%s" % month_name, "placeholder": "12"},
+            attrs={
+                **context["widget"]["attrs"],
+                "id": "id_%s" % month_name,
+                "placeholder": "12",
+            },
         )
         day_name = self.day_field % name
         date_context["day"] = self.select_widget(
@@ -120,7 +118,11 @@ class SplitInputDateWidget(forms.SelectDateWidget):
         ).get_context(
             name=day_name,
             value=context["widget"]["value"]["day"],
-            attrs={**context["widget"]["attrs"], "id": "id_%s" % day_name, "placeholder": "31"},
+            attrs={
+                **context["widget"]["attrs"],
+                "id": "id_%s" % day_name,
+                "placeholder": "31",
+            },
         )
         subwidgets = []
         for field in self._parse_date_fmt():
@@ -141,8 +143,10 @@ class RegistrationInformationForm(forms.ModelForm):
     birth_date = forms.DateField(
         label=_("Datum rojstva"),
         label_suffix="",
-        widget=SplitInputDateWidget(attrs={"class": "select-date"}, years=range(1900, timezone.now().year)),
-        required=True
+        widget=SplitInputDateWidget(
+            attrs={"class": "select-date"}, years=range(1900, timezone.now().year)
+        ),
+        required=True,
     )
     gender = forms.ChoiceField(
         label=_("Spol"),
@@ -155,56 +159,44 @@ class RegistrationInformationForm(forms.ModelForm):
         label=_("izpolni"),
         label_suffix="",
         required=False,
-        widget=forms.TextInput(attrs={"placeholder": "spol"})
+        widget=forms.TextInput(attrs={"placeholder": "spol"}),
     )
     address_1 = forms.CharField(
         label=_("Naslov 1"),
         label_suffix="",
     )
     address_2 = forms.CharField(
-        label=_("Naslov 2 (neobvezno)"),
-        label_suffix="",
-        required=False
+        label=_("Naslov 2 (neobvezno)"), label_suffix="", required=False
     )
     legal_person_receipt = forms.BooleanField(
-        label=_("potrebujem račun za pravno osebo"),
-        label_suffix="",
-        required=False
+        label=_("potrebujem račun za pravno osebo"), label_suffix="", required=False
     )
     legal_person_name = forms.CharField(
         widget=forms.TextInput,
         label=_("Naziv pravne osebe"),
         label_suffix="",
-        required=False
+        required=False,
     )
     legal_person_address_1 = forms.CharField(
-        widget=forms.TextInput,
-        label=_("Naslov 1"),
-        label_suffix="",
-        required=False
+        widget=forms.TextInput, label=_("Naslov 1"), label_suffix="", required=False
     )
     legal_person_address_2 = forms.CharField(
         widget=forms.TextInput,
         label=_("Naslov 2 (neobvezno)"),
         label_suffix="",
-        required=False
+        required=False,
     )
     legal_person_tax_number = forms.IntegerField(
         widget=forms.TextInput,
         label=_("Davčna številka"),
         label_suffix="",
-        required=False
+        required=False,
     )
     legal_person_vat = forms.BooleanField(
-        label=_("sem zavezanec za DDV"),
-        label_suffix="",
-        required=False
+        label=_("sem zavezanec za DDV"), label_suffix="", required=False
     )
 
-    membership = forms.CharField(
-        widget=forms.HiddenInput(),
-        required = False
-    )
+    membership = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def clean_legal_person_tax_number(self):
         legal_person_receipt = self.cleaned_data["legal_person_receipt"]
@@ -218,7 +210,7 @@ class RegistrationInformationForm(forms.ModelForm):
         self.membership = kwargs.pop("membership", None)
         super().__init__(*args, **kwargs)
         if self.membership:
-            self.initial['membership'] = self.membership
+            self.initial["membership"] = self.membership
 
     class Meta:
         model = User
@@ -235,67 +227,66 @@ class RegistrationInformationForm(forms.ModelForm):
             "legal_person_address_1",
             "legal_person_address_2",
             "legal_person_tax_number",
-            "legal_person_vat"
+            "legal_person_vat",
         ]
+
 
 class EditProfileForm(forms.ModelForm):
     public_profile = forms.BooleanField(
-        label=_("Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"),
+        label=_(
+            "Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"
+        ),
         label_suffix="",
-        required=False
+        required=False,
     )
     public_username = forms.CharField(
         widget=forms.TextInput,
         label=_("Uporabniško ime"),
         label_suffix="",
-        required=False
+        required=False,
     )
     description = forms.CharField(
-        widget=forms.Textarea,
-        label=_("Opis"),
-        label_suffix="",
-        required=False
+        widget=forms.Textarea, label=_("Opis"), label_suffix="", required=False
     )
     link_1 = forms.URLField(
-        label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label=_(
+            "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
+        ),
         label_suffix="",
-        required=False
+        required=False,
     )
     link_2 = forms.URLField(
-        label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label=_(
+            "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
+        ),
         label_suffix="",
-        required=False
+        required=False,
     )
     link_3 = forms.URLField(
-        label=_("Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"),
+        label=_(
+            "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
+        ),
         label_suffix="",
-        required=False
+        required=False,
     )
-    contact = forms.EmailField(
-        label=_("Kontakt"),
-        label_suffix="",
-        required=False
-    )
+    contact = forms.EmailField(label=_("Kontakt"), label_suffix="", required=False)
     interests = forms.ModelMultipleChoiceField(
         required=False,
         queryset=UserInterest.objects,
-        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"}),
     )
     gallery = forms.Field(
         required=False,
     )
     custom_gallery = MultipleFileField(required=False)
 
-    membership = forms.CharField(
-        widget=forms.HiddenInput(),
-        required = False
-    )
+    membership = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
         self.membership = kwargs.pop("membership", None)
         super().__init__(*args, **kwargs)
         if self.membership:
-            self.initial['membership'] = self.membership
+            self.initial["membership"] = self.membership
 
     class Meta:
         model = User
@@ -316,7 +307,7 @@ class UserInterestsForm(forms.Form):
     interests = forms.ModelMultipleChoiceField(
         required=False,
         queryset=UserInterest.objects,
-        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"})
+        widget=forms.CheckboxSelectMultiple(attrs={"class": "radio"}),
     )
 
 
@@ -324,5 +315,5 @@ class PurchasePlanForm(forms.Form):
     plans = forms.ModelChoiceField(
         required=True,
         queryset=Plan.objects,
-        widget=forms.RadioSelect(attrs={"class": "radio"})
+        widget=forms.RadioSelect(attrs={"class": "radio"}),
     )

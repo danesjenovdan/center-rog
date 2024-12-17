@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0034_labpage_archived_labpage_gallery_and_more'),
+        ("home", "0034_labpage_archived_labpage_gallery_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='labpage',
-            name='image_description',
-            field=models.TextField(blank=True, verbose_name='Dodaten opis slike'),
+            model_name="labpage",
+            name="image_description",
+            field=models.TextField(blank=True, verbose_name="Dodaten opis slike"),
         ),
         migrations.AddField(
-            model_name='librarypage',
-            name='image_description',
-            field=models.TextField(blank=True, verbose_name='Dodaten opis slike'),
+            model_name="librarypage",
+            name="image_description",
+            field=models.TextField(blank=True, verbose_name="Dodaten opis slike"),
         ),
         migrations.AddField(
-            model_name='marketstorepage',
-            name='image_description',
-            field=models.TextField(blank=True, verbose_name='Dodaten opis slike'),
+            model_name="marketstorepage",
+            name="image_description",
+            field=models.TextField(blank=True, verbose_name="Dodaten opis slike"),
         ),
         migrations.AddField(
-            model_name='residencepage',
-            name='image_description',
-            field=models.TextField(blank=True, verbose_name='Dodaten opis slike'),
+            model_name="residencepage",
+            name="image_description",
+            field=models.TextField(blank=True, verbose_name="Dodaten opis slike"),
         ),
         migrations.AddField(
-            model_name='studiopage',
-            name='image_description',
-            field=models.TextField(blank=True, verbose_name='Dodaten opis slike'),
+            model_name="studiopage",
+            name="image_description",
+            field=models.TextField(blank=True, verbose_name="Dodaten opis slike"),
         ),
     ]

@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_uporabnina_valid_to(apps, schema_editor):
     Payment = apps.get_model("payments", "Payment")
 
@@ -13,9 +14,7 @@ def migrate_uporabnina_valid_to(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0027_paymentplan_valid_to'),
+        ("payments", "0027_paymentplan_valid_to"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_uporabnina_valid_to)
-    ]
+    operations = [migrations.RunPython(migrate_uporabnina_valid_to)]

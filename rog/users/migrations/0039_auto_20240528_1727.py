@@ -11,7 +11,7 @@ def confirm_users(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0038_user_email_confirmed_confirmemail'),
+        ("users", "0038_user_email_confirmed_confirmemail"),
     ]
 
     operations = [migrations.RunPython(confirm_users)]

@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0047_alter_paymentplanevent_event_registration_and_more'),
+        ("payments", "0047_alter_paymentplanevent_event_registration_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='plan',
-            name='extend_membership',
-            field=models.BooleanField(default=False, help_text='Should this plan extend the membership if needed?'),
+            model_name="plan",
+            name="extend_membership",
+            field=models.BooleanField(
+                default=False,
+                help_text="Should this plan extend the membership if needed?",
+            ),
         ),
     ]

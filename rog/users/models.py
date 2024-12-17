@@ -1,30 +1,26 @@
-from django.db import models
+import random
+import re
+import uuid
+from datetime import datetime
+
+import sentry_sdk
+from behaviours.models import Timestampable
 from django.conf import settings
-from django.db.models import Q
-from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
-from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.db.models import Q
 from django.utils import timezone
-
-from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-
+from django.utils.translation import gettext_lazy as _
+from home.models import Workshop
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images.blocks import ImageChooserBlock
-
-from home.models import Workshop
 from payments.models import Plan
 from payments.pantheon import create_subject
-from behaviours.models import Timestampable
-
-from datetime import datetime
-import random
-import uuid
-import re
-import sentry_sdk
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Orderable
 
 
 class MembershipType(ClusterableModel):
@@ -95,7 +91,9 @@ class Membership(Timestampable):
     notification_30_sent = models.BooleanField(default=False)
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
-    extended_by = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True, blank=True)
+    extended_by = models.ForeignKey(
+        Plan, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"
@@ -217,8 +215,7 @@ class User(AbstractUser, Timestampable):
     )
 
     saved_in_pantheon = models.BooleanField(
-        default=False,
-        help_text=_("Ali je oseba že shranjena v Pantheonu?")
+        default=False, help_text=_("Ali je oseba že shranjena v Pantheonu?")
     )
 
     objects = UserManager()
@@ -300,7 +297,11 @@ class User(AbstractUser, Timestampable):
                     self.saved_in_pantheon = True
                     super().save(*args, **kwargs)
                 elif response and response.status_code == 500:
-                    if response.json().get("Message", "").startswith("subject already exists"):
+                    if (
+                        response.json()
+                        .get("Message", "")
+                        .startswith("subject already exists")
+                    ):
                         self.saved_in_pantheon = True
                         super().save(*args, **kwargs)
                 elif response:

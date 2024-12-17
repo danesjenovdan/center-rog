@@ -1,27 +1,28 @@
-from django.db import models
-from django.conf import settings
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-
-from wagtail import blocks
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
-from wagtail.fields import RichTextField, StreamField
-from wagtail.images.blocks import ImageChooserBlock
-
-from home.models import BasePage, CustomImage
-
 import random
 from datetime import date
 
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import models
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from home.models import BasePage, CustomImage
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page
+
 
 def add_see_more_fields(context):
-    from home.models import LabPage, StudioPage
     from events.models import EventPage
+    from home.models import LabPage, StudioPage
+
     # random event
     today = date.today()
-    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
+    events = list(
+        EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")
+    )[:5]
     context["event"] = random.choice(events) if events else None
     # random news
     news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
@@ -66,20 +67,55 @@ class NewsCategory(models.Model):
 class NewsPage(BasePage):
     short_description = models.TextField(blank=True, verbose_name=_("Kratek opis"))
     thumbnail = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Predogledna slika"))
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Predogledna slika"),
+    )
     category = models.ForeignKey(
-        NewsCategory, null=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija"))
+        NewsCategory, null=True, on_delete=models.SET_NULL, verbose_name=_("Kategorija")
+    )
     hero_image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Naslovna slika"))
+        CustomImage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Naslovna slika"),
+    )
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
-    tag = models.CharField(max_length=16, blank=True, null=True, verbose_name=_("Oznaka"))
-    gallery = StreamField([
-        ("image", blocks.StructBlock([
-            ("image", ImageChooserBlock(label=_("Slika"))),
-            ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
-        ]))
-    ], blank=True, null=True, use_json_field=True, verbose_name=_("Galerija"))
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    tag = models.CharField(
+        max_length=16, blank=True, null=True, verbose_name=_("Oznaka")
+    )
+    gallery = StreamField(
+        [
+            (
+                "image",
+                blocks.StructBlock(
+                    [
+                        ("image", ImageChooserBlock(label=_("Slika"))),
+                        (
+                            "image_description",
+                            blocks.TextBlock(
+                                label=_("Podnapis k sliki"),
+                                max_length=150,
+                                required=False,
+                            ),
+                        ),
+                    ]
+                ),
+            )
+        ],
+        blank=True,
+        null=True,
+        use_json_field=True,
+        verbose_name=_("Galerija"),
+    )
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("short_description"),
@@ -89,12 +125,10 @@ class NewsPage(BasePage):
         FieldPanel("body"),
         FieldPanel("tag"),
         FieldPanel("gallery"),
-        FieldPanel("show_see_more_section")
+        FieldPanel("show_see_more_section"),
     ]
 
-    parent_page_types = [
-        "news.NewsListPage"
-    ]
+    parent_page_types = ["news.NewsListPage"]
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -109,11 +143,11 @@ class NewsPage(BasePage):
 
 
 class NewsListPage(BasePage):
-    show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
+    show_see_more_section = models.BooleanField(
+        default=True, verbose_name=_("Pokaži več")
+    )
 
-    content_panels = Page.content_panels + [
-        FieldPanel("show_see_more_section")
-    ]
+    content_panels = Page.content_panels + [FieldPanel("show_see_more_section")]
 
     subpage_types = [
         "news.NewsPage",
@@ -129,9 +163,13 @@ class NewsListPage(BasePage):
         all_news_page_objects = NewsPage.objects.live().order_by("-first_published_at")
 
         # filtering
-        chosen_category = categories.filter(slug=request.GET.get('category', None)).first()
+        chosen_category = categories.filter(
+            slug=request.GET.get("category", None)
+        ).first()
         if chosen_category:
-            all_news_page_objects = all_news_page_objects.filter(category=chosen_category)
+            all_news_page_objects = all_news_page_objects.filter(
+                category=chosen_category
+            )
 
         # arhiv
         # context["archive_page"] = NewsListArchivePage.objects.live().first()

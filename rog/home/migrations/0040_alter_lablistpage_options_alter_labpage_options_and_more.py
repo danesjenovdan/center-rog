@@ -6,48 +6,66 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0039_alter_studiopage_options'),
+        ("home", "0039_alter_studiopage_options"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='lablistpage',
-            options={'verbose_name': 'Seznam laboratorijev', 'verbose_name_plural': 'Seznami laboratorijev'},
+            name="lablistpage",
+            options={
+                "verbose_name": "Seznam laboratorijev",
+                "verbose_name_plural": "Seznami laboratorijev",
+            },
         ),
         migrations.AlterModelOptions(
-            name='labpage',
-            options={'verbose_name': 'Laboratorij', 'verbose_name_plural': 'Laboratoriji'},
+            name="labpage",
+            options={
+                "verbose_name": "Laboratorij",
+                "verbose_name_plural": "Laboratoriji",
+            },
         ),
         migrations.AlterModelOptions(
-            name='librarypage',
-            options={'verbose_name': 'Knjižnica', 'verbose_name_plural': 'Knjižnice'},
+            name="librarypage",
+            options={"verbose_name": "Knjižnica", "verbose_name_plural": "Knjižnice"},
         ),
         migrations.AlterModelOptions(
-            name='marketstorelistpage',
-            options={'verbose_name': 'Tržnica', 'verbose_name_plural': 'Tržnice'},
+            name="marketstorelistpage",
+            options={"verbose_name": "Tržnica", "verbose_name_plural": "Tržnice"},
         ),
         migrations.AlterModelOptions(
-            name='marketstorepage',
-            options={'verbose_name': 'Trgovina', 'verbose_name_plural': 'Trgovine'},
+            name="marketstorepage",
+            options={"verbose_name": "Trgovina", "verbose_name_plural": "Trgovine"},
         ),
         migrations.AlterModelOptions(
-            name='residencearchivelistpage',
-            options={'verbose_name': 'Arhiv rezidenc', 'verbose_name_plural': 'Arhivi rezidenc'},
+            name="residencearchivelistpage",
+            options={
+                "verbose_name": "Arhiv rezidenc",
+                "verbose_name_plural": "Arhivi rezidenc",
+            },
         ),
         migrations.AlterModelOptions(
-            name='residencelistpage',
-            options={'verbose_name': 'Seznam rezidenc', 'verbose_name_plural': 'Seznami rezidenc'},
+            name="residencelistpage",
+            options={
+                "verbose_name": "Seznam rezidenc",
+                "verbose_name_plural": "Seznami rezidenc",
+            },
         ),
         migrations.AlterModelOptions(
-            name='residencepage',
-            options={'verbose_name': 'Rezidenca', 'verbose_name_plural': 'Rezidence'},
+            name="residencepage",
+            options={"verbose_name": "Rezidenca", "verbose_name_plural": "Rezidence"},
         ),
         migrations.AlterModelOptions(
-            name='studioarchivelistpage',
-            options={'verbose_name': 'Arhiv studiev', 'verbose_name_plural': 'Arhivi studiev'},
+            name="studioarchivelistpage",
+            options={
+                "verbose_name": "Arhiv studiev",
+                "verbose_name_plural": "Arhivi studiev",
+            },
         ),
         migrations.AlterModelOptions(
-            name='studiolistpage',
-            options={'verbose_name': 'Seznam studiev', 'verbose_name_plural': 'Seznami studiev'},
+            name="studiolistpage",
+            options={
+                "verbose_name": "Seznam studiev",
+                "verbose_name_plural": "Seznami studiev",
+            },
         ),
     ]

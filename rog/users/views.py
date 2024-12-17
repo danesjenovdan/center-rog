@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views import View
-from django.views.generic import TemplateView
-from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-
+from django.views import View
+from django.views.generic import TemplateView
 from home import models
-from home.email_utils import send_email, id_generator
+from home.email_utils import id_generator, send_email
 from users.models import ConfirmEmail
+
 from .tokens import get_email_for_token, get_token_for_user
 
 
@@ -20,19 +20,23 @@ class CheckTokenView(View):
         return HttpResponse("ERROR|Invalid token")
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class TestCalendarTemplateView(TemplateView):
     template_name = "users/test_calendar.html"
 
     def get(self, request, *args, **kwargs):
         current_user = request.user
-        return render(request, self.template_name, {
-            'user': current_user,
-            'ulagtoken': get_token_for_user(current_user),
-        })
+        return render(
+            request,
+            self.template_name,
+            {
+                "user": current_user,
+                "ulagtoken": get_token_for_user(current_user),
+            },
+        )
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class EditGalleryView(View):
     def get(self, request):
         current_user = request.user
@@ -43,7 +47,7 @@ class EditGalleryView(View):
     def post(self, request):
         current_user = request.user
 
-        uploaded_images = request.FILES.getlist('image')
+        uploaded_images = request.FILES.getlist("image")
         new_images = []
 
         new_gallery = []
@@ -56,11 +60,8 @@ class EditGalleryView(View):
             image = models.CustomImage(title=uploaded_file.name, file=uploaded_file)
             image.save()
             image.tags.add("__user_gallery__")
-            new_gallery.append(('image', image))
-            new_images.append({
-                'id': image.id,
-                'src': image.file.url
-            })
+            new_gallery.append(("image", image))
+            new_images.append({"id": image.id, "src": image.file.url})
 
         current_user.gallery = new_gallery
         current_user.save()
@@ -68,7 +69,7 @@ class EditGalleryView(View):
         return JsonResponse({"message": "POST OK", "images": new_images})
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class DeleteGalleryView(View):
 
     def post(self, request):

@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0105_metasettings_footer_logos_en_and_more'),
+        ("home", "0105_metasettings_footer_logos_en_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='labpage',
-            name='button_text_en',
-            field=models.TextField(blank=True, null=True, verbose_name='Besedilo na gumbu'),
+            model_name="labpage",
+            name="button_text_en",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Besedilo na gumbu"
+            ),
         ),
         migrations.AddField(
-            model_name='labpage',
-            name='button_text_sl',
-            field=models.TextField(blank=True, null=True, verbose_name='Besedilo na gumbu'),
+            model_name="labpage",
+            name="button_text_sl",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Besedilo na gumbu"
+            ),
         ),
     ]

@@ -96,7 +96,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
                 "home.models.footer_image_processor",
-                'django.template.context_processors.i18n',
+                "django.template.context_processors.i18n",
             ],
         },
     },
@@ -109,13 +109,13 @@ WSGI_APPLICATION = "rog.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.getenv('DB_HOST', 'db'),
-        'NAME': os.getenv('DB_NAME', 'wagtail'),
-        'USER': os.getenv('DB_USERNAME', 'wagtail'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'changeme'),
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("DB_HOST", "db"),
+        "NAME": os.getenv("DB_NAME", "wagtail"),
+        "USER": os.getenv("DB_USERNAME", "wagtail"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "changeme"),
+        "PORT": "5432",
     }
 }
 
@@ -155,14 +155,14 @@ USE_TZ = True
 
 # possible values of the language_code field
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
-    ('sl', "Slovenian"),
-    ('en', "English"),
+    ("sl", "Slovenian"),
+    ("en", "English"),
 ]
 
 # User settings
-AUTH_USER_MODEL = 'users.User'
-WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
-WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
+AUTH_USER_MODEL = "users.User"
+WAGTAIL_USER_EDIT_FORM = "users.forms.CustomUserEditForm"
+WAGTAIL_USER_CREATION_FORM = "users.forms.CustomUserCreationForm"
 WAGTAIL_USER_CUSTOM_FIELDS = [
     "prima_id",
     "email_confirmed",
@@ -202,9 +202,7 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "static"),
 ]
 
-LOCALE_PATHS = (
-    os.path.join(PROJECT_DIR, '../locale'),
-)
+LOCALE_PATHS = (os.path.join(PROJECT_DIR, "../locale"),)
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
@@ -218,7 +216,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 # Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 LOGIN_REDIRECT_URL = "/profil/"
 LOGIN_URL = "/prijava/"
@@ -256,16 +254,16 @@ WAGTAILMEDIA = {
 datawrapper = {
     "endpoint": "https://api.datawrapper.de/v3/oembed",
     "urls": [
-        r'^https?://datawrapper.dwcdn.net/.+$',
-        r'^https?://www.datawrapper.de/.+$',
+        r"^https?://datawrapper.dwcdn.net/.+$",
+        r"^https?://www.datawrapper.de/.+$",
     ],
 }
 
 jotform = {
     "endpoint": "https://www.jotform.com/oembed",
     "urls": [
-        r'^https?://form.jotform.com/.+$',
-        r'^https?://www.jotform.com/.+$',
+        r"^https?://form.jotform.com/.+$",
+        r"^https?://www.jotform.com/.+$",
     ],
 }
 
@@ -281,21 +279,21 @@ WAGTAILEMBEDS_FINDERS = [
 ]
 
 WKHTMLTOPDF_CMD_OPTIONS = {
-    'quiet': False,
-    'enable-local-file-access': True,
-    'disable-smart-shrinking': True,
-    'print-media-type': True,
-    'page-size': 'A4',
-    'margin-top': '0',
-    'margin-bottom': '0',
-    'margin-left': '0',
-    'margin-right': '0',
+    "quiet": False,
+    "enable-local-file-access": True,
+    "disable-smart-shrinking": True,
+    "print-media-type": True,
+    "page-size": "A4",
+    "margin-top": "0",
+    "margin-bottom": "0",
+    "margin-left": "0",
+    "margin-right": "0",
 }
 
-WKHTMLTOPDF_CMD = 'xvfb-run -a wkhtmltopdf'
+WKHTMLTOPDF_CMD = "xvfb-run -a wkhtmltopdf"
 
 # Prima settings
-PRIMA_API_KEY = os.getenv('PRIMA_API_KEY', 'example')
+PRIMA_API_KEY = os.getenv("PRIMA_API_KEY", "example")
 PRIMA_URL = "https://centerrog.primacloud.si/bin/sysfcgi.fx"
 
 # Custom
@@ -319,40 +317,40 @@ COLOR_SCHEMES = [
 ]
 
 # Payments
-PAYMENT_IDS = os.getenv('PAYMENT_IDS', '123')
-PAYMENT_BASE_URL = os.getenv('PAYMENT_BASE_URL', 'https://testeplacila.si/vstop/index')
-REGISTRATION_NUMBER = os.getenv('REGISTRATION_NUMBER', '0000000')
-PANTHEON_URL = os.getenv('PANTHEON_URL', '')
+PAYMENT_IDS = os.getenv("PAYMENT_IDS", "123")
+PAYMENT_BASE_URL = os.getenv("PAYMENT_BASE_URL", "https://testeplacila.si/vstop/index")
+REGISTRATION_NUMBER = os.getenv("REGISTRATION_NUMBER", "0000000")
+PANTHEON_URL = os.getenv("PANTHEON_URL", "")
 
 # CORS
-ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
-CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
+ALLOWED_HOSTS = ["localhost", "rog.lb.djnd.si"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", "https://rog.lb.djnd.si"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:8000", "https://rog.lb.djnd.si"]
 
 # Logging
 LOGGING = {
-   'version': 1,
-   'disable_existing_loggers': False,
-   'formatters': {
-       'verbose': {
-           'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-       },
-   },
-   'handlers': {
-       'console': {
-           'level': 'INFO',
-           'class': 'logging.StreamHandler',
-           'stream': sys.stdout,
-           'formatter': 'verbose'
-       },
-   },
-   'loggers': {
-       '': {
-           'handlers': ['console'],
-           'level': 'INFO',
-           'propagate': True,
-       },
-   },
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "stream": sys.stdout,
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
 }
 
-AUTHENTICATION_BACKENDS = ['users.backends.CaseInsensitiveModelBackend']
+AUTHENTICATION_BACKENDS = ["users.backends.CaseInsensitiveModelBackend"]

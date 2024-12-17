@@ -4,9 +4,9 @@ from django.db import migrations, models
 
 
 def fix_user_vat_boolean(apps, schema_editor):
-    Users = apps.get_model('users', 'User')
+    Users = apps.get_model("users", "User")
     for user in Users.objects.all():
-        if user.legal_person_vat in ('1', 'Yes', 'yes', 'True', 'true', 'Da', 'da'):
+        if user.legal_person_vat in ("1", "Yes", "yes", "True", "true", "Da", "da"):
             user.legal_person_vat = True
         else:
             user.legal_person_vat = False
@@ -16,14 +16,14 @@ def fix_user_vat_boolean(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0027_user_gender_user_gender_other_alter_user_birth_date'),
+        ("users", "0027_user_gender_user_gender_other_alter_user_birth_date"),
     ]
 
     operations = [
         migrations.RunPython(fix_user_vat_boolean),
         migrations.AlterField(
-            model_name='user',
-            name='legal_person_vat',
-            field=models.BooleanField(default=False, verbose_name='Zavezanec za DDV'),
+            model_name="user",
+            name="legal_person_vat",
+            field=models.BooleanField(default=False, verbose_name="Zavezanec za DDV"),
         ),
     ]

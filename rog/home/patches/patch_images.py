@@ -16,8 +16,8 @@ def get_all_tags_for_model(model):
 
 
 def patch_images_index_view():
-    from wagtail.images.views import images
     from django.core.paginator import Paginator
+    from wagtail.images.views import images
 
     OldIndexView = images.IndexView
 

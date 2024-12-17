@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0057_alter_contentpage_body_alter_homepage_body'),
+        ("home", "0057_alter_contentpage_body_alter_homepage_body"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contentpage',
-            name='secondary_navigation',
-            field=models.BooleanField(default=False, verbose_name='Sekundarni meni'),
+            model_name="contentpage",
+            name="secondary_navigation",
+            field=models.BooleanField(default=False, verbose_name="Sekundarni meni"),
         ),
     ]

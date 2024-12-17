@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0028_auto_20230920_1431'),
+        ("payments", "0028_auto_20230920_1431"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='paymentplan',
-            name='notification_1_sent',
+            model_name="paymentplan",
+            name="notification_1_sent",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='paymentplan',
-            name='notification_30_sent',
+            model_name="paymentplan",
+            name="notification_30_sent",
             field=models.BooleanField(default=False),
         ),
         migrations.AddField(
-            model_name='paymentplan',
-            name='notification_7_sent',
+            model_name="paymentplan",
+            name="notification_7_sent",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -6,26 +6,51 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0013_newspage_body_en_newspage_body_sl_and_more'),
+        ("news", "0013_newspage_body_en_newspage_body_sl_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='newscategory',
-            options={'verbose_name': 'Kategorija novic', 'verbose_name_plural': 'Novice - kategorije'},
+            name="newscategory",
+            options={
+                "verbose_name": "Kategorija novic",
+                "verbose_name_plural": "Novice - kategorije",
+            },
         ),
         migrations.AlterModelOptions(
-            name='newslistpage',
-            options={'verbose_name': 'Novice', 'verbose_name_plural': 'Novice'},
+            name="newslistpage",
+            options={"verbose_name": "Novice", "verbose_name_plural": "Novice"},
         ),
         migrations.AlterField(
-            model_name='newscategory',
-            name='color_scheme',
-            field=models.CharField(choices=[('brown', 'Rjava'), ('light-gray', 'Svetlo siva'), ('dark-gray', 'Temno siva'), ('light-blue', 'Svetlo modra'), ('dark-blue', 'Temno modra'), ('light-green', 'Svetlo zelena'), ('dark-green', 'Temno zelena'), ('dark-purple', 'Temno vijolična'), ('light-purple', 'Svetlo vijolična'), ('red', 'Rdeča'), ('beige', 'Bež'), ('beige-gray', 'Umazana siva'), ('orange', 'Oranžna'), ('pink', 'Roza'), ('yellow', 'Rumena'), ('white', 'Bela')], default='light-gray', max_length=20, verbose_name='Barvna shema'),
+            model_name="newscategory",
+            name="color_scheme",
+            field=models.CharField(
+                choices=[
+                    ("brown", "Rjava"),
+                    ("light-gray", "Svetlo siva"),
+                    ("dark-gray", "Temno siva"),
+                    ("light-blue", "Svetlo modra"),
+                    ("dark-blue", "Temno modra"),
+                    ("light-green", "Svetlo zelena"),
+                    ("dark-green", "Temno zelena"),
+                    ("dark-purple", "Temno vijolična"),
+                    ("light-purple", "Svetlo vijolična"),
+                    ("red", "Rdeča"),
+                    ("beige", "Bež"),
+                    ("beige-gray", "Umazana siva"),
+                    ("orange", "Oranžna"),
+                    ("pink", "Roza"),
+                    ("yellow", "Rumena"),
+                    ("white", "Bela"),
+                ],
+                default="light-gray",
+                max_length=20,
+                verbose_name="Barvna shema",
+            ),
         ),
         migrations.AlterField(
-            model_name='newscategory',
-            name='name',
-            field=models.TextField(verbose_name='Ime kategorije'),
+            model_name="newscategory",
+            name="name",
+            field=models.TextField(verbose_name="Ime kategorije"),
         ),
     ]

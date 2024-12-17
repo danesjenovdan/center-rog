@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0036_eventpage_location_en_eventpage_location_sl_and_more'),
+        ("events", "0036_eventpage_location_en_eventpage_location_sl_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventpage',
-            name='event_is_for_children',
-            field=models.BooleanField(default=False, help_text='Ali je dogodek namenjen otrokom'),
+            model_name="eventpage",
+            name="event_is_for_children",
+            field=models.BooleanField(
+                default=False, help_text="Ali je dogodek namenjen otrokom"
+            ),
         ),
     ]

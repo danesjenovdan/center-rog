@@ -6,26 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0038_alter_eventpage_event_is_for_children'),
+        ("events", "0038_alter_eventpage_event_is_for_children"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='eventpage',
-            name='pantheon_ident',
+            model_name="eventpage",
+            name="pantheon_ident",
         ),
         migrations.RemoveField(
-            model_name='eventpage',
-            name='saved_in_pantheon',
+            model_name="eventpage",
+            name="saved_in_pantheon",
         ),
         migrations.AddField(
-            model_name='eventcategory',
-            name='pantheon_ident',
-            field=models.CharField(blank=True, max_length=16, null=True, verbose_name='Pantheon ident id'),
+            model_name="eventcategory",
+            name="pantheon_ident",
+            field=models.CharField(
+                blank=True, max_length=16, null=True, verbose_name="Pantheon ident id"
+            ),
         ),
         migrations.AddField(
-            model_name='eventcategory',
-            name='saved_in_pantheon',
-            field=models.BooleanField(default=False, help_text='Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon'),
+            model_name="eventcategory",
+            name="saved_in_pantheon",
+            field=models.BooleanField(
+                default=False,
+                help_text="Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon",
+            ),
         ),
     ]

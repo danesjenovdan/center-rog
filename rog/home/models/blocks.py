@@ -1,26 +1,34 @@
-from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
+import random
+from datetime import date, datetime
 
-from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from django.core import validators
 from django.db.models import F
-
-from .pages import LabPage, LabListPage, StudioPage, StudioListPage, MarketStorePage, MarketStoreListPage, ResidencePage, ResidenceListPage, LibraryPage
-from .settings import ExternalLinkBlock, PageLinkBlock
+from django.utils.translation import gettext_lazy as _
+from events.models import EventListPage, EventPage
+from news.models import NewsListPage, NewsPage
+from payments.models import PaymentItemType, Plan
 from users.models import MembershipType
-from news.models import NewsPage, NewsListPage
-from events.models import EventPage, EventListPage
-from payments.models import Plan, PaymentItemType
+from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
 
-import random
-from datetime import date, datetime
+from .pages import (
+    LabListPage,
+    LabPage,
+    LibraryPage,
+    MarketStoreListPage,
+    MarketStorePage,
+    ResidenceListPage,
+    ResidencePage,
+    StudioListPage,
+    StudioPage,
+)
+from .settings import ExternalLinkBlock, PageLinkBlock
 
 
 class ModuleBlock(blocks.StructBlock):
     show_link_in_secondary_menu = blocks.BooleanBlock(
-        required=False,
-        label=_("Pokaži povezavo do modula v sekundarnem meniju")
+        required=False, label=_("Pokaži povezavo do modula v sekundarnem meniju")
     )
 
     class Meta:
@@ -32,10 +40,16 @@ class ColoredStructBlock(ModuleBlock):
         choices=settings.COLOR_SCHEMES,
         label=_("Barva"),
     )
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava pod besedilom"))
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava pod besedilom"),
+    )
 
     class Meta:
         abstract = True
@@ -44,12 +58,22 @@ class ColoredStructBlock(ModuleBlock):
 class BulletinBoardBlock(blocks.StructBlock):
     title = blocks.TextBlock(label=_("Naslov sekcije"))
     notice = blocks.TextBlock(label=_("Obvestilo"), max_length=65)
-    notice_link = blocks.TextBlock(label=_("Obvestilo - zunanja povezava"), required=False)
+    notice_link = blocks.TextBlock(
+        label=_("Obvestilo - zunanja povezava"), required=False
+    )
     notice_page = blocks.PageChooserBlock(
         label=_("Obvestilo - povezava na stran"), required=False
     )
-    event = blocks.PageChooserBlock(label=_("Izpostavljen dogodek (če pustite prazno, se izbere naključni)"), page_type="events.EventPage", required=False)
-    news = blocks.PageChooserBlock(label=_("Izpostavljena novica (če pustite prazno, se izbere naključna)"), page_type="news.NewsPage", required=False)
+    event = blocks.PageChooserBlock(
+        label=_("Izpostavljen dogodek (če pustite prazno, se izbere naključni)"),
+        page_type="events.EventPage",
+        required=False,
+    )
+    news = blocks.PageChooserBlock(
+        label=_("Izpostavljena novica (če pustite prazno, se izbere naključna)"),
+        page_type="news.NewsPage",
+        required=False,
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -59,7 +83,11 @@ class BulletinBoardBlock(blocks.StructBlock):
         if value["event"] is not None:
             context["events"] = [value["event"]]
         else:
-            upcoming_events = EventPage.objects.live().filter(start_day__gte=today).order_by("-first_published_at")
+            upcoming_events = (
+                EventPage.objects.live()
+                .filter(start_day__gte=today)
+                .order_by("-first_published_at")
+            )
             used_categories = set()
             events = list()
             for event in upcoming_events:
@@ -111,7 +139,9 @@ class BulletinBoardBlock(blocks.StructBlock):
 
 
 class CollageBlock(blocks.StructBlock):
-    cta_text = blocks.TextBlock(label=_("CTA obvestilo (največ 350 znakov)"), max_length=350, required=False)
+    cta_text = blocks.TextBlock(
+        label=_("CTA obvestilo (največ 350 znakov)"), max_length=350, required=False
+    )
     cta_button = blocks.StreamBlock(
         [
             ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
@@ -276,14 +306,28 @@ class CollageBlock(blocks.StructBlock):
 
 class NewsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
-    exposed_news = blocks.StreamBlock([
-        ("news_page", blocks.PageChooserBlock(
-            label=_("Novica"), page_type="news.NewsPage"))
-    ], max_num=10, blank=True, required=False, label=_("Novice"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    exposed_news = blocks.StreamBlock(
+        [
+            (
+                "news_page",
+                blocks.PageChooserBlock(label=_("Novica"), page_type="news.NewsPage"),
+            )
+        ],
+        max_num=10,
+        blank=True,
+        required=False,
+        label=_("Novice"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -292,36 +336,62 @@ class NewsBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Izpostavljene novice")
-        template = "home/blocks/news_section.html",
+        template = ("home/blocks/news_section.html",)
 
 
 class EventsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
-    exposed_events = blocks.StreamBlock([
-        ("event", blocks.PageChooserBlock(
-            label=_("Dogodek"), page_type="events.EventPage"))
-    ], max_num=10, blank=True, required=False, label=_("Dogodki"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    exposed_events = blocks.StreamBlock(
+        [
+            (
+                "event",
+                blocks.PageChooserBlock(
+                    label=_("Dogodek"), page_type="events.EventPage"
+                ),
+            )
+        ],
+        max_num=10,
+        blank=True,
+        required=False,
+        label=_("Dogodki"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     class Meta:
         label = _("Izpostavljeni dogodki")
-        template = "home/blocks/events_section.html",
+        template = ("home/blocks/events_section.html",)
 
 
 def get_labs():
     return [(lab.id, lab.title) for lab in LabPage.objects.all()]
 
+
 class LabsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    labs = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.LabPage"), label=_("Izpostavljeni laboratoriji"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    labs = blocks.ListBlock(
+        blocks.PageChooserBlock(page_type="home.LabPage"),
+        label=_("Izpostavljeni laboratoriji"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -330,53 +400,87 @@ class LabsBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Laboratoriji")
-        template = "home/blocks/labs_section.html",
+        template = ("home/blocks/labs_section.html",)
 
 
 class WhiteListBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    links = blocks.StreamBlock([
-        ("link", blocks.StructBlock([
-            ("url", blocks.URLBlock(label=_("URL"), required=False)),
-            ("text", blocks.TextBlock(label=_("Ime povezave"))),
-        ], label=_("Povezava")))
-    ], label=_("Seznam povezav"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    links = blocks.StreamBlock(
+        [
+            (
+                "link",
+                blocks.StructBlock(
+                    [
+                        ("url", blocks.URLBlock(label=_("URL"), required=False)),
+                        ("text", blocks.TextBlock(label=_("Ime povezave"))),
+                    ],
+                    label=_("Povezava"),
+                ),
+            )
+        ],
+        label=_("Seznam povezav"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     class Meta:
         label = _("Seznam povezav")
-        template = "home/blocks/white_list_section.html",
+        template = ("home/blocks/white_list_section.html",)
 
 
 class GalleryBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
-    gallery = blocks.ListBlock(blocks.StructBlock([
-        ("image", ImageChooserBlock(label=_("Slika"))),
-        ("image_description", blocks.TextBlock(label=_("Podnapis k sliki"), max_length=150, required=False))
-    ]), label=_("Galerija"))
+    gallery = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("image", ImageChooserBlock(label=_("Slika"))),
+                (
+                    "image_description",
+                    blocks.TextBlock(
+                        label=_("Podnapis k sliki"), max_length=150, required=False
+                    ),
+                ),
+            ]
+        ),
+        label=_("Galerija"),
+    )
 
     class Meta:
         label = _("Galerija")
-        template = "home/blocks/gallery_section.html",
+        template = ("home/blocks/gallery_section.html",)
 
 
 def get_studios():
     return [(studio.id, studio.title) for studio in StudioPage.objects.all()]
+
 
 class StudiosBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
     studios = blocks.ListBlock(
         blocks.PageChooserBlock(page_type="home.StudioPage"),
-        max_num=10, label=_("Izpostavljeni studii"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+        max_num=10,
+        label=_("Izpostavljeni studii"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -385,17 +489,26 @@ class StudiosBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Studii")
-        template = "home/blocks/studios_section.html",
+        template = ("home/blocks/studios_section.html",)
 
 
 class MarketplaceBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    markets = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor")), label=_("Izpostavljeni prostori"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    markets = blocks.ListBlock(
+        blocks.PageChooserBlock(page_type="home.MarketStorePage", label=_("Prostor")),
+        label=_("Izpostavljeni prostori"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -404,29 +517,39 @@ class MarketplaceBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Tržnica")
-        template = "home/blocks/marketplace_section.html",
+        template = ("home/blocks/marketplace_section.html",)
 
 
 class FullWidthImageBlock(ColoredStructBlock):
     image = ImageChooserBlock(label=_("Slika"))
-    text = blocks.TextBlock(label=_("Izpostavljeno besedilo"), blank=True, required=False)
-    image_text = blocks.TextBlock(label=_("Besedilo pod sliko"), blank=True, required=False)
+    text = blocks.TextBlock(
+        label=_("Izpostavljeno besedilo"), blank=True, required=False
+    )
+    image_text = blocks.TextBlock(
+        label=_("Besedilo pod sliko"), blank=True, required=False
+    )
 
     class Meta:
         label = _("Slika")
-        template = "home/blocks/image_embed.html",
+        template = ("home/blocks/image_embed.html",)
 
 
 class ColoredTextBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"), required=False)
     text = blocks.TextBlock(label=_("Besedilo"))
     image = ImageChooserBlock(label=_("Slika"), required=False)
-    image_description = blocks.TextBlock(label=_("Opis pod sliko"), blank=True, required=False)
-    image_position = blocks.ChoiceBlock(choices=[
-        ("align-left", "Levo"),
-        ("align-right", "Desno"),
-        ("align-bottom", "Spodaj"),
-    ], default="align-bottom", label=_("Pozicija slike"))
+    image_description = blocks.TextBlock(
+        label=_("Opis pod sliko"), blank=True, required=False
+    )
+    image_position = blocks.ChoiceBlock(
+        choices=[
+            ("align-left", "Levo"),
+            ("align-right", "Desno"),
+            ("align-bottom", "Spodaj"),
+        ],
+        default="align-bottom",
+        label=_("Pozicija slike"),
+    )
 
     class Meta:
         label = _("Barvno besedilo (s sliko)")
@@ -436,10 +559,17 @@ class ColoredTextBlock(ColoredStructBlock):
 class ColoredTextSmallImagesBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     text = blocks.TextBlock(label=_("Besedilo"), required=False)
-    images = blocks.ListBlock(blocks.StructBlock([
-        ("image", ImageChooserBlock()),
-        ("link", blocks.URLBlock(label=_("Povezava"), required=False))
-    ]), label=_("Sličice"), min_num=1, max_num=4)
+    images = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("image", ImageChooserBlock()),
+                ("link", blocks.URLBlock(label=_("Povezava"), required=False)),
+            ]
+        ),
+        label=_("Sličice"),
+        min_num=1,
+        max_num=4,
+    )
 
     class Meta:
         label = _("Barvno besedilo z majhnimi slikami")
@@ -449,12 +579,21 @@ class ColoredTextSmallImagesBlock(ColoredStructBlock):
 class ColoredTextCardsBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     text = blocks.TextBlock(label=_("Besedilo"), required=False)
-    cards = blocks.ListBlock(blocks.StructBlock([
-        ("image", ImageChooserBlock()),
-        ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
-        ("link", blocks.URLBlock(label=_("Povezava"), required=False)),
-        ("link_text", blocks.TextBlock(label=_("Ime povezave"), required=False)),
-    ]), label=_("Kartice"), min_num=1)
+    cards = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("image", ImageChooserBlock()),
+                ("description", blocks.TextBlock(label=_("Opis pod sliko"))),
+                ("link", blocks.URLBlock(label=_("Povezava"), required=False)),
+                (
+                    "link_text",
+                    blocks.TextBlock(label=_("Ime povezave"), required=False),
+                ),
+            ]
+        ),
+        label=_("Kartice"),
+        min_num=1,
+    )
 
     class Meta:
         label = _("Barvno besedilo s karticami")
@@ -472,29 +611,46 @@ class ColoredRichTextBlock(ColoredStructBlock):
 
 class ContactsListBlock(ColoredStructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
-    contacts = blocks.ListBlock(blocks.StructBlock([
-        ("name", blocks.TextBlock(label=_("Ime"))),
-        ("position", blocks.TextBlock(label=_("Delovno mesto"))),
-        ("email", blocks.EmailBlock(label=_("Elektronski naslov")))
-    ]), label=_("Kontakti"))
+    contacts = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("name", blocks.TextBlock(label=_("Ime"))),
+                ("position", blocks.TextBlock(label=_("Delovno mesto"))),
+                ("email", blocks.EmailBlock(label=_("Elektronski naslov"))),
+            ]
+        ),
+        label=_("Kontakti"),
+    )
 
     class Meta:
         label = _("Kontakti")
-        template = "home/blocks/contacts_section.html",
+        template = ("home/blocks/contacts_section.html",)
 
 
 # TODO: zbrisi, ko se bodo pocistile migracije
 def get_residents():
     return [(resident.id, resident.title) for resident in ResidencePage.objects.all()]
 
+
 class ResidentsBlock(blocks.StructBlock):
     title = blocks.CharBlock(label=_("Naslov sekcije"))
     intro_text = blocks.TextBlock(label=_("Uvodno besedilo"))
-    residents = blocks.ListBlock(blocks.PageChooserBlock(page_type="home.ResidencePage"), min_num=1, max_num=5, label=_("Rezidenti"))
-    link = blocks.StreamBlock([
-        ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
-        ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
-    ], max_num=1, blank=True, required=False, label=_("Povezava/gumb na dnu (opcijsko)"))
+    residents = blocks.ListBlock(
+        blocks.PageChooserBlock(page_type="home.ResidencePage"),
+        min_num=1,
+        max_num=5,
+        label=_("Rezidenti"),
+    )
+    link = blocks.StreamBlock(
+        [
+            ("page_link", PageLinkBlock(label=_("Povezava do strani"))),
+            ("external_link", ExternalLinkBlock(label=_("Zunanja povezava"))),
+        ],
+        max_num=1,
+        blank=True,
+        required=False,
+        label=_("Povezava/gumb na dnu (opcijsko)"),
+    )
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
@@ -503,7 +659,7 @@ class ResidentsBlock(blocks.StructBlock):
 
     class Meta:
         label = _("Rezidenti")
-        template = "home/blocks/residents_section.html",
+        template = ("home/blocks/residents_section.html",)
 
 
 class NewsletterBlock(blocks.StructBlock):
@@ -520,7 +676,9 @@ class MembershipsBlock(ColoredStructBlock):
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context["membership_types"] = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        context["membership_types"] = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=False)
+        )
         return context
 
     class Meta:
@@ -535,7 +693,11 @@ class PlansBlock(ColoredStructBlock):
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
         timestamp = datetime.now()
-        context["plans"] = Plan.objects.filter(payment_item_type=PaymentItemType.UPORABNINA, valid_from__lte=timestamp, valid_to__gte=timestamp).order_by("price")
+        context["plans"] = Plan.objects.filter(
+            payment_item_type=PaymentItemType.UPORABNINA,
+            valid_from__lte=timestamp,
+            valid_to__gte=timestamp,
+        ).order_by("price")
         return context
 
     class Meta:

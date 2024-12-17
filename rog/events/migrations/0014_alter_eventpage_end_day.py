@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0013_alter_eventcategory_color_scheme_and_more'),
+        ("events", "0013_alter_eventcategory_color_scheme_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='eventpage',
-            name='end_day',
-            field=models.DateField(blank=True, null=True, verbose_name='Datum konca (če gre za večdneven dogodek)'),
+            model_name="eventpage",
+            name="end_day",
+            field=models.DateField(
+                blank=True,
+                null=True,
+                verbose_name="Datum konca (če gre za večdneven dogodek)",
+            ),
         ),
     ]

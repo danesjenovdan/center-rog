@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def migrate_memberships(apps, schema_editor):
     User = apps.get_model("users", "User")
 
@@ -16,7 +17,7 @@ def migrate_memberships(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0018_membership_notification_14_sent_and_more'),
+        ("users", "0018_membership_notification_14_sent_and_more"),
     ]
 
     operations = [

@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
+WAGTAILADMIN_BASE_URL = "http://localhost:8000"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -22,5 +22,5 @@ except ImportError:
     pass
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-FROM_EMAIL = 'dummy@email.com'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+FROM_EMAIL = "dummy@email.com"

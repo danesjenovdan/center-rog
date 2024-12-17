@@ -1,33 +1,29 @@
-from django.contrib.auth import authenticate, login
+from datetime import date, datetime, time, timedelta
+
+from dateutil.relativedelta import relativedelta
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q
+from django.http import HttpResponseNotFound
+from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound
 from django.views import View
 from django.views.generic import TemplateView
-from django.contrib.auth import get_user_model
-
-from datetime import datetime, date, time, timedelta
-from dateutil.relativedelta import relativedelta
-
+from events.models import EventRegistration
+from home.email_utils import id_generator, send_email
 from home.forms import (
-    RegisterForm,
-    RegistrationMembershipForm,
-    RegistrationInformationForm,
     EditProfileForm,
-    UserInterestsForm,
     PurchasePlanForm,
+    RegisterForm,
+    RegistrationInformationForm,
+    RegistrationMembershipForm,
+    UserInterestsForm,
 )
-
-from users.models import User, Membership, MembershipType, ConfirmEmail
+from payments.models import Plan
+from users.models import ConfirmEmail, Membership, MembershipType, User
 from users.prima_api import PrimaApi
 from users.tokens import get_token_for_user
-from home.email_utils import send_email, id_generator
-
-from payments.models import Plan
-from events.models import EventRegistration
 
 prima_api = PrimaApi()
 
@@ -87,7 +83,7 @@ class UserProfileView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-    
+
         try:
             user = User.objects.get(id=id)
             return render(request, self.template_name, {"user": user})
@@ -116,7 +112,7 @@ class SearchProfileView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = UserInterestsForm(request.POST)
 
         if form.is_valid():
@@ -153,7 +149,7 @@ class PurchasePlanView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(
             plan__isnull=False
@@ -198,7 +194,7 @@ class PurchaseMembershipView(TemplateView):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=False)
         )
@@ -279,7 +275,7 @@ class RegistrationView(View):
 
 class RegistrationMailConfirmationView(View):
     def get(self, request):
-        
+
         return render(
             request,
             "registration/registration_mail_confirmation.html",
@@ -404,7 +400,7 @@ class RegistrationInformationView(View):
                 membership_query = ""
 
             # prepare valid from and to dates
-            valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
+            valid_from = datetime.now().strftime("%Y-%m-%d") + " 00:00:00"
             valid_to = valid_from
             # update PRIMA user
             data, message = prima_api.updateUser(
@@ -532,7 +528,7 @@ class EditProfileView(View):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = EditProfileForm(request.POST, request.FILES)
 
         if form.is_valid():

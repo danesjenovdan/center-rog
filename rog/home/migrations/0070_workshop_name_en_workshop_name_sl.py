@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0069_basictextpage_body_en_basictextpage_body_sl'),
+        ("home", "0069_basictextpage_body_en_basictextpage_body_sl"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='workshop',
-            name='name_en',
-            field=models.TextField(null=True, verbose_name='Ime usposabljanja'),
+            model_name="workshop",
+            name="name_en",
+            field=models.TextField(null=True, verbose_name="Ime usposabljanja"),
         ),
         migrations.AddField(
-            model_name='workshop',
-            name='name_sl',
-            field=models.TextField(null=True, verbose_name='Ime usposabljanja'),
+            model_name="workshop",
+            name="name_sl",
+            field=models.TextField(null=True, verbose_name="Ime usposabljanja"),
         ),
     ]

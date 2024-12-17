@@ -1,30 +1,41 @@
+import datetime
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel
-
+from events.models import EventPage
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-
-import datetime
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.models import Orderable
 
 from .image import CustomImage
 from .pages import LabPage
 from .workshop import Workshop
-from events.models import EventPage
 
 
 class Tool(Orderable, ClusterableModel):
     name = models.TextField()
     image = models.ForeignKey(
-        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+        CustomImage, null=True, blank=True, on_delete=models.SET_NULL, related_name="+"
+    )
     lab = ParentalKey(LabPage, on_delete=models.CASCADE, related_name="related_tools")
     required_workshop = models.ForeignKey(
-        Workshop, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Zahteva usposabljanje?"))
-    more_information_link = models.URLField(null=True, blank=True, verbose_name=_("Povezava za več informacij"))
-    prima_location_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima location id"))
-    prima_group_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima group id"))
+        Workshop,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Zahteva usposabljanje?"),
+    )
+    more_information_link = models.URLField(
+        null=True, blank=True, verbose_name=_("Povezava za več informacij")
+    )
+    prima_location_id = models.IntegerField(
+        null=True, blank=True, verbose_name=_("Prima location id")
+    )
+    prima_group_id = models.IntegerField(
+        null=True, blank=True, verbose_name=_("Prima group id")
+    )
 
     panels = [
         FieldPanel("name"),
@@ -41,7 +52,9 @@ class Tool(Orderable, ClusterableModel):
 
     def workshop_event(self):
         today = datetime.datetime.today()
-        events = EventPage.objects.filter(event_is_workshop=self.required_workshop, start_day__gte=today).order_by("start_day")
+        events = EventPage.objects.filter(
+            event_is_workshop=self.required_workshop, start_day__gte=today
+        ).order_by("start_day")
         print(events)
         if len(events) > 0:
             return events.first()
@@ -57,7 +70,9 @@ class Tool(Orderable, ClusterableModel):
 class ToolSpecification(Orderable):
     name = models.TextField(verbose_name=_("Specifikacija"))
     value = models.TextField(verbose_name=_("Vrednost"))
-    tool = ParentalKey(Tool, on_delete=models.CASCADE, related_name="related_tool_specifications")
+    tool = ParentalKey(
+        Tool, on_delete=models.CASCADE, related_name="related_tool_specifications"
+    )
 
     def __str__(self):
         return self.name

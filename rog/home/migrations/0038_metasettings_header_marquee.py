@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0037_residencearchivelistpage_studioarchivelistpage'),
+        ("home", "0037_residencearchivelistpage_studioarchivelistpage"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='metasettings',
-            name='header_marquee',
-            field=models.TextField(blank=True, null=True, verbose_name='Vrteče besedilo'),
+            model_name="metasettings",
+            name="header_marquee",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Vrteče besedilo"
+            ),
         ),
     ]

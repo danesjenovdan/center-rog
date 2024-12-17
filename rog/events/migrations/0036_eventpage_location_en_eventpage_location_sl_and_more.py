@@ -6,38 +6,50 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0035_eventpage_saved_in_pantheon'),
+        ("events", "0035_eventpage_saved_in_pantheon"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='eventpage',
-            name='location_en',
-            field=models.TextField(blank=True, default='Center Rog', null=True, verbose_name='Lokacija'),
+            model_name="eventpage",
+            name="location_en",
+            field=models.TextField(
+                blank=True, default="Center Rog", null=True, verbose_name="Lokacija"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='location_sl',
-            field=models.TextField(blank=True, default='Center Rog', null=True, verbose_name='Lokacija'),
+            model_name="eventpage",
+            name="location_sl",
+            field=models.TextField(
+                blank=True, default="Center Rog", null=True, verbose_name="Lokacija"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='notice_en',
-            field=models.CharField(blank=True, max_length=45, null=True, verbose_name='Opomba'),
+            model_name="eventpage",
+            name="notice_en",
+            field=models.CharField(
+                blank=True, max_length=45, null=True, verbose_name="Opomba"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='notice_sl',
-            field=models.CharField(blank=True, max_length=45, null=True, verbose_name='Opomba'),
+            model_name="eventpage",
+            name="notice_sl",
+            field=models.CharField(
+                blank=True, max_length=45, null=True, verbose_name="Opomba"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='tag_en',
-            field=models.CharField(blank=True, max_length=16, null=True, verbose_name='Oznaka na kartici'),
+            model_name="eventpage",
+            name="tag_en",
+            field=models.CharField(
+                blank=True, max_length=16, null=True, verbose_name="Oznaka na kartici"
+            ),
         ),
         migrations.AddField(
-            model_name='eventpage',
-            name='tag_sl',
-            field=models.CharField(blank=True, max_length=16, null=True, verbose_name='Oznaka na kartici'),
+            model_name="eventpage",
+            name="tag_sl",
+            field=models.CharField(
+                blank=True, max_length=16, null=True, verbose_name="Oznaka na kartici"
+            ),
         ),
     ]

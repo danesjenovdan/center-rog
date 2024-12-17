@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0061_metasettings_footer_random_images'),
+        ("home", "0061_metasettings_footer_random_images"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='customimage',
-            name='show_in_footer',
+            model_name="customimage",
+            name="show_in_footer",
         ),
     ]

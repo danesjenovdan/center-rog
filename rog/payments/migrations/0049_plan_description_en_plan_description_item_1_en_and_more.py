@@ -6,68 +6,88 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0048_plan_name_en_plan_name_sl'),
+        ("payments", "0048_plan_name_en_plan_name_sl"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='plan',
-            name='description_en',
-            field=models.CharField(max_length=300, null=True, verbose_name='Opis'),
+            model_name="plan",
+            name="description_en",
+            field=models.CharField(max_length=300, null=True, verbose_name="Opis"),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_1_en',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 1'),
+            model_name="plan",
+            name="description_item_1_en",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 1"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_1_sl',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 1'),
+            model_name="plan",
+            name="description_item_1_sl",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 1"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_2_en',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 2'),
+            model_name="plan",
+            name="description_item_2_en",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 2"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_2_sl',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 2'),
+            model_name="plan",
+            name="description_item_2_sl",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 2"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_3_en',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 3'),
+            model_name="plan",
+            name="description_item_3_en",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 3"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_3_sl',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 3'),
+            model_name="plan",
+            name="description_item_3_sl",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 3"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_4_en',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 4'),
+            model_name="plan",
+            name="description_item_4_en",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 4"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_4_sl',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 4'),
+            model_name="plan",
+            name="description_item_4_sl",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 4"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_5_en',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 5'),
+            model_name="plan",
+            name="description_item_5_en",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 5"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_item_5_sl',
-            field=models.CharField(blank=True, max_length=300, null=True, verbose_name='Postavka 5'),
+            model_name="plan",
+            name="description_item_5_sl",
+            field=models.CharField(
+                blank=True, max_length=300, null=True, verbose_name="Postavka 5"
+            ),
         ),
         migrations.AddField(
-            model_name='plan',
-            name='description_sl',
-            field=models.CharField(max_length=300, null=True, verbose_name='Opis'),
+            model_name="plan",
+            name="description_sl",
+            field=models.CharField(max_length=300, null=True, verbose_name="Opis"),
         ),
     ]

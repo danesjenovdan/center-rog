@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0059_alter_contentpage_body_alter_homepage_body'),
+        ("home", "0059_alter_contentpage_body_alter_homepage_body"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='metasettings',
-            old_name='footer_images',
-            new_name='footer_logos',
+            model_name="metasettings",
+            old_name="footer_images",
+            new_name="footer_logos",
         ),
     ]

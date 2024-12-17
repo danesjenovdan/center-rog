@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0011_alter_plan_options_alter_plan_duration_and_more'),
+        ("payments", "0011_alter_plan_options_alter_plan_duration_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='user_was_eligible_to_discount',
+            model_name="payment",
+            name="user_was_eligible_to_discount",
             field=models.BooleanField(default=False),
         ),
     ]

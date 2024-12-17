@@ -1,19 +1,17 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.db import models
 from django.urls import NoReverseMatch, reverse
 from django.utils import translation as translation
-
+from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
-from wagtail.models import Page, Site
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.fields import StreamField, RichTextField
-from wagtail.images.blocks import ImageChooserBlock
-
 from wagtail.coreutils import (
     WAGTAIL_APPEND_SLASH,
     get_supported_content_language_variant,
 )
+from wagtail.fields import RichTextField, StreamField
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.models import Page, Site
 
 from .image import CustomImage
 
@@ -227,11 +225,17 @@ class ObjectProfilePage(BasePage):
         verbose_name=_("Galerija"),
     )
     # archived
-    archived = models.BooleanField(default=False, verbose_name=_("Arhiviraj? (brez določitve datuma)"))
+    archived = models.BooleanField(
+        default=False, verbose_name=_("Arhiviraj? (brez določitve datuma)")
+    )
     active_from = models.DateField(
         blank=True, null=True, verbose_name=_("Začetek delovanja")
     )
-    active_to = models.DateField(blank=True, null=True, verbose_name=_("Konec delovanja (po tem datumu bo avtomatsko arhiviran)"))
+    active_to = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Konec delovanja (po tem datumu bo avtomatsko arhiviran)"),
+    )
     # see more
     show_see_more_section = models.BooleanField(
         default=True, verbose_name=_("Pokaži več")

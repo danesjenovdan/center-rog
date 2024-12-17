@@ -6,16 +6,22 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0023_auto_20230825_1117'),
+        ("users", "0023_auto_20230825_1117"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='membershiptype',
-            options={'verbose_name': 'Tip članstva', 'verbose_name_plural': 'Uporabniki - tipi članstev'},
+            name="membershiptype",
+            options={
+                "verbose_name": "Tip članstva",
+                "verbose_name_plural": "Uporabniki - tipi članstev",
+            },
         ),
         migrations.AlterModelOptions(
-            name='userinterest',
-            options={'verbose_name': 'Kategorija zanimanj uporabnikov', 'verbose_name_plural': 'Uporabniki - kategorije zanimanj'},
+            name="userinterest",
+            options={
+                "verbose_name": "Kategorija zanimanj uporabnikov",
+                "verbose_name_plural": "Uporabniki - kategorije zanimanj",
+            },
         ),
     ]

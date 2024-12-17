@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def copy_names(apps, schema_editor):
     Payment = apps.get_model("payments", "Payment")
 
@@ -11,12 +12,11 @@ def copy_names(apps, schema_editor):
             payment_plan.plan_name = payment_plan.plan.name
             payment_plan.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payments', '0025_paymentplan_plan_name'),
+        ("payments", "0025_paymentplan_plan_name"),
     ]
 
-    operations = [
-        migrations.RunPython(copy_names)
-    ]
+    operations = [migrations.RunPython(copy_names)]
