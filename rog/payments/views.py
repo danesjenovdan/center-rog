@@ -51,6 +51,8 @@ class PaymentPreview(views.APIView):
                 payment.original_amount = plan.price
                 if membership_id:
                     membership = Membership.objects.get(id=membership_id)
+                    if membership.active:
+                        return redirect("profile-my")
                     payment.membership = membership
                 payment.save()
                 PaymentPlanEvent(
@@ -307,6 +309,12 @@ class Pay(views.APIView):
             return redirect("profile-my")
         free_order = False
         if payment.amount == 0:
+            if payment.status == Payment.Status.SUCCESS:
+                return render(
+                    request,
+                    "payment_failed.html",
+                    {"status": _("Plačilo je bilo že sprocesirano.")},
+                )
             # User has 100% discount dont show payment page
             last_ujp_payment = Payment.objects.all().exclude(ujp_id=None).order_by('-ujp_id')[0]
             payment.ujp_id = last_ujp_payment.ujp_id + 1
