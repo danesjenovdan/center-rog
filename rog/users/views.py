@@ -126,7 +126,7 @@ class ConfirmUserView(View):
         send_email(
             user.email,
             "emails/registration.html",
-            "Center Rog – vaša registracija je uspela // your registration was successful"
+            "Center Rog – vaša registracija je uspela // your registration was successful",
             {},
         )
         return redirect("registration-membership")
