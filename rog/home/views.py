@@ -264,7 +264,7 @@ class RegistrationView(View):
             send_email(
                 user.email,
                 "emails/email_confirmation.html",
-                _("Center Rog – potrditev e-naslova // e-mail confirmation"),
+                "Center Rog – potrditev e-naslova // e-mail confirmation",
                 {"key": confirm_email.key},
             )
 
