@@ -1,46 +1,76 @@
 {% extends 'emails/base.html' %}
 {% block body %}
-  <p>Živijo, {{ name }},</p>
-  <p>dobrodošel_la v Center Rog! Veseli smo, da si se nam pridružil_a in postal_a član_ica Centra Rog.</p>
-  <p>
-    Članstvo ti prinaša številne ugodnosti in popuste pri nakupu usposabljanj, vodenih tečajev in delavnic, ki ji organiziramo v Centru Rog ter 10 % popust v vseh gostinskih in trgovinskih lokalih v Centru Rog. Preveri razpisane vodene programe <a href="https://www.center-rog.si/program/">TUKAJ</a>.
-  </p>
-  <p>
-    Kot član_ica lahko v svojem profilu kupiš enega od ponujenih uporabniških paketov, kar ti po opravljenem usposabljanju omogoča rezervacijo odprtih terminov za samostojno delo v kateremkoli od 9 labov Centra Rog. Preveri razpisane termine usposabljanj <a href="https://www.center-rog.si/program/?category=usposabljanja">TUKAJ</a>.
-  </p>
-  <p>
-    Kako deluje Center Rog preberi <a href="https://www.center-rog.si/novice/center-rog-kako-deluje/">TUKAJ</a>. Vse o članstvu in ugodnostih, ki jih to prinaša pa najdeš <a href="https://center-rog.si/postani-clan/">TUKAJ</a>.
-  </p>
-  <p>
-    Za dodatna pojasnila nam lahko pišeš na <a href="mailto:info@center-rog.si">info@center-rog.si</a> ali nas pokličeš na telefonsko številko +386 (0)1 320 56 10.
-  </p>
-  <p>Se vidimo v Centru Rog. Veselimo se tvojega obiska!</p>
-  <p>Ekipa Centra Rog</p>
-  <p>
-    To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav, se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
-  </p>
 
-  <br />
-  <hr />
-  <br />
+    <p>
+        Živijo, {{ name }},
+    </p>
+    <p>
+        dobrodošel_la v Center Rog! Veseli smo, da si se nam pridružil_a in postal_a član_ica Centra Rog. 
+    </p>
+    <p>
+        Tukaj je tvoja personalizirana koda, s katero lahko še do konca leta 2024 unovčiš <strong>1 brezplačno usposabljanje</strong> za uporabo strojne opreme v enem od 9 proizvodnih laboratorijev Centra Rog.
+    </p>
+    <p>
+        <a href="https://center-rog.si/program/?category=usposabljanja" target="_blank">TUKAJ</a> lahko preveriš, katera usposabljanja so trenutno na voljo. Za brezplačno prijavo v prijavnem obrazcu uporabi kodo <strong>{{ code }}</strong>.
+    </p>
+    <p>
+        Članstvo ti prinaša tudi številne druge ugodnosti in popuste pri vodenih tečajih in delavnicah, ki ji organiziramo v Centru Rog ter v vseh naših trgovinah in lokalih. Preveri razpisane tečaje in delavnice <a href="https://center-rog.si/program/?category=usposabljanja" target="_blank">TUKAJ</a>.
+    </p>
+    <p>
+        Kot član_ica lahko v svojem profilu kupiš enega od ponujenih uporabniških paketov, kar ti po opravljenem usposabljanju omogoča rezervacijo odprtih terminov za samostojno delo v kateremkoli od 9 labov Centra Rog.
+    </p>
+    <p>
+        Vse o članstvu in ugodnostih, ki jih to prinaša, najdeš <a href="https://center-rog.si/postani-clan" target="_blank">TUKAJ</a>.    
+    </p>
+    <p>
+        Za dodatna pojasnila nam lahko pišeš na <a href="mailto:info@center-rog.si">info@center-rog.si</a> ali nas pokličeš na telefonsko številko +386 (0)1 320 56 10.
+    </p>
+    <p>
+        Se vidimo v Centru Rog. Veselimo se tvojega obiska!
+    </p>
+    <p>
+        Ekipa Centra Rog
+    </p>
+    <p>
+        To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+    </p>
 
-  <p>Hi {{ name }},</p>
-  <p>Welcome to Center Rog! We're happy you joined us and became our member.</p>
-  <p>
-    As a member, you can also enjoy discounts on guided workshops, courses and training courses we organize in Center Rog and a 10 % discount in Made in Rog shop, cafe, restaurants and shops in Center Rog.. Check what's on <a href="https://center-rog.si/en/programme/">HERE</a>.
-  </p>
-  <p>
-    As a member you can also buy one of our user packages for independent work in any of our 9 production labs after passing a required training course. Dates of training courses can be found <a href="https://center-rog.si/en/programme/?category=usposabljanja/">HERE</a>.
-  </p>
-  <p>
-    Read <a href="https://www.center-rog.si/en/news/center-rog-how-does-it-work/">HERE</a> about how Center Rog works. All about membership benefits can be found <a href="https://center-rog.si/en/become-a-member/">HERE</a>.
-  </p>
-  <p>
-    For additional information, you can write us at <a href="mailto:info@center-rog.si">info@center-rog.si</a> or call us at +386 (0)1 320 56 10.
-  </p>
-  <p>See you at Center Rog. We're looking forward to your visit!</p>
-  <p>Center Rog Team</p>
-  <p>
-    This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
-  </p>
-{% endblock %}
+    <br />
+    <hr />
+    <br />
+
+    <p>
+        Hi {{ name }},
+    </p>
+    <p>
+        Welcome to Center Rog! We're happy you joined us and became our member.
+    </p>
+    <p>
+        Here is you personalized code for <strong>1 free training course</strong> in a production lab of your choice. Use it until December 2024!
+    </p>
+    <p>
+        Click <a href="https://center-rog.si/program/?category=usposabljanja" target="_blank">HERE</a> and check all available training courses. When applying, don't forget to use your personalized code <strong>{{ code }}</strong> for a free training course of your choice.
+    </p>
+    <p>
+        As a member, you also enjoy discounts on guided workshops and courses. Check what's on <a href="https://center-rog.si/program/?category=usposabljanja" target="_blank">HERE</a>.
+    </p>
+    <p>
+        As a member you can also buy one of our user packages for independent work in any of our 9 production labs after passing a required training course. 
+    </p>
+    <p>
+        All about membership benefits can be found <a href="https://center-rog.si/postani-clan/" target="_blank">HERE</a>.     
+    </p>
+    <p>
+        For additional information, you can write us at <a href="mailto:info@center-rog.si">info@center-rog.si</a> or call us at +386 (0)1 320 56 10.
+    </p>
+    <p>
+        See you at Center Rog. We're looking forward to your visit!
+    </p>
+    <p>
+        Center Rog Team
+    </p>
+    <p>
+        This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+    </p>
+
+{% endblock body %}
