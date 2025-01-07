@@ -154,19 +154,12 @@ def finish_payment(payment):
     payment.save()
 
     if first_membership_paid:
-        promo_code = PromoCode.objects.create(
-            valid_to=datetime(day=1, month=1, year=timezone.now().year + 1),
-            percent_discount=100,
-            payment_item_type=PaymentItemType.TRAINING,
-            single_use=True,
-        )
         send_email(
             payment.user.email,
             "emails/first_membership_paid.html",
             f"Center Rog – uspešen zakup članstva // successful membership purchase",
             {
                 "membership": membership,
-                "code": promo_code.code,
                 "name": payment.user.first_name,
             },
         )
