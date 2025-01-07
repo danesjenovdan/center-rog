@@ -1,14 +1,12 @@
-from django.utils import timezone
-
-from .models import Payment, PromoCode, Token, PaymentPlanEvent, PaymentItemType
-from users.models import Membership, MembershipType
-from home.email_utils import send_email
-
 from datetime import datetime, timedelta
 
+from django.utils import timezone
+from home.email_utils import send_email
 from sentry_sdk import capture_message, push_scope
-
+from users.models import Membership, MembershipType
 from users.prima_api import PrimaApi
+
+from .models import Payment, PaymentItemType, PaymentPlanEvent, PromoCode, Token
 
 prima_api = PrimaApi()
 
@@ -154,19 +152,12 @@ def finish_payment(payment):
     payment.save()
 
     if first_membership_paid:
-        promo_code = PromoCode.objects.create(
-            valid_to=datetime(day=1, month=1, year=timezone.now().year + 1),
-            percent_discount=100,
-            payment_item_type=PaymentItemType.TRAINING,
-            single_use=True,
-        )
         send_email(
             payment.user.email,
             "emails/first_membership_paid.html",
             f"Center Rog – uspešen zakup članstva // successful membership purchase",
             {
                 "membership": membership,
-                "code": promo_code.code,
                 "name": payment.user.first_name,
             },
         )
