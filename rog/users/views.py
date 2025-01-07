@@ -107,7 +107,7 @@ class ResendConfirmationMailView(View):
         send_email(
             user.email,
             "emails/email_confirmation.html",
-            _("Center Rog – potrdite račun"),
+            "Center Rog – potrditev e-naslova // e-mail confirmation",
             {"key": confirm_email.key},
         )
 
@@ -126,9 +126,7 @@ class ConfirmUserView(View):
         send_email(
             user.email,
             "emails/registration.html",
-            _(
-                "Center Rog – vaša registracija je uspela // your registration was successful"
-            ),
+            "Center Rog – vaša registracija je uspela // your registration was successful",
             {},
         )
         return redirect("registration-membership")
