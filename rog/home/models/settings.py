@@ -22,8 +22,6 @@ from wagtail.fields import StreamField
 
 from .image import CustomImage
 
-import random
-
 
 # @register_snippet
 # class Infopush(models.Model):
@@ -323,19 +321,3 @@ class MetaSettings(BaseGenericSetting):
 
     class Meta:
         verbose_name = "Nastavitve spletnega mesta"
-
-
-## CUSTOM CONTEXT PROCESSORS
-
-
-def footer_image_processor(request):
-    meta_settings = MetaSettings.load(request_or_site=request)
-    random_image = None
-
-    images = meta_settings.footer_random_images.raw_data
-    if images:
-        random_choice = random.choice(images)
-        random_image_id = random_choice["value"]["image"]
-        random_image = CustomImage.objects.get(id=random_image_id)
-
-    return {"random_image": random_image}
