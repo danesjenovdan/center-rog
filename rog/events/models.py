@@ -313,6 +313,7 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
+            .prefetch_related("category", "hero_image")
             .order_by("start_day", "start_time", "id")
         )
 
