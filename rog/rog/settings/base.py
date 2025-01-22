@@ -65,9 +65,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "wagtail_rangefilter",
     "rangefilter",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
