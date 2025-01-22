@@ -1,4 +1,4 @@
-{% load static i18n wagtailcore_tags wagtail_modeltranslation wagtailimages_tags %}
+{% load static i18n wagtailcore_tags wagtail_modeltranslation wagtailimages_tags footer_tags %}
 {% wagtail_site as current_site %}
 
 <div id="logo-navigation">
@@ -116,7 +116,7 @@
           </div>
         </div>
       </div>
-      
+      {% get_random_image as random_image %}
       {% if random_image %}
       <div class="container d-md-none h-100 align-items-end">
         <div class="row">

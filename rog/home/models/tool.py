@@ -42,11 +42,7 @@ class Tool(Orderable, ClusterableModel):
     def workshop_event(self):
         today = datetime.datetime.today()
         events = EventPage.objects.filter(event_is_workshop=self.required_workshop, start_day__gte=today).order_by("start_day")
-        print(events)
-        if len(events) > 0:
-            return events.first()
-        else:
-            return None
+        return events.first()
 
     class Meta:
         verbose_name = _("Orodje")

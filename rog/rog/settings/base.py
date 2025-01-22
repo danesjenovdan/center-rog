@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 import sys
 
+from django.utils.log import DEFAULT_LOGGING
 from wagtail.embeds.oembed_providers import all_providers
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,6 +24,8 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+# Log to console even when debug is off
+DEFAULT_LOGGING["handlers"]["console"]["filters"] = []
 
 # Application definition
 
@@ -97,7 +100,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
-                "home.models.footer_image_processor",
                 'django.template.context_processors.i18n',
             ],
         },
@@ -331,30 +333,5 @@ ALLOWED_HOSTS = ['localhost', 'rog.lb.djnd.si']
 CSRF_TRUSTED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
 CORS_ALLOWED_ORIGINS = ["http://localhost:8000", 'https://rog.lb.djnd.si']
 
-# Logging
-LOGGING = {
-   'version': 1,
-   'disable_existing_loggers': False,
-   'formatters': {
-       'verbose': {
-           'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
-       },
-   },
-   'handlers': {
-       'console': {
-           'level': 'INFO',
-           'class': 'logging.StreamHandler',
-           'stream': sys.stdout,
-           'formatter': 'verbose'
-       },
-   },
-   'loggers': {
-       '': {
-           'handlers': ['console'],
-           'level': 'INFO',
-           'propagate': True,
-       },
-   },
-}
 
 AUTHENTICATION_BACKENDS = ['users.backends.CaseInsensitiveModelBackend']
