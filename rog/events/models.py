@@ -277,7 +277,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
-            .prefetch_related("category", "locale")
+            .select_related("category")
         )
 
         # see more
@@ -313,7 +313,7 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
-            .prefetch_related("category", "hero_image")
+            .select_related("category", "hero_image")
             .order_by("start_day", "start_time", "id")
         )
 

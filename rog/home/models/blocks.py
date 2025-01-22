@@ -59,7 +59,7 @@ class BulletinBoardBlock(blocks.StructBlock):
         if value["event"] is not None:
             context["events"] = [value["event"]]
         else:
-            upcoming_events = EventPage.objects.live().filter(start_day__gte=today).prefetch_related("category", "hero_image").order_by("-first_published_at")
+            upcoming_events = EventPage.objects.live().filter(start_day__gte=today).select_related("category", "hero_image").order_by("-first_published_at")
             used_categories = set()
             events = list()
             for event in upcoming_events:
@@ -76,7 +76,7 @@ class BulletinBoardBlock(blocks.StructBlock):
         if value["news"] is not None:
             context["news"] = [value["news"]]
         else:
-            news = NewsPage.objects.live().prefetch_related("thumbnail", "category", "hero_image").order_by("-first_published_at")[:1]
+            news = NewsPage.objects.live().select_related("thumbnail", "category", "hero_image").order_by("-first_published_at")[:1]
             context["news"] = news
         # link to news
         context["news_list"] = NewsListPage.objects.live().first()

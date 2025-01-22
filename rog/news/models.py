@@ -126,7 +126,7 @@ class NewsListPage(BasePage):
         categories = NewsCategory.objects.all()
         context["secondary_navigation"] = categories
 
-        all_news_page_objects = NewsPage.objects.live().prefetch_related("thumbnail", "category", "hero_image").order_by("-first_published_at")
+        all_news_page_objects = NewsPage.objects.live().select_related("thumbnail", "category", "hero_image").order_by("-first_published_at")
 
         # filtering
         chosen_category = categories.filter(slug=request.GET.get('category', None)).first()

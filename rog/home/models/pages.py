@@ -524,7 +524,7 @@ class StudioListPage(ObjectListPage):
                 Q(archived=False) &
                 (Q(active_to=None) | Q(active_to__gte=datetime.today())),
             )
-            .prefetch_related("thumbnail")
+            .select_related("thumbnail")
         )
         context["archive_page"] = StudioArchiveListPage.objects.live().first()
 
