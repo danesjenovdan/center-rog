@@ -21,10 +21,10 @@ def add_see_more_fields(context):
     from events.models import EventPage
     # random event
     today = date.today()
-    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
+    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")[:5])
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
+    news = list(NewsPage.objects.live().order_by("-first_published_at")[:5])
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
