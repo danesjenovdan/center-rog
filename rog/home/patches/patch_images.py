@@ -25,22 +25,32 @@ def patch_images_index_view():
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
 
-            # show all tags instead of just the popular ones
-            context["popular_tags"] = get_all_tags_for_model(get_image_model())
+            # NOTE: this broke with a wagtail upgrade, would now need to override
+            # "filterset_class = ImagesFilterSet" on IndexView and then override
+            # the filter class.
+            # https://github.com/wagtail/wagtail/blob/2ce58fed953602cf14a8478150c38ca9fce7473e/wagtail/images/views/images.py#L57
+            # https://github.com/wagtail/wagtail/blob/2ce58fed953602cf14a8478150c38ca9fce7473e/wagtail/admin/filters.py#L236
+            # ------------------------------------------------------------------
+            # # show all tags instead of just the popular ones
+            # context["popular_tags"] = get_all_tags_for_model(get_image_model())
 
             # filter out the user gallery tag
-            old_images_page = context["images"]
-            old_paginator = old_images_page.paginator
-            old_images = old_paginator.object_list
-            new_images = old_images.exclude(tags__name="__user_gallery__")
+            old_page_obj = context["page_obj"]
+            old_paginator = context["paginator"]
+            old_full_object_list = old_paginator.object_list
+            new_full_object_list = old_full_object_list.exclude(tags__name="__user_gallery__")
             new_paginator = Paginator(
-                new_images,
+                new_full_object_list,
                 old_paginator.per_page,
                 old_paginator.orphans,
                 old_paginator.allow_empty_first_page,
             )
-            new_images_page = new_paginator.get_page(old_images_page.number)
-            context["images"] = new_images_page
+            new_images_page = new_paginator.get_page(old_page_obj.number)
+            context["paginator"] = new_paginator
+            context["page_obj"] = new_images_page
+            context["items_count"] = len(new_full_object_list)
+            context["object_list"] = new_images_page.object_list
+            context["images"] = new_images_page.object_list
 
             return context
 

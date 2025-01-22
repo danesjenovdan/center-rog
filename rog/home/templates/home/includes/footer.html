@@ -1,4 +1,4 @@
-{% load static i18n wagtailcore_tags wagtailimages_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags footer_tags %}
 
 <footer class="container-fluid color-scheme-white">
     <div class="row mb-xl-5">
@@ -88,6 +88,7 @@
                 </div>
                 {% endfor %}
             </div>
+            {% get_random_image as random_image %}
             {% if random_image %}
                 {% if random_image.is_portrait %}
                     <div class="random-image random-image--portrait d-none d-md-block">
