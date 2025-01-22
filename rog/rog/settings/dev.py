@@ -16,6 +16,14 @@ WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+def show_toolbar(request):
+    return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': show_toolbar,
+    'RESULTS_CACHE_SIZE': 500,
+}
+
 try:
     from .local import *
 except ImportError:
@@ -24,3 +32,21 @@ except ImportError:
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 FROM_EMAIL = 'dummy@email.com'
+
+
+def request_filter(record):
+    if isinstance(record.args[0], str):
+        if record.args[0] == "Not Found":
+            return False
+        if record.args[0].startswith("GET /media/"):
+            return False
+        if record.args[0].startswith("GET /static/"):
+            return False
+    return True
+
+DEFAULT_LOGGING["filters"]["request_filter"] = {
+    "()": "django.utils.log.CallbackFilter",
+    "callback": request_filter,
+}
+DEFAULT_LOGGING["handlers"]["console"]["filters"] = ["request_filter"]
+DEFAULT_LOGGING["handlers"]["django.server"]["filters"] = ["request_filter"]
