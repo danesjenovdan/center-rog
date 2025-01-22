@@ -277,6 +277,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
+            .prefetch_related("category", "locale")
         )
 
         # see more
