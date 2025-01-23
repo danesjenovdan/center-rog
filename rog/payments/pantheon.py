@@ -211,6 +211,9 @@ def create_ident(name, price, vat, ident_id):
         "descrRtf": "",
         "techProcedureRtf": "",
         "vatcodeReduced":"2S",
+        "nensi": 0,
+        "forSubject": "",
+        "mnfilesQid": 0,
         }
     try:
         response = requests.post(
