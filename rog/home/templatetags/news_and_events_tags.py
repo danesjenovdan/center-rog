@@ -25,6 +25,7 @@ def with_up_to_15_upcoming_events(field):
         EventPage.objects.live()
         .exclude(id__in=event_ids)
         .filter(start_day__gte=today)
+        .select_related("category", "hero_image")
         .order_by("start_day", "start_time")[:num_other_events]
     )
 
@@ -50,6 +51,7 @@ def with_up_to_15_recent_news(field):
     other_news = (
         NewsPage.objects.live()
         .exclude(id__in=news_ids)
+        .select_related("thumbnail", "category", "hero_image")
         .order_by("-first_published_at")[:num_other_news]
     )
 
@@ -75,6 +77,7 @@ def with_up_to_15_random_studios(field):
     other_studios = (
         StudioPage.objects.live()
         .exclude(id__in=studio_ids)
+        .select_related("thumbnail")
         .order_by("?")[:num_other_studios]
     )
 

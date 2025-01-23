@@ -24,10 +24,10 @@ from datetime import date, datetime
 def add_see_more_fields(context):
     # random event
     today = date.today()
-    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day"))[:5]
+    events = list(EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")[:5])
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
+    news = list(NewsPage.objects.live().order_by("-first_published_at")[:5])
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
@@ -425,10 +425,7 @@ class WorkingStationPage(BasePage):
         events = EventPage.objects.filter(
             event_is_workshop=self.required_workshop, start_day__gte=today
         ).order_by("start_day")
-        if len(events) > 0:
-            return events.first()
-        else:
-            return None
+        return events.first()
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -527,6 +524,7 @@ class StudioListPage(ObjectListPage):
                 Q(archived=False) &
                 (Q(active_to=None) | Q(active_to__gte=datetime.today())),
             )
+            .select_related("thumbnail")
         )
         context["archive_page"] = StudioArchiveListPage.objects.live().first()
 

@@ -34,11 +34,11 @@ def add_see_more_fields(context):
     # random event
     today = date.today()
     events = list(
-        EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")
-    )[:5]
+        EventPage.objects.live().filter(start_day__gt=today).order_by("start_day")[:5]
+    )
     context["event"] = random.choice(events) if events else None
     # random news
-    news = list(NewsPage.objects.live().order_by("-first_published_at"))[:5]
+    news = list(NewsPage.objects.live().order_by("-first_published_at")[:5])
     context["news"] = random.choice(news) if news else None
     # random lab
     labs = list(LabPage.objects.live())
@@ -277,7 +277,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
-            .prefetch_related("category", "locale")
+            .select_related("category")
         )
 
         # see more
@@ -313,6 +313,7 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
+            .select_related("category", "hero_image")
             .order_by("start_day", "start_time", "id")
         )
 
