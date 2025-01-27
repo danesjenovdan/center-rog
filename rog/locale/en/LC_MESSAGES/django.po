@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 11:32+0100\n"
+"POT-Creation-Date: 2025-01-27 11:50+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -288,6 +288,7 @@ msgid "lokacija"
 msgstr ""
 
 #: events/templates/events/event_page.html:51
+#: events/templates/events/event_page.html:102
 #: home/templates/home/includes/header.html:25
 #: home/templates/home/includes/header.html:114
 msgid "prijava"
@@ -310,10 +311,6 @@ msgstr "for guests"
 #: events/templates/events/event_page.html:87
 msgid "Prosta mesta:"
 msgstr ""
-
-#: events/templates/events/event_page.html:102
-msgid "prijava na dogodek"
-msgstr "Event registration"
 
 #: events/templates/events/event_page.html:108
 msgid "poglej svojo prijavo"
@@ -1242,7 +1239,6 @@ msgid "Strinjam se z uporabo moje e-pošte"
 msgstr "I agree to the use of my email"
 
 #: home/templates/home/includes/mailchimp.html:68
-#: payments/templates/registration_payment_preview.html:80
 msgid "pošlji"
 msgstr "send"
 
@@ -1277,7 +1273,7 @@ msgstr "Online training courses"
 
 #: home/templates/home/lab_page.html:133
 msgid "Preberi več"
-msgstr ""
+msgstr "More"
 
 #: home/templates/home/lab_page.html:142 home/templates/home/lab_page.html:147
 #: home/templates/home/lab_page.html:162 home/templates/home/lab_page.html:167
@@ -1902,6 +1898,10 @@ msgstr "For payment"
 #: payments/templates/registration_payment_preview.html:66
 msgid "skupaj"
 msgstr "together"
+
+#: payments/templates/registration_payment_preview.html:80
+msgid "vnovči"
+msgstr "redeem"
 
 #: payments/templates/registration_payment_preview.html:83
 msgid "Vnešena koda ni veljavna."
