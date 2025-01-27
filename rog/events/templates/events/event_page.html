@@ -99,7 +99,7 @@
                             </div>
                             {% endif %}
                             <div>
-                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places > 0 and free_places < 1 %}disabled{% endif %}" target="_blank">{% translate 'prijava na dogodek' %}</a>
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places > 0 and free_places < 1 %}disabled{% endif %}" target="_blank">{% translate 'prijava' %}</a>
                             </div>
                         </div>
                     {% elif current_user_registered %}
