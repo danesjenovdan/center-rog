@@ -138,7 +138,7 @@
                 {% if station.required_workshop %}
                 {% if station.required_workshop in user.workshops_attended.all %}
                 <div class="text-center">
-                    <a href="/profil?{% if station.prima_location_id %}location={{station.prima_location_id}}{% elif station.prima_group_id %}group={{station.prima_group_id}}{% endif %}"
+                    <a href="/profil?{% if station.prima_location_id %}location={{station.prima_location_id}}{% endif %}&{% if station.prima_group_id %}group={{station.prima_group_id}}{% endif %}"
                         class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                 </div>
                 <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
@@ -158,7 +158,7 @@
                 {% endif %}
                 {% else %}
                 <div class="text-center">
-                    <a href="/profil?{% if station.prima_location_id %}location={{station.prima_location_id}}{% elif station.prima_group_id %}group={{station.prima_group_id}}{% endif %}"
+                    <a href="/profil?{% if station.prima_location_id %}location={{station.prima_location_id}}{% endif %}&{% if station.prima_group_id %}group={{station.prima_group_id}}{% endif %}"
                         class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                 </div>
                 {% endif %}
@@ -219,7 +219,7 @@
                         {% if tool.required_workshop %}
                             {% if tool.required_workshop in user.workshops_attended.all %}
                             <div class="text-center">
-                                <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+                                <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% endif %}&{% if tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                             </div>
                             <p>{% translate 'Usposabljanje je opravljeno!' %}</p>
                             {% else %}
@@ -238,7 +238,7 @@
                             {% endif %}
                         {% else %}
                         <div class="text-center">
-                            <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% elif tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
+                            <a href="/profil?{% if tool.prima_location_id %}location={{tool.prima_location_id}}{% endif %}&{% if tool.prima_group_id %}group={{tool.prima_group_id}}{% endif %}" class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                         </div>
                         {% endif %}
                     {% else %}
