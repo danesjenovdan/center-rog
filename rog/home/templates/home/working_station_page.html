@@ -54,7 +54,7 @@
         {% if page.required_workshop %}
             {% if page.required_workshop in user.workshops_attended.all %}
                 <div>
-                    <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% elif page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
+                    <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% endif %}&{% if page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
                         class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
                 </div>
                 <p class="mt-2">{% translate 'Usposabljanje je opravljeno!' %}</p>
@@ -74,7 +74,7 @@
             {% endif %}
         {% else %}
             <div>
-                <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% elif page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
+                <a href="/profil?{% if page.prima_location_id %}location={{page.prima_location_id}}{% endif %}&{% if page.prima_group_id %}group={{page.prima_group_id}}{% endif %}"
                     class="secondary-button button-medium">{% translate 'rezerviraj' %}</a>
             </div>
         {% endif %}
