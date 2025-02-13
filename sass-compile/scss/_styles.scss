@@ -922,7 +922,7 @@ form {
 .rich-text-module {
     margin-bottom: 30px;
 
-    p, li {
+    p, li, div.is-p {
         @include font-size-sm();
     }
 
@@ -1121,7 +1121,7 @@ form {
             .market-section {
                 .markets-container {
                     margin-bottom: 4px;
-                    
+
                     h4 {
                         @include font-size-sm();
                     }
@@ -1531,7 +1531,7 @@ form {
                     color: inherit;
                 }
             }
-            
+
         }
 
         &.white-list-section {
@@ -1906,7 +1906,7 @@ form {
         p {
             color: $cs-dark-blue;
         }
-        
+
         img, video {
             &:first-child {
                 opacity: 0;
@@ -2494,7 +2494,7 @@ section.image-embed {
                     bottom: -12px;
                     left: 30%;
                 }
-                
+
                 p.working-hours {
                     margin-bottom: 0;
 

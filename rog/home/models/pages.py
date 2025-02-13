@@ -352,7 +352,7 @@ class WorkingStationPage(BasePage):
                         ),
                         (
                             "description",
-                            blocks.TextBlock(
+                            blocks.RichTextBlock(
                                 label=_("Opis"),
                             ),
                         ),
