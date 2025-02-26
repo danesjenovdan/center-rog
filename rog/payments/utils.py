@@ -67,6 +67,12 @@ def finish_payment(payment):
                 prima_id = data["UsrID"]
                 user.prima_id = prima_id
                 user.save()
+                # set prima uporabnina valid dates to now
+                valid_from_prima = timezone.now()
+                valid_to_prima = valid_from_prima
+                valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
+                valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
+                prima_api.setUporabninaDates(prima_id, valid_from_prima_string, valid_to_prima_string)
             else:
                 msg = f"Prima user was not created successfully: {message}"
                 with push_scope() as scope:
