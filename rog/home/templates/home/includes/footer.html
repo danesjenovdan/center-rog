@@ -55,6 +55,15 @@
                                 <br />
                             </div>
                         </div>
+                        {% if settings.home.MetaSettings.holidays_pdf %}
+                        <div class="col-12">
+                            <div class="working-hours">
+                                <p>
+                                    <a href="{{ settings.home.MetaSettings.holidays_pdf.url }}">{% translate 'Seznam praznikov' %}</a>
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 col-xxl-5">
