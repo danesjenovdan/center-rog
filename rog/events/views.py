@@ -33,6 +33,8 @@ class EventRegistrationView(View):
         ],
         can_delete=True,
         min_num=1,
+        max_num=3,
+        validate_max=True,
         extra=0,
         validate_min=True,
     )

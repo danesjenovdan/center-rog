@@ -49,6 +49,11 @@
         new_empty_form.innerHTML = new_empty_form.innerHTML.replace(regex, child_forms_num);
         children_formset.append(new_empty_form);
         total_children_forms.setAttribute("value", child_forms_num + 1);
+
+        if (child_forms_num >= 3) {
+            add_child_button.classList.add("hide")
+        }
+
     });
 
 
@@ -70,6 +75,13 @@
         const delete_input = document.getElementById(delete_input_id);
         delete_input.checked = true;
         delete_input.parentElement.parentElement.classList.add("hide");
+
+        const child_forms_num = document.getElementsByClassName("child-form").length-1;
+
+        if (child_forms_num < 3) {
+            add_child_button.classList.remove("hide");
+        }
+
     }
 </script>
 {% endblock %}
