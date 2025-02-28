@@ -400,13 +400,6 @@ def event_list(request):
     if q:
         future_events = future_events.filter(title__icontains=q)
 
-    future_events = future_events.annotate(
-        booked_users=Count('event_registrations', filter=Q(event_registrations__registration_finished=True, event_registrations__event_registration_children__isnull=True)),
-        booked_children=Count('event_registrations__event_registration_children', filter=Q(event_registrations__registration_finished=True)),
-    ).annotate(
-        booked_count=F('booked_users')+F('booked_children')
-    )
-
     if sort_by_palces:
         order_by = 'places'
         order = '' if int(sort_by_palces) > 0 else '-'
