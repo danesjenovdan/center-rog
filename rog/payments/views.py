@@ -20,7 +20,7 @@ from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, get_free_invoice_number, finish_payment
-from events.models import EventRegistration
+from events.models import EventRegistration, EventPage
 
 # Create your views here.
 
