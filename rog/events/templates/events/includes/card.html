@@ -14,7 +14,11 @@
     </p>
     <h4 class="card-title">{{ event.short_title }}</h4>
   </div>
-  {% if event.tag %}
+  {% if event.has_free_place == False %}
+  <div class="card-tag">
+    <span>{% translate "Zapolnjeno" %}</span>
+  </div>
+  {% elif event.tag %}
   <div class="card-tag">
     <span>{{ event.tag }}</span>
   </div>

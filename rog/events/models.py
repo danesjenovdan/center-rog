@@ -126,6 +126,23 @@ class EventPageManager(PageManager):
             )
             .annotate(booked_count=F("booked_users") + F("booked_children"))
             .annotate(free_places=F("number_of_places") - F("booked_count"))
+            .annotate(has_free_place=Case(
+                    When(
+                        number_of_places=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__gt=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__lte=0,
+                        then=Value(False)
+                    ),
+                    default_value=Value(False),
+                    output_field=BooleanField()
+                )
+            )
         )
 
         return queryset
@@ -323,15 +340,7 @@ class EventListPage(BasePage):
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
             .select_related("category", "hero_image")
-            .annotate(has_free_place=Case(
-                When(free_places__gt=0,
-                    then=Value(True)
-                    ),
-                default_value=Value(False),
-                output_field=BooleanField()
-                )
-            )
-            .order_by("has_free_place", "start_day", "start_time", "id")
+            .order_by("-has_free_place", "start_day", "start_time", "id")
         )
 
         # filtering
