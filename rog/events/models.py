@@ -157,12 +157,11 @@ class EventPage(BasePage):
         related_name="+",
         verbose_name=_("Slika dogodka"),
     )
-    category = models.ForeignKey(
+    categories = models.ManyToManyField(
         EventCategory,
-        null=True,
         blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Kategorija"),
+        related_name="event_pages",
+        verbose_name=_("Kategorije"),
     )
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
     tag = models.CharField(
@@ -220,7 +219,7 @@ class EventPage(BasePage):
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
-        FieldPanel("category"),
+        FieldPanel("categories"),
         FieldPanel("body"),
         FieldPanel("tag"),
         FieldPanel("event_is_for_children"),
@@ -303,7 +302,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
-            .select_related("category")
+            .prefetch_related("categories")
         )
 
         # see more
@@ -339,7 +338,8 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
-            .select_related("category", "hero_image")
+            .select_related("hero_image")
+            .prefetch_related("categories")
             .order_by("-has_free_place", "start_day", "start_time", "id")
         )
 
@@ -349,7 +349,7 @@ class EventListPage(BasePage):
         ).first()
         if chosen_category:
             all_event_page_objects = all_event_page_objects.filter(
-                category=chosen_category
+                categories=chosen_category
             )
 
         # arhiv

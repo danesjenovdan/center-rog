@@ -25,7 +25,7 @@ def with_up_to_15_upcoming_events(field):
         EventPage.objects.live()
         .exclude(id__in=event_ids)
         .filter(start_day__gte=today)
-        .select_related("category", "hero_image")
+        .select_related("hero_image").prefetch_related("categories")
         .order_by("start_day", "start_time")[:num_other_events]
     )
 

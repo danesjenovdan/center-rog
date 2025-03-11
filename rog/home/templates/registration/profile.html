@@ -112,7 +112,7 @@
             {% for event_registration in event_registrations %}
                 <div class="profile-event-registration">
                     <div>
-                        <div class="category">{{ event_registration.event.category }}</div>
+                        <div class="category">{{ event_registration.event.categories.first }}</div>
                         <div class="title"><a href="{% pageurl event_registration.event.localized %}">{{ event_registration.event.title }}</a></div>
                         {% firstof event_registration.event.contact_email "info@center-rog.si" as event_registration_email %}
                         <div class="contact">{% translate 'za urejanje prijave kontaktiraj' %} <a href="mailto:{{ event_registration_email }}">{{ event_registration_email }}</a></div>
