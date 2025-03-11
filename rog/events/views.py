@@ -33,6 +33,8 @@ class EventRegistrationView(View):
         ],
         can_delete=True,
         min_num=1,
+        max_num=3,
+        # validate_max=True # we can't use this because of the delete button
         extra=0,
         validate_min=True,
     )
@@ -155,6 +157,8 @@ class EventRegistrationView(View):
                 event_registration.event = event
                 event_registration.save()
 
+                # TODO: Should we check if more that 3? Frontend doesn't allow more than 3, but we
+                # can't use validate_max because of the delete button.
                 if children_formset.is_valid():
                     children = children_formset.save(commit=False)
                     for child in children:
@@ -173,7 +177,9 @@ class EventRegistrationView(View):
                                 "event": event,
                                 "form": form,
                                 "children_formset": children_formset,
-                                "children_formset_error": _("Na voljo ni dovolj prostih mest.")
+                                "children_formset_error": _(
+                                    "Na voljo ni dovolj prostih mest."
+                                ),
                             },
                         )
                 else:
@@ -386,42 +392,34 @@ class EventRegistrationInformationView(View):
 
 
 def event_list(request):
-    sort_by_palces = request.GET.get('places', False)
-    sort_by_booked = request.GET.get('booked', False)
-    sort_by_day = request.GET.get('day', False)
-    q = request.GET.get('q', None)
+    sort_by_palces = request.GET.get("places", False)
+    sort_by_booked = request.GET.get("booked", False)
+    sort_by_day = request.GET.get("day", False)
+    q = request.GET.get("q", None)
 
     future_events = EventPage.objects.filter(
-        without_registrations=False,
-        start_day__gte=datetime.now().date()
+        without_registrations=False, start_day__gte=datetime.now().date()
     )
     if q:
         future_events = future_events.filter(title__icontains=q)
 
-    future_events = future_events.annotate(
-        booked_users=Count('event_registrations', filter=Q(event_registrations__registration_finished=True, event_registrations__event_registration_children__isnull=True)),
-        booked_children=Count('event_registrations__event_registration_children', filter=Q(event_registrations__registration_finished=True)),
-    ).annotate(
-        booked_count=F('booked_users')+F('booked_children')
-    )
-
     if sort_by_palces:
-        order_by = 'places'
-        order = '' if int(sort_by_palces) > 0 else '-'
-        future_events = future_events.order_by(f'{order}number_of_places')
+        order_by = "places"
+        order = "" if int(sort_by_palces) > 0 else "-"
+        future_events = future_events.order_by(f"{order}number_of_places")
     elif sort_by_booked:
-        order_by = 'booked'
-        order = '' if int(sort_by_booked) > 0 else '-'
-        future_events = future_events.order_by(f'{order}booked_count')
+        order_by = "booked"
+        order = "" if int(sort_by_booked) > 0 else "-"
+        future_events = future_events.order_by(f"{order}booked_count")
     elif sort_by_day:
-        order_by = 'day'
-        order = '' if int(sort_by_day) > 0 else '-'
-        future_events = future_events.order_by(f'{order}start_day')
+        order_by = "day"
+        order = "" if int(sort_by_day) > 0 else "-"
+        future_events = future_events.order_by(f"{order}start_day")
     else:
-        order_by = ''
-        order = ''
-    return render(request, 'event_list_admin.html', {
-        'events': future_events,
-        'order_by_key': order_by,
-        'order': order
-    })
+        order_by = ""
+        order = ""
+    return render(
+        request,
+        "event_list_admin.html",
+        {"events": future_events, "order_by_key": order_by, "order": order},
+    )

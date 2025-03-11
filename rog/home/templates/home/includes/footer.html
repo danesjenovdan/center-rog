@@ -16,7 +16,7 @@
                             <p>
                                 <a href="mailto:{{ settings.home.MetaSettings.organization_email }}">{{ settings.home.MetaSettings.organization_email }}</a><br />
                                 {{ settings.home.MetaSettings.organization_phone_number }}<br />
-                                {{ settings.home.MetaSettings.organization_notice }}
+                                {% if settings.home.MetaSettings.organization_notice %}{{ settings.home.MetaSettings.organization_notice }}{% endif %}
                             </p>
                         </div>
                         <div class="col-12">
@@ -55,6 +55,15 @@
                                 <br />
                             </div>
                         </div>
+                        {% if settings.home.MetaSettings.holidays_pdf %}
+                        <div class="col-12">
+                            <div class="working-hours">
+                                <p>
+                                    <a href="{{ settings.home.MetaSettings.holidays_pdf.url }}">{% translate 'Seznam praznikov' %}</a>
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-12 col-lg-6 col-xxl-5">

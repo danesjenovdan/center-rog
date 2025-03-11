@@ -19,6 +19,7 @@ from wagtail.snippets.models import register_snippet
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.fields import StreamField
+from wagtail.documents import get_document_model
 
 from .image import CustomImage
 
@@ -156,6 +157,13 @@ class MetaSettings(BaseGenericSetting):
     labs_working_hours_title = models.TextField(
         verbose_name=_("Delovni čas laboratorijev - naslov stolpca"), blank=True, null=True
     )
+    holidays_pdf = models.ForeignKey(
+        get_document_model(),
+        verbose_name=_("PDF s prazni za trenutno leto"),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
     labs_working_hours = StreamField(
         [
             (
@@ -198,6 +206,7 @@ class MetaSettings(BaseGenericSetting):
         FieldPanel("organization_working_hours"),
         FieldPanel("labs_working_hours_title"),
         FieldPanel("labs_working_hours"),
+        FieldPanel("holidays_pdf"),
     ]
 
     social_media_links = StreamField(
