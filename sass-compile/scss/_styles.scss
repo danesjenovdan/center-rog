@@ -2188,13 +2188,19 @@ section.image-embed {
 }
 
 .template-object-list {
-    h1 {
+    h1,
+    .chosen-category-description {
         margin-top: 40px;
         margin-bottom: 30px;
         @include font-size-xl();
     }
 
-    .intro {
+    .chosen-category-description {
+        text-align: center;
+    }
+
+    .intro,
+    .chosen-category-description {
         @include font-size-sm();
     }
 

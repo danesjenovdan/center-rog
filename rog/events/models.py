@@ -54,6 +54,12 @@ class EventCategory(models.Model):
     name = models.TextField(
         verbose_name=_("Ime kategorije"),
     )
+    description = RichTextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Opis"),
+        help_text=_("Opis kategorije, ki se pojavi nad seznamom dogodkov"),
+    )
     slug = models.SlugField()
     color_scheme = models.CharField(
         verbose_name=_("Barvna shema"),
@@ -64,6 +70,7 @@ class EventCategory(models.Model):
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("description"),
         FieldPanel("color_scheme"),
     ]
 
