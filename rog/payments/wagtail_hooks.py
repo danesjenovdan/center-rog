@@ -14,7 +14,7 @@ import csv
 
 class ExportPaymentView(IndexView):
     model_admin = None
-    
+
     def export_csv(self):
         data = []
         payments = self.queryset.all()
@@ -88,7 +88,7 @@ class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
             plan_name=plan_name,
         )
         return qs
-    
+
     def plan_name(self, obj):
         return obj.plan_name
 
@@ -99,6 +99,14 @@ class PromoCodeAdmin(ModelAdmin):
     menu_order = 203
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_display = ['__str__', 'created_at', 'last_entry_at', 'display_usage_and_limit']
+
+    def display_usage_and_limit(self, obj):
+        limit = 1 if obj.single_use else obj.usage_limit
+        uses = obj.number_of_uses
+        if limit > 0:
+            return f"{uses}/{limit}"
+        return f"{uses}/∞"
 
 
 modeladmin_register(PlanAdmin)
