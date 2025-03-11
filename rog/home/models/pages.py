@@ -435,7 +435,7 @@ class WorkingStationPage(BasePage):
         context = add_see_more_lab_events(context)
 
         return context
-
+    
     class Meta:
         verbose_name = _("Delovna postaja")
         verbose_name_plural = _("Delovne postaje")

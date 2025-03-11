@@ -46,7 +46,7 @@
             <h4 class="my-5">{% translate 'Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam poslali potrditveno sporočilo.' %}</h4>
             {% elif purchase_type == "event" %}
             <h4 class="my-5">{% translate 'Plačilo je uspelo. Prijavljeni ste na dogodek. Na vašo e-pošto smo vam poslali potrditveno sporočilo.' %}</h4>
-            <h4 class="my-5"> {{ event.category }}: {{ event.title }} <br /> {{ event.start_day }} </h4>
+            <h4 class="my-5"> {{ event.category.first }}: {{ event.title }} <br /> {{ event.start_day }} </h4>
             {% else %}
             <h4 class="my-5">{% translate 'Plačilo je bilo uspešno!' %}</h4>
             {% endif %}
