@@ -51,6 +51,7 @@ class ExportPaymentView(IndexView):
         super().dispatch(request, *args, **kwargs)
         return self.export_csv()
 
+
 class PlanAdmin(ModelAdmin):
     model = Plan
     menu_icon = "pilcrow"
@@ -93,7 +94,48 @@ class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
         return obj.plan_name
 
 
-class PromoCodeAdmin(ModelAdmin):
+class ExportPromoCodeView(IndexView):
+    model_admin = None
+
+    def export_csv(self):
+        data = []
+        promo_codes = self.queryset.all()
+        for promo_code in promo_codes:
+            data.append({
+                'code': promo_code.code,
+                'created_at': promo_code.created_at.isoformat() if promo_code.created_at else '',
+                'last_entry_at': promo_code.last_entry_at.isoformat() if promo_code.last_entry_at else '',
+                'number_of_uses': promo_code.number_of_uses,
+                'usage_limit': 1 if promo_code.single_use else promo_code.usage_limit,
+                'payment_item_type': promo_code.payment_item_type,
+                'event_page': promo_code.event_page,
+                'plan': promo_code.plan,
+                # TODO - mail uporabnika, če je izdana na določenega uporabnika
+                'percent_discount': promo_code.percent_discount,
+            })
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="export.csv"'},
+        )
+        try:
+            writer = csv.DictWriter(response, fieldnames=data[0].keys(), dialect='excel-tab', delimiter='\t')
+        except IndexError:
+            return response
+        writer.writeheader()
+        writer.writerows(data)
+
+        return response
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        super().dispatch(request, *args, **kwargs)
+        return self.export_csv()
+
+
+class PromoCodeAdmin(ExportModelAdminMixin, ModelAdmin):
+    index_template_name = "admin_export_header.html"
+    export_view_class = ExportPromoCodeView
     model = PromoCode
     menu_icon = "form"
     menu_order = 203
