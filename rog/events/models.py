@@ -164,7 +164,7 @@ class EventPage(BasePage):
         related_name="+",
         verbose_name=_("Slika dogodka"),
     )
-    categories = models.ManyToManyField(
+    categories = ParentalManyToManyField(
         EventCategory,
         blank=True,
         related_name="event_pages",
