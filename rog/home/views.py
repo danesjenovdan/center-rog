@@ -85,14 +85,18 @@ class UserProfileView(TemplateView):
     def get(self, request, id):
         current_user = request.user
 
-        if not current_user.email_confirmed:
-            return redirect("registration-email-confirmation")
-    
         try:
             user = User.objects.get(id=id)
-            return render(request, self.template_name, {"user": user})
-        except:
+        except User.DoesNotExist:
             return HttpResponseNotFound("User not found.")
+
+        if not current_user.is_anonymous and not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
+        if user == current_user or user.public_profile:
+            return render(request, self.template_name, {"user": user})
+
+        return HttpResponseNotFound("User not public.")
 
 
 @method_decorator(login_required, name="dispatch")
@@ -116,7 +120,7 @@ class SearchProfileView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = UserInterestsForm(request.POST)
 
         if form.is_valid():
@@ -153,7 +157,7 @@ class PurchasePlanView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(
             plan__isnull=False
@@ -198,7 +202,7 @@ class PurchaseMembershipView(TemplateView):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=False)
         )
@@ -279,7 +283,7 @@ class RegistrationView(View):
 
 class RegistrationMailConfirmationView(View):
     def get(self, request):
-        
+
         return render(
             request,
             "registration/registration_mail_confirmation.html",
@@ -532,7 +536,7 @@ class EditProfileView(View):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         form = EditProfileForm(request.POST, request.FILES)
 
         if form.is_valid():
