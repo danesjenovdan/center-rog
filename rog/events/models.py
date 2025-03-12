@@ -54,6 +54,12 @@ class EventCategory(models.Model):
     name = models.TextField(
         verbose_name=_("Ime kategorije"),
     )
+    description = RichTextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Opis"),
+        help_text=_("Opis kategorije, ki se pojavi nad seznamom dogodkov"),
+    )
     slug = models.SlugField()
     color_scheme = models.CharField(
         verbose_name=_("Barvna shema"),
@@ -64,6 +70,7 @@ class EventCategory(models.Model):
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("description"),
         FieldPanel("color_scheme"),
     ]
 
@@ -126,6 +133,23 @@ class EventPageManager(PageManager):
             )
             .annotate(booked_count=F("booked_users") + F("booked_children"))
             .annotate(free_places=F("number_of_places") - F("booked_count"))
+            .annotate(has_free_place=Case(
+                    When(
+                        number_of_places=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__gt=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__lte=0,
+                        then=Value(False)
+                    ),
+                    default_value=Value(False),
+                    output_field=BooleanField()
+                )
+            )
         )
 
         return queryset
@@ -140,12 +164,11 @@ class EventPage(BasePage):
         related_name="+",
         verbose_name=_("Slika dogodka"),
     )
-    category = models.ForeignKey(
+    categories = models.ManyToManyField(
         EventCategory,
-        null=True,
         blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Kategorija"),
+        related_name="event_pages",
+        verbose_name=_("Kategorije"),
     )
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
     tag = models.CharField(
@@ -203,7 +226,7 @@ class EventPage(BasePage):
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
-        FieldPanel("category"),
+        FieldPanel("categories"),
         FieldPanel("body"),
         FieldPanel("tag"),
         FieldPanel("event_is_for_children"),
@@ -286,7 +309,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
-            .select_related("category")
+            .prefetch_related("categories")
         )
 
         # see more
@@ -322,16 +345,9 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
-            .select_related("category", "hero_image")
-            .annotate(has_free_place=Case(
-                When(free_places__gt=0,
-                    then=Value(True)
-                    ),
-                default_value=Value(False),
-                output_field=BooleanField()
-                )
-            )
-            .order_by("has_free_place", "start_day", "start_time", "id")
+            .select_related("hero_image")
+            .prefetch_related("categories")
+            .order_by("-has_free_place", "start_day", "start_time", "id")
         )
 
         # filtering
@@ -340,7 +356,7 @@ class EventListPage(BasePage):
         ).first()
         if chosen_category:
             all_event_page_objects = all_event_page_objects.filter(
-                category=chosen_category
+                categories=chosen_category
             )
 
         # arhiv

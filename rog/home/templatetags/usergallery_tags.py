@@ -19,9 +19,6 @@ def gallery_data(field):
                     "image_id": child.value.id,
                     "url": child.value.file.url,
                     "name": child.value.file.name,
-                    "size": child.value.file.size,
-                    "width": child.value.file.width,
-                    "height": child.value.file.height,
                 }
             )
 
