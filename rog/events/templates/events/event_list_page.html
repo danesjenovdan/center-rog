@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load i18n static %}
+{% load i18n static wagtailcore_tags %}
 
 {% block body_class %}template-object-list template-event-list-page{% endblock %}
 
@@ -13,7 +13,11 @@
 
     <div class="row">
         <div class="col-12">
+            {% if chosen_category.description %}
+            <div class="chosen-category-description">{{ chosen_category.description|richtext }}</div>
+            {% else %}
             <h1 class="text-center">{{ page.title }}</h1>
+            {% endif %}
         </div>
     </div>
 

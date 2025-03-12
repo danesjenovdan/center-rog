@@ -103,7 +103,7 @@
 {% endblock %}
 
 {% block form_title %}
-<h1>{{ event.category }}: {{ event.title }}<br/>{{ event.start_day }}</h1>
+<h1>{{ event.categories.first }}: {{ event.title }}<br/>{{ event.start_day }}</h1>
 {% endblock form_title %}
 
 {% block form_block %}
