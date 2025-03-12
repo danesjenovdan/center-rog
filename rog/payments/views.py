@@ -20,7 +20,7 @@ from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, get_free_invoice_number, finish_payment
-from events.models import EventRegistration
+from events.models import EventRegistration, EventPage
 
 # Create your views here.
 
@@ -134,7 +134,8 @@ class PaymentPreview(views.APIView):
             event_registration = get_object_or_404(
                 EventRegistration, id=event_registration_id
             )
-            event = event_registration.event
+            #event = event_registration.event
+            event = EventPage.objects.get(id=event_registration.event.id)
             if event_registration.user != user:
                 # user is not owner of event registration
                 return redirect("profile-my")
@@ -189,7 +190,7 @@ class PaymentPreview(views.APIView):
                     PaymentPlanEvent(
                         payment_item_type=(
                             PaymentItemType.TRAINING
-                            if event.category and (event.category.name == "Usposabljanja")
+                            if "Usposabljanja" in list(event.categories.values_list("name", flat=True))
                             else PaymentItemType.EVENT
                         ),
                         event_registration=event_registration,

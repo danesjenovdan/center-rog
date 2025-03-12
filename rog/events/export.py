@@ -68,6 +68,9 @@ class ExportEventRegistrationView(IndexView):
             data.append(
                 {
                     "email": registration.user.email,
+                    "event": registration.event.title,
+                    "start_time": registration.event.start_time,
+                    "start_day": registration.event.start_day,
                     "name": registration.name,
                     "surname": registration.surname,
                     "no. children": registration.event_registration_children.count(),

@@ -15,7 +15,6 @@ from string import ascii_uppercase
 import sentry_sdk
 
 
-
 class WagtailAdminModelFormExtended(WagtailAdminModelForm):
 
     def __init__(self, *args, **kwargs):
@@ -76,10 +75,6 @@ class ActiveAtQuerySet(models.QuerySet):
             type_of=Token.Type.WORKSHOP,
             payment__in=self
         )
-
-
-
-
 
 
 # payments
@@ -256,10 +251,13 @@ class PaymentPlanEvent(models.Model):
 
     def get_pantheon_ident_id(self):
         if self.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
-            if self.event_registration.event.category:
-                return self.event_registration.event.category.pantheon_ident
+            if (
+                self.event_registration.event.categories.first()
+                and self.event_registration.event.categories.first().pantheon_ident
+            ):
+                return self.event_registration.event.categories.first().pantheon_ident
             else:
-                return 'DOGODKI'
+                return "DOGODKI"
         return self.plan.get_pantheon_ident_id()
 
 

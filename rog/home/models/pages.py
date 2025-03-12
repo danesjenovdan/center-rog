@@ -51,10 +51,10 @@ def add_see_more_lab_events(context):
     today = date.today()
     events = list(
         EventPage.objects.live()
-        .filter(labs=page, start_day__gte=today, event_is_workshop__isnull=False)
-        .order_by("start_day")
+        .filter(labs=page, start_day__gte=today)
+        .order_by("-has_free_place", "start_day", "start_time", "id")
     )
-    context["events"] = random.sample(events, min(3, len(events)))
+    context["events"] = events[:4]
 
     return context
 

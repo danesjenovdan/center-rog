@@ -1,11 +1,11 @@
 {% load static wagtailcore_tags wagtailimages_tags i18n %}
 
-<a href="{% pageurl event.localized %}" class="card events-card card-hover {% if wide %}card-wide{% endif %} {% if event.category %}color-scheme-{{ event.category.color_scheme }}{% endif %}">
+<a href="{% pageurl event.localized %}" class="card events-card card-hover {% if wide %}card-wide{% endif %} {% if event.categories.first %}color-scheme-{{ event.categories.first.color_scheme }}{% endif %}">
   <div class="card-img">
     {% image event.hero_image width-480 %}
   </div>
   <div class="card-body p-md-0">
-    <p class="event-category">{{ event.category.name }}</p>
+    <p class="event-category">{{ event.categories.first.name }}</p>
     <p class="event-time">{% if event.show_start_day %}{{ event.start_day|date:"j. n. Y" }} {% endif %}{% if not event.end_day %}{{ event.start_time }} {% else %}{% translate "do" %} {{ event.end_day|date:"j. n. Y" }}{% endif %}</p>
     <p class="event-lab">
     {% for lab in event.labs.all %}
@@ -14,7 +14,11 @@
     </p>
     <h4 class="card-title">{{ event.short_title }}</h4>
   </div>
-  {% if event.tag %}
+  {% if event.has_free_place == False %}
+  <div class="card-tag">
+    <span>{% translate "Zapolnjeno" %}</span>
+  </div>
+  {% elif event.tag %}
   <div class="card-tag">
     <span>{{ event.tag }}</span>
   </div>

@@ -1,12 +1,12 @@
 from django.db import models
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, F, Count, BooleanField, Case, Value, When
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
-from wagtail.models import Page, Orderable
+from wagtail.models import Page, Orderable, PageManager
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
 
@@ -54,6 +54,12 @@ class EventCategory(models.Model):
     name = models.TextField(
         verbose_name=_("Ime kategorije"),
     )
+    description = RichTextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Opis"),
+        help_text=_("Opis kategorije, ki se pojavi nad seznamom dogodkov"),
+    )
     slug = models.SlugField()
     color_scheme = models.CharField(
         verbose_name=_("Barvna shema"),
@@ -64,6 +70,7 @@ class EventCategory(models.Model):
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("description"),
         FieldPanel("color_scheme"),
     ]
 
@@ -72,9 +79,10 @@ class EventCategory(models.Model):
     )
     saved_in_pantheon = models.BooleanField(
         default=False,
-        help_text=_("Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon")
+        help_text=_(
+            "Ali event category že shranjen v Pantheon ali preprečite shranjevanje v Pantheon"
+        ),
     )
-
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
@@ -105,6 +113,48 @@ class EventCategory(models.Model):
         verbose_name_plural = _("Dogodki - kategorije")
 
 
+class EventPageManager(PageManager):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        queryset = (
+            queryset.annotate(
+                booked_users=Count(
+                    "event_registrations",
+                    filter=Q(
+                        event_registrations__registration_finished=True,
+                        event_registrations__event_registration_children__isnull=True,
+                    ),
+                ),
+                booked_children=Count(
+                    "event_registrations__event_registration_children",
+                    filter=Q(event_registrations__registration_finished=True),
+                ),
+            )
+            .annotate(booked_count=F("booked_users") + F("booked_children"))
+            .annotate(free_places=F("number_of_places") - F("booked_count"))
+            .annotate(has_free_place=Case(
+                    When(
+                        number_of_places=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__gt=0,
+                        then=Value(True)
+                    ),
+                    When(
+                        free_places__lte=0,
+                        then=Value(False)
+                    ),
+                    default_value=Value(False),
+                    output_field=BooleanField()
+                )
+            )
+        )
+
+        return queryset
+
+
 class EventPage(BasePage):
     hero_image = models.ForeignKey(
         CustomImage,
@@ -114,12 +164,11 @@ class EventPage(BasePage):
         related_name="+",
         verbose_name=_("Slika dogodka"),
     )
-    category = models.ForeignKey(
+    categories = ParentalManyToManyField(
         EventCategory,
-        null=True,
         blank=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("Kategorija"),
+        related_name="event_pages",
+        verbose_name=_("Kategorije"),
     )
     body = RichTextField(blank=True, null=True, verbose_name=_("Telo"))
     tag = models.CharField(
@@ -172,14 +221,12 @@ class EventPage(BasePage):
     event_is_for_children = models.BooleanField(
         default=False,
         verbose_name=_("Dogodek je za otroke"),
-        help_text=_(
-            "Prijava na dogodek zahteva vpis vsaj enega otroka"
-        ),
+        help_text=_("Prijava na dogodek zahteva vpis vsaj enega otroka"),
     )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
-        FieldPanel("category"),
+        FieldPanel("categories"),
         FieldPanel("body"),
         FieldPanel("tag"),
         FieldPanel("event_is_for_children"),
@@ -202,32 +249,17 @@ class EventPage(BasePage):
 
     parent_page_types = ["events.EventListPage"]
 
-    def get_booked_count(self):
-        registered_children = EventRegistrationChild.objects.filter(
-            event_registration__event=self,
-            event_registration__registration_finished=True,
-        ).count()
-
-        registered_users = EventRegistration.objects.filter(
-            event=self,
-            registration_finished=True,
-            event_registration_children__isnull=True,
-        ).count()
-
-        booked_count = registered_children + registered_users
-
-        return booked_count
+    objects = EventPageManager()
 
     def get_free_places(self):
-        free_places = self.number_of_places - self.get_booked_count()
-        return free_places
+        return self.free_places
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         # see more
         context = add_see_more_fields(context)
 
-        context["free_places"] = self.get_free_places()
+        context["free_places"] = self.free_places
 
         current_user = request.user
         if current_user.is_authenticated:
@@ -277,7 +309,7 @@ class EventListArchivePage(BasePage):
             EventPage.objects.live()
             .filter(start_day__lt=today, end_day__lt=today)
             .order_by("-start_day")
-            .select_related("category")
+            .prefetch_related("categories")
         )
 
         # see more
@@ -313,8 +345,9 @@ class EventListPage(BasePage):
         all_event_page_objects = (
             EventPage.objects.live()
             .filter(Q(start_day__gte=today) | Q(end_day__gte=today))
-            .select_related("category", "hero_image")
-            .order_by("start_day", "start_time", "id")
+            .select_related("hero_image")
+            .prefetch_related("categories")
+            .order_by("-has_free_place", "start_day", "start_time", "id")
         )
 
         # filtering
@@ -323,7 +356,7 @@ class EventListPage(BasePage):
         ).first()
         if chosen_category:
             all_event_page_objects = all_event_page_objects.filter(
-                category=chosen_category
+                categories=chosen_category
             )
 
         # arhiv
