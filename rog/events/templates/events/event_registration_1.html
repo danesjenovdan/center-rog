@@ -89,9 +89,11 @@
     }
 
     document.addEventListener('change', (event) => {
-        if (event.target.closest(".registration-gender-row") && event.target.tagName === "INPUT") {
-            const rog_radios = event.target.parentElement.parentElement.parentElement.parentElement;
-            const other_gender_wrapper = rog_radios.nextElementSibling;
+        const parentRow = event.target.closest(".registration-gender-row");
+        if (parentRow && event.target.tagName === "INPUT" && event.target.type === "radio") {
+            const rog_radios = parentRow.querySelector(".rog-radios");
+            const other_gender_wrapper = parentRow.querySelector(".other-gender-wrapper");
+
             if (event.target.value === "O") {
                 other_gender_wrapper.classList.remove("hide");
             } else {
