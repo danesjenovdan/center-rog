@@ -190,7 +190,7 @@ class PaymentPreview(views.APIView):
                     PaymentPlanEvent(
                         payment_item_type=(
                             PaymentItemType.TRAINING
-                            if "Usposabljanja" in list(event.categories.valies_list("name", flat=True))
+                            if "Usposabljanja" in list(event.categories.values_list("name", flat=True))
                             else PaymentItemType.EVENT
                         ),
                         event_registration=event_registration,
