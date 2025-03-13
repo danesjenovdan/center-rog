@@ -460,11 +460,17 @@ msgstr "Tax ID number"
 msgid "sem zavezanec za DDV"
 msgstr "I am a VAT taxpayer"
 
-#: home/forms.py:213
+#: home/forms.py:204
+msgid ""
+"Želim, da mi pošiljate informacije o programu in drugih aktivnostih Centra "
+"Rog."
+msgstr "I would like you to send me information about the program and other activities of the Rog Center."
+
+#: home/forms.py:218
 msgid "Pravna oseba mora vnesti davčno številko!"
 msgstr ""
 
-#: home/forms.py:243
+#: home/forms.py:249
 msgid ""
 "Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"
 msgstr ""
