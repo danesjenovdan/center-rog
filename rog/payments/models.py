@@ -455,6 +455,15 @@ class PromoCode(Timestampable):
         help_text="Select plan to limit promo code to",
         verbose_name=_("Plan"),
     )
+    assigned_to = models.ForeignKey(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="promo_codes",
+        help_text="Select user to limit promo code to",
+        verbose_name=_("Assigned to user"),
+    )
 
     panels = [
         FieldPanel("code"),
@@ -462,6 +471,7 @@ class PromoCode(Timestampable):
         FieldPanel("percent_discount"),
         FieldPanel("single_use"),
         FieldPanel("usage_limit"),
+        FieldPanel("assigned_to"),
         MultiFieldPanel(
             [
                 FieldPanel("payment_item_type"),
@@ -489,6 +499,10 @@ class PromoCode(Timestampable):
             code = code_filter.first()
         else:
             return False
+        
+        if code.assigned_to:
+            if code.assigned_to != payment_plan.payment.user:
+                return False
         
         now = timezone.now()
 

@@ -145,6 +145,11 @@
     </div>
 
     <div class="form-field-wrapper one-line rog-check">
+        {{ form.allow_marketing.errors }}
+        {{ form.allow_marketing }} {{ form.allow_marketing.label_tag }}
+    </div>
+
+    <div class="form-field-wrapper one-line rog-check">
         {{ form.legal_person_receipt.errors }}
         {{ form.legal_person_receipt }} {{ form.legal_person_receipt.label_tag }}
     </div>

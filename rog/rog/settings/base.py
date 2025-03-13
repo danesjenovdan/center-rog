@@ -170,6 +170,7 @@ WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
 WAGTAIL_USER_CUSTOM_FIELDS = [
     "prima_id",
     "email_confirmed",
+    "allow_marketing",
     "address_1",
     "address_2",
     "legal_person_receipt",

@@ -370,6 +370,7 @@ class RegistrationInformationView(View):
             user.address_1 = form.cleaned_data["address_1"]
             user.address_2 = form.cleaned_data["address_2"]
             user.birth_date = form.cleaned_data["birth_date"]
+            user.allow_marketing = form.cleaned_data["allow_marketing"]
 
             gender = form.cleaned_data["gender"]
             user.gender = gender
