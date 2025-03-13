@@ -110,7 +110,7 @@ class ExportPromoCodeView(IndexView):
                 'payment_item_type': promo_code.payment_item_type,
                 'event_page': promo_code.event_page,
                 'plan': promo_code.plan,
-                # TODO - mail uporabnika, če je izdana na določenega uporabnika
+                'assigned_to_email': promo_code.assigned_to.email if promo_code.assigned_to else '',
                 'percent_discount': promo_code.percent_discount,
             })
 

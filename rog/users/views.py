@@ -8,8 +8,10 @@ from django.utils.translation import gettext_lazy as _
 
 from home import models
 from home.email_utils import send_email, id_generator
-from users.models import ConfirmEmail
+from users.models import ConfirmEmail, User
 from .tokens import get_email_for_token, get_token_for_user
+
+import csv
 
 
 class CheckTokenView(View):
@@ -130,3 +132,29 @@ class ConfirmUserView(View):
             {},
         )
         return redirect("registration-membership")
+
+
+class ExportMarketningUsersView(View):
+    def get(self, request):
+        if not request.user.is_staff:
+            return HttpResponse(status=403)
+        data = []
+        users = User.objects.filter(allow_marketing=True)
+        for user in users:
+            data.append({
+                'email': user.email,
+                'name': user.first_name,
+            })
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="export.csv"'},
+        )
+        try:
+            writer = csv.DictWriter(response, fieldnames=data[0].keys(), dialect='excel-tab', delimiter='\t')
+        except IndexError:
+            return response
+        writer.writeheader()
+        writer.writerows(data)
+
+        return response

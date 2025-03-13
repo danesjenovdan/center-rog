@@ -159,6 +159,9 @@ class User(AbstractUser, Timestampable):
     email_confirmed = models.BooleanField(
         default=False, verbose_name="e-pošta je potrjena?"
     )
+    allow_marketing = models.BooleanField(
+        default=False, verbose_name="Allow e-mail marketning?"
+    )
     prima_id = models.IntegerField(null=True)
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
