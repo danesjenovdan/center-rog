@@ -2,6 +2,7 @@ from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 from django.urls import path, reverse
+from django.utils.translation import gettext_lazy as _
 
 from .models import BookingToken, MembershipType, UserInterest
 from .views import ExportMarketningUsersView
@@ -42,7 +43,7 @@ def register_calendar_url():
 
 @hooks.register('register_admin_menu_item')
 def register_calendar_menu_item():
-    return MenuItem('Export for Mailchimp ', reverse('mailchimp_export'), icon_name='download')
+    return MenuItem(_('Export for Mailchimp'), reverse('mailchimp_export'), icon_name='download')
 
 
 # modeladmin_register(BookingTokenAdmin)
