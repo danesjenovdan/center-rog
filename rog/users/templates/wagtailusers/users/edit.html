@@ -2,6 +2,7 @@
 
 {% block extra_fields %}
     <li>{% include "wagtailadmin/shared/field.html" with field=form.email_confirmed %}</li>
+    <li>{% include "wagtailadmin/shared/field.html" with field=form.allow_marketing %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.prima_id %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.address_1 %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.address_2 %}</li>

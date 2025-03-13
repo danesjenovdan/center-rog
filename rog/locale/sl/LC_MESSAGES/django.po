@@ -445,7 +445,7 @@ msgstr ""
 
 #: home/forms.py:170
 msgid "potrebujem račun za pravno osebo"
-msgstr ""
+msgstr "Potrebujem račun za pravno osebo"
 
 #: home/forms.py:176
 msgid "Naziv pravne osebe"

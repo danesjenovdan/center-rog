@@ -200,6 +200,11 @@ class RegistrationInformationForm(forms.ModelForm):
         label_suffix="",
         required=False
     )
+    allow_marketing = forms.BooleanField(
+        label=_("Želim, da mi pošiljate informacije o programu in drugih aktivnostih Centra Rog."),
+        label_suffix="",
+        required=False
+    )
 
     membership = forms.CharField(
         widget=forms.HiddenInput(),
@@ -235,7 +240,8 @@ class RegistrationInformationForm(forms.ModelForm):
             "legal_person_address_1",
             "legal_person_address_2",
             "legal_person_tax_number",
-            "legal_person_vat"
+            "legal_person_vat",
+            "allow_marketing",
         ]
 
 class EditProfileForm(forms.ModelForm):
