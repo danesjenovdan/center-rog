@@ -1,6 +1,10 @@
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail import hooks
+from wagtail.admin.menu import MenuItem
+from django.urls import path, reverse
 
 from .models import BookingToken, MembershipType, UserInterest
+from .views import ExportMarketningUsersView
 
 
 class BookingTokenAdmin(ModelAdmin):
@@ -27,6 +31,18 @@ class UserInterestAdmin(ModelAdmin):
     menu_order = 200
     add_to_settings_menu = True
     add_to_admin_menu = False
+
+
+@hooks.register('register_admin_urls')
+def register_calendar_url():
+    return [
+        path('mailchimp_export/', ExportMarketningUsersView.as_view(), name='mailchimp_export'),
+    ]
+
+
+@hooks.register('register_admin_menu_item')
+def register_calendar_menu_item():
+    return MenuItem('Export for Mailchimp ', reverse('mailchimp_export'), icon_name='download')
 
 
 # modeladmin_register(BookingTokenAdmin)
