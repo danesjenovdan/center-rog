@@ -252,6 +252,18 @@ class EventPage(BasePage):
     objects = EventPageManager()
 
     def get_free_places(self):
+        if getattr(self, "free_places", None) is None:
+            # workaround if page loaded without EventPageManager which annotates free_places
+            event_registrations = self.event_registrations.filter(registration_finished=True)
+            event_registrations_without_kids = self.event_registrations.filter(
+                registration_finished=True,
+                event_registration_children__isnull=True
+            ).count()
+            booked_children = EventRegistrationChild.objects.filter(
+                event_registration__in=event_registrations
+            ).count()
+            self.booked_count = event_registrations_without_kids + booked_children
+            self.free_places = self.number_of_places - self.booked_count
         return self.free_places
 
     def get_context(self, request, *args, **kwargs):
@@ -259,7 +271,7 @@ class EventPage(BasePage):
         # see more
         context = add_see_more_fields(context)
 
-        context["free_places"] = self.free_places
+        context["free_places"] = self.get_free_places()
 
         current_user = request.user
         if current_user.is_authenticated:
