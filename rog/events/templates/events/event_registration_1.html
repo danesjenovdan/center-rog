@@ -55,8 +55,8 @@
 
         total_children_forms.setAttribute("value", new_child_forms.length);
 
-        visible_child_forms = Array.from(new_child_forms).filter(form => !form.classList.contains("hide"));
-        if (visible_child_forms.length >= 3) {
+        const new_visible_child_forms = Array.from(new_child_forms).filter(form => !form.classList.contains("hide"));
+        if (new_visible_child_forms.length >= 3) {
             add_child_button.classList.add("hide")
         }
 
