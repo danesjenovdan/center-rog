@@ -287,15 +287,15 @@ msgstr "archive"
 #: events/templates/events/event_page.html:31
 #: events/templates/events/event_page.html:37
 msgid "datum"
-msgstr ""
+msgstr "date"
 
 #: events/templates/events/event_page.html:43
 msgid "ura"
-msgstr ""
+msgstr "time"
 
 #: events/templates/events/event_page.html:47
 msgid "lokacija"
-msgstr ""
+msgstr "location"
 
 #: events/templates/events/event_page.html:51
 #: events/templates/events/event_page.html:102
@@ -312,7 +312,7 @@ msgstr ""
 
 #: events/templates/events/event_page.html:62
 msgid "za člane"
-msgstr ""
+msgstr "for members"
 
 #: events/templates/events/event_page.html:72
 msgid "za goste"
@@ -320,7 +320,7 @@ msgstr "for guests"
 
 #: events/templates/events/event_page.html:87
 msgid "Prosta mesta:"
-msgstr ""
+msgstr "Free spots:"
 
 #: events/templates/events/event_page.html:108
 msgid "poglej svojo prijavo"
