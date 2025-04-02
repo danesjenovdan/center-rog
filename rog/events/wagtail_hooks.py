@@ -71,7 +71,7 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
     menu_order = 300
     add_to_settings_menu = True
     add_to_admin_menu = False
-    list_display = ["__str__", "registration_finished", "get_children_count", "created_at", "updated_at", "original_event_name", "price_paid_online"]
+    list_display = ["__str__", "registration_finished", "get_children_count", "get_extra_people_count", "created_at", "updated_at", "original_event_name", "price_paid_online"]
     list_filter = (
         "register_child_check",
         "event__event_is_for_children",
@@ -95,6 +95,7 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
         ).values("price")[:1])
         qs = qs.annotate(
             booked_children=Count('event_registration_children'),
+            booked_extra_people=Count('event_registration_extra_people'),
             original_name=plan_name,
             paid=paid
         )
@@ -102,14 +103,18 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
 
     def get_children_count(self, obj):
         return obj.booked_children
-    
+
+    def get_extra_people_count(self, obj):
+        return obj.booked_extra_people
+
     def original_event_name(self, obj):
         return obj.original_name
-    
+
     def price_paid_online(self, obj):
         return obj.paid
 
-    get_children_count.__name__ = str(_('Stevilo otrok'))
+    get_children_count.__name__ = str(_('Število otrok'))
+    get_extra_people_count.__name__ = str(_('Število dodatnih oseb'))
 
 
 @hooks.register('register_admin_urls')
