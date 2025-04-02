@@ -74,6 +74,7 @@ class ExportEventRegistrationView(IndexView):
                     "name": registration.name,
                     "surname": registration.surname,
                     "no. children": registration.event_registration_children.count(),
+                    "no. extra people": registration.event_registration_extra_people.count(),
                     "phone": str(registration.phone),
                     "disabilities": registration.disabilities,
                     "allergies": registration.allergies,
@@ -88,10 +89,11 @@ class ExportEventRegistrationView(IndexView):
             for child in registration.event_registration_children.all():
                 data.append(
                     {
-                        "email": "↳",
+                        "email": "↳ (child)",
                         "name": child.child_name,
                         "surname": child.child_surname,
                         "no. children": "",
+                        "no. extra people": "",
                         "phone": str(child.parent_phone),
                         "disabilities": "",
                         "allergies": "",
@@ -103,6 +105,23 @@ class ExportEventRegistrationView(IndexView):
                         "gender": (
                             child.gender_other if child.gender == "O" else child.gender
                         ),
+                    }
+                )
+            for extra_person in registration.event_registration_extra_people.all():
+                data.append(
+                    {
+                        "email": "↳ (extra person)",
+                        "name": extra_person.person_name,
+                        "surname": extra_person.person_surname,
+                        "no. children": "",
+                        "no. extra people": "",
+                        "phone": "",
+                        "disabilities": "",
+                        "allergies": "",
+                        "agreement_responsibility": "",
+                        "allow_photos": "",
+                        "birth_date": "",
+                        "gender": "",
                     }
                 )
 

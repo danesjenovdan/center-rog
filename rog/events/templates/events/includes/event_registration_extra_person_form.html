@@ -1,0 +1,28 @@
+{% load i18n %}
+
+<h4>{% translate 'Oseba' %} <span class="extra-person-num-display">{% if extra_person_num != None %}{{ extra_person_num|add:1 }}{% else %}__prefix1__{% endif %}</span></h4>
+<div>
+    <button class="link-plus px-0 small" type="button" onclick="remove_form('extra-person', '{{ form.DELETE.auto_id }}')"><span>{% translate 'odstrani osebo' %}</span></button>
+</div>
+
+{% for field in form.hidden_fields %}
+{{ field }}
+{% endfor %}
+
+<div class="hide">
+    {{ form.DELETE }}
+</div>
+
+<div class="form-field-wrapper {% if form.person_name.errors %}form-field-error{% endif %}">
+    {{ form.person_name.label_tag }} {{ form.person_name }}
+    {% if form.person_name.errors %}
+    {{ form.person_name.errors }}
+    {% endif %}
+</div>
+
+<div class="form-field-wrapper {% if form.person_surname.errors %}form-field-error{% endif %}">
+    {{ form.person_surname.label_tag }} {{ form.person_surname }}
+    {% if form.person_surname.errors %}
+    {{ form.person_surname.errors }}
+    {% endif %}
+</div>
