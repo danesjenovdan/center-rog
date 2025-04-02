@@ -252,6 +252,9 @@ class User(AbstractUser, Timestampable):
     @property
     def get_last_active_subscription_payment_plan(self):
         return self.payments.all().get_last_active_subscription_payment_plan()
+    
+    def has_active_plan(self, plan):
+        return self.payments.all().has_active_plan(plan)
 
     def get_last_active_membership(self):
         membership = self.memberships.filter(active=True)

@@ -75,6 +75,15 @@ class ActiveAtQuerySet(models.QuerySet):
             type_of=Token.Type.WORKSHOP,
             payment__in=self
         )
+    
+    def has_active_plan(self, plan):
+        # TODO - fix this method when we need to implement scheduled user plan
+        now = timezone.now()
+        return self.filter(
+            items=plan,
+            successed_at__isnull=False,
+            payment_plans__valid_to__gte=now,
+        ).exists()
 
 
 # payments

@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load i18n static wagtailimages_tags wagtailcore_tags %}
+{% load i18n static wagtailimages_tags wagtailcore_tags event_tags %}
 
 {% block body_class %}template-profile template-event-page{% endblock %}
 
@@ -98,8 +98,9 @@
                                 </div>
                             </div>
                             {% endif %}
+                            {% can_user_register_on_event as var_can_user_register_on_event %}
                             <div>
-                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if page.number_of_places > 0 and free_places < 1 %}disabled{% endif %}" target="_blank">{% translate 'prijava' %}</a>
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if not var_can_user_register_on_event %}disabled{% endif %}" target="_blank">{% translate 'prijava' %}</a>
                             </div>
                         </div>
                     {% elif current_user_registered %}
