@@ -141,11 +141,9 @@ class PaymentPreview(views.APIView):
                 return redirect("profile-my")
 
             if event_registration and user:
-                people_count = event_registration.event_registration_children.count()
+                people_count = event_registration.number_of_people()
                 title = event.title
-                if people_count == 0:
-                    people_count = 1
-                else:
+                if people_count > 1:
                     title = f"{title} x {people_count}"
 
                 # check if there is enough free places

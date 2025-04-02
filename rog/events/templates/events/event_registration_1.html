@@ -8,83 +8,90 @@
 {% block extra_js %}
 <script>
     const user_form = document.getElementById("user_form");
-    // const children = document.getElementById("id_register_child_check");
     const children_formset = document.getElementById("children_formset");
-    const total_children_forms = document.getElementById("id_form-TOTAL_FORMS");
+    const extra_people_formset = document.getElementById("extra_people_formset");
+    const total_forms = document.getElementById("id_form-TOTAL_FORMS");
     const add_child_button = document.getElementById("add-child-button");
+    const add_extra_person_button = document.getElementById("add-extra-person-button");
 
-    // should children forms initially be shown
-    // if (children.checked) {
-    //     user_form.classList.add("hide");
-    //     children_formset.classList.remove("hide");
-    //     add_child_button.classList.remove("hide");
-    // } else {
-    //     user_form.classList.remove("hide")
-    //     children_formset.classList.add("hide");
-    //     add_child_button.classList.add("hide");
-    // }
-
-    // toggle show/hide on children forms
-    // children.addEventListener("change", function(event) {
-    //     if (event.target.checked) {
-    //         user_form.classList.add("hide");
-    //         children_formset.classList.remove("hide");
-    //         add_child_button.classList.remove("hide");
-    //     } else {
-    //         user_form.classList.remove("hide")
-    //         children_formset.classList.add("hide");
-    //         add_child_button.classList.add("hide");
-    //     }
-    // })
-
-    // when "add child" button is clicked
-    add_child_button.addEventListener("click", () => {
-        const child_forms = document.querySelectorAll(".child-form");
-        const visible_child_forms = Array.from(child_forms).filter(form => !form.classList.contains("hide"));
+    function on_add_click(person_type) {
+        const person_forms = document.querySelectorAll(`.${person_type}-form`);
+        const visible_person_forms = Array.from(person_forms).filter(form => !form.classList.contains("hide"));
 
         const new_empty_form = document.getElementById("empty-form").cloneNode(true);
-        new_empty_form.setAttribute("class", "child-form");
-        new_empty_form.setAttribute("id", `form-${child_forms.length}`);
+        new_empty_form.setAttribute("class", `${person_type}-form`);
+        new_empty_form.setAttribute("id", `form-${person_forms.length}`);
         const prefixRegex = new RegExp("__prefix__", "g");
         const prefixPlus1Regex = new RegExp("__prefix1__", "g");
-        new_empty_form.innerHTML = new_empty_form.innerHTML.replace(prefixRegex, child_forms.length);
-        new_empty_form.innerHTML = new_empty_form.innerHTML.replace(prefixPlus1Regex, visible_child_forms.length + 1);
-        children_formset.append(new_empty_form);
+        new_empty_form.innerHTML = new_empty_form.innerHTML.replace(prefixRegex, person_forms.length);
+        new_empty_form.innerHTML = new_empty_form.innerHTML.replace(prefixPlus1Regex, visible_person_forms.length + 1);
 
-        const new_child_forms = document.querySelectorAll(".child-form");
-
-        total_children_forms.setAttribute("value", new_child_forms.length);
-
-        const new_visible_child_forms = Array.from(new_child_forms).filter(form => !form.classList.contains("hide"));
-        if (new_visible_child_forms.length >= 3) {
-            add_child_button.classList.add("hide")
+        if (person_type === 'child') {
+            children_formset.append(new_empty_form);
+        } else if (person_type === 'extra-person') {
+            extra_people_formset.append(new_empty_form);
         }
 
-        fix_form_index_displays();
-    });
+        const new_person_forms = document.querySelectorAll(`.${person_type}-form`);
 
-    function remove_form(delete_form_id) {
-        const delete_id_input = document.getElementById(delete_form_id);
-        delete_id_input.checked = true;
-        delete_id_input.closest(".child-form").classList.add("hide");
+        total_forms.setAttribute("value", new_person_forms.length);
 
-        const new_child_forms = document.querySelectorAll(".child-form");
-
-        total_children_forms.setAttribute("value", new_child_forms.length);
-
-        const visible_child_forms = Array.from(new_child_forms).filter(form => !form.classList.contains("hide"));
-        if (visible_child_forms.length < 3) {
-            add_child_button.classList.remove("hide")
+        const new_visible_person_forms = Array.from(new_person_forms).filter(form => !form.classList.contains("hide"));
+        if (new_visible_person_forms.length >= 3) {
+            if (person_type === 'child') {
+                add_child_button.classList.add("hide")
+            } else if (person_type === 'extra-person') {
+                add_extra_person_button.classList.add("hide")
+            }
         }
 
-        fix_form_index_displays();
+        fix_form_index_displays(person_type);
     }
 
-    function fix_form_index_displays() {
-        const child_forms = document.querySelectorAll(".child-form");
-        const visible_child_forms = Array.from(child_forms).filter(form => !form.classList.contains("hide"));
-        visible_child_forms.forEach((form, index) => {
-            form.querySelector(".child-num-display").textContent = index + 1;
+    if (add_child_button) {
+        add_child_button.addEventListener("click", () => on_add_click('child'));
+        const new_person_forms = document.querySelectorAll(`.child-form`);
+        const visible_person_forms = Array.from(new_person_forms).filter(form => !form.classList.contains("hide"));
+        if (visible_person_forms.length >= 3) {
+            add_child_button.classList.add("hide")
+        }
+    }
+
+    if (add_extra_person_button) {
+        add_extra_person_button.addEventListener("click", () => on_add_click('extra-person'));
+        const new_person_forms = document.querySelectorAll(`.extra-person-form`);
+        const visible_person_forms = Array.from(new_person_forms).filter(form => !form.classList.contains("hide"));
+        if (visible_person_forms.length >= 3) {
+            add_extra_person_button.classList.add("hide")
+        }
+    }
+
+    function remove_form(person_type, delete_form_id) {
+        const delete_id_input = document.getElementById(delete_form_id);
+        delete_id_input.checked = true;
+        delete_id_input.closest(`.${person_type}-form`).classList.add("hide");
+
+        const new_person_forms = document.querySelectorAll(`.${person_type}-form`);
+
+        total_forms.setAttribute("value", new_person_forms.length);
+
+        const visible_person_forms = Array.from(new_person_forms).filter(form => !form.classList.contains("hide"));
+        if (visible_person_forms.length < 3) {
+            if (person_type === 'child') {
+                add_child_button.classList.remove("hide")
+            } else if (person_type === 'extra-person') {
+                add_extra_person_button.classList.remove("hide")
+            }
+        }
+
+        fix_form_index_displays(person_type);
+    }
+
+    function fix_form_index_displays(person_type) {
+        const person_forms = document.querySelectorAll(`.${person_type}-form`);
+        const visible_person_forms = Array.from(person_forms).filter(form => !form.classList.contains("hide"));
+        visible_person_forms.forEach((form, index) => {
+            form.querySelector(`.${person_type}-num-display`).textContent = index + 1;
         });
     }
 
@@ -141,6 +148,36 @@
             {% endif %}
         </div>
     </div>
+
+    <div id="extra_people_formset">
+
+        {{ extra_people_formset.management_form }}
+
+        {% for form in extra_people_formset %}
+            <div id="form-{{ forloop.counter0 }}" class="extra-person-form{% if form.DELETE.value %} hide{% endif %}">
+                {% include "events/includes/event_registration_extra_person_form.html" with form=form extra_person_num=forloop.counter0 %}
+            </div>
+        {% endfor %}
+
+        {% for error in extra_people_formset.non_form_errors %}
+        <div class="error my-3">
+            {{ error }}
+        </div>
+        {% endfor %}
+
+        {% if extra_people_formset_error %}
+        <div class="error my-3">
+            {{ extra_people_formset_error }}
+        </div>
+        {% endif %}
+
+        <div id="empty-form" class="hide">
+            {% include "events/includes/event_registration_extra_person_form.html" with form=extra_people_formset.empty_form %}
+        </div>
+
+    </div>
+
+    <button id="add-extra-person-button" class="link-plus px-0" type="button"><span>{% translate 'dodaj še eno osebo' %}</span> +</button>
 
     {% else %}
 
