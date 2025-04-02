@@ -377,8 +377,19 @@ class PaymentDataXML(views.APIView):
         user = payment.user
         # TODO fill in user data
         user_tax_id = user.legal_person_tax_number
-        user_name = f"{payment.user.first_name} {payment.user.last_name}"
-        user_address = user.address_1
+        if user.legal_person_vat:
+            if not "si" in user.legal_person_tax_number.lower():
+                user_tax_id = "SI" + user_tax_id
+
+        if user.legal_person_name:
+            user_name = user.legal_person_name
+        else:
+            user_name = f"{payment.user.first_name} {payment.user.last_name}"
+
+        if user.legal_person_address_1:
+            user_address = user.legal_person_address_1
+        else:
+            user_address = user.address_1
         user_city = ""
         user_post = user.get_post()
         user_email = user.email
