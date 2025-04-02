@@ -378,7 +378,7 @@ class PaymentDataXML(views.APIView):
         # TODO fill in user data
         user_tax_id = user.legal_person_tax_number
         if user.legal_person_vat:
-            if not "si" in user.legal_person_vat.lower():
+            if not "si" in user.legal_person_tax_number.lower():
                 user_tax_id = "SI" + user_tax_id
 
         if user.legal_person_name:
