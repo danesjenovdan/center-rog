@@ -386,8 +386,8 @@ class PaymentDataXML(views.APIView):
         else:
             user_name = f"{payment.user.first_name} {payment.user.last_name}"
 
-        if user.legal_person_address:
-            user_address = user.legal_person_address
+        if user.legal_person_address_1:
+            user_address = user.legal_person_address_1
         else:
             user_address = user.address_1
         user_city = ""
