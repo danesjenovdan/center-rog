@@ -227,6 +227,11 @@ class EventPage(BasePage):
         verbose_name=_("Dogodek je za otroke"),
         help_text=_("Prijava na dogodek zahteva vpis vsaj enega otroka"),
     )
+    allowed_extra_people = models.BooleanField(
+        default=False,
+        verbose_name=_("Dovoljena prijava dodatnih oseb"),
+        help_text=_("Pri prijavi na dogodek ja omogoča prijavo dodatnih oseb"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -249,6 +254,7 @@ class EventPage(BasePage):
         FieldPanel("contact_email"),
         FieldPanel("labs", widget=forms.CheckboxSelectMultiple),
         FieldPanel("without_registrations"),
+        FieldPanel("allowed_extra_people"),
     ]
 
     parent_page_types = ["events.EventListPage"]
