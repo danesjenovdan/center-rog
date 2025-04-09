@@ -104,3 +104,27 @@ class EventRegistrationChildForm(forms.ModelForm):
             "child_surname": forms.TextInput(),
             "parent_phone": forms.TextInput(),
         }
+
+
+class EventRegistrationExtraPersonForm(forms.ModelForm):
+    person_name = forms.CharField(
+        label=_("Ime osebe"),
+        label_suffix="",
+        required=True,
+    )
+    person_surname = forms.CharField(
+        label=_("Priimek osebe"),
+        label_suffix="",
+        required=True,
+    )
+
+    class Meta:
+        model = EventRegistrationChild
+        fields = [
+            "person_name",
+            "person_surname",
+        ]
+        widgets = {
+            "person_name": forms.TextInput(),
+            "person_surname": forms.TextInput(),
+        }
