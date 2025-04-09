@@ -232,6 +232,19 @@ class EventPage(BasePage):
         verbose_name=_("Dovoljena prijava dodatnih oseb"),
         help_text=_("Pri prijavi na dogodek ja omogoča prijavo dodatnih oseb"),
     )
+    just_for_members = models.BooleanField(
+        default=False,
+        verbose_name=_("Dogodek samo za člane"),
+        help_text=_("Za prijavo na dogodek mora biti uporabnik član"),
+    )
+    required_plan = models.ForeignKey(
+        "payments.Plan",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Zahtevan plan"),
+        help_text=_("Za prijavo na dogodek mora uporabnik imeti aktiven ta plan"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -255,11 +268,26 @@ class EventPage(BasePage):
         FieldPanel("labs", widget=forms.CheckboxSelectMultiple),
         FieldPanel("without_registrations"),
         FieldPanel("allowed_extra_people"),
+        FieldPanel("just_for_members"),
+        FieldPanel("required_plan"),
     ]
 
     parent_page_types = ["events.EventListPage"]
 
     objects = EventPageManager()
+
+    def can_register(self, user):
+        if self.just_for_members:
+            if not user.is_authenticated:
+                return False
+            else:
+                if not user.membership:
+                    return False
+        if self.required_plan:
+            if not user.has_active_plan(self.required_plan):
+                return False
+
+        return True
 
     def get_free_places(self):
         if getattr(self, "free_places", None) is None:

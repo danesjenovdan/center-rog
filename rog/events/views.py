@@ -71,6 +71,10 @@ class EventRegistrationView(View):
             event = EventPage.objects.get(slug=event)
         except:
             return redirect("profile-my")
+        
+        # check if user has permission to register to this event
+        if event.can_register(current_user) is False:
+            return redirect(event.get_url())
 
         # make sure registration event doesn't already exist
         try:
