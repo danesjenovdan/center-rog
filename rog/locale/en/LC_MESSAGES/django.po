@@ -388,7 +388,7 @@ msgstr ""
 
 #: events/templates/events/includes/card.html:19
 msgid "Zapolnjeno"
-msgstr ""
+msgstr "Full"
 
 #: events/templates/events/includes/event_registration_child_form.html:3
 msgid "Otrok"

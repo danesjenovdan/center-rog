@@ -141,12 +141,8 @@ class PaymentPreview(views.APIView):
                 return redirect("profile-my")
 
             if event_registration and user:
-                people_count = event_registration.event_registration_children.count()
+                people_count = event_registration.number_of_people()
                 title = event.title
-                if people_count == 0:
-                    people_count = 1
-                else:
-                    title = f"{title} x {people_count}"
 
                 # check if there is enough free places
                 free_places = event.get_free_places()
@@ -158,9 +154,20 @@ class PaymentPreview(views.APIView):
                     )
 
                 if user.membership:
-                    price = event.price * people_count
+                    # user with membership pays membership price and other full price
+                    price = event.price + event.price_for_non_member * (people_count - 1)
+                    if people_count > 1:
+                        if event_registration.event_registration_children.count() > 0:
+                            # if user has children in event registration
+                            price = event.price * people_count
+                            title = f"{title} x {people_count}"
+                        else:
+                            member = _("član")
+                            non_member = _("nečlan")
+                            title = f"{title} (1 x {member} + {people_count - 1} x {non_member})"
                 else:
                     price = event.price_for_non_member * people_count
+                    title = f"{title} x {people_count}"
 
                 existing_payment_plan = event_registration.payment_plans.first()
                 if existing_payment_plan:
