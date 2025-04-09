@@ -130,8 +130,12 @@ class EventPageManager(PageManager):
                     "event_registrations__event_registration_children",
                     filter=Q(event_registrations__registration_finished=True),
                 ),
+                booked_extra_people=Count(
+                    "event_registrations__event_registration_extra_people",
+                    filter=Q(event_registrations__registration_finished=True),
+                ),
             )
-            .annotate(booked_count=F("booked_users") + F("booked_children"))
+            .annotate(booked_count=F("booked_users") + F("booked_children") + F("booked_extra_people"))
             .annotate(free_places=F("number_of_places") - F("booked_count"))
             .annotate(has_free_place=Case(
                     When(
@@ -223,6 +227,24 @@ class EventPage(BasePage):
         verbose_name=_("Dogodek je za otroke"),
         help_text=_("Prijava na dogodek zahteva vpis vsaj enega otroka"),
     )
+    allowed_extra_people = models.BooleanField(
+        default=False,
+        verbose_name=_("Dovoljena prijava dodatnih oseb"),
+        help_text=_("Pri prijavi na dogodek ja omogoča prijavo dodatnih oseb"),
+    )
+    just_for_members = models.BooleanField(
+        default=False,
+        verbose_name=_("Dogodek samo za člane"),
+        help_text=_("Za prijavo na dogodek mora biti uporabnik član"),
+    )
+    required_plan = models.ForeignKey(
+        "payments.Plan",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("Zahtevan plan"),
+        help_text=_("Za prijavo na dogodek mora uporabnik imeti aktiven ta plan"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -245,11 +267,27 @@ class EventPage(BasePage):
         FieldPanel("contact_email"),
         FieldPanel("labs", widget=forms.CheckboxSelectMultiple),
         FieldPanel("without_registrations"),
+        FieldPanel("allowed_extra_people"),
+        FieldPanel("just_for_members"),
+        FieldPanel("required_plan"),
     ]
 
     parent_page_types = ["events.EventListPage"]
 
     objects = EventPageManager()
+
+    def can_register(self, user):
+        if self.just_for_members:
+            if not user.is_authenticated:
+                return False
+            else:
+                if not user.membership:
+                    return False
+        if self.required_plan:
+            if not user.has_active_plan(self.required_plan):
+                return False
+
+        return True
 
     def get_free_places(self):
         if getattr(self, "free_places", None) is None:
@@ -422,6 +460,16 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     def __str__(self):
         return f"{self.event.title} [{self.user}]"
 
+    def number_of_people(self):
+        # if we have children registered, we count only them
+        num_children = self.event_registration_children.count()
+        if num_children:
+            return num_children
+
+        # otherwise, we count the user and extra people
+        num_extra_people = self.event_registration_extra_people.count()
+        return 1 + num_extra_people
+
     panels = [
         AutocompletePanel("user", target_model="users.User"),
         FieldPanel("event"),
@@ -435,6 +483,7 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         FieldPanel("allow_photos"),
         FieldPanel("registration_finished"),
         InlinePanel("event_registration_children", label=_("Prijavljeni otroci")),
+        InlinePanel("event_registration_extra_people", label=_("Dodatne osebe")),
     ]
 
     class Meta:
@@ -467,6 +516,17 @@ class EventRegistrationChild(Orderable):
     gender_other = models.CharField(
         max_length=200, blank=True, verbose_name="Spol (drugo)"
     )
+
+
+# prijavnica za dodatno osebo (se veže na prijavnico)
+class EventRegistrationExtraPerson(Orderable):
+    event_registration = ParentalKey(
+        EventRegistration,
+        on_delete=models.CASCADE,
+        related_name="event_registration_extra_people",
+    )
+    person_name = models.TextField(verbose_name=_("Ime osebe"))
+    person_surname = models.TextField(verbose_name=_("Priimek osebe"))
 
 
 EventPage._meta.get_field("color_scheme").default = "light-gray"

@@ -2,7 +2,7 @@
 
 <h4>{% translate 'Otrok' %} <span class="child-num-display">{% if child_num != None %}{{ child_num|add:1 }}{% else %}__prefix1__{% endif %}</span></h4>
 <div>
-    <button class="link-plus px-0 small" type="button" onclick="remove_form('{{ form.DELETE.auto_id }}')"><span>{% translate 'odstrani osebo' %}</span></button>
+    <button class="link-plus px-0 small" type="button" onclick="remove_form('child', '{{ form.DELETE.auto_id }}')"><span>{% translate 'odstrani osebo' %}</span></button>
 </div>
 
 {% for field in form.hidden_fields %}

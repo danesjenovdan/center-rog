@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 18:02+0200\n"
+"POT-Creation-Date: 2025-04-09 13:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,15 +33,15 @@ msgstr ""
 "I allow photographing and recording exclusively for the purposes of "
 "promoting the program of Center Rog."
 
-#: events/forms.py:56 events/models.py:456
+#: events/forms.py:56 events/models.py:477
 msgid "Ime otroka"
 msgstr ""
 
-#: events/forms.py:61 events/models.py:457
+#: events/forms.py:61 events/models.py:478
 msgid "Priimek otroka"
 msgstr ""
 
-#: events/forms.py:66 events/models.py:459
+#: events/forms.py:66 events/models.py:480
 msgid "Telefonska številka zakonitega skrbnika"
 msgstr ""
 
@@ -68,6 +68,14 @@ msgstr "Other"
 #: events/forms.py:86 home/forms.py:155
 msgid "izpolni"
 msgstr "Complete"
+
+#: events/forms.py:111 events/models.py:500
+msgid "Ime osebe"
+msgstr ""
+
+#: events/forms.py:116 events/models.py:501
+msgid "Priimek osebe"
+msgstr ""
 
 #: events/models.py:55 news/models.py:40 users/models.py:105
 msgid "Ime kategorije"
@@ -105,167 +113,179 @@ msgstr "Event category"
 msgid "Dogodki - kategorije"
 msgstr "Events - categories"
 
-#: events/models.py:165
+#: events/models.py:169
 msgid "Slika dogodka"
 msgstr "Event picture"
 
-#: events/models.py:171
+#: events/models.py:175
 msgid "Kategorije"
 msgstr ""
 
-#: events/models.py:173 home/models/base_pages.py:291 news/models.py:74
+#: events/models.py:177 home/models/base_pages.py:291 news/models.py:74
 msgid "Telo"
 msgstr "Body"
 
-#: events/models.py:175 home/models/pages.py:399
+#: events/models.py:179 home/models/pages.py:399
 msgid "Oznaka na kartici"
 msgstr "Label on the card"
 
-#: events/models.py:177
+#: events/models.py:181
 msgid "Ura začetka"
 msgstr "Start time"
 
-#: events/models.py:178
+#: events/models.py:182
 msgid "Ura konca"
 msgstr "End time"
 
-#: events/models.py:179
+#: events/models.py:183
 msgid "Datum začetka"
 msgstr "Start date"
 
-#: events/models.py:183
+#: events/models.py:187
 msgid "Datum konca (če gre za večdneven dogodek)"
 msgstr "End date (for events across multiple days)"
 
-#: events/models.py:186
+#: events/models.py:190
 msgid "Lokacija"
 msgstr "Location"
 
-#: events/models.py:189
+#: events/models.py:193
 msgid "Povezava za prijavo (če je prazno, se gumb skrije)"
 msgstr "Application link (if empty, button is hidden)"
 
-#: events/models.py:191 home/models/pages.py:204 home/models/settings.py:147
+#: events/models.py:195 home/models/pages.py:204 home/models/settings.py:147
 #: home/models/settings.py:185
 msgid "Opomba"
 msgstr "Notes"
 
-#: events/models.py:197
+#: events/models.py:201
 msgid "Dogodek je usposabljanje"
 msgstr "This event is a training course"
 
-#: events/models.py:200 events/models.py:299 events/models.py:330
+#: events/models.py:204 events/models.py:309 events/models.py:340
 #: home/models/base_pages.py:237 home/models/module_pages.py:60
 #: home/models/pages.py:245 home/models/pages.py:407 news/models.py:82
 #: news/models.py:112
 msgid "Pokaži več"
 msgstr "Show more"
 
-#: events/models.py:204 payments/models.py:90
+#: events/models.py:208 payments/models.py:90
 msgid "Cena"
 msgstr "Price"
 
-#: events/models.py:207
+#: events/models.py:211
 msgid "Cena za nečlane"
 msgstr "The price for non-members"
 
-#: events/models.py:209
+#: events/models.py:213
 msgid "Število mest"
 msgstr ""
 
-#: events/models.py:211
+#: events/models.py:215
 msgid "Kontaktni email"
 msgstr ""
 
-#: events/models.py:214 home/models/blocks.py:332 home/models/pages.py:298
+#: events/models.py:218 home/models/blocks.py:332 home/models/pages.py:298
 #: home/models/pages.py:614 home/models/pages.py:615
 msgid "Laboratoriji"
 msgstr "Laboratories"
 
-#: events/models.py:218
+#: events/models.py:222
 msgid "Brez prijave"
 msgstr ""
 
-#: events/models.py:219
+#: events/models.py:223
 msgid "Če je označeno, je dogodek brez prijave."
 msgstr "If marked, the event is without registration."
 
-#: events/models.py:223
+#: events/models.py:227
 msgid "Dogodek je za otroke"
 msgstr ""
 
-#: events/models.py:224
+#: events/models.py:228
 msgid "Prijava na dogodek zahteva vpis vsaj enega otroka"
 msgstr ""
 
-#: events/models.py:293 home/models/blocks.py:302 payments/models.py:43
+#: events/models.py:232
+msgid "Dovoljena prijava dodatnih oseb"
+msgstr ""
+
+#: events/models.py:233
+msgid "Pri prijavi na dogodek ja omogoča prijavo dodatnih oseb"
+msgstr ""
+
+#: events/models.py:303 home/models/blocks.py:302 payments/models.py:43
 #: payments/models.py:447
 msgid "Dogodek"
 msgstr "Event"
 
-#: events/models.py:294 home/models/blocks.py:303
+#: events/models.py:304 home/models/blocks.py:303
 msgid "Dogodki"
 msgstr "Events"
 
-#: events/models.py:324
+#: events/models.py:334
 msgid "Arhiv programa"
 msgstr "Program archive"
 
-#: events/models.py:325
+#: events/models.py:335
 msgid "Arhivi programov"
 msgstr "Program archives"
 
-#: events/models.py:387
+#: events/models.py:397
 msgid "Program"
 msgstr "Program"
 
-#: events/models.py:388
+#: events/models.py:398
 msgid "Programi"
 msgstr "Programs"
 
-#: events/models.py:403 home/forms.py:134 home/models/blocks.py:476
+#: events/models.py:413 home/forms.py:134 home/models/blocks.py:476
 #: home/models/settings.py:101
 msgid "Ime"
 msgstr "Name"
 
-#: events/models.py:404 home/forms.py:138
+#: events/models.py:414 home/forms.py:138
 msgid "Priimek"
 msgstr "Surname"
 
-#: events/models.py:405 home/models/base_pages.py:178
+#: events/models.py:415 home/models/base_pages.py:178
 #: home/models/settings.py:119
 msgid "Telefonska številka"
 msgstr "Phone number"
 
-#: events/models.py:407
+#: events/models.py:417
 msgid "Na dogodek prijavljam otroka"
 msgstr "I am registering a child for the event"
 
-#: events/models.py:409
+#: events/models.py:419
 msgid "Oviranosti (naštej)"
 msgstr "Disabilities (list)"
 
-#: events/models.py:410
+#: events/models.py:420
 msgid "Alergije (naštej)"
 msgstr "Allergies (list)"
 
-#: events/models.py:412
+#: events/models.py:422
 msgid "Strinjam se z zavrnitvijo odgovornosti"
 msgstr "I agree with the disclaimer"
 
-#: events/models.py:415
+#: events/models.py:425
 msgid "Dovoljujem fotografiranje in snemanje"
 msgstr "I allow photography and recording"
 
-#: events/models.py:419
+#: events/models.py:429
 msgid "Prijava na dogodek je zaključena"
 msgstr "Event registration is closed"
 
-#: events/models.py:437
+#: events/models.py:457
 msgid "Prijavljeni otroci"
 msgstr ""
 
-#: events/models.py:445 events/templates/events/event_registration_1.html:4
+#: events/models.py:458
+msgid "Dodatne osebe"
+msgstr ""
+
+#: events/models.py:466 events/templates/events/event_registration_1.html:4
 #: events/templates/events/event_registration_2.html:4
 #: events/templates/events/event_registration_3.html:4
 #: events/templates/events/event_registration_failed.html:4
@@ -273,7 +293,7 @@ msgstr ""
 msgid "Prijava na dogodek"
 msgstr ""
 
-#: events/models.py:446
+#: events/models.py:467
 msgid "Dogodki - prijave"
 msgstr ""
 
@@ -326,11 +346,15 @@ msgstr "Free spots:"
 msgid "poglej svojo prijavo"
 msgstr ""
 
-#: events/templates/events/event_registration_1.html:175
+#: events/templates/events/event_registration_1.html:181
+msgid "dodaj še eno osebo"
+msgstr ""
+
+#: events/templates/events/event_registration_1.html:214
 msgid "dodaj še enega otroka"
 msgstr "Add one more child"
 
-#: events/templates/events/event_registration_1.html:180
+#: events/templates/events/event_registration_1.html:219
 #: events/templates/events/event_registration_2.html:32
 #: events/templates/events/event_registration_3.html:31
 #: home/templates/registration/login.html:42
@@ -388,29 +412,34 @@ msgstr ""
 
 #: events/templates/events/includes/card.html:19
 msgid "Zapolnjeno"
-msgstr ""
+msgstr "Full"
 
 #: events/templates/events/includes/event_registration_child_form.html:3
 msgid "Otrok"
 msgstr "child"
 
 #: events/templates/events/includes/event_registration_child_form.html:5
+#: events/templates/events/includes/event_registration_extra_person_form.html:5
 msgid "odstrani osebo"
 msgstr ""
 
-#: events/views.py:124
+#: events/templates/events/includes/event_registration_extra_person_form.html:3
+msgid "Oseba"
+msgstr ""
+
+#: events/views.py:156
 msgid "Prosimo, dodajte vsaj enega otroka."
 msgstr "Please add at least one child."
 
-#: events/views.py:131 events/views.py:133 events/views.py:135
+#: events/views.py:166 events/views.py:168 events/views.py:170
 msgid "To polje ne sme biti prazno."
 msgstr ""
 
-#: events/views.py:181
+#: events/views.py:207 events/views.py:269
 msgid "Na voljo ni dovolj prostih mest."
 msgstr ""
 
-#: events/views.py:353 home/templates/home/includes/mailchimp.html:90
+#: events/views.py:444 home/templates/home/includes/mailchimp.html:90
 msgid "To polje je obvezno."
 msgstr "This field is mandatory"
 
@@ -418,8 +447,12 @@ msgstr "This field is mandatory"
 msgid "Trenutni in prihodni dogodki"
 msgstr ""
 
-#: events/wagtail_hooks.py:112
-msgid "Stevilo otrok"
+#: events/wagtail_hooks.py:116
+msgid "Število otrok"
+msgstr ""
+
+#: events/wagtail_hooks.py:117
+msgid "Število dodatnih oseb"
 msgstr ""
 
 #: home/forms.py:32
@@ -1884,8 +1917,8 @@ msgstr "Payment"
 msgid "Poteka preusmeritev na stran za plačilo..."
 msgstr "Redirecting to payment page"
 
-#: payments/templates/payment_failed.html:19 payments/views.py:500
-#: payments/views.py:507
+#: payments/templates/payment_failed.html:19 payments/views.py:518
+#: payments/views.py:525
 msgid "Napaka pri plačilu."
 msgstr "Payment error."
 
@@ -1944,7 +1977,15 @@ msgid ""
 "*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart"
 msgstr "you will be redirected to the webpage of our bankart payment provider"
 
-#: payments/views.py:317 payments/views.py:344
+#: payments/views.py:165
+msgid "član"
+msgstr "member"
+
+#: payments/views.py:166
+msgid "nečlan"
+msgstr "non-member"
+
+#: payments/views.py:324 payments/views.py:351
 msgid "Plačilo je bilo že sprocesirano."
 msgstr ""
 
