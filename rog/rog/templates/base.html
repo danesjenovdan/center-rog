@@ -65,5 +65,16 @@
 
         <script defer data-domain="center-rog.si" src="https://plausible.io/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
         <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+
+        <script>
+            if (window.afterAnalytics && window.afterAnalytics.length) {
+                for (let i = 0; i < window.afterAnalytics.length; i++) {
+                    let func = window.afterAnalytics[i];
+                    if (typeof func === 'function') {
+                        func();
+                    }
+                }
+            }
+        </script>
     </body>
 </html>
