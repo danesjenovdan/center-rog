@@ -132,3 +132,21 @@
         {% endif %}
     </div>
 </form>
+
+<script>
+    (function(){
+        const form = document.currentScript.previousElementSibling
+        {% if payment_needed %}const memberType = "CLAN";{% else %}const memberType = "GOST";{% endif %}
+        if (memberType !== "GOST") {
+            return; // only send event if guest, member still needs to pay
+        }
+        form.addEventListener("submit", (e) => {
+            if (window.plausible) {
+                window.plausible(`registracija_zakljucena_${memberType}`);
+            }
+            if (window.fbq) {
+                window.fbq("trackCustom", `registracija_zakljucena_${memberType}`);
+            }
+        });
+    }());
+</script>
