@@ -110,3 +110,18 @@
     </script>
 </div>
 </div>
+
+<script>
+    (function(){
+        const formParent = document.currentScript.previousElementSibling;
+        const form = formParent.querySelector("form#mc-embedded-subscribe-form");
+        form.addEventListener("submit", (e) => {
+            if (window.plausible) {
+                window.plausible("prijava_na_novicnik");
+            }
+            if (window.fbq) {
+                window.fbq("trackCustom", "prijava_na_novicnik");
+            }
+        });
+    }());
+</script>

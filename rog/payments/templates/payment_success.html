@@ -59,4 +59,22 @@
 
 </div>
 
+<script>
+    (function(){
+        {% if purchase_type == "membership" %}let purchaseMembership = true;{% else %}let purchaseMembership = null;{% endif %}
+        if (!purchaseMembership) {
+            return; // only send event if membership purchase
+        }
+        window.afterAnalytics = window.afterAnalytics || [];
+        window.afterAnalytics.push(() => {
+            if (window.plausible) {
+                window.plausible("registracija_zakljucena_CLAN");
+            }
+            if (window.fbq) {
+                window.fbq("trackCustom", "registracija_zakljucena_CLAN");
+            }
+        });
+    }());
+</script>
+
 {% endblock page_body %}
