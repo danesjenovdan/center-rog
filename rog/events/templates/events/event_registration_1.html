@@ -149,7 +149,6 @@
         </div>
     </div>
 
-    {% if event.allowed_extra_people %}
     <div id="extra_people_formset">
 
         {{ extra_people_formset.management_form }}
@@ -178,8 +177,7 @@
 
     </div>
 
-    <button id="add-extra-person-button" class="link-plus px-0" type="button"><span>{% translate 'dodaj še eno osebo' %}</span> +</button>
-    {% endif %}
+    <button id="add-extra-person-button" class="link-plus px-0 {% if not event.allowed_extra_people %}hide{% endif %}" type="button"><span>{% translate 'dodaj še eno osebo' %}</span> +</button>
 
     {% else %}
 
