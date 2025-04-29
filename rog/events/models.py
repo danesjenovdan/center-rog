@@ -135,23 +135,19 @@ class EventPageManager(PageManager):
                     filter=Q(event_registrations__registration_finished=True),
                 ),
             )
-            .annotate(booked_count=F("booked_users") + F("booked_children") + F("booked_extra_people"))
+            .annotate(
+                booked_count=F("booked_users")
+                + F("booked_children")
+                + F("booked_extra_people")
+            )
             .annotate(free_places=F("number_of_places") - F("booked_count"))
-            .annotate(has_free_place=Case(
-                    When(
-                        number_of_places=0,
-                        then=Value(True)
-                    ),
-                    When(
-                        free_places__gt=0,
-                        then=Value(True)
-                    ),
-                    When(
-                        free_places__lte=0,
-                        then=Value(False)
-                    ),
+            .annotate(
+                has_free_place=Case(
+                    When(number_of_places=0, then=Value(True)),
+                    When(free_places__gt=0, then=Value(True)),
+                    When(free_places__lte=0, then=Value(False)),
                     default_value=Value(False),
-                    output_field=BooleanField()
+                    output_field=BooleanField(),
                 )
             )
         )
@@ -400,6 +396,23 @@ class EventListPage(BasePage):
                 categories=chosen_category
             )
 
+        # labs filter
+        from home.models import LabPage
+
+        all_lab_ids = list(
+            EventPage.objects.live()
+            .filter(labs__isnull=False)
+            .order_by("labs")
+            .values_list("labs", flat=True)
+            .distinct()
+        )
+        all_labs = LabPage.objects.filter(id__in=all_lab_ids).order_by("title")
+
+        lab_slugs = list(filter(bool, map(str.strip, request.GET.get("labs", "").split(","))))
+        chosen_labs = all_labs.filter(slug__in=lab_slugs)
+        if chosen_labs:
+            all_event_page_objects = all_event_page_objects.filter(labs__in=chosen_labs)
+
         # arhiv
         context["archive_page"] = EventListArchivePage.objects.live().first()
 
@@ -413,8 +426,11 @@ class EventListPage(BasePage):
         except EmptyPage:
             event_pages = paginator.page(paginator.num_pages)
 
+        # add variables to context
         context["event_pages"] = event_pages
         context["chosen_category"] = chosen_category
+        context["all_labs"] = all_labs
+        context["chosen_labs"] = chosen_labs
 
         # see more
         context = add_see_more_fields(context)
