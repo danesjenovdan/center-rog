@@ -20,3 +20,8 @@ def can_user_register_on_event(context):
     print("event_page.can_register(user)", event_page.can_register(user))
 
     return event_page.can_register(user) and is_registaration_enabled
+
+
+@register.filter
+def map_key(lst, key):
+    return [getattr(obj, key) for obj in lst]
