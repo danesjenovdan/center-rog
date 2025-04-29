@@ -2981,6 +2981,147 @@ section.image-embed {
     }
 }
 
+.event-list-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    .dropdown {
+        position: relative;
+
+        .dropdown-button {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 5px 16px 3px;
+            background: transparent;
+            border: 1.5px solid currentColor;
+            border-radius: 3px;
+            @include font-size-xs();
+
+            svg {
+                height: 0.55em;
+            }
+
+            &:hover {
+                background: $cs-yellow;
+            }
+        }
+
+        .dropdown-content {
+            position: absolute;
+            display: none;
+            z-index: 100;
+            padding: 20px 15px;
+            margin-top: 15px;
+            width: 350px;
+            max-width: calc(100vw - 50px);
+            background: $cs-light-blue;
+            color: $cs-yellow;
+
+            &.show {
+                display: block;
+            }
+
+            .close {
+                position: absolute;
+                top: 20px;
+                right: 15px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                background: transparent;
+                border: none;
+                color: $cs-yellow;
+
+                svg {
+                    width: 25px;
+                    height: 25px;
+                    opacity: 1;
+                }
+
+                &:not(:hover) {
+                    svg {
+                        opacity: 0.75;
+                    }
+                }
+            }
+
+            h3 {
+                @include font-size-sm();
+                line-height: 25px;
+                margin-bottom: 15px;
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+
+                .rog-check-circle {
+                    input[type="checkbox"] {
+                        top: 6px;
+
+                        &:not(.disabled, :disabled) {
+                            border-color: $cs-yellow;
+
+                            &:hover {
+                                background-color: rgba($cs-yellow, 0.33);
+                            }
+
+                            &:checked {
+                                background-color: $cs-yellow;
+                            }
+                        }
+                    }
+
+                    label {
+                        cursor: pointer;
+                        @include font-size-sm();
+                    }
+                }
+            }
+
+            .apply-filter.primary-button {
+                margin-top: 8px;
+                background-color: $cs-yellow;
+                color: $cs-dark-gray;
+            }
+        }
+    }
+
+    .clear-filters {
+        display: flex;
+        align-items: center;
+        color: $cs-dark-gray;
+        @include font-size-xs();
+
+        span {
+            @include prepare-for-underlined-text();
+        }
+
+        svg {
+            width: 0.75em;
+            height: 0.75em;
+            margin-left: 8px;
+            margin-top: -1px;
+            opacity: 1;
+        }
+
+        &:not(:hover) {
+            span {
+                @include underline-text();
+            }
+
+            svg {
+                opacity: 0.75;
+            }
+        }
+    }
+}
+
 .user-purchase-plan .radio-square {
     h3 {
         margin-bottom: 15px;
@@ -3389,6 +3530,14 @@ section.image-embed {
     label {
         padding-top: 3px;
         @include font-size-xs();
+    }
+
+    &.rog-check-circle {
+        input[type="checkbox"] {
+            border-radius: 50%;
+            width: 17px;
+            height: 17px;
+        }
     }
 }
 

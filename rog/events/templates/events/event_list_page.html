@@ -1,5 +1,5 @@
 {% extends "home/wrapper_page.html" %}
-{% load i18n static wagtailcore_tags %}
+{% load i18n static wagtailcore_tags event_tags jsonify %}
 
 {% block body_class %}template-object-list template-event-list-page{% endblock %}
 
@@ -19,6 +19,64 @@
             <h1 class="text-center">{{ page.title }}</h1>
             {% endif %}
         </div>
+    </div>
+
+    <div class="row">
+        <div class="event-list-filters">
+            <div>
+                <div class="dropdown" data-name="labs">
+                    <button type="button" class="dropdown-button">
+                        <span>{% translate "lab" %}</span>
+                        <svg viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1.75L7 7.75L13 1.75" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-content">
+                        <button type="button" class="close">
+                            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1.07031 0.999512L11.071 11.0002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M1.07031 11.0002L11.071 0.999529" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <h3>{% translate "Izberi lab" %}</h3>
+                        <ul>
+                            {% for lab in all_labs %}
+                            <li>
+                                <div class="rog-check rog-check-circle">
+                                    <input type="checkbox" id="filter-lab-{{ lab.slug }}" name="{{ lab.slug }}" {% if lab in chosen_labs %}checked{% endif %}>
+                                    <label for="filter-lab-{{ lab.slug }}">
+                                        <span></span>
+                                        {{ lab.title }}
+                                    </label>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div>
+                            <a href="?" class="primary-button button-medium apply-filter">
+                                <span>{% translate "filtriraj" %}</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if request.GET.labs %}
+            <div>
+                <a href="?{% if chosen_category %}category={{ chosen_category.slug }}{% endif %}" class="clear-filters">
+                    <span>{% translate "počisti filtre" %}</span>
+                    <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.07031 0.999512L11.071 11.0002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M1.07031 11.0002L11.071 0.999529" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        <script>
+            window.__DROPDOWN_DATA__ = window.__DROPDOWN_DATA__ || {};
+            window.__DROPDOWN_DATA__.chosen_labs = JSON.parse("{{ chosen_labs|map_key:'slug'|jsonify|escapejs }}");
+        </script>
+        <script src="{% static 'js/event_list_filters.js' %}"></script>
     </div>
 
     <div class="row">
