@@ -265,11 +265,19 @@ class RegistrationView(View):
             confirm_email = ConfirmEmail(user=user, key=key_gen)
             confirm_email.save()
             # potem pošljemo mail
+            next_page = request.GET.get("next", None)
+            if next_page:
+                next_page = f"&next={next_page}"
+            else:
+                next_page = ""
             send_email(
                 user.email,
                 "emails/email_confirmation.html",
                 "Center Rog – potrditev e-naslova // e-mail confirmation",
-                {"key": confirm_email.key},
+                {
+                    "key": confirm_email.key,
+                    "next_page": next_page
+                },
             )
 
             login(request, user)
@@ -317,6 +325,12 @@ class RegistrationMembershipView(View):
 
         form = RegistrationMembershipForm(request.POST)
 
+        next_page = request.GET.get("next", None)
+        if next_page:
+            next_page = f"next={next_page}"
+        else:
+            next_page = ""
+
         if form.is_valid():
             membership_type = form.cleaned_data["type"]
             today = datetime.now()
@@ -330,9 +344,9 @@ class RegistrationMembershipView(View):
                     user=user,
                 )
                 new_membership.save()
-                membership_query = f"?membership={new_membership.id}"
+                membership_query = f"?membership={new_membership.id}&{next_page}"
             else:
-                membership_query = ""
+                membership_query = f"?{next_page }"
 
             return redirect(f"/registracija/podatki{membership_query}")
         else:
@@ -363,6 +377,8 @@ class RegistrationInformationView(View):
     def post(self, request):
         user = request.user
         form = RegistrationInformationForm(request.POST)
+
+        next_page = request.GET.get("next", None)
 
         if form.is_valid():
             user.first_name = form.cleaned_data["first_name"]
@@ -402,11 +418,16 @@ class RegistrationInformationView(View):
 
             user.save()
 
+            if next_page:
+                next_page = f"next={next_page}"
+            else:
+                next_page = ""
+
             membership = form.cleaned_data["membership"]
             if membership:
-                membership_query = f"?membership={membership}"
+                membership_query = f"?membership={membership}&{next_page}"
             else:
-                membership_query = ""
+                membership_query = f"?{next_page}"
 
             # prepare valid from and to dates
             valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
@@ -435,6 +456,7 @@ class RegistrationProfileView(View):
         user = request.user
         membership = request.GET.get("membership", None)
         form = EditProfileForm(instance=user, membership=membership)
+        next_page = request.GET.get("next", None)
 
         payment_needed = True if membership else False
 
@@ -445,6 +467,7 @@ class RegistrationProfileView(View):
                 "form": form,
                 "registration_step": 3,
                 "payment_needed": payment_needed,
+                "next_page": next_page,
             },
         )
 
@@ -453,6 +476,7 @@ class RegistrationProfileView(View):
         form = EditProfileForm(request.POST)
 
         payment_needed = True if request.POST.get("membership", None) else False
+        next_page = request.GET.get("next", None)
 
         if form.is_valid():
             public_profile = form.cleaned_data["public_profile"]
@@ -482,6 +506,7 @@ class RegistrationProfileView(View):
                         "form": form,
                         "registration_step": 3,
                         "payment_needed": payment_needed,
+                        "next_page": next_page,
                     },
                 )
 
@@ -504,8 +529,10 @@ class RegistrationProfileView(View):
 
             if payment_needed:
                 plan_id = user.memberships.last().type.plan.id
+                if next_page:
+                    next_page = f"&next={next_page}"
                 return redirect(
-                    f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}"
+                    f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}{next_page}"
                 )
             else:
                 return redirect("profile-my")
@@ -517,6 +544,7 @@ class RegistrationProfileView(View):
                     "form": form,
                     "registration_step": 3,
                     "payment_needed": payment_needed,
+                    "next_page": next_page,
                 },
             )
 
@@ -537,6 +565,8 @@ class EditProfileView(View):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
+        
+        next_page = request.GET.get("next", None)
 
         form = EditProfileForm(request.POST, request.FILES)
 
@@ -577,6 +607,9 @@ class EditProfileView(View):
                 user.interests.add(interest)
 
             user.save()
+
+            if next_page:
+                return redirect(f"{next_page}")
 
             return redirect("profile-my")
         else:
