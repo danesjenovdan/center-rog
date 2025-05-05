@@ -328,6 +328,7 @@ class Payment(Timestampable):
     pantheon_id = models.CharField(max_length=100, null=True, blank=True)
     invoice_number = models.CharField(max_length=100, null=True, blank=True)
     membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
+    redirect_after_success = models.CharField(max_length=256, null=True, blank=True, help_text="Where to redirect after success")
     panels = [
         FieldPanel("user"),
         FieldPanel("ujp_id"),

@@ -11,7 +11,7 @@
 
 {% block form_block %}
 
-<form action="{% url 'registration' %}" autocomplete="off" method="post">
+<form autocomplete="off" method="post">
     {% csrf_token %}
 
     <div class="form-field-wrapper {% if form.email.errors %}form-field-error{% endif %}">
