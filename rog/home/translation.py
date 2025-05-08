@@ -16,6 +16,7 @@ from .models.pages import (
 from .models.base_pages import BasicTextPage
 from .models.workshop import Workshop
 from .models.settings import MetaSettings
+from .models.tool import Tool, ToolSpecification
 
 from modeltranslation.translator import TranslationOptions
 from modeltranslation.decorators import register
@@ -70,9 +71,21 @@ class ObjectProfilePageTR(TranslationOptions):
     )
 
 
+@register(ToolSpecification)
+class ToolSpecificationTR(TranslationOptions):
+    fields = ("name", "value")
+
+
+@register(Tool)
+class ToolTR(TranslationOptions):
+    fields = ("name",)
+    related_fields = ("related_tool_specifications",)
+
+
 @register(LabPage)
 class LabPageTR(TranslationOptions):
     fields = ("description", "button", "working_hours", "notice")
+    related_fields = ("related_tools",)
 
 
 @register(WorkingStationPage)
