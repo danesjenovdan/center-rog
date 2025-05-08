@@ -1,6 +1,6 @@
 {% load i18n static wagtailimages_tags usergallery_tags jsonify %}
 
-<form action="{% if payment_needed %}{% url 'registration-profile' %}{% else %}{% url 'profile-edit' %}{% endif %}" enctype="multipart/form-data" method="post" class="edit-profile-form">
+<form action="{% if payment_needed %}{% url 'registration-profile' %}{% else %}{% url 'profile-edit' %}{% endif %}{% if next_page %}?next={{ next_page }}{% endif %}" enctype="multipart/form-data" method="post" class="edit-profile-form">
     {% csrf_token %}
     {{ form.membership.as_hidden }}
     <p>

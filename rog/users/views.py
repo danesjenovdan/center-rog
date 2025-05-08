@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from home import models
@@ -119,6 +120,11 @@ class ResendConfirmationMailView(View):
 class ConfirmUserView(View):
     def get(self, request):
         key = request.GET.get("key", None)
+        next = request.GET.get("next", None)
+        if next:
+            query = f"?next={next}"
+        else:
+            query = ""
         print("key confirm user", key)
         confirm_email = get_object_or_404(ConfirmEmail, key=key)
         user = confirm_email.user
@@ -131,7 +137,7 @@ class ConfirmUserView(View):
             "Center Rog – vaša registracija je uspela // your registration was successful",
             {},
         )
-        return redirect("registration-membership")
+        return redirect(reverse('registration-membership') + query)
 
 
 class ExportMarketningUsersView(View):
