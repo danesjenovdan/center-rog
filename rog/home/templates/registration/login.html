@@ -19,7 +19,7 @@
                 <p class="error" role="alert">{% translate 'Uporabniško ime in geslo se ne ujemata.' %}</p>
             {% endif %}
 
-            <form method="post" action="{% url 'login' %}" autocomplete="off">
+            <form method="post" autocomplete="off">
                 {% csrf_token %}
 
                 <div class="form-field-wrapper">
@@ -35,7 +35,7 @@
                 <div class="row mt-4">
                     <div class="col-6">
                         <div class="mb-1"><a href="{% url 'password_reset' %}">{% translate 'Pozabljeno geslo?' %}</a></div>
-                        <div class="mb-1"><a href="/registracija/">{% translate 'Registriraj se' %}</a></div>
+                        <div class="mb-1"><a href="/registracija/?{{ request.GET.urlencode }}">{% translate 'Registriraj se' %}</a></div>
                     </div>
                     <div class="col-6">
                         <div class="d-flex justify-content-end mb-4">

@@ -67,7 +67,7 @@
                 <div class="price">€{{ payment.amount|floatformat:"2g" }}</div>
             </div>
 
-            <form action="" method="post">
+            <form method="post">
                 {% csrf_token %}
 
                 <div class="row mt-4">

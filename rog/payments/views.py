@@ -32,6 +32,7 @@ class PaymentPreview(views.APIView):
         purchase_type = request.GET.get("purchase_type", "")
         membership_id = request.GET.get("membership", False)
         event_registration_id = request.GET.get("event_registration", False)
+        next_page = request.GET.get("next", None)
         user = request.user
 
         if plan_id:
@@ -40,6 +41,7 @@ class PaymentPreview(views.APIView):
             if plan and user:
                 payment = Payment(
                     user=user,
+                    redirect_after_success=next_page
                 )
                 payment.user_was_eligible_to_discount = user.is_eligible_to_discount()
                 price = (
@@ -549,6 +551,8 @@ class PaymentSuccess(views.APIView):
 
         if free_order:
             # Free order has already status.SUCCESS
+            if payment.redirect_after_success:
+                return redirect(payment.redirect_after_success)
             return render(request, "payment_success.html", context_vars)
 
         if str(payment.user.uuid) != urlpars[1]:
@@ -562,6 +566,8 @@ class PaymentSuccess(views.APIView):
             payment.save()
             finish_payment(payment)
 
+        if payment.redirect_after_success:
+                return redirect(payment.redirect_after_success)
         return render(request, "payment_success.html", context_vars)
 
 

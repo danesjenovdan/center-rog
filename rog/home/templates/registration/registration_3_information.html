@@ -63,7 +63,7 @@
 
 {% block form_block %}
 
-<form action="{% url 'registration-information' %}" method="post">
+<form method="post">
     {% csrf_token %}
     {{ form.membership.as_hidden }}
     <div class="form-field-wrapper">
