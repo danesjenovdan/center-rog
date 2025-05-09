@@ -531,6 +531,8 @@ class RegistrationProfileView(View):
                 plan_id = user.memberships.last().type.plan.id
                 if next_page:
                     next_page = f"&next={next_page}"
+                else:
+                    next_page = ""
                 return redirect(
                     f"/placilo?plan_id={plan_id}&purchase_type=registration{membership_query}{next_page}"
                 )
