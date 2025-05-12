@@ -520,7 +520,7 @@ class MembershipsBlock(ColoredStructBlock):
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        context["membership_types"] = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=False))
+        context["membership_types"] = MembershipType.objects.all().order_by(F("plan__price").desc(nulls_last=None))
         return context
 
     class Meta:

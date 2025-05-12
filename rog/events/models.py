@@ -301,7 +301,7 @@ class EventPage(BasePage):
         current_user = request.user
         if current_user.is_authenticated:
             current_user_registered = EventRegistration.objects.filter(
-                event=self, user=current_user, registration_finished=True
+                event_id=self.id, user=current_user, registration_finished=True
             ).count()
         else:
             current_user_registered = False
