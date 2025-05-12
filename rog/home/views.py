@@ -188,7 +188,7 @@ class PurchaseMembershipView(TemplateView):
 
         form = RegistrationMembershipForm()
         membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=False)
+            F("plan__price").desc(nulls_last=None)
         )
 
         return render(
@@ -204,7 +204,7 @@ class PurchaseMembershipView(TemplateView):
             return redirect("registration-email-confirmation")
 
         membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=False)
+            F("plan__price").desc(nulls_last=None)
         )
 
         form = RegistrationMembershipForm(request.POST)
@@ -303,7 +303,7 @@ class RegistrationMembershipView(View):
     def get(self, request):
         user = request.user
         membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=False)
+            F("plan__price").desc(nulls_last=None)
         )
         # TODO: prefill form če memberhsip že obstaja
         form = RegistrationMembershipForm()
@@ -320,7 +320,7 @@ class RegistrationMembershipView(View):
     def post(self, request):
         user = request.user
         membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=False)
+            F("plan__price").desc(nulls_last=None)
         )
 
         form = RegistrationMembershipForm(request.POST)
