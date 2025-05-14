@@ -142,7 +142,7 @@ class ConfirmUserView(View):
 
 class ExportMarketningUsersView(View):
     def get(self, request):
-        if not request.user.is_staff:
+        if not (request.user.is_staff or request.user.is_superuser):
             return HttpResponse(status=403)
         data = []
         users = User.objects.filter(allow_marketing=True)
