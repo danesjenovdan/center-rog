@@ -1,30 +1,24 @@
-from django.db import models
-from django import forms
-from django.db.models import Q, F, Count, BooleanField, Case, Value, When
-from django.conf import settings
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-
-from wagtail.models import Page, Orderable, PageManager
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
-
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.models import ClusterableModel
-
-from wagtailautocomplete.edit_handlers import AutocompletePanel
-
+import random
 from datetime import date
 
-from home.models import BasePage, CustomImage, Workshop
-from payments.pantheon import create_ident
-
-from behaviours.models import Timestampable
-
 import sentry_sdk
-
-import random
+from behaviours.models import Timestampable
+from django import forms
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import models
+from django.db.models import BooleanField, Case, Count, F, Q, Value, When
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from home.models import BasePage, CustomImage, Workshop
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.models import ClusterableModel
+from payments.pantheon import create_ident
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable, Page, PageManager
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 
 def add_see_more_fields(context):
@@ -241,6 +235,53 @@ class EventPage(BasePage):
         verbose_name=_("Zahtevan plan"),
         help_text=_("Za prijavo na dogodek mora uporabnik imeti aktiven ta plan"),
     )
+    additional_registration_questions = StreamField(
+        [
+            (
+                "additional_question",
+                blocks.StructBlock(
+                    [
+                        (
+                            "type",
+                            blocks.ChoiceBlock(
+                                choices=[
+                                    ("text", _("Kratko besedilo (ena vrstica)")),
+                                    ("textarea", _("Besedilo (več vrstic)")),
+                                    ("radio", _("Izbirno vprašanje (en odgovor)")),
+                                    (
+                                        "checkbox",
+                                        _("Izbirno vprašanje (več odgovorov)"),
+                                    ),
+                                    # TODO: add file upload
+                                ],
+                                label=_("Tip vprašanja"),
+                            ),
+                        ),
+                        (
+                            "question",
+                            blocks.CharBlock(
+                                max_length=200,
+                                label=_("Besedilo vprašanja"),
+                            ),
+                        ),
+                        (
+                            "required",
+                            blocks.BooleanBlock(
+                                default=False,
+                                label=_("Vprašanje je obvezno"),
+                                required=False,
+                            ),
+                        ),
+                    ],
+                    label=_("Dodatno vprašanje"),
+                ),
+            )
+        ],
+        default=[],
+        blank=True,
+        null=True,
+        verbose_name=_("Dodatna vprašanja ob prijavi"),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -266,6 +307,7 @@ class EventPage(BasePage):
         FieldPanel("allowed_extra_people"),
         FieldPanel("just_for_members"),
         FieldPanel("required_plan"),
+        FieldPanel("additional_registration_questions"),
     ]
 
     parent_page_types = ["events.EventListPage"]
@@ -408,7 +450,9 @@ class EventListPage(BasePage):
         )
         all_labs = LabPage.objects.filter(id__in=all_lab_ids).order_by("title")
 
-        lab_slugs = list(filter(bool, map(str.strip, request.GET.get("labs", "").split(","))))
+        lab_slugs = list(
+            filter(bool, map(str.strip, request.GET.get("labs", "").split(",")))
+        )
         chosen_labs = all_labs.filter(slug__in=lab_slugs)
         if chosen_labs:
             all_event_page_objects = all_event_page_objects.filter(labs__in=chosen_labs)
