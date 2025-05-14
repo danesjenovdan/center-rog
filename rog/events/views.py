@@ -420,8 +420,8 @@ class EventRegistrationAdditionalView(View):
             event_registration = form.save(commit=False)
 
             # save additional questions answers
-            # NOTE: be VERY careful with this, because if you save the wrong data to database
-            # it can break querysets and you will have to fix it manually in the database
+            # NOTE: [WARNING] BE VERY CAREFUL WITH THIS, BECAUSE IF YOU SAVE THE WRONG DATA TO
+            # DATABASE IT CAN BREAK QUERYSETS AND YOU WILL HAVE TO FIX IT MANUALLY IN THE DATABASE
             event_registration.additional_registration_questions_answers = StreamValue(
                 event_registration.additional_registration_questions_answers.stream_block,
                 [
