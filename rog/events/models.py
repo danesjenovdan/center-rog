@@ -506,6 +506,36 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     )
     disabilities = models.TextField(verbose_name=_("Oviranosti (naštej)"), blank=True)
     allergies = models.TextField(verbose_name=_("Alergije (naštej)"), blank=True)
+    additional_registration_questions_answers = StreamField(
+        [
+            (
+                "additional_question_answer",
+                blocks.StructBlock(
+                    [
+                        (
+                            "question",
+                            blocks.CharBlock(
+                                label=_("Vprašanje"),
+                                required=False,
+                            ),
+                        ),
+                        (
+                            "answer",
+                            blocks.TextBlock(
+                                label=_("Odgovor"),
+                                required=False,
+                            ),
+                        ),
+                    ],
+                    label=_("Odgovor na dodatno vprašanje"),
+                ),
+            )
+        ],
+        default=[],
+        blank=True,
+        null=True,
+        verbose_name=_("Odgovori na dodatna vprašanja"),
+    )
     agreement_responsibility = models.BooleanField(
         verbose_name=_("Strinjam se z zavrnitvijo odgovornosti"), default=False
     )
@@ -539,6 +569,7 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         FieldPanel("phone"),
         FieldPanel("disabilities"),
         FieldPanel("allergies"),
+        FieldPanel("additional_registration_questions_answers"),
         FieldPanel("agreement_responsibility"),
         FieldPanel("allow_photos"),
         FieldPanel("registration_finished"),
