@@ -15,7 +15,7 @@
     {% csrf_token %}
 
     {% for field in form %}
-    <div class="form-field-wrapper {% if field.errors %}form-field-error{% endif %}">
+    <div class="form-field-wrapper widget-{{ field.widget_type }}{% if field.errors %} form-field-error{% endif %}">
         {{ field.label_tag }} {{ field }}
         {% if field.errors %}
         {{ field.errors }}
