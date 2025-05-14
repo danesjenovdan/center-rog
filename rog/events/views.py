@@ -324,10 +324,15 @@ class EventRegistrationAdditionalView(View):
         # get additional questions values from event
         additional_questions_values = []
         if event.additional_registration_questions:
-            additional_questions_values = [
-                item["value"]
-                for item in event.additional_registration_questions.raw_data
-            ]
+            for item in event.additional_registration_questions.raw_data:
+                additional_questions_values.append(
+                    {
+                        **item["value"],
+                        "choices": [
+                            c["value"] for c in item["value"].get("choices", [])
+                        ],
+                    }
+                )
 
         # update additional questions values with initial answers
         for item in additional_questions_values:

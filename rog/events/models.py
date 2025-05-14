@@ -249,7 +249,7 @@ class EventPage(BasePage):
                                     ("textarea", _("Besedilo (več vrstic)")),
                                     ("radio", _("Izbirno vprašanje (en odgovor)")),
                                     (
-                                        "checkbox",
+                                        "checkboxes",
                                         _("Izbirno vprašanje (več odgovorov)"),
                                     ),
                                     # TODO: add file upload
@@ -270,6 +270,18 @@ class EventPage(BasePage):
                                 default=False,
                                 label=_("Vprašanje je obvezno"),
                                 required=False,
+                            ),
+                        ),
+                        (
+                            "choices",
+                            blocks.ListBlock(
+                                blocks.CharBlock(
+                                    max_length=200,
+                                    label=_("Opcija"),
+                                ),
+                                label=_("Opcije za izbirno vprašanje"),
+                                required=False,
+                                default=[],
                             ),
                         ),
                     ],

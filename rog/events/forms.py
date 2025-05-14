@@ -48,6 +48,24 @@ class EventRegisterAdditionalForm(forms.ModelForm):
                 )
                 if item.get("initial", None):
                     self.initial[field_name] = item["initial"]
+            elif item["type"] == "radio":
+                self.fields[field_name] = forms.ChoiceField(
+                    label=item["question"],
+                    required=item["required"],
+                    choices=[(x, x) for x in item["choices"]],
+                    widget=forms.RadioSelect(),
+                )
+                if item.get("initial", None):
+                    self.initial[field_name] = item["initial"]
+            elif item["type"] == "checkboxes":
+                self.fields[field_name] = forms.MultipleChoiceField(
+                    label=item["question"],
+                    required=item["required"],
+                    choices=[(x, x) for x in item["choices"]],
+                    widget=forms.CheckboxSelectMultiple(),
+                )
+                if item.get("initial", None):
+                    self.initial[field_name] = item["initial"]
 
     def get_additional_questions_answers(self):
         for name, value in self.cleaned_data.items():
