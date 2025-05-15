@@ -294,6 +294,17 @@ class EventPage(BasePage):
         null=True,
         verbose_name=_("Dodatna vprašanja ob prijavi"),
     )
+    copy_additional_registration_questions_from = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Kopiraj dodatna vprašanja iz drugega dogodka"),
+        help_text=_(
+            "Če izberete dogodek in shranite se bodo vprašanja skopirala iz drugega dogodka in zamenjala obstoječa vprašanja tukaj."
+        ),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -320,11 +331,22 @@ class EventPage(BasePage):
         FieldPanel("just_for_members"),
         FieldPanel("required_plan"),
         FieldPanel("additional_registration_questions"),
+        FieldPanel("copy_additional_registration_questions_from"),
     ]
 
     parent_page_types = ["events.EventListPage"]
 
     objects = EventPageManager()
+
+    def save_revision(self, *args, **kwargs):
+        # copy additional questions from another event and clear the field
+        if other := self.copy_additional_registration_questions_from:
+            self.additional_registration_questions = (
+                other.additional_registration_questions
+            )
+            self.copy_additional_registration_questions_from = None
+
+        return super().save_revision(*args, **kwargs)
 
     def can_register(self, user):
         if self.just_for_members:
