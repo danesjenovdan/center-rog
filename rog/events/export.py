@@ -86,6 +86,13 @@ class ExportEventRegistrationView(IndexView):
                     ),
                 }
             )
+
+            last_entry = data[-1]
+            for item in registration.additional_registration_questions_answers:
+                q = item.value.get("question", "")
+                a = item.value.get("answer", "")
+                last_entry[q] = a
+
             for child in registration.event_registration_children.all():
                 data.append(
                     {
