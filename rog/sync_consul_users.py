@@ -66,7 +66,7 @@ consul = set([r[0] for r in existing_users])
 difference = rog.difference(consul)
 
 if difference:
-    for row in results:
+    for row in difference:
         username = f"{get_alphanum_from_string(row[0])}_{get_alphanum_from_string(row[1])}_{row[2].split('-')[0]}"
         document_number = row[2]
         # Define your query
