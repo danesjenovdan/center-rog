@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rog-sync-consul-users
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          containers:
+            - name: rog-sync-consul-users
+              image: rog
+              command:
+                - python
+                - sync_consul_users.py
+              envFrom:
+                - secretRef:
+                    name: rog-credentials
+          restartPolicy: Never
