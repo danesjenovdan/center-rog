@@ -97,14 +97,11 @@
                     </p>
                     <form id="logout-form" method="post" action="{% url 'logout' %}">
                     <p class="mb-1">
-                        <a class="link" href="{% url 'logout' %}">
-
                         {% csrf_token %}
-                        <a class="link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
+                        <a class="link" href="javascript:;" onclick="document.getElementById('logout-form').submit();">
                             <span class="link-text">{% translate 'odjava' %}</span>
                             <span class="link-icon"></span>
                         </a>
-
                     </p>
                     </form>
                 </div>
