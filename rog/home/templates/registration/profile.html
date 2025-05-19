@@ -89,21 +89,28 @@
                             <span class="link-icon"></span>
                         </a>
                     </p>
+                    <p class="mb-1">
+                        <a class="link" href="{% url 'profile-search' %}">
+                            <span class="link-text">{% translate 'drugi člani' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
                     <form id="logout-form" method="post" action="{% url 'logout' %}">
                     <p class="mb-1">
-                    
+                        <a class="link" href="{% url 'logout' %}">
+
                         {% csrf_token %}
                         <a class="link" href="javascript:{}" onclick="document.getElementById('logout-form').submit();">
                             <span class="link-text">{% translate 'odjava' %}</span>
                             <span class="link-icon"></span>
                         </a>
-                    
+
                     </p>
                     </form>
                 </div>
                 <div class="d-flex align-items-end justify-content-between">
                     <div>
-                        <a href="{% url 'profile-search' %}" class="secondary-button button-medium">{% translate 'drugi člani' %}</a>
+                        <a href="https://pp.center-rog.si/rog_login/{{ user.uuid }}" target="_blank" class="secondary-button button-medium">{% translate 'participativni proračun' %}</a>
                     </div>
                 </div>
             </section>
