@@ -105,11 +105,13 @@
                     </p>
                     </form>
                 </div>
+                {% if user.membership %}
                 <div class="d-flex align-items-end justify-content-between">
                     <div>
                         <a href="https://pp.center-rog.si/rog_login/{{ user.uuid }}" target="_blank" class="secondary-button button-medium">{% translate 'participativni proračun' %}</a>
                     </div>
                 </div>
+                {% endif %}
             </section>
         </div>
     </div>
