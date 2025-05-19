@@ -252,7 +252,17 @@ class User(AbstractUser, Timestampable):
     @property
     def get_last_active_subscription_payment_plan(self):
         return self.payments.all().get_last_active_subscription_payment_plan()
-    
+
+    def has_active_valid_membership(self):
+        now = timezone.now()
+        memberships = self.memberships.filter(
+            Q(valid_to__gte=now) | Q(valid_to=None),
+            valid_from__lte=now,
+            active=True,
+            type__plan__price__gt=0,
+        )
+        return memberships.exists()
+
     def has_active_plan(self, plan):
         return self.payments.all().has_active_plan(plan)
 
