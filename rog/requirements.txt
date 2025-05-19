@@ -1,12 +1,11 @@
 anyascii==0.3.2
-asgiref==3.7.2
+asgiref==3.8.1
 beautifulsoup4==4.11.2
-boto3==1.28.44
-botocore==1.31.44
+boto3==1.35.98
 certifi==2023.7.22
 charset-normalizer==3.2.0
 defusedxml==0.7.1
-Django==4.2.15
+Django==5.2.1
 django-admin-rangefilter==0.13.2
 django-cors-headers==4.1.0
 django-debug-toolbar==5.0.1
@@ -15,7 +14,7 @@ django-jsonify==0.3.0
 django-modelcluster==6.2.1
 django-modeltranslation==0.18.11
 django-permissionedforms==0.1
-django-storages==1.14
+django-storages==1.14.6
 django-taggit==5.0.0
 django-treebeard==4.7
 django-wkhtmltopdf==3.4.0
@@ -35,7 +34,6 @@ psycopg2==2.9.5
 python-dateutil==2.8.2
 pytz==2023.3.post1
 requests==2.28.2
-s3transfer==0.6.2
 sentry-sdk==2.20.0
 six==1.16.0
 soupsieve==2.5
@@ -43,12 +41,12 @@ sqlparse==0.4.4
 telepath==0.3.1
 typing_extensions==4.7.1
 urllib3==1.26.16
-wagtail==6.2
+wagtail==6.3.4
 wagtail-autocomplete==0.11.0
 wagtail-modeladmin==2.0.0
 wagtail-modeltranslation==0.15.0
 wagtail-rangefilter==0.2.1
-wagtailmedia==0.14.2
+wagtailmedia==0.15.2
 Wand==0.6.11
 webencodings==0.5.1
 Willow==1.8.0
