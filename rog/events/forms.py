@@ -1,9 +1,9 @@
+import ast
+
 from django import forms
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
+from django.utils.translation import gettext_lazy as _
 from events.models import EventRegistration, EventRegistrationChild
-
 from home.forms import SplitInputDateWidget
 
 
@@ -28,6 +28,73 @@ class EventRegisterPersonForm(forms.ModelForm):
 
 
 class EventRegisterAdditionalForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        extra_questions_values = kwargs.pop("extra_questions_values")
+        super().__init__(*args, **kwargs)
+
+        for i, item in enumerate(extra_questions_values):
+            field_name = f"extra_question_{i}"
+            if item["type"] == "text":
+                self.fields[field_name] = forms.CharField(
+                    label=item["question"],
+                    required=item["required"],
+                    widget=forms.TextInput(),
+                )
+                if item.get("initial", None):
+                    self.initial[field_name] = item["initial"]
+            elif item["type"] == "textarea":
+                self.fields[field_name] = forms.CharField(
+                    label=item["question"],
+                    required=item["required"],
+                    widget=forms.Textarea(),
+                )
+                if item.get("initial", None):
+                    self.initial[field_name] = item["initial"]
+            elif item["type"] == "radio":
+                self.fields[field_name] = forms.ChoiceField(
+                    label=item["question"],
+                    required=item["required"],
+                    choices=[(x, x) for x in item["choices"]],
+                    widget=forms.RadioSelect(),
+                )
+                if item.get("initial", None):
+                    initial_value = self._eval_initial_list(item["initial"])
+                    self.initial[field_name] = initial_value
+            elif item["type"] == "checkboxes":
+                self.fields[field_name] = forms.MultipleChoiceField(
+                    label=item["question"],
+                    required=item["required"],
+                    choices=[(x, x) for x in item["choices"]],
+                    widget=forms.CheckboxSelectMultiple(),
+                )
+                if item.get("initial", None):
+                    initial_value = self._eval_initial_list(item["initial"])
+                    self.initial[field_name] = initial_value
+            elif item["type"] == "file":
+                self.fields[field_name] = forms.FileField(
+                    label=item["question"],
+                    required=item["required"],
+                    widget=forms.ClearableFileInput(),
+                )
+                if item.get("initial", None):
+                    self.initial[field_name] = item["initial"]
+
+    def _eval_initial_list(self, string_value):
+        if string_value:
+            if string_value.startswith("[") and string_value.endswith("]"):
+                try:
+                    value = ast.literal_eval(string_value)
+                    if isinstance(value, list):
+                        return value
+                except (ValueError, SyntaxError):
+                    pass
+        return string_value
+
+    def get_extra_questions_answers(self):
+        for name, value in self.cleaned_data.items():
+            if name.startswith("extra_question_"):
+                yield (self.fields[name].label, value)
+
     class Meta:
         model = EventRegistration
         fields = ["disabilities", "allergies"]
@@ -41,7 +108,9 @@ class EventRegisterInformationForm(forms.ModelForm):
     )
 
     allow_photos = forms.BooleanField(
-        label=_("Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."),
+        label=_(
+            "Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."
+        ),
         label_suffix="",
         required=False,
     )
