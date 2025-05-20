@@ -264,7 +264,7 @@ body.safari {
     label {
         @include font-size-xs();
         display: block;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
     }
 
     input, textarea, select {
@@ -3550,6 +3550,22 @@ section.image-embed {
         align-items: center;
 
         input[type="radio"] {
+            @include rog-check-style();
+        }
+    }
+}
+
+.widget-radioselect,
+.widget-checkboxselectmultiple {
+    div > label {
+        position: relative;
+        padding-left: 30px;
+        min-height: 23px;
+        display: flex;
+        align-items: center;
+
+        input[type="radio"],
+        input[type="checkbox"] {
             @include rog-check-style();
         }
     }

@@ -1,26 +1,24 @@
-from django.shortcuts import render, redirect
-from django.views import View
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.utils.translation import gettext_lazy as _
-from django.forms import modelformset_factory
-from django.http import HttpResponse
-from django.db.models import OuterRef, Subquery, Count, F, Q
-
 from datetime import datetime
 
+from django.contrib.auth.decorators import login_required
+from django.core.files import File
+from django.forms import modelformset_factory
+from django.shortcuts import redirect, render
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext_lazy as _
+from django.views import View
+from events.forms import (
+    EventRegisterAdditionalForm,
+    EventRegisterInformationForm,
+    EventRegisterPersonForm,
+    EventRegistrationChildForm,
+    EventRegistrationExtraPersonForm,
+)
 from events.models import (
     EventPage,
     EventRegistration,
     EventRegistrationChild,
     EventRegistrationExtraPerson,
-)
-from events.forms import (
-    EventRegisterPersonForm,
-    EventRegisterAdditionalForm,
-    EventRegisterInformationForm,
-    EventRegistrationChildForm,
-    EventRegistrationExtraPersonForm,
 )
 
 
@@ -71,7 +69,7 @@ class EventRegistrationView(View):
             event = EventPage.objects.get(slug=event)
         except:
             return redirect("profile-my")
-        
+
         # check if user has permission to register to this event
         if event.can_register(current_user) is False:
             return redirect(event.get_url())
@@ -84,8 +82,10 @@ class EventRegistrationView(View):
             event_registration_children = EventRegistrationChild.objects.filter(
                 event_registration=event_registration
             )
-            event_registration_extra_people = EventRegistrationExtraPerson.objects.filter(
-                event_registration=event_registration
+            event_registration_extra_people = (
+                EventRegistrationExtraPerson.objects.filter(
+                    event_registration=event_registration
+                )
             )
             if event_registration.registration_finished:
                 return redirect(event.get_url())
@@ -188,15 +188,19 @@ class EventRegistrationView(View):
                         extra_people = extra_people_formset.save()
 
                         # recreate formset with new saved data
-                        event_registration_extra_people = EventRegistrationExtraPerson.objects.filter(
-                            event_registration=event_registration
+                        event_registration_extra_people = (
+                            EventRegistrationExtraPerson.objects.filter(
+                                event_registration=event_registration
+                            )
                         )
                         extra_people_formset = self.ExtraPeopleFormset(
                             queryset=event_registration_extra_people
                         )
 
                         # is there enough free places
-                        registered_extra_people = event_registration_extra_people.count()
+                        registered_extra_people = (
+                            event_registration_extra_people.count()
+                        )
                         free_places = event.get_free_places()
                         if (registered_extra_people + 1) > free_places:
                             return render(
@@ -305,6 +309,35 @@ class EventRegistrationView(View):
 
 @method_decorator(login_required, name="dispatch")
 class EventRegistrationAdditionalView(View):
+    def _get_extra_questions_values(self, event, event_registration):
+        # get answers from event registration streamfield if it exists
+        extra_questions_answers = {}
+        if event_registration:
+            for item in event_registration.extra_registration_question_answers.all():
+                if item.answer_file:
+                    extra_questions_answers[item.question] = item.answer_file
+                else:
+                    extra_questions_answers[item.question] = item.answer
+
+        # get extra questions values from event
+        extra_questions_values = []
+        for item in event.extra_registration_questions.all():
+            extra_questions_values.append(
+                {
+                    "type": item.type,
+                    "question": item.question,
+                    "required": item.required,
+                    "choices": [c["value"] for c in item.choices.raw_data],
+                    "initial": (
+                        None
+                        if item.question not in extra_questions_answers
+                        else extra_questions_answers[item.question]
+                    ),
+                }
+            )
+
+        return extra_questions_values
+
     def get(self, request, event):
         # user
         current_user = request.user
@@ -323,11 +356,20 @@ class EventRegistrationAdditionalView(View):
             user=current_user, event=event
         ).first()
 
+        # get extra (dynamic) questions from event
+        extra_questions_values = self._get_extra_questions_values(
+            event, event_registration
+        )
+
         if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
-                form = EventRegisterAdditionalForm(instance=event_registration)
+                form = EventRegisterAdditionalForm(
+                    instance=event_registration,
+                    extra_questions_values=extra_questions_values,
+                    use_required_attribute=False,
+                )
         else:
             return redirect("event-registration", event=event.slug)
 
@@ -355,23 +397,43 @@ class EventRegistrationAdditionalView(View):
             user=current_user, event=event
         ).first()
 
+        # get extra (dynamic) questions from event
+        extra_questions_values = self._get_extra_questions_values(
+            event, event_registration
+        )
+
         if event_registration:
             if event_registration.registration_finished:
                 return redirect(event.get_url())
             else:
                 form = EventRegisterAdditionalForm(
-                    request.POST, instance=event_registration
+                    request.POST,
+                    request.FILES,
+                    instance=event_registration,
+                    extra_questions_values=extra_questions_values,
+                    use_required_attribute=False,
                 )
         else:
             return redirect("event-registration", event=event.slug)
 
         if form.is_valid():
-            form.save()
-        else:
-            print(
-                "Error! Na drugem koraku form ni valid, ko bi na vsak način moral bit, ker polja niso obvezna."
-            )
+            event_registration = form.save(commit=False)
 
+            # clear old extra answers
+            event_registration.extra_registration_question_answers.all().delete()
+            # save new extra answers
+            for item in form.get_extra_questions_answers():
+                if isinstance(item[1], File):
+                    event_registration.extra_registration_question_answers.create(
+                        question=item[0], answer_file=item[1]
+                    )
+                else:
+                    event_registration.extra_registration_question_answers.create(
+                        question=item[0], answer=item[1]
+                    )
+
+            event_registration.save()
+        else:
             return render(
                 request,
                 "events/event_registration_2.html",
