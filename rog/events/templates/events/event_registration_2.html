@@ -11,22 +11,17 @@
 
 {% block form_block %}
 
-<form action="{% url 'event-registration-additional' event.slug %}" autocomplete="off" method="post">
+<form action="{% url 'event-registration-additional' event.slug %}" enctype="multipart/form-data" autocomplete="off" method="post">
     {% csrf_token %}
 
-    <div class="form-field-wrapper {% if form.disabilities.errors %}form-field-error{% endif %}">
-        {{ form.disabilities.label_tag }} {{ form.disabilities }}
-        {% if form.disabilities.errors %}
-        {{ form.disabilities.errors }}
+    {% for field in form %}
+    <div class="form-field-wrapper widget-{{ field.widget_type }}{% if field.errors %} form-field-error{% endif %}">
+        {{ field.label_tag }} {{ field }}
+        {% if field.errors %}
+        {{ field.errors }}
         {% endif %}
     </div>
-
-    <div class="form-field-wrapper {% if form.allergies.errors %}form-field-error{% endif %}">
-        {{ form.allergies.label_tag }} {{ form.allergies }}
-        {% if form.allergies.errors %}
-        {{ form.allergies.errors }}
-        {% endif %}
-    </div>
+    {% endfor %}
 
     <div class="d-flex justify-content-end my-4">
         <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>

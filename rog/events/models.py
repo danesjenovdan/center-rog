@@ -1,30 +1,24 @@
-from django.db import models
-from django import forms
-from django.db.models import Q, F, Count, BooleanField, Case, Value, When
-from django.conf import settings
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.utils.translation import gettext_lazy as _
-from django.utils.text import slugify
-
-from wagtail.models import Page, Orderable, PageManager
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
-
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from modelcluster.models import ClusterableModel
-
-from wagtailautocomplete.edit_handlers import AutocompletePanel
-
+import random
 from datetime import date
 
-from home.models import BasePage, CustomImage, Workshop
-from payments.pantheon import create_ident
-
-from behaviours.models import Timestampable
-
 import sentry_sdk
-
-import random
+from behaviours.models import Timestampable
+from django import forms
+from django.conf import settings
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import models
+from django.db.models import BooleanField, Case, Count, F, Q, Value, When
+from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
+from home.models import BasePage, CustomImage, Workshop
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.models import ClusterableModel
+from payments.pantheon import create_ident
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable, Page, PageManager
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 
 def add_see_more_fields(context):
@@ -155,6 +149,65 @@ class EventPageManager(PageManager):
         return queryset
 
 
+class QuestionType(models.TextChoices):
+    TEXT = "text", _("Kratko besedilo (ena vrstica)")
+    TEXTAREA = "textarea", _("Besedilo (več vrstic)")
+    RADIO = "radio", _("Izbirno vprašanje (en odgovor)")
+    CHECKBOXES = "checkboxes", _("Izbirno vprašanje (več odgovorov)")
+    FILE = "file", _("Datoteka")
+
+
+class EventExtraRegistrationQuestion(Orderable):
+    event = ParentalKey(
+        "events.EventPage",
+        on_delete=models.CASCADE,
+        related_name="extra_registration_questions",
+    )
+    type = models.CharField(
+        max_length=16,
+        choices=QuestionType.choices,
+        default=QuestionType.TEXT,
+        verbose_name=_("Tip vprašanja"),
+    )
+    question = models.CharField(
+        max_length=200,
+        verbose_name=_("Besedilo vprašanja"),
+    )
+    required = models.BooleanField(
+        default=False,
+        verbose_name=_("Vprašanje je obvezno"),
+    )
+    choices = StreamField(
+        [
+            (
+                "choice",
+                blocks.CharBlock(
+                    max_length=200,
+                    label=_("Opcija"),
+                ),
+            ),
+        ],
+        blank=True,
+        null=True,
+        verbose_name=_("Opcije za izbirno vprašanje"),
+        help_text=_("Izpolnite samo, če je tip vprašanja izbirno vprašanje"),
+    )
+
+    panels = [
+        FieldPanel("type"),
+        FieldPanel("question"),
+        FieldPanel("required"),
+        FieldPanel("choices"),
+    ]
+
+    def __str__(self):
+        return f"{self.question} ({self.type})"
+
+    class Meta:
+        verbose_name = _("Dodatno vprašanje ob prijavi na dogodek")
+        verbose_name_plural = _("Dodatna vprašanja ob prijavi na dogodek")
+
+
 class EventPage(BasePage):
     hero_image = models.ForeignKey(
         CustomImage,
@@ -241,6 +294,17 @@ class EventPage(BasePage):
         verbose_name=_("Zahtevan plan"),
         help_text=_("Za prijavo na dogodek mora uporabnik imeti aktiven ta plan"),
     )
+    copy_extra_registration_questions_from = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name=_("Kopiraj dodatna vprašanja iz drugega dogodka"),
+        help_text=_(
+            "Če izberete dogodek in shranite se bodo vprašanja skopirala iz drugega dogodka in se dodala na seznam dodatnih vprašanj."
+        ),
+    )
 
     content_panels = Page.content_panels + [
         FieldPanel("hero_image"),
@@ -266,11 +330,33 @@ class EventPage(BasePage):
         FieldPanel("allowed_extra_people"),
         FieldPanel("just_for_members"),
         FieldPanel("required_plan"),
+        InlinePanel(
+            "extra_registration_questions",
+            label=_("Dodatna vprašanja ob prijavi na dogodek"),
+        ),
+        FieldPanel("copy_extra_registration_questions_from"),
     ]
 
     parent_page_types = ["events.EventListPage"]
 
     objects = EventPageManager()
+
+    def save_revision(self, *args, **kwargs):
+        # copy extra questions from another event and clear the field
+        if other := self.copy_extra_registration_questions_from:
+            # copy questions from another event
+            for question in other.extra_registration_questions.all():
+                self.extra_registration_questions.create(
+                    event=self,
+                    type=question.type,
+                    question=question.question,
+                    required=question.required,
+                    choices=question.choices,
+                )
+            # clear the field
+            self.copy_extra_registration_questions_from = None
+
+        return super().save_revision(*args, **kwargs)
 
     def can_register(self, user):
         if self.just_for_members:
@@ -408,7 +494,9 @@ class EventListPage(BasePage):
         )
         all_labs = LabPage.objects.filter(id__in=all_lab_ids).order_by("title")
 
-        lab_slugs = list(filter(bool, map(str.strip, request.GET.get("labs", "").split(","))))
+        lab_slugs = list(
+            filter(bool, map(str.strip, request.GET.get("labs", "").split(",")))
+        )
         chosen_labs = all_labs.filter(slug__in=lab_slugs)
         if chosen_labs:
             all_event_page_objects = all_event_page_objects.filter(labs__in=chosen_labs)
@@ -440,6 +528,42 @@ class EventListPage(BasePage):
     class Meta:
         verbose_name = _("Program")
         verbose_name_plural = _("Programi")
+
+
+class EventExtraRegistrationQuestionAnswer(Orderable):
+    event_registration = ParentalKey(
+        "events.EventRegistration",
+        on_delete=models.CASCADE,
+        related_name="extra_registration_question_answers",
+    )
+    question = models.CharField(
+        max_length=200,
+        verbose_name=_("Besedilo vprašanja"),
+    )
+    answer = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name=_("Odgovor"),
+    )
+    answer_file = models.FileField(
+        upload_to="extra_registration_question_files/",
+        blank=True,
+        null=True,
+        verbose_name=_("Datoteka"),
+    )
+
+    panels = [
+        FieldPanel("question"),
+        FieldPanel("answer"),
+        FieldPanel("answer_file"),
+    ]
+
+    def __str__(self):
+        return f"{self.question}"
+
+    class Meta:
+        verbose_name = _("Odgovor na dodatno vprašanje ob prijavi na dogodek")
+        verbose_name_plural = _("Odgovori na dodatna vprašanja ob prijavi na dogodek")
 
 
 # prijavnica (povezava med uporabnikom in dogodkom)
@@ -495,6 +619,10 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         FieldPanel("phone"),
         FieldPanel("disabilities"),
         FieldPanel("allergies"),
+        InlinePanel(
+            "extra_registration_question_answers",
+            label=_("Odgovori na dodatna vprašanja ob prijavi na dogodek"),
+        ),
         FieldPanel("agreement_responsibility"),
         FieldPanel("allow_photos"),
         FieldPanel("registration_finished"),
