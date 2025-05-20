@@ -22,6 +22,10 @@ from .forms import PromoCodeForm
 from .utils import get_invoice_number, get_free_invoice_number, finish_payment
 from events.models import EventRegistration, EventPage
 
+from users.prima_api import PrimaApi
+
+prima_api = PrimaApi()
+
 # Create your views here.
 
 
@@ -504,6 +508,32 @@ class PaymentSuccessXML(views.APIView):
                 payment.save()
 
         return Response({"status": "OK"})
+
+
+class ActivatePackage(views.APIView):
+    def get(self, request, payment_plan_id):
+        payment_plan = get_object_or_404(PaymentPlanEvent, id=payment_plan_id)
+        user = request.user
+        
+        if payment_plan.payment.user != user:
+            # user is not owner of payment
+            return redirect("profile-my")
+        
+        last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
+        valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+        valid_to = valid_from + timedelta(days=payment_plan.plan.duration)
+        payment_plan.valid_to = valid_to
+        payment_plan.valid_from = valid_from
+        payment_plan.save()
+
+        # always set uporabnina dates on prima from now since there could be an active plan already
+        valid_from_prima = timezone.now()
+        valid_to_prima = valid_to
+        valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
+        valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
+        prima_api.setUporabninaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
+
+        return redirect("profile-my")
 
 
 class PaymentSuccess(views.APIView):

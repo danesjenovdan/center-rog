@@ -249,6 +249,11 @@ class PaymentPlanEvent(models.Model):
         related_name="payment_plans",
         help_text="The promo code used for this payment plan",
     )
+    valid_from = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When subscription starts",
+    )
     valid_to = models.DateTimeField(
         null=True,
         blank=True,
