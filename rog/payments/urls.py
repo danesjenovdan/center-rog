@@ -9,6 +9,7 @@ from .views import (
     PaymentInvoice,
     PaymentPreview,
     PaymentInvoicePDF,
+    ActivatePackage,
 )
 
 urlpatterns = [
@@ -21,4 +22,5 @@ urlpatterns = [
     path('zgodovina/', PaymentHistory.as_view(), name='history'),
     path('racun/<int:payment_id>/', PaymentInvoice.as_view(), name='invoice'),
     path('racun/<int:payment_id>/rog-racun.pdf', PaymentInvoicePDF.as_view(), name='invoice-pdf'),
+    path('aktiviraj-paket/<int:payment_plan_id>/', ActivatePackage.as_view(), name='activate-package'),
 ]

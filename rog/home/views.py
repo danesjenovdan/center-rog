@@ -70,6 +70,7 @@ class MyProfileView(TemplateView):
             self.template_name,
             {
                 "user": current_user,
+                "unused_subscriptions": current_user.get_unused_subscriptions(),
                 "ulagtoken": get_token_for_user(current_user),
                 "obnovitev_clanarine": obnovitev_clanarine,
                 "location_id": location_id,
@@ -180,7 +181,7 @@ class PurchasePlanView(TemplateView):
 class PurchaseMembershipView(TemplateView):
     template_name = "registration/user_purchase_membership.html"
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, extend_membership, *args, **kwargs):
         current_user = request.user
 
         if not current_user.email_confirmed:
@@ -190,14 +191,23 @@ class PurchaseMembershipView(TemplateView):
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=None)
         )
+        if extend_membership:
+            membership_types = membership_types.filter(
+                plan__price__gt=0
+            )
 
         return render(
             request,
             self.template_name,
-            {"user": current_user, "form": form, "membership_types": membership_types},
+            {
+                "user": current_user,
+                "form": form,
+                "membership_types": membership_types,
+                "extend_membership": extend_membership,
+            },
         )
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         user = request.user
 
         if not user.email_confirmed:
