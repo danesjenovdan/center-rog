@@ -24,6 +24,9 @@ from events.models import EventRegistration, EventPage
 
 from users.prima_api import PrimaApi
 
+from sentry_sdk import capture_message, push_scope
+
+
 prima_api = PrimaApi()
 
 # Create your views here.
@@ -41,6 +44,27 @@ class PaymentPreview(views.APIView):
 
         if plan_id:
             plan = Plan.objects.filter(id=plan_id).first()
+
+            if plan.payment_item_type == PaymentItemType.UPORABNINA:
+                # check if user can buy subscription. Sum of all active subscriptions
+                # must be less than 2 year
+                last_payment_plan = (
+                    user.payments.get_last_active_subscription_payment_plan()
+                )
+                subscription_valid_to = (
+                    last_payment_plan.valid_to
+                    if last_payment_plan and last_payment_plan.valid_to
+                    else timezone.now()
+                )
+                new_subscription_valid_to = subscription_valid_to + timedelta(days=plan.duration)
+                if new_subscription_valid_to > timezone.now() + relativedelta(years=2):
+                    return render(
+                        request,
+                        "payment_failed.html",
+                        {
+                            "status": _("Seštevek aktivnih in neaktivnih uporabnin ne sme biti večji od 2 let."),
+                        },
+                    )
 
             if plan and user:
                 payment = Payment(
@@ -69,59 +93,6 @@ class PaymentPreview(views.APIView):
                     original_price=plan.price,
                     payment_item_type=plan.payment_item_type,
                 ).save()
-
-                if plan.payment_item_type == PaymentItemType.UPORABNINA:
-                    # if plan is uporabnina add clanarina to payment
-                    membership = user.membership
-
-                    # check if user has active membership for entire duration of new uporabnina
-                    last_payment_plan = (
-                        user.payments.get_last_active_subscription_payment_plan()
-                    )
-                    valid_to = (
-                        last_payment_plan.valid_to
-                        if last_payment_plan and last_payment_plan.valid_to
-                        else timezone.now()
-                    )
-                    new_uporabnina_valid_to = valid_to + timedelta(days=plan.duration)
-                    last_active_membership = user.get_last_active_membership()
-
-                    # add new membership to payment if user has no active membership or if new uporabnina is longer than current membership
-                    if (
-                        not last_active_membership
-                    ) or ((new_uporabnina_valid_to > last_active_membership.valid_to) and not plan.extend_membership):
-                        today = datetime.now()
-                        one_year_from_now = today + timedelta(days=365)
-                        paid_membership_type = MembershipType.objects.filter(
-                            plan__isnull=False
-                        ).first()
-                        membership = Membership(
-                            valid_from=today,
-                            valid_to=one_year_from_now,
-                            type=paid_membership_type,
-                            active=False,
-                            user=user,
-                        )
-                        membership.save()
-
-                        plan = paid_membership_type.plan
-                        price = (
-                            plan.discounted_price
-                            if payment.user_was_eligible_to_discount
-                            else plan.price
-                        )
-                        payment.amount += price
-                        payment.original_amount += plan.price
-                        payment.membership = membership
-                        payment.save()
-                        PaymentPlanEvent(
-                            plan=plan,
-                            payment=payment,
-                            price=price,
-                            original_price=plan.price,
-                            plan_name=plan.name,
-                            payment_item_type=plan.payment_item_type,
-                        ).save()
 
                 promo_code_form = PromoCodeForm({"payment_id": payment.id})
 
@@ -519,12 +490,41 @@ class ActivatePackage(views.APIView):
             # user is not owner of payment
             return redirect("profile-my")
         
+        plan = payment_plan.plan
+
+        # check if user has active membership for entire duration of new subscription
+        last_payment_plan = (
+            user.payments.get_last_active_subscription_payment_plan()
+        )
+        subscription_valid_to = (
+            last_payment_plan.valid_to
+            if last_payment_plan and last_payment_plan.valid_to
+            else timezone.now()
+        )
+        new_subscription_valid_to = subscription_valid_to + timedelta(days=plan.duration)
+        last_active_membership = user.get_last_active_membership()
+        if (not last_active_membership) or (new_subscription_valid_to > last_active_membership.valid_to):
+            return redirect("profile-extend-membership")
+        
         last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
         valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
         valid_to = valid_from + timedelta(days=payment_plan.plan.duration)
         payment_plan.valid_to = valid_to
         payment_plan.valid_from = valid_from
         payment_plan.save()
+
+        if not user.prima_id:
+            data, message = prima_api.createUser(user.email)
+            if data:
+                prima_id = data["UsrID"]
+                user.prima_id = prima_id
+                user.save()
+            else:
+                msg = f"Prima user was not created successfully: {message}"
+                with push_scope() as scope:
+                    scope.user = {"user": user}
+                    scope.set_extra("payment", payment_plan.payment.id)
+                    capture_message(msg, "fatal")
 
         # always set uporabnina dates on prima from now since there could be an active plan already
         valid_from_prima = timezone.now()

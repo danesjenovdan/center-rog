@@ -23,8 +23,11 @@
                 <div class="point active"><span>{% translate 'izbira članarine' %}</span></div>
                 <div class="point"><span>{% translate 'plačilo' %}</span></div>
             </div>
-
-            <h1>{% translate 'Izberi članarino' %}:</h1>
+            {% if extend_membership %}
+                <h1>{% translate 'Za aktivacijo paketa moraš imeti aktivno članarino' %}</h1>
+            {% else %}
+                <h1>{% translate 'Izberi članarino' %}:</h1>
+            {% endif %}
 
             <p>{% translate 'Z letnim članstvom lahko v naslednjem koraku izbereš svoj uporabniški paket ter opravljaš usposabljanja, ki so pogoj za samostojno uporabo naših labov. Če ne želiš biti član ali članica, se lahko prijaviš kot gost.' %}</p>
 
@@ -36,7 +39,7 @@
                 <div class="row justify-content-center radio-square-wrapper">
                     {% for membership_type in membership_types %}
                     <div class="col-12 col-md-6 col-xl-4 my-4">
-                        <input type="radio" name="type" value="{{ membership_type.id }}" required="" id="id_type_{{ membership_type.id }}" class="btn-check">
+                        <input type="radio" name="type" value="{{ membership_type.id }}" required="" id="id_type_{{ membership_type.id }}" class="btn-check" {% if extend_membership %} checked {% endif %}>
                         <label for="id_type_{{ membership_type.id }}" class="radio-square btn">
                             <h4>{{ membership_type.name }}</h4>
                             <p><small class="mb-0">{% translate 'cena' %}</small></p>

@@ -53,7 +53,9 @@ class ActiveAtQuerySet(models.QuerySet):
             payment_plans__valid_to__gte=now,
         )
         if active_payments:
-            return active_payments.latest('successed_at').payment_plans.all().filter(plan__payment_item_type=PaymentItemType.UPORABNINA).last()
+            return active_payments.latest('successed_at').payment_plans.all().filter(
+                plan__payment_item_type=PaymentItemType.UPORABNINA,
+            ).last()
         return None
 
     def get_valid_tokens(self):
