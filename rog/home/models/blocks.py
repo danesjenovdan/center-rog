@@ -196,7 +196,7 @@ class CollageBlock(blocks.StructBlock):
             ),
         ],
         min_num=3,
-        max_num=3,
+        max_num=4,
         label=_("Obvestila"),
     )
     # marketi override

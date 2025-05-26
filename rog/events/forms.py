@@ -32,8 +32,10 @@ class EventRegisterAdditionalForm(forms.ModelForm):
         extra_questions_values = kwargs.pop("extra_questions_values")
         super().__init__(*args, **kwargs)
 
+        field_order = []
         for i, item in enumerate(extra_questions_values):
             field_name = f"extra_question_{i}"
+            field_order.append(field_name)
             if item["type"] == "text":
                 self.fields[field_name] = forms.CharField(
                     label=item["question"],
@@ -78,6 +80,10 @@ class EventRegisterAdditionalForm(forms.ModelForm):
                 )
                 if item.get("initial", None):
                     self.initial[field_name] = item["initial"]
+
+        # order the extra questions fields first (fields missing from field_order,
+        # like the default defined fields will be at the end)
+        self.order_fields(field_order)
 
     def _eval_initial_list(self, string_value):
         if string_value:
