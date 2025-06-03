@@ -114,7 +114,14 @@ urlpatterns = urlpatterns + i18n_patterns(
     path(
         "profil/clanstvo/",
         PurchaseMembershipView.as_view(),
+        kwargs={'extend_membership': False},
         name="profile-purchase-membership",
+    ),
+    path(
+        "profil/clanstvo/podaljsaj/",
+        PurchaseMembershipView.as_view(),
+        kwargs={'extend_membership': True},
+        name="profile-extend-membership",
     ),
     path("profil/<int:id>/", UserProfileView.as_view(), name="profile-user"),
     path("profil/", MyProfileView.as_view(), name="profile-my"),

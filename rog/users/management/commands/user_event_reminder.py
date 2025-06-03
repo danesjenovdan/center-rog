@@ -15,7 +15,7 @@ class Command(BaseCommand):
         events = EventPage.objects.filter(
             start_day__range=(
                 datetime.now().date(),
-                (datetime.now() + timedelta(days=2)).date(),
+                (datetime.now() + timedelta(days=3)).date(),
             ),
             live=True
         )
@@ -29,11 +29,16 @@ class Command(BaseCommand):
                         payment_plan_event
                         and not payment_plan_event.notification_1_sent
                     ):
+                        days_to = (event.start_day - datetime.now().date()).days
                         send_email(
                             event_registration.user.email,
                             "emails/user_event_reminder.html",
                             f"Center Rog – obvestilo prihajajočem dogodku // upcoming event notification: {event.title}",
-                            {"event": event, "name": event_registration.user.first_name},
+                            {
+                                "event": event,
+                                "name": event_registration.user.first_name,
+                                "days_to": days_to
+                            },
                         )
                         payment_plan_event.notification_1_sent = True
                         payment_plan_event.save()

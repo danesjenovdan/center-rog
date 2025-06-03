@@ -6,7 +6,7 @@
         Živijo, {{ name }},
     </p>
     <p>
-        še 2 dni in v Centru Rog se bo v {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} odvil/-a {{ event.title }}.
+        še {{ days_to }} dni in v Centru Rog se bo v {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} odvil/-a {{ event.title }}.
     </p>
     <p>
         Se vidimo v {{ event.start_day }} ob {{ event.start_time }} v Centru Rog.
@@ -32,7 +32,7 @@
         Hi {{ name }},
     </p>
     <p>
-        In 2 days, {{ event.title }} at {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} will take place.
+        In {{ days_to }} days, {{ event.title }} at {% for lab in event.labs.all %} {{ lab.title }} {% endfor %} will take place.
     </p>
     <p>
         See you on {{ event.start_day }} at {{ event.start_time }} in Center Rog.

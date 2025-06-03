@@ -62,9 +62,17 @@
                         {% endif %}
                     </p>
                 </div>
+                {% if unused_subscriptions %}
+                    {% with unused_subscriptions|first as unused_subscription %}
+                    <div>
+                        <a href="{% url 'activate-package' unused_subscription.id %}" class="secondary-button button-medium">{% translate 'aktiviraj paket' %} {{ unused_subscription.plan_name }}</a>
+                    </div>
+                    {% endwith %}
+                {% else %}
                 <div>
                     <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium">{% translate 'izberi paket' %}</a>
                 </div>
+                {% endif %}
             </section>
         </div>
 

@@ -14,10 +14,13 @@
 <div class="container user-profile-container">
 
     {% if status %}
-        {{ status }}
+        <h2>{{ status }}</h2>
     {% else %}
         {% translate 'Napaka pri plačilu.' %}
     {% endif %}
+    <div class="export-button">
+        <a class="secondary-button button-small" href="{% url 'profile-my' %}">{% translate 'Moj profil' %}</a>
+    </div>
 
 </div>
 
