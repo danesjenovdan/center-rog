@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.forms.models import WagtailAdminModelForm
@@ -435,7 +436,11 @@ class PromoCode(Timestampable):
         null=False,
         blank=False,
     )
-    percent_discount = models.IntegerField(null=False, blank=False)
+    percent_discount = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        validators=[MinValueValidator(1), MaxValueValidator(100)]
+    )
     payment_item_type = models.CharField(
         max_length=20,
         choices=PaymentItemType.choices,
