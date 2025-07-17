@@ -1,21 +1,45 @@
 {% extends 'emails/base.html' %}
 {% block body %}
 <p>Živijo, {{ name }},</p>
-<p>dobrodošel_la v Center Rog! Veseli smo, da si se nam pridružil_a in postal_a član_ica Centra Rog. Svojo člansko
-  izkaznico lahko prevzameš v trgovini Made in Rog na Petkovškovem nabrežju.</p>
-<p>Članstvo ti prinaša številne ugodnosti in popuste pri nakupu usposabljanj, vodenih tečajev in delavnic, ki ji
+<p>
+  dobrodošel_la v Center Rog! Veseli smo, da si se nam pridružil_a in postal_a član_ica Centra Rog. Svojo člansko
+  izkaznico lahko prevzameš v trgovini Made in Rog na Petkovškovem nabrežju.
+</p>
+<p>
+  Članstvo ti prinaša številne ugodnosti in popuste pri nakupu usposabljanj, vodenih tečajev in delavnic, ki ji
   organiziramo v Centru Rog ter 10 % popust v vseh gostinskih in trgovinskih lokalih v Centru Rog. Preveri razpisane
-  vodene programe <a href="https://www.center-rog.si/program/">TUKAJ</a>.</p>
-<p>Kot član_ica lahko v svojem profilu kupiš enega od ponujenih uporabniških paketov, kar ti po opravljenem
+  vodene programe <a href="{{ BASE_URL }}/program/">TUKAJ</a>.
+</p>
+<p>
+  Kot član_ica lahko v svojem profilu kupiš enega od ponujenih <a
+    href="{{ BASE_URL }}/paketi-za-samostojno-delo/">uporabniških paketov</a>, kar ti po opravljenem
   usposabljanju omogoča rezervacijo odprtih terminov za samostojno delo v kateremkoli od 9 labov Centra Rog. Preveri
-  razpisane termine usposabljanj <a href=" https://www.center-rog.si/program/?category=usposabljanja">TUKAJ</a>.</p>
-<p>Kako deluje Center Rog preberi <a href="https://www.center-rog.si/novice/center-rog-kako-deluje/">TUKAJ</a>. Vse o
-  članstvu in ugodnostih, ki jih to prinaša pa najdeš <a href="{{ BASE_URL }}/postani-clan/">TUKAJ</a>.</p>
-<p>Za dodatna pojasnila nam lahko pišeš na <a href="mailto:info@center-rog.si">info@center-rog.si</a> ali nas pokličeš
-  na telefonsko številko +386 (0)1 320 56 10.</p>
-<p>Se vidimo v Centru Rog. Veselimo se tvojega obiska!</p>
-<p>Ekipa Centra Rog</p>
-<p>To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav, se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.</p>
+  razpisane termine usposabljanj <a href="{{ BASE_URL }}/program/?category=usposabljanja">TUKAJ</a>.
+</p>
+<p>
+  Kot član_ica si vabljen_a k sodelovanju pri vsakoletnem participativnem proračunu <a
+    href="https://pp.center-rog.si/">participativnem proračunu</a>. Soodločaj o porabi za to namenjenih finančnih
+  sredstev: predlagaj izboljšave in nakupe, glasuj in spremljaj realizacijo izglasovanih predlogov. V svojem profilu
+  najdeš povezavo za sodelovanje (modri pas, desni okvirček).
+</p>
+<p>
+  Kako deluje Center Rog preberi <a href="{{ BASE_URL }}/novice/center-rog-kako-deluje/">TUKAJ</a>. Vse o
+  članstvu in ugodnostih, ki jih to prinaša pa najdeš <a href="{{ BASE_URL }}/postani-clan/">TUKAJ</a>.
+</p>
+<p>
+  Za dodatna pojasnila nam lahko pišeš na <a href="mailto:info@center-rog.si">info@center-rog.si</a> ali nas pokličeš
+  na telefonsko številko +386 (0)1 320 56 10.
+</p>
+<p>
+  Se vidimo v Centru Rog. Veselimo se tvojega obiska!
+</p>
+<p>
+  Ekipa Centra Rog
+</p>
+<p>
+  To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav, se obrni na
+  <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+</p>
 
 <br />
 <hr />
@@ -30,15 +54,22 @@
 </p>
 <p>
   As a member, you can also enjoy discounts on guided workshops, courses and training courses we organize in Center Rog
-  and a 10 % discount in Made in Rog shop, cafe, restaurants and shops in Center Rog.. Check what's on <a href="{{ BASE_URL }}/en/programme/">HERE</a>.
+  and a 10 % discount in Made in Rog shop, cafe, restaurants and shops in Center Rog.. Check what's on <a
+    href="{{ BASE_URL }}/en/programme/">HERE</a>.
 </p>
 <p>
-  As a member you can also buy one of our user packages for independent work in any of our 9 production labs after
+  As a member you can also buy one of our <a href="{{ BASE_URL }}/en/user-packages-for-independent-use-of-labs/">user
+    packages</a> for independent work in any of our 9 production labs after
   passing a required training course. Dates of training courses can be found <a
     href="{{ BASE_URL }}/en/programme/?category=usposabljanja/">HERE</a>.
 </p>
 <p>
-  Read <a href="https://www.center-rog.si/en/news/center-rog-how-does-it-work/">HERE</a> about how Center Rog works. All
+  As a member, you’re invited to participate in the annual <a href='https://pp.center-rog.si/'>Participatory Budget</a>
+  (website in Slovene). Help decide how the allocated funds are spent: propose improvements and purchases, vote, and
+  follow the implementation of the approved proposals. You’ll find the participation link in your profile (blue bar,
+  right box).
+<p>
+  Read <a href="{{ BASE_URL }}/en/news/center-rog-how-does-it-work/">HERE</a> about how Center Rog works. All
   about membership benefits can be found <a href="{{ BASE_URL }}/en/become-a-member/">HERE</a>.
 </p>
 <p>
@@ -52,7 +83,8 @@
   Center Rog Team
 </p>
 <p>
-  This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
+  This is an automatically generated email. Please, do not reply. In case of trouble, contact us at <a
+    href="mailto:info@center-rog.si">info@center-rog.si</a>.
 </p>
 
 {% endblock %}
