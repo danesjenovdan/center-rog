@@ -8,6 +8,9 @@ import random
 
 
 def send_email(to_email, template_name, subject, context):
+    context.update({
+        "BASE_URL": settings.WAGTAILADMIN_BASE_URL,
+    })
     html_body = render_to_string(template_name, context)
     text_body = strip_tags(html_body)
 
