@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.forms.models import WagtailAdminModelForm
@@ -53,7 +54,9 @@ class ActiveAtQuerySet(models.QuerySet):
             payment_plans__valid_to__gte=now,
         )
         if active_payments:
-            return active_payments.latest('successed_at').payment_plans.all().filter(plan__payment_item_type=PaymentItemType.UPORABNINA).last()
+            return active_payments.latest('successed_at').payment_plans.all().filter(
+                plan__payment_item_type=PaymentItemType.UPORABNINA,
+            ).last()
         return None
 
     def get_valid_tokens(self):
@@ -249,6 +252,11 @@ class PaymentPlanEvent(models.Model):
         related_name="payment_plans",
         help_text="The promo code used for this payment plan",
     )
+    valid_from = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When subscription starts",
+    )
     valid_to = models.DateTimeField(
         null=True,
         blank=True,
@@ -428,7 +436,11 @@ class PromoCode(Timestampable):
         null=False,
         blank=False,
     )
-    percent_discount = models.IntegerField(null=False, blank=False)
+    percent_discount = models.PositiveIntegerField(
+        null=False,
+        blank=False,
+        validators=[MinValueValidator(1), MaxValueValidator(100)]
+    )
     payment_item_type = models.CharField(
         max_length=20,
         choices=PaymentItemType.choices,

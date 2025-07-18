@@ -16,7 +16,7 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
 
 from home.models import Workshop
-from payments.models import Plan
+from payments.models import Plan, PaymentPlanEvent, PaymentItemType
 from payments.pantheon import create_subject
 from behaviours.models import Timestampable
 
@@ -271,6 +271,14 @@ class User(AbstractUser, Timestampable):
         if membership:
             return membership.latest("valid_to")
         return None
+    
+    def get_unused_subscriptions(self):
+        return PaymentPlanEvent.objects.filter(
+            valid_from__isnull=True,
+            payment__user=self,
+            payment__successed_at__isnull=False,
+            payment_item_type=PaymentItemType.UPORABNINA,
+        )
 
     def get_valid_tokens(self):
         return self.payments.all().get_valid_tokens()
