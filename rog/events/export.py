@@ -64,6 +64,13 @@ class ExportEventRegistrationView(IndexView):
     def export_csv(self):
         data = []
         registrations = self.queryset.filter(registration_finished=True)
+        registrations = registrations.select_related(
+            "user",
+            "event"
+        ).prefetch_related(
+            "event_registration_children",
+            "event_registration_extra_people",
+        )
         for registration in registrations:
             data.append(
                 {
@@ -88,7 +95,10 @@ class ExportEventRegistrationView(IndexView):
             )
 
             last_entry = data[-1]
-            for item in registration.extra_registration_question_answers.all():
+            for item in registration.extra_registration_question_answers.all().prefetch_related(
+                "question",
+                "question__answer_file",
+            ):
                 if item.question:
                     if item.answer_file:
                         last_entry[item.question] = item.answer_file.url
