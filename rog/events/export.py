@@ -70,7 +70,7 @@ class ExportEventRegistrationView(IndexView):
         ).prefetch_related(
             "event_registration_children",
             "event_registration_extra_people",
-        )
+        ).order_by("event__start_day", "event__start_time")
         for registration in registrations:
             data.append(
                 {
