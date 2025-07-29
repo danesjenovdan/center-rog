@@ -76,6 +76,7 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
         "register_child_check",
         "event__event_is_for_children",
         "registration_finished",
+        "event__start_day",
         RelevantEventsListFilter,
     )
     search_fields = (
