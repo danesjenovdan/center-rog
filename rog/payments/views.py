@@ -19,7 +19,7 @@ from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .forms import PromoCodeForm
-from .utils import get_invoice_number, get_free_invoice_number, finish_payment
+from .utils import get_invoice_number, get_free_invoice_number, finish_payment, create_prima_user_if_not_exists
 from events.models import EventRegistration, EventPage
 
 from users.prima_api import PrimaApi
@@ -513,18 +513,7 @@ class ActivatePackage(views.APIView):
         payment_plan.valid_from = valid_from
         payment_plan.save()
 
-        if not user.prima_id:
-            data, message = prima_api.createUser(user.email)
-            if data:
-                prima_id = data["UsrID"]
-                user.prima_id = prima_id
-                user.save()
-            else:
-                msg = f"Prima user was not created successfully: {message}"
-                with push_scope() as scope:
-                    scope.user = {"user": user}
-                    scope.set_extra("payment", payment_plan.payment.id)
-                    capture_message(msg, "fatal")
+        create_prima_user_if_not_exists(user, payment_plan.payment.id)
 
         # always set uporabnina dates on prima from now since there could be an active plan already
         valid_from_prima = timezone.now()

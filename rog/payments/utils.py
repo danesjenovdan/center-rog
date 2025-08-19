@@ -12,6 +12,19 @@ from users.prima_api import PrimaApi
 
 prima_api = PrimaApi()
 
+def create_prima_user_if_not_exists(user, payment_id):
+    if not user.prima_id:
+        data, message = prima_api.createUser(user.email)
+        if data:
+            prima_id = data["UsrID"]
+            user.prima_id = prima_id
+            user.save()
+        else:
+            msg = f"Prima user was not created successfully: {message}"
+            with push_scope() as scope:
+                scope.user = {"user": user}
+                scope.set_extra("payment", payment_id)
+                capture_message(msg, "fatal")
 
 def get_invoice_number():
     year = datetime.now().strftime("%y")
@@ -39,6 +52,7 @@ def finish_payment(payment):
     membership_fee = payment.items.filter(payment_item_type=PaymentItemType.CLANARINA)
     membership = payment.membership
     if membership_fee and membership:
+        create_prima_user_if_not_exists(user, payment.id)
         valid_from = timezone.now()
 
         last_active_membership = user.get_last_active_membership()
