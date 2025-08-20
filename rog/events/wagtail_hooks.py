@@ -6,6 +6,7 @@ from django.urls import path, reverse
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail.admin.menu import MenuItem
 from wagtail import hooks
+from wagtail_rangefilter.filters import DateRangeFilter
 
 from datetime import datetime
 
@@ -76,7 +77,8 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
         "register_child_check",
         "event__event_is_for_children",
         "registration_finished",
-        "event__start_day",
+        #"event__start_day",
+        ("event__start_day", DateRangeFilter),
         RelevantEventsListFilter,
     )
     search_fields = (
