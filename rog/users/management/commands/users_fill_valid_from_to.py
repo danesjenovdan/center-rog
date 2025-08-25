@@ -48,6 +48,6 @@ class Command(BaseCommand):
             self.stdout.write(f"{user.email} - prima_id={user.prima_id}")
             self.stdout.write(f"  valid_from={valid_from_prima}")
             self.stdout.write(f"    valid_to={valid_to_prima}")
-            prima_api.setUporabninaDates(user.prima_id, valid_from_prima, valid_to_prima)
+            prima_api.setPrimaDates(user.prima_id, valid_from_prima, valid_to_prima)
 
         self.stdout.write("End fill valid_from and valid_to on users.")
