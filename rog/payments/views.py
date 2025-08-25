@@ -520,7 +520,7 @@ class ActivatePackage(views.APIView):
         valid_to_prima = valid_to
         valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
         valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
-        prima_api.setUporabninaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
+        prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
         return redirect("profile-my")
 

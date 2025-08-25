@@ -1,6 +1,8 @@
 import requests
 import xmltodict
 
+from datetime import datetime
+
 from django.conf import settings
 
 
@@ -127,6 +129,8 @@ class PrimaApi(object):
         Create user in Prima system.
         """
 
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         payload = {
             'Request': 'CreateUser', 
             # 'UsrName': name,
@@ -135,6 +139,8 @@ class PrimaApi(object):
             'UsrLoginName': email,
             'UsrEMail': email,
             # 'UsrPhone': phone
+            'UsrValidFrom': now,
+            'UsrValidTo': now,
         }
 
         print("Create user", payload)
@@ -182,11 +188,11 @@ class PrimaApi(object):
 
         return data, message
 
-    def setUporabninaDates(self, user_id, valid_from, valid_to):
+    def setPrimaDates(self, user_id, valid_from, valid_to):
         payload = {
             'Request': 'UpdateUser', 
             'UsrID': user_id,
-            'UsrValidFrom': valid_from,
+            # 'UsrValidFrom': valid_from, # disable setting valid from date
             'UsrValidTo': valid_to,
         }
 
