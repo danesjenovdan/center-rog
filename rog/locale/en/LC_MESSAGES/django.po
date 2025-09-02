@@ -71,11 +71,11 @@ msgstr "Complete"
 
 #: events/forms.py:111 events/models.py:544
 msgid "Ime osebe"
-msgstr ""
+msgstr "First name"
 
 #: events/forms.py:116 events/models.py:545
 msgid "Priimek osebe"
-msgstr ""
+msgstr "Last name"
 
 #: events/models.py:55 news/models.py:40 users/models.py:105
 msgid "Ime kategorije"
@@ -376,11 +376,11 @@ msgstr "Free spots:"
 
 #: events/templates/events/event_page.html:109
 msgid "poglej svojo prijavo"
-msgstr ""
+msgstr "View your application"
 
 #: events/templates/events/event_registration_1.html:180
 msgid "dodaj še eno osebo"
-msgstr ""
+msgstr "Add another person"
 
 #: events/templates/events/event_registration_1.html:212
 msgid "dodaj še enega otroka"
@@ -402,13 +402,13 @@ msgstr "Next"
 
 #: events/templates/events/event_registration_failed.html:10
 msgid "Žal na voljo ni več dovolj mest."
-msgstr ""
+msgstr "Unfortunately, there are no more spots available"
 
 #: events/templates/events/event_registration_wrapper.html:23
 #: payments/templates/payment_success.html:39
 #: payments/templates/registration_payment_preview.html:41
 msgid "začetek prijave"
-msgstr ""
+msgstr "Start registration"
 
 #: events/templates/events/event_registration_wrapper.html:24
 #: payments/templates/payment_success.html:40
@@ -420,7 +420,7 @@ msgstr "Any specific details"
 #: payments/templates/payment_success.html:41
 #: payments/templates/registration_payment_preview.html:43
 msgid "seznanitev s podatki"
-msgstr ""
+msgstr "View of the entered data"
 
 #: events/templates/events/event_registration_wrapper.html:27
 #: home/templates/registration/registration_wrapper.html:28
@@ -453,11 +453,11 @@ msgstr "child"
 #: events/templates/events/includes/event_registration_child_form.html:5
 #: events/templates/events/includes/event_registration_extra_person_form.html:5
 msgid "odstrani osebo"
-msgstr ""
+msgstr "Remove person"
 
 #: events/templates/events/includes/event_registration_extra_person_form.html:3
 msgid "Oseba"
-msgstr ""
+msgstr "Additional Person"
 
 #: events/views.py:160
 msgid "Prosimo, dodajte vsaj enega otroka."
@@ -465,11 +465,11 @@ msgstr "Please add at least one child."
 
 #: events/views.py:170 events/views.py:172 events/views.py:174
 msgid "To polje ne sme biti prazno."
-msgstr ""
+msgstr "This field cannot be empty."
 
 #: events/views.py:211 events/views.py:273
 msgid "Na voljo ni dovolj prostih mest."
-msgstr ""
+msgstr "Not enough available spots."
 
 #: events/views.py:448 home/templates/home/includes/mailchimp.html:90
 msgid "To polje je obvezno."
@@ -477,15 +477,15 @@ msgstr "This field is mandatory"
 
 #: events/wagtail_hooks.py:21
 msgid "Trenutni in prihodni dogodki"
-msgstr ""
+msgstr "Current and upcoming events"
 
 #: events/wagtail_hooks.py:116
 msgid "Število otrok"
-msgstr ""
+msgstr "Number of children"
 
 #: events/wagtail_hooks.py:117
 msgid "Število dodatnih oseb"
-msgstr ""
+msgstr "Number of additional persons"
 
 #: home/forms.py:32
 msgid "elektronski naslov"
@@ -549,7 +549,7 @@ msgstr ""
 
 #: home/forms.py:218
 msgid "Pravna oseba mora vnesti davčno številko!"
-msgstr ""
+msgstr "The legal entity must enter a tax identification number!"
 
 #: home/forms.py:249
 msgid ""
