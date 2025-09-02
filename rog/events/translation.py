@@ -1,4 +1,5 @@
-from .models import EventPage, EventListArchivePage, EventListPage, EventCategory
+from .models import (EventPage, EventListArchivePage, EventListPage,
+    EventCategory, EventExtraRegistrationQuestion)
 from modeltranslation.translator import TranslationOptions
 from modeltranslation.decorators import register
 
@@ -21,3 +22,8 @@ class EventListPageTR(TranslationOptions):
 @register(EventCategory)
 class EventCategoryTranslationOptions(TranslationOptions):
     fields = ("name",)
+
+
+@register(EventExtraRegistrationQuestion)
+class EventExtraRegistrationQuestionTR(TranslationOptions):
+    fields = ("question", "choices",)

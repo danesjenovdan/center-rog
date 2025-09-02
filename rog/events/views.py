@@ -327,7 +327,7 @@ class EventRegistrationAdditionalView(View):
                     "type": item.type,
                     "question": item.question,
                     "required": item.required,
-                    "choices": [c["value"] for c in item.choices.raw_data],
+                    "choices": [c["value"] for c in item.choices.raw_data] if item.choices else [],
                     "initial": (
                         None
                         if item.question not in extra_questions_answers
