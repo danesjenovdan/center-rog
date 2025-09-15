@@ -25,6 +25,10 @@ import random
 import uuid
 import re
 import sentry_sdk
+from users.prima_api import PrimaApi
+
+
+prima_api = PrimaApi()
 
 
 class MembershipType(ClusterableModel):
@@ -95,7 +99,9 @@ class Membership(Timestampable):
     notification_30_sent = models.BooleanField(default=False)
     notification_7_sent = models.BooleanField(default=False)
     notification_1_sent = models.BooleanField(default=False)
-    extended_by = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True, blank=True)
+    extended_by = models.ForeignKey(
+        Plan, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.type} ({self.active}): {self.valid_from} - {self.valid_to}"
@@ -220,8 +226,7 @@ class User(AbstractUser, Timestampable):
     )
 
     saved_in_pantheon = models.BooleanField(
-        default=False,
-        help_text=_("Ali je oseba že shranjena v Pantheonu?")
+        default=False, help_text=_("Ali je oseba že shranjena v Pantheonu?")
     )
 
     objects = UserManager()
@@ -338,6 +343,13 @@ class User(AbstractUser, Timestampable):
 
     def autocomplete_label(self):
         return self.email
+
+    def set_prima_valid_to(self, timestamp):
+        prima_api.setPrimaDates(
+            self.prima_id,
+            datetime.now(),
+            timestamp,
+        )
 
 
 class BookingToken(models.Model):

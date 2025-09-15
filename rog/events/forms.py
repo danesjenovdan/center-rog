@@ -161,7 +161,7 @@ class EventRegistrationChildForm(forms.ModelForm):
         label=_("izpolni"),
         label_suffix="",
         required=False,
-        widget=forms.TextInput(attrs={"placeholder": "spol"}),
+        widget=forms.TextInput(attrs={"placeholder": _("Spol")}),
     )
 
     class Meta:
