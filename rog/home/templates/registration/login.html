@@ -35,7 +35,7 @@
                 <div class="row mt-4">
                     <div class="col-6">
                         <div class="mb-1"><a href="{% url 'password_reset' %}">{% translate 'Pozabljeno geslo?' %}</a></div>
-                        <div class="mb-1"><a href="/registracija/?{{ request.GET.urlencode }}">{% translate 'Registriraj se' %}</a></div>
+                        <div class="mb-1"><a href="{% url 'registration' %}?{{ request.GET.urlencode }}">{% translate 'Registriraj se' %}</a></div>
                     </div>
                     <div class="col-6">
                         <div class="d-flex justify-content-end mb-4">
