@@ -4,7 +4,7 @@ from wagtail.admin.menu import MenuItem
 from django.urls import path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from .models import BookingToken, MembershipType, UserInterest
+from .models import BookingToken, MembershipType, UserInterest, MembershipTypeSpecification
 from .views import ExportMarketningUsersView
 
 
@@ -34,6 +34,14 @@ class UserInterestAdmin(ModelAdmin):
     add_to_admin_menu = False
 
 
+class MembershipTypeSpecificationAdmin(ModelAdmin):
+    model = MembershipTypeSpecification
+    menu_icon = 'pilcrow'
+    menu_order = 200
+    add_to_settings_menu = True
+    add_to_admin_menu = False
+
+
 @hooks.register('register_admin_urls')
 def register_calendar_url():
     return [
@@ -49,3 +57,4 @@ def register_calendar_menu_item():
 # modeladmin_register(BookingTokenAdmin)
 modeladmin_register(MembershipTypeAdmin)
 modeladmin_register(UserInterestAdmin)
+modeladmin_register(MembershipTypeSpecificationAdmin)

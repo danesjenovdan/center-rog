@@ -18,11 +18,10 @@
             <h1 class="text-center">{% translate 'Uredi profil:' %}</h1>
         </div>
     </div>
-
     <div class="row justify-content-center">
         <div class="col-12 col-md-8">
             <h2>{% translate 'Izpolni podatke za osebni profil:' %}</h2>
-            {% include "home/includes/edit_profile_form.html" with button_text="shrani" %}
+            {% include "home/includes/edit_profile_form.html" with button_text=_("shrani") %}
         </div>
     </div>
 </div>

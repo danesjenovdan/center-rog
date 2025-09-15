@@ -63,7 +63,7 @@
             {% endfor %}
 
             <div class="sum-line d-flex justify-content-between">
-                <div class="name">{% translate 'skupaj' %}</div>
+                <div class="name">{% translate 'skupaj' %} {% if payment.user_was_eligible_to_discount %}({% translate 's popustom' %}){% endif %}</div>
                 <div class="price">€{{ payment.amount|floatformat:"2g" }}</div>
             </div>
 
