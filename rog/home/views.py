@@ -8,6 +8,7 @@ from django.http import HttpResponseNotFound
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 from datetime import datetime, date, time, timedelta
 from dateutil.relativedelta import relativedelta
@@ -357,8 +358,8 @@ class RegistrationMembershipView(View):
                 membership_query = f"?membership={new_membership.id}&{next_page}"
             else:
                 membership_query = f"?{next_page }"
-
-            return redirect(f"/registracija/podatki{membership_query}")
+            url = reverse("registration-information")
+            return redirect(f"{url}{membership_query}")
         else:
             return render(
                 request,
@@ -450,8 +451,8 @@ class RegistrationInformationView(View):
                 valid_from=valid_from,
                 valid_to=valid_to,
             )
-
-            return redirect(f"/registracija/profil{membership_query}")
+            url = reverse("registration-profile")
+            return redirect(f"{url}{membership_query}")
         else:
             return render(
                 request,
