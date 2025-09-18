@@ -21,8 +21,7 @@
 
             <div class="registration-progress">
                 <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>{% translate 'začetek prijave' %}</span></div>
-                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'morebitne posebnosti' %}</span></div>
-                <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>{% translate 'seznanitev s podatki' %}</span></div>
+                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'dodatno' %}</span></div>
                 {% if event.price > 0 %}
                 <div class="point {% if registration_step == 3 %} active{% elif registration_step > 3 %} done{% endif %}"><span>{% translate 'plačilo' %}</span></div>
                 {% endif %}

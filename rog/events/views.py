@@ -9,7 +9,6 @@ from django.utils.translation import gettext_lazy as _
 from django.views import View
 from events.forms import (
     EventRegisterAdditionalForm,
-    EventRegisterInformationForm,
     EventRegisterPersonForm,
     EventRegistrationChildForm,
     EventRegistrationExtraPersonForm,
@@ -438,92 +437,6 @@ class EventRegistrationAdditionalView(View):
                 request,
                 "events/event_registration_2.html",
                 context={"form": form, "registration_step": 1, "event": event},
-            )
-
-        return redirect("event-registration-information", event=event.slug)
-
-
-@method_decorator(login_required, name="dispatch")
-class EventRegistrationInformationView(View):
-    def get(self, request, event):
-        # user
-        current_user = request.user
-
-        if not current_user.email_confirmed:
-            return redirect("registration-email-confirmation")
-
-        # check for event
-        try:
-            event = EventPage.objects.get(slug=event)
-        except:
-            return redirect("profile-my")
-
-        # update existing or return to first step
-        event_registration = EventRegistration.objects.filter(
-            user=current_user, event=event
-        ).first()
-
-        if event_registration:
-            if event_registration.registration_finished:
-                return redirect(event.get_url())
-            else:
-                form = EventRegisterInformationForm(instance=event_registration)
-        else:
-            return redirect("event-registration", event=event.slug)
-
-        return render(
-            request,
-            "events/event_registration_3.html",
-            context={"form": form, "registration_step": 2, "event": event},
-        )
-
-    def post(self, request, event):
-        # user
-        current_user = request.user
-
-        if not current_user.email_confirmed:
-            return redirect("registration-email-confirmation")
-
-        # check for event
-        try:
-            event = EventPage.objects.get(slug=event)
-        except:
-            return redirect("profile-my")
-
-        # update existing or return to first step
-        event_registration = EventRegistration.objects.filter(
-            user=current_user, event=event
-        ).first()
-
-        if event_registration:
-            if event_registration.registration_finished:
-                return redirect(event.get_url())
-            else:
-                form = EventRegisterInformationForm(
-                    request.POST, instance=event_registration
-                )
-        else:
-            return redirect("event-registration", event=event.slug)
-
-        if form.is_valid():
-            if not form.cleaned_data.get("agreement_responsibility"):
-                form.add_error("agreement_responsibility", _("To polje je obvezno."))
-                return render(
-                    request,
-                    "events/event_registration_3.html",
-                    context={"form": form, "registration_step": 2, "event": event},
-                )
-            else:
-                form.save()
-        else:
-            print(
-                "Error! Na drugem koraku form ni valid, ko bi na vsak način moral bit, ker polja niso obvezna."
-            )
-
-            return render(
-                request,
-                "events/event_registration_3.html",
-                context={"form": form, "registration_step": 2, "event": event},
             )
 
         if event.price > 0:
