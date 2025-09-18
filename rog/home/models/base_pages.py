@@ -96,6 +96,15 @@ class TranslatablePage(Page):
 
         return (site_id, root_url, page_path)
 
+    def save_revision(self, *args, **kwargs):
+        # fix saving slugs in both languages when page is first created
+        if self.slug:
+            if not self.slug_en:
+                self.slug_en = self.slug
+            if not self.slug_sl:
+                self.slug_sl = self.slug
+        return super().save_revision(*args, **kwargs)
+
 
 class BasePage(TranslatablePage):
     color_scheme = models.CharField(

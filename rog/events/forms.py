@@ -103,27 +103,7 @@ class EventRegisterAdditionalForm(forms.ModelForm):
 
     class Meta:
         model = EventRegistration
-        fields = ["disabilities", "allergies"]
-
-
-class EventRegisterInformationForm(forms.ModelForm):
-    agreement_responsibility = forms.BooleanField(
-        label=_("Opremo v delavnicah bom uporabljal_a na lastno odgovornost."),
-        label_suffix="",
-        required=False,
-    )
-
-    allow_photos = forms.BooleanField(
-        label=_(
-            "Dovoljujem fotografiranje in snemanje izključno za potrebe promocije programa Centra Rog."
-        ),
-        label_suffix="",
-        required=False,
-    )
-
-    class Meta:
-        model = EventRegistration
-        fields = ["agreement_responsibility", "allow_photos"]
+        fields = []
 
 
 class EventRegistrationChildForm(forms.ModelForm):
