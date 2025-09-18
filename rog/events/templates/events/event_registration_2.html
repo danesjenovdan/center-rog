@@ -21,6 +21,8 @@
         {{ field.errors }}
         {% endif %}
     </div>
+    {% empty %}
+    <p>{% translate "Ni dodatnih vprašanj." %}</p>
     {% endfor %}
 
     <div class="d-flex justify-content-end my-4">

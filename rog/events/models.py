@@ -584,8 +584,8 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     register_child_check = models.BooleanField(
         verbose_name=_("Na dogodek prijavljam otroka"), default=False
     )
-    disabilities = models.TextField(verbose_name=_("Oviranosti (naštej)"), blank=True)
-    allergies = models.TextField(verbose_name=_("Alergije (naštej)"), blank=True)
+    disabilities = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Oviranosti (naštej)"), blank=True)
+    allergies = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Alergije (naštej)"), blank=True)
     agreement_responsibility = models.BooleanField(
         verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"), default=False
     )

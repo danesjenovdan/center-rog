@@ -103,7 +103,7 @@ class EventRegisterAdditionalForm(forms.ModelForm):
 
     class Meta:
         model = EventRegistration
-        fields = ["disabilities", "allergies"]
+        fields = []
 
 
 class EventRegistrationChildForm(forms.ModelForm):
