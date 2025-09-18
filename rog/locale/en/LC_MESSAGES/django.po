@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-12 14:07+0200\n"
+"POT-Creation-Date: 2025-09-18 13:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,63 +21,51 @@ msgstr ""
 msgid "Export {} to CSV"
 msgstr ""
 
-#: events/forms.py:111
-msgid "Opremo v delavnicah bom uporabljal_a na lastno odgovornost."
-msgstr "I will be using equipment in the workshops at my own risk."
-
-#: events/forms.py:118
-msgid ""
-"Dovoljujem fotografiranje in snemanje izključno za potrebe promocije "
-"programa Centra Rog."
-msgstr ""
-"I allow photographing and recording exclusively for the purposes of "
-"promoting the program of Center Rog."
-
-#: events/forms.py:131 events/models.py:649
+#: events/forms.py:111 events/models.py:649
 msgid "Ime otroka"
 msgstr ""
 
-#: events/forms.py:136 events/models.py:650
+#: events/forms.py:116 events/models.py:650
 msgid "Priimek otroka"
 msgstr ""
 
-#: events/forms.py:141 events/models.py:652
+#: events/forms.py:121 events/models.py:652
 msgid "Telefonska številka zakonitega skrbnika"
 msgstr ""
 
-#: events/forms.py:146 home/forms.py:142
+#: events/forms.py:126 home/forms.py:142
 msgid "Datum rojstva"
 msgstr "Date of birth"
 
-#: events/forms.py:154 events/forms.py:164 home/forms.py:148 home/forms.py:158
+#: events/forms.py:134 events/forms.py:144 home/forms.py:148 home/forms.py:158
 msgid "Spol"
 msgstr "Gender"
 
-#: events/forms.py:156 home/forms.py:150
+#: events/forms.py:136 home/forms.py:150
 msgid "ženski"
 msgstr "Female"
 
-#: events/forms.py:156 home/forms.py:150
+#: events/forms.py:136 home/forms.py:150
 msgid "moški"
 msgstr "Male"
 
-#: events/forms.py:156 home/forms.py:150
+#: events/forms.py:136 home/forms.py:150
 msgid "drugo"
 msgstr "Other"
 
-#: events/forms.py:161 home/forms.py:155
+#: events/forms.py:141 home/forms.py:155
 msgid "izpolni"
 msgstr "Complete"
 
-#: events/forms.py:186 events/models.py:672
+#: events/forms.py:166 events/models.py:672
 msgid "Ime osebe"
 msgstr "First name"
 
-#: events/forms.py:191 events/models.py:673
+#: events/forms.py:171 events/models.py:673
 msgid "Priimek osebe"
 msgstr "Last name"
 
-#: events/models.py:49 news/models.py:40 users/models.py:112
+#: events/models.py:49 news/models.py:40 users/models.py:111
 msgid "Ime kategorije"
 msgstr "Category name"
 
@@ -114,16 +102,12 @@ msgid "Dogodki - kategorije"
 msgstr "Events - categories"
 
 #: events/models.py:153
-#, fuzzy
-#| msgid "Barvno besedilo s karticami"
 msgid "Kratko besedilo (ena vrstica)"
-msgstr "Colourful text with cards"
+msgstr "Short text (one line)"
 
 #: events/models.py:154
-#, fuzzy
-#| msgid "Besedilo pod sliko"
 msgid "Besedilo (več vrstic)"
-msgstr "Text under the picture"
+msgstr "Text (multiple lines)"
 
 #: events/models.py:155
 msgid "Izbirno vprašanje (en odgovor)"
@@ -146,10 +130,8 @@ msgid "Besedilo vprašanja"
 msgstr ""
 
 #: events/models.py:178
-#, fuzzy
-#| msgid "To polje je obvezno."
 msgid "Vprašanje je obvezno"
-msgstr "This field is mandatory"
+msgstr "This question is mandatory"
 
 #: events/models.py:186
 msgid "Opcija"
@@ -354,20 +336,20 @@ msgid "Na dogodek prijavljam otroka"
 msgstr "I am registering a child for the event"
 
 #: events/models.py:587
-msgid "Oviranosti (naštej)"
-msgstr "Disabilities (list)"
+msgid "[NI VEČ UPORABLJENO] Oviranosti (naštej)"
+msgstr ""
 
 #: events/models.py:588
-msgid "Alergije (naštej)"
-msgstr "Allergies (list)"
+msgid "[NI VEČ UPORABLJENO] Alergije (naštej)"
+msgstr ""
 
 #: events/models.py:590
-msgid "Strinjam se z zavrnitvijo odgovornosti"
-msgstr "I agree with the disclaimer"
+msgid "[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"
+msgstr ""
 
 #: events/models.py:593
-msgid "Dovoljujem fotografiranje in snemanje"
-msgstr "I allow photography and recording"
+msgid "[NI VEČ UPORABLJENO] Dovoljujem fotografiranje in snemanje"
+msgstr ""
 
 #: events/models.py:597
 msgid "Prijava na dogodek je zaključena"
@@ -383,7 +365,6 @@ msgstr ""
 
 #: events/models.py:638 events/templates/events/event_registration_1.html:4
 #: events/templates/events/event_registration_2.html:4
-#: events/templates/events/event_registration_3.html:4
 #: events/templates/events/event_registration_failed.html:4
 #: events/templates/events/event_registration_wrapper.html:4
 msgid "Prijava na dogodek"
@@ -467,8 +448,7 @@ msgid "dodaj še enega otroka"
 msgstr "Add one more child"
 
 #: events/templates/events/event_registration_1.html:217
-#: events/templates/events/event_registration_2.html:27
-#: events/templates/events/event_registration_3.html:31
+#: events/templates/events/event_registration_2.html:29
 #: home/templates/registration/login.html:42
 #: home/templates/registration/password_reset_form.html:29
 #: home/templates/registration/registration.html:39
@@ -476,9 +456,13 @@ msgstr "Add one more child"
 #: home/templates/registration/registration_3_information.html:215
 #: home/templates/registration/user_purchase_membership.html:61
 #: home/templates/registration/user_purchase_plan.html:65
-#: payments/templates/registration_payment_preview.html:91
+#: payments/templates/registration_payment_preview.html:90
 msgid "naprej"
 msgstr "Next"
+
+#: events/templates/events/event_registration_2.html:25
+msgid "Ni dodatnih vprašanj."
+msgstr "There are no additional questions."
 
 #: events/templates/events/event_registration_failed.html:10
 msgid "Žal na voljo ni več dovolj mest."
@@ -488,7 +472,7 @@ msgstr "Unfortunately, there are no more spots available"
 #: payments/templates/payment_success.html:39
 #: payments/templates/registration_payment_preview.html:41
 msgid "začetek prijave"
-msgstr "Start registration"
+msgstr "start registration"
 
 #: events/templates/events/event_registration_wrapper.html:24
 #: payments/templates/payment_success.html:40
@@ -496,24 +480,18 @@ msgstr "Start registration"
 msgid "dodatno"
 msgstr "additional"
 
-#: events/templates/events/event_registration_wrapper.html:25
-#: payments/templates/payment_success.html:41
-#: payments/templates/registration_payment_preview.html:43
-msgid "seznanitev s podatki"
-msgstr "View of the entered data"
-
-#: events/templates/events/event_registration_wrapper.html:27
+#: events/templates/events/event_registration_wrapper.html:26
 #: home/templates/registration/registration_wrapper.html:28
 #: home/templates/registration/user_purchase_membership.html:24
 #: home/templates/registration/user_purchase_plan.html:24
 #: payments/templates/payment_success.html:25
 #: payments/templates/payment_success.html:30
 #: payments/templates/payment_success.html:35
-#: payments/templates/payment_success.html:42
+#: payments/templates/payment_success.html:41
 #: payments/templates/registration_payment_preview.html:27
 #: payments/templates/registration_payment_preview.html:32
 #: payments/templates/registration_payment_preview.html:37
-#: payments/templates/registration_payment_preview.html:44
+#: payments/templates/registration_payment_preview.html:43
 msgid "plačilo"
 msgstr "payment"
 
@@ -539,21 +517,17 @@ msgstr "Remove person"
 msgid "Oseba"
 msgstr "Additional Person"
 
-#: events/views.py:160
+#: events/views.py:159
 msgid "Prosimo, dodajte vsaj enega otroka."
 msgstr "Please add at least one child."
 
-#: events/views.py:170 events/views.py:172 events/views.py:174
+#: events/views.py:169 events/views.py:171 events/views.py:173
 msgid "To polje ne sme biti prazno."
 msgstr "This field cannot be empty."
 
-#: events/views.py:215 events/views.py:277
+#: events/views.py:214 events/views.py:276
 msgid "Na voljo ni dovolj prostih mest."
 msgstr "Not enough available spots."
-
-#: events/views.py:510 home/templates/home/includes/mailchimp.html:90
-msgid "To polje je obvezno."
-msgstr "This field is mandatory"
 
 #: events/wagtail_hooks.py:22
 msgid "Trenutni in prihodni dogodki"
@@ -727,7 +701,7 @@ msgstr "Subtitles to the picture"
 
 #: home/models/base_pages.py:227 home/models/blocks.py:360
 #: home/models/blocks.py:363 home/models/pages.py:170 news/models.py:81
-#: users/models.py:226
+#: users/models.py:225
 msgid "Galerija"
 msgstr "Gallery"
 
@@ -1412,6 +1386,10 @@ msgstr "I agree to the use of my email"
 msgid "pošlji"
 msgstr "send"
 
+#: home/templates/home/includes/mailchimp.html:90
+msgid "To polje je obvezno."
+msgstr "This field is mandatory"
+
 #: home/templates/home/includes/see_more.html:7
 msgid "Poglej še"
 msgstr "See more"
@@ -1506,10 +1484,8 @@ msgid "Izpolni podatke za osebni profil:"
 msgstr "Fill in the details for your personal profile:"
 
 #: home/templates/registration/edit_profile.html:24
-#, fuzzy
-#| msgid "odstrani"
 msgid "shrani"
-msgstr "Remove"
+msgstr "save"
 
 #: home/templates/registration/logged_out.html:4
 msgid "Odjava"
@@ -1624,10 +1600,8 @@ msgid "veljavnost paketa do:"
 msgstr "package is valid until:"
 
 #: home/templates/registration/profile.html:68
-#, fuzzy
-#| msgid "Plačilni paket"
 msgid "aktiviraj paket"
-msgstr "Payment package"
+msgstr "activate package"
 
 #: home/templates/registration/profile.html:73
 msgid "izberi paket"
@@ -1868,7 +1842,7 @@ msgstr "Cover photo"
 msgid "Oznaka"
 msgstr "Note"
 
-#: payments/forms.py:8 payments/templates/registration_payment_preview.html:75
+#: payments/forms.py:8 payments/templates/registration_payment_preview.html:74
 msgid "Vnesi kodo za popust"
 msgstr "Enter the discount code"
 
@@ -1920,7 +1894,7 @@ msgstr "Item 5"
 msgid "When the plan starts"
 msgstr "When the plan starts"
 
-#: payments/models.py:115 users/models.py:96
+#: payments/models.py:115 users/models.py:95
 msgid "When the plan expires"
 msgstr "When the plan expires"
 
@@ -2069,7 +2043,7 @@ msgstr "Download PDF invoice"
 msgid "Plačilo uspešno"
 msgstr "Payment successful"
 
-#: payments/templates/payment_success.html:46
+#: payments/templates/payment_success.html:45
 msgid ""
 "Plačilo je uspelo, postali ste član_ica Centra Rog. Na vašo e-pošto smo vam "
 "poslali potrditveno sporočilo."
@@ -2077,17 +2051,17 @@ msgstr ""
 "The payment was successful, you have become a member of Center Rog. We have "
 "sent you a confirmation email "
 
-#: payments/templates/payment_success.html:48
+#: payments/templates/payment_success.html:47
 msgid ""
 "Plačilo je uspelo. Prijavljeni ste na dogodek. Na vašo e-pošto smo vam "
 "poslali potrditveno sporočilo."
 msgstr ""
 
-#: payments/templates/payment_success.html:51
+#: payments/templates/payment_success.html:50
 msgid "Plačilo je bilo uspešno!"
 msgstr "Payment was successful!"
 
-#: payments/templates/payment_success.html:54
+#: payments/templates/payment_success.html:53
 msgid "na profil"
 msgstr "to profile"
 
@@ -2095,27 +2069,27 @@ msgstr "to profile"
 msgid "Povzetek plačila"
 msgstr "Payment summary"
 
-#: payments/templates/registration_payment_preview.html:47
+#: payments/templates/registration_payment_preview.html:46
 msgid "Za plačilo"
 msgstr "For payment"
 
-#: payments/templates/registration_payment_preview.html:66
+#: payments/templates/registration_payment_preview.html:65
 msgid "skupaj"
 msgstr "together"
 
-#: payments/templates/registration_payment_preview.html:66
+#: payments/templates/registration_payment_preview.html:65
 msgid "s popustom"
 msgstr "with discount"
 
-#: payments/templates/registration_payment_preview.html:80
+#: payments/templates/registration_payment_preview.html:79
 msgid "vnovči"
 msgstr "redeem"
 
-#: payments/templates/registration_payment_preview.html:83
+#: payments/templates/registration_payment_preview.html:82
 msgid "Vnešena koda ni veljavna."
 msgstr "Entered code is not valid"
 
-#: payments/templates/registration_payment_preview.html:92
+#: payments/templates/registration_payment_preview.html:91
 msgid ""
 "*preusmerjeni boste na spletno stran našega ponudnika za plačila bankart"
 msgstr "you will be redirected to the webpage of our bankart payment provider"
@@ -2168,39 +2142,39 @@ msgstr "Users - membership types"
 msgid "Boniteta"
 msgstr "Credit"
 
-#: users/models.py:79
+#: users/models.py:78
 msgid "Boniteta članstva"
 msgstr "Membership credit"
 
-#: users/models.py:80
+#: users/models.py:79
 msgid "Bonitete članstva"
 msgstr "Membership credits"
 
-#: users/models.py:122
+#: users/models.py:121
 msgid "Kategorija zanimanj uporabnikov"
 msgstr "Category of user interests"
 
-#: users/models.py:123
+#: users/models.py:122
 msgid "Uporabniki - kategorije zanimanj"
 msgstr "Users - interest categories"
 
-#: users/models.py:230
+#: users/models.py:229
 msgid "Ali je oseba že shranjena v Pantheonu?"
 msgstr ""
 
-#: users/models.py:372
+#: users/models.py:367
 msgid "User"
 msgstr ""
 
-#: users/models.py:376
+#: users/models.py:371
 msgid "key"
 msgstr ""
 
-#: users/models.py:379
+#: users/models.py:374
 msgid "Confirm email"
 msgstr ""
 
-#: users/models.py:380
+#: users/models.py:375
 msgid "Confirm emails"
 msgstr ""
 
