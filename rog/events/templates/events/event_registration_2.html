@@ -28,4 +28,18 @@
     </div>
 </form>
 
+<script>
+    (function(){
+        const form = document.currentScript.previousElementSibling
+        form.addEventListener("submit", (e) => {
+            if (window.plausible) {
+                window.plausible("zakljucena_prijava_na_dogodek");
+            }
+            if (window.fbq) {
+                window.fbq("trackCustom", "zakljucena_prijava_na_dogodek");
+            }
+        });
+    }());
+</script>
+
 {% endblock form_block %}

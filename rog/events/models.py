@@ -587,10 +587,10 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     disabilities = models.TextField(verbose_name=_("Oviranosti (naštej)"), blank=True)
     allergies = models.TextField(verbose_name=_("Alergije (naštej)"), blank=True)
     agreement_responsibility = models.BooleanField(
-        verbose_name=_("Strinjam se z zavrnitvijo odgovornosti"), default=False
+        verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"), default=False
     )
     allow_photos = models.BooleanField(
-        verbose_name=_("Dovoljujem fotografiranje in snemanje"),
+        verbose_name=_("[NI VEČ UPORABLJENO] Dovoljujem fotografiranje in snemanje"),
         default=False,
     )
     registration_finished = models.BooleanField(
