@@ -486,7 +486,7 @@ msgstr ""
 #: events/templates/events/event_registration_wrapper.html:24
 #: payments/templates/payment_success.html:40
 #: payments/templates/registration_payment_preview.html:42
-msgid "morebitne posebnosti"
+msgid "dodatno"
 msgstr ""
 
 #: events/templates/events/event_registration_wrapper.html:25

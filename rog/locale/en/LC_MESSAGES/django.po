@@ -493,8 +493,8 @@ msgstr "Start registration"
 #: events/templates/events/event_registration_wrapper.html:24
 #: payments/templates/payment_success.html:40
 #: payments/templates/registration_payment_preview.html:42
-msgid "morebitne posebnosti"
-msgstr "Any specific details"
+msgid "dodatno"
+msgstr "additional"
 
 #: events/templates/events/event_registration_wrapper.html:25
 #: payments/templates/payment_success.html:41
