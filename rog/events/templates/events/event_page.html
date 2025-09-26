@@ -100,7 +100,11 @@
                             {% endif %}
                             {% can_user_register_on_event as var_can_user_register_on_event %}
                             <div>
-                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium {% if not var_can_user_register_on_event %}disabled{% endif %}" target="_blank">{% translate 'prijava' %}</a>
+                                {% if var_can_user_register_on_event %}
+                                <a href="{% url 'event-registration' event=page.slug %}" class="primary-button button-medium" target="_blank">{% translate 'prijava' %}</a>
+                                {% else %}
+                                <a href="#" class="primary-button button-medium disabled">{% translate 'prijava' %}</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% elif current_user_registered %}

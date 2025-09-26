@@ -44,7 +44,7 @@ class Tool(Orderable, ClusterableModel):
         events = EventPage.objects.filter(event_is_workshop=self.required_workshop, start_day__gte=today).order_by("start_day")
         return events.first()
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Orodje")
         verbose_name_plural = _("Orodja")
         ordering = ["sort_order"]
@@ -63,7 +63,7 @@ class ToolSpecification(Orderable):
         FieldPanel("value"),
     ]
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Specifikacija orodja")
         verbose_name_plural = _("Specifikacije orodja")
         ordering = ["sort_order"]
