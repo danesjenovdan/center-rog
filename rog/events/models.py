@@ -10,6 +10,7 @@ from django.db import models
 from django.db.models import BooleanField, Case, Count, F, Q, Value, When
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from home.models import BasePage, CustomImage, Workshop
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
@@ -369,13 +370,26 @@ class EventPage(BasePage):
 
         return super().save_revision(*args, **kwargs)
 
+    def is_in_past(self):
+        if self.start_day and self.start_time:
+            start_datetime = timezone.make_aware(
+                timezone.datetime.combine(self.start_day, self.start_time)
+            )
+            now = timezone.now().astimezone(start_datetime.tzinfo)
+            return start_datetime < now
+        return False
+
     def can_register(self, user):
+        if self.is_in_past():
+            return False
+
         if self.just_for_members:
             if not user.is_authenticated:
                 return False
             else:
                 if not user.membership:
                     return False
+
         if self.required_plan:
             if not user.has_active_plan(self.required_plan):
                 return False
