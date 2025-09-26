@@ -357,9 +357,11 @@ class EventPage(BasePage):
                 self.extra_registration_questions.create(
                     event=self,
                     type=question.type,
-                    question=question.question,
+                    question_sl=question.question_sl,  # explicitly copy translated field
+                    question_en=question.question_en,  # explicitly copy translated field
                     required=question.required,
-                    choices=question.choices,
+                    choices_sl=question.choices_sl,  # explicitly copy translated field
+                    choices_en=question.choices_en,  # explicitly copy translated field
                     sort_order=last_sort_order,
                 )
             # clear the field
