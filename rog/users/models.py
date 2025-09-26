@@ -74,7 +74,7 @@ class MembershipTypeSpecification(Orderable):
         FieldPanel("name"),
     ]
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Boniteta članstva")
         verbose_name_plural = _("Bonitete članstva")
 
@@ -276,7 +276,7 @@ class User(AbstractUser, Timestampable):
         if membership:
             return membership.latest("valid_to")
         return None
-    
+
     def get_unused_subscriptions(self):
         return PaymentPlanEvent.objects.filter(
             valid_from__isnull=True,

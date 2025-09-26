@@ -10,6 +10,7 @@ from django.db import models
 from django.db.models import BooleanField, Case, Count, F, Q, Value, When
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from home.models import BasePage, CustomImage, Workshop
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
@@ -203,7 +204,7 @@ class EventExtraRegistrationQuestion(Orderable):
     def __str__(self):
         return f"{self.question} ({self.type})"
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Dodatno vprašanje ob prijavi na dogodek")
         verbose_name_plural = _("Dodatna vprašanja ob prijavi na dogodek")
 
@@ -344,27 +345,51 @@ class EventPage(BasePage):
     def save_revision(self, *args, **kwargs):
         # copy extra questions from another event and clear the field
         if other := self.copy_extra_registration_questions_from:
+            # find last sort order
+            last_sort_order = -1
+            last_question = self.extra_registration_questions.order_by(
+                "-sort_order"
+            ).first()
+            if last_question:
+                last_sort_order = last_question.sort_order
             # copy questions from another event
             for question in other.extra_registration_questions.all():
+                last_sort_order += 1
                 self.extra_registration_questions.create(
                     event=self,
                     type=question.type,
-                    question=question.question,
+                    question_sl=question.question_sl,  # explicitly copy translated field
+                    question_en=question.question_en,  # explicitly copy translated field
                     required=question.required,
-                    choices=question.choices,
+                    choices_sl=question.choices_sl,  # explicitly copy translated field
+                    choices_en=question.choices_en,  # explicitly copy translated field
+                    sort_order=last_sort_order,
                 )
             # clear the field
             self.copy_extra_registration_questions_from = None
 
         return super().save_revision(*args, **kwargs)
 
+    def is_in_past(self):
+        if self.start_day and self.start_time:
+            start_datetime = timezone.make_aware(
+                timezone.datetime.combine(self.start_day, self.start_time)
+            )
+            now = timezone.now().astimezone(start_datetime.tzinfo)
+            return start_datetime < now
+        return False
+
     def can_register(self, user):
+        if self.is_in_past():
+            return False
+
         if self.just_for_members:
             if not user.is_authenticated:
                 return False
             else:
                 if not user.membership:
                     return False
+
         if self.required_plan:
             if not user.has_active_plan(self.required_plan):
                 return False
@@ -561,7 +586,7 @@ class EventExtraRegistrationQuestionAnswer(Orderable):
     def __str__(self):
         return f"{self.question}"
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Odgovor na dodatno vprašanje ob prijavi na dogodek")
         verbose_name_plural = _("Odgovori na dodatna vprašanja ob prijavi na dogodek")
 
@@ -584,10 +609,15 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     register_child_check = models.BooleanField(
         verbose_name=_("Na dogodek prijavljam otroka"), default=False
     )
-    disabilities = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Oviranosti (naštej)"), blank=True)
-    allergies = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Alergije (naštej)"), blank=True)
+    disabilities = models.TextField(
+        verbose_name=_("[NI VEČ UPORABLJENO] Oviranosti (naštej)"), blank=True
+    )
+    allergies = models.TextField(
+        verbose_name=_("[NI VEČ UPORABLJENO] Alergije (naštej)"), blank=True
+    )
     agreement_responsibility = models.BooleanField(
-        verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"), default=False
+        verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"),
+        default=False,
     )
     allow_photos = models.BooleanField(
         verbose_name=_("[NI VEČ UPORABLJENO] Dovoljujem fotografiranje in snemanje"),
@@ -630,7 +660,7 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         InlinePanel("event_registration_extra_people", label=_("Dodatne osebe")),
     ]
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = (
             "user",
             "event",
