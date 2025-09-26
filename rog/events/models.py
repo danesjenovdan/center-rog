@@ -203,7 +203,7 @@ class EventExtraRegistrationQuestion(Orderable):
     def __str__(self):
         return f"{self.question} ({self.type})"
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Dodatno vprašanje ob prijavi na dogodek")
         verbose_name_plural = _("Dodatna vprašanja ob prijavi na dogodek")
 
@@ -561,7 +561,7 @@ class EventExtraRegistrationQuestionAnswer(Orderable):
     def __str__(self):
         return f"{self.question}"
 
-    class Meta:
+    class Meta(Orderable.Meta):
         verbose_name = _("Odgovor na dodatno vprašanje ob prijavi na dogodek")
         verbose_name_plural = _("Odgovori na dodatna vprašanja ob prijavi na dogodek")
 
@@ -630,7 +630,7 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
         InlinePanel("event_registration_extra_people", label=_("Dodatne osebe")),
     ]
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = (
             "user",
             "event",
