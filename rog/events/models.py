@@ -344,14 +344,23 @@ class EventPage(BasePage):
     def save_revision(self, *args, **kwargs):
         # copy extra questions from another event and clear the field
         if other := self.copy_extra_registration_questions_from:
+            # find last sort order
+            last_sort_order = -1
+            last_question = self.extra_registration_questions.order_by(
+                "-sort_order"
+            ).first()
+            if last_question:
+                last_sort_order = last_question.sort_order
             # copy questions from another event
             for question in other.extra_registration_questions.all():
+                last_sort_order += 1
                 self.extra_registration_questions.create(
                     event=self,
                     type=question.type,
                     question=question.question,
                     required=question.required,
                     choices=question.choices,
+                    sort_order=last_sort_order,
                 )
             # clear the field
             self.copy_extra_registration_questions_from = None
@@ -584,10 +593,15 @@ class EventRegistration(Orderable, ClusterableModel, Timestampable):
     register_child_check = models.BooleanField(
         verbose_name=_("Na dogodek prijavljam otroka"), default=False
     )
-    disabilities = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Oviranosti (naštej)"), blank=True)
-    allergies = models.TextField(verbose_name=_("[NI VEČ UPORABLJENO] Alergije (naštej)"), blank=True)
+    disabilities = models.TextField(
+        verbose_name=_("[NI VEČ UPORABLJENO] Oviranosti (naštej)"), blank=True
+    )
+    allergies = models.TextField(
+        verbose_name=_("[NI VEČ UPORABLJENO] Alergije (naštej)"), blank=True
+    )
     agreement_responsibility = models.BooleanField(
-        verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"), default=False
+        verbose_name=_("[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"),
+        default=False,
     )
     allow_photos = models.BooleanField(
         verbose_name=_("[NI VEČ UPORABLJENO] Dovoljujem fotografiranje in snemanje"),
