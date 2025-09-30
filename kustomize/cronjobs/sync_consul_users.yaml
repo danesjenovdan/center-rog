@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: rog-sync-consul-users
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "*/5,59 * * * TUE"
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 3
   jobTemplate:
