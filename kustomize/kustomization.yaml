@@ -9,7 +9,7 @@ resources:
   - cronjobs/publish_scheduled.yaml
   - cronjobs/daily_email_sender.yaml
   - cronjobs/resend_data_to_pantheon.yaml
-  - cronjobs/sync_consul_users.yaml
+  # - cronjobs/sync_consul_users.yaml
 images:
   - name: rog
     newName: rg.fr-par.scw.cloud/djnd/rog
