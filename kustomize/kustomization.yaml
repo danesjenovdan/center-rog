@@ -13,4 +13,4 @@ resources:
 images:
   - name: rog
     newName: rg.fr-par.scw.cloud/djnd/rog
-    newTag: '6f6db62a389fc4ea681aee3fb545dfb3b379286e'
+    newTag: '3c825ef1e196ae946af0e71f040227e6540c6dc4'
