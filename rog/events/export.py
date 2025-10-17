@@ -63,6 +63,7 @@ class ExportEventRegistrationView(IndexView):
 
     def export_csv(self):
         data = []
+        questions_count = []
         registrations = self.queryset.filter(registration_finished=True)
         registrations = registrations.select_related(
             "user",
@@ -95,15 +96,14 @@ class ExportEventRegistrationView(IndexView):
             )
 
             last_entry = data[-1]
-            for item in registration.extra_registration_question_answers.all().prefetch_related(
-                "question",
-                "question__answer_file",
-            ):
+            question_answers = registration.extra_registration_question_answers.all()
+            questions_count.append(len(question_answers))
+            for index, item in enumerate(question_answers):
                 if item.question:
                     if item.answer_file:
-                        last_entry[item.question] = item.answer_file.url
+                        last_entry[f"question {index}"] = f"{item.question} -> {item.answer_file.url}"
                     else:
-                        last_entry[item.question] = item.answer
+                        last_entry[f"question {index}"] = f"{item.question} -> {item.answer}"
 
             for child in registration.event_registration_children.all():
                 data.append(
@@ -148,8 +148,10 @@ class ExportEventRegistrationView(IndexView):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
+        q_fields = [f"question {i}" for i in range(max(questions_count)+1)]
         try:
-            writer = csv.DictWriter(response, fieldnames=data[0].keys())
+            fields = list(data[0].keys()) + q_fields
+            writer = csv.DictWriter(response, fieldnames=fields)
         except IndexError:
             return response
         writer.writeheader()
