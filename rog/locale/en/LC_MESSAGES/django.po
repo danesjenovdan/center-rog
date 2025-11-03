@@ -421,7 +421,7 @@ msgstr "sign up"
 #: events/templates/events/event_page.html:65
 #: events/templates/events/event_page.html:75
 msgid "brezplačno"
-msgstr ""
+msgstr "free entrance"
 
 #: events/templates/events/event_page.html:62
 msgid "za člane"
