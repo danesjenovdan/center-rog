@@ -391,6 +391,7 @@ class PaymentDataXML(views.APIView):
                 <opis>{pp.plan_name}</opis>
                 <kolicina>1</kolicina>
                 <cena>{pp.price}</cena>
+                <odstotekDdv>22</odstotekDdv>
             </postavka>
             """
             )
