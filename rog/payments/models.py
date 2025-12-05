@@ -169,6 +169,11 @@ class Plan(Timestampable):
         default=False,
         help_text=_("Should this plan extend the membership if needed?")
     )
+    prima_group_id = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text=_("Prima subscription group id associated with this plan")
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -200,6 +205,7 @@ class Plan(Timestampable):
         FieldPanel("year_token_limit"),
         FieldPanel("workshops"),
         FieldPanel("pantheon_ident_id"),
+        FieldPanel("prima_group_id"),
         FieldPanel("payment_item_type"),
         FieldPanel("extend_membership"),
     ]

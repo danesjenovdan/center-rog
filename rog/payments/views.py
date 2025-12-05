@@ -515,6 +515,11 @@ class ActivatePackage(views.APIView):
         payment_plan.save()
 
         create_prima_user_if_not_exists(user, payment_plan.payment.id)
+        if plan.prima_group_id:
+            prima_api.addUserToSubscriptionGroup(user.prima_id, plan.prima_group_id)
+        tokens = plan.tokens
+        if tokens > 0:
+            prima_api.addTokensToUserBalance(user.prima_id, tokens)
 
         # always set uporabnina dates on prima from now since there could be an active plan already
         valid_from_prima = timezone.now()
