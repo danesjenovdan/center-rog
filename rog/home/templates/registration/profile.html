@@ -61,12 +61,15 @@
                         /
                         {% endif %}
                     </p>
+                    {% comment %} for testing only show tokens link when enabled with ?enable_tokens=1 {% endcomment %}
+                    {% if request.GET.enable_tokens == "1" %}
                     <p class="mb-1">
                         <a class="link" href="{% url 'profile-purchase-tokens' %}">
                             <span class="link-text">{% translate 'Kupi žetone' %}</span>
                             <span class="link-icon"></span>
                         </a>
                     </p>
+                    {% endif %}
                 </div>
                 {% if unused_subscriptions %}
                     {% with unused_subscriptions|first as unused_subscription %}
