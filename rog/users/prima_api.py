@@ -242,7 +242,7 @@ class PrimaApi(object):
 
         payload = {
             "Request": "UpdateUserBalance",
-            "" "UsrID": user_id,
+            "UsrID": user_id,
             "WltID": 8,  # WltID Enkratni obisk = 8
             "AddBalance": tokens,
         }

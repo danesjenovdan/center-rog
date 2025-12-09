@@ -61,6 +61,12 @@
                         /
                         {% endif %}
                     </p>
+                    <p class="mb-1">
+                        <a class="link" href="{% url 'profile-purchase-tokens' %}">
+                            <span class="link-text">{% translate 'Kupi žetone' %}</span>
+                            <span class="link-icon"></span>
+                        </a>
+                    </p>
                 </div>
                 {% if unused_subscriptions %}
                     {% with unused_subscriptions|first as unused_subscription %}

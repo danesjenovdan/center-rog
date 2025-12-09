@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponse
 from django.db.models import OuterRef, Subquery
 
-from .models import Plan, Payment, PromoCode, PaymentPlanEvent
+from .models import Plan, Payment, PromoCode, PaymentPlanEvent, TokenSettings
 from events.export import ExportModelAdminMixin
 from wagtail_rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
 
@@ -58,6 +58,7 @@ class PlanAdmin(ModelAdmin):
     menu_order = 200
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_display = ["__str__", "price", "payment_item_type" ]
 
 
 class PaymentAdmin(ExportModelAdminMixin, ModelAdmin):
@@ -149,8 +150,18 @@ class PromoCodeAdmin(ExportModelAdminMixin, ModelAdmin):
         if limit > 0:
             return f"{uses}/{limit}"
         return f"{uses}/∞"
+    
+
+class TokenSettingsAdmin(ModelAdmin):
+    model = TokenSettings
+    menu_icon = "cog"
+    menu_order = 217
+    add_to_settings_menu = True
+    add_to_admin_menu = False
+    list_display = ["__str__", "regular_price", "special_price", "max_purchase_quantity"]
 
 
 modeladmin_register(PlanAdmin)
 modeladmin_register(PaymentAdmin)
 modeladmin_register(PromoCodeAdmin)
+modeladmin_register(TokenSettingsAdmin)

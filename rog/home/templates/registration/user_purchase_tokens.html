@@ -1,0 +1,70 @@
+{% extends "home/wrapper_page.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate 'Nakup uporabnine' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_js %}
+{% endblock extra_js %}
+
+{% block page_body %}
+
+<div class="container register-container color-scheme-light-gray">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-10 col-xxl-6">
+
+            <div class="registration-progress">
+                <div class="point active"><span>{% translate 'izbira žetonov' %}</span></div>
+                <div class="point"><span>{% translate 'plačilo' %}</span></div>
+            </div>
+
+            <h1>{% translate 'Izberi število žetonov' %}:</h1>
+
+            <p>{% translate 'Z nakupom dodatnih žetonov lahko obiskuješ delavnice in dogodke v našem centru, po tem ko porabiš svoje žetone iz uporabniškega paketa.' %}</p>
+
+        </div>
+
+        <div class="col-md-12 col-xxl-8">
+            <form method="post" class="user-purchase-plan">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-6 col-xl-4 my-4">
+                        <div class="radio-square btn">
+                            <h3>{% translate 'Žetoni' %}</h3>
+                            <p><small class="mb-0">{% translate 'cena' %}</small></p>
+                            {% if user.is_eligible_to_discount %}
+                            <p class="price">fix 5€</p>
+                            {% else %}
+                            <p class="price">fix 10€</p>
+                            {% endif %}
+                            <hr />
+                            <p class="small">{% translate 'Nakup žetonov za laboratorije' %}</p>
+                            <hr />
+                            <ul>
+                                <li>{% translate 'Kupite lahko največ 10 žetonov na enkrat.' %}</li>
+                            </ul>
+                            <div class="tokens-input">
+                                <label for="id_token_quantity">{% translate 'Število žetonov' %}:</label>
+                                <input type="number" name="token_quantity" id="id_token_quantity" min="1" max="10" value="1" required="" class="form-control input-tokens" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end my-4">
+                    <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock page_body %}

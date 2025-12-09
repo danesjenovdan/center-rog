@@ -15,12 +15,13 @@ from wkhtmltopdf.views import PDFTemplateResponse
 from decimal import Decimal
 from sentry_sdk import capture_message
 
-from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType
+from .models import Payment, Plan, PaymentPlanEvent, PromoCode, PaymentItemType, TokenSettings
 from users.models import Membership, MembershipType
 from .parsers import XMLParser
 from .forms import PromoCodeForm
 from .utils import get_invoice_number, get_free_invoice_number, finish_payment, create_prima_user_if_not_exists
 from events.models import EventRegistration, EventPage
+from home.models.settings import MetaSettings
 
 from users.prima_api import PrimaApi
 
@@ -40,6 +41,7 @@ class PaymentPreview(views.APIView):
         membership_id = request.GET.get("membership", False)
         event_registration_id = request.GET.get("event_registration", False)
         next_page = request.GET.get("next", None)
+        tokens = request.GET.get("tokens", False)
         user = request.user
 
         if plan_id:
@@ -197,6 +199,45 @@ class PaymentPreview(views.APIView):
                 )
             else:
                 return redirect("profile-my")
+        elif user and tokens:
+            tokens = int(tokens)
+            token_settings = TokenSettings.load()
+            if tokens > token_settings.max_purchase_quantity:
+                tokens = token_settings.max_purchase_quantity              
+            if user.is_eligible_to_discount():
+                token_price = token_settings.special_price
+            else:
+                token_price = token_settings.regular_price
+            total_price = tokens * token_price
+
+            payment = Payment(
+                user=user,
+                redirect_after_success=next_page
+            )
+            payment.amount = total_price
+            payment.original_amount = total_price
+            payment.save()
+            plan_name = _("Žeton: ") + str(tokens) + "X"
+            PaymentPlanEvent(
+                plan_name=plan_name,
+                payment=payment,
+                price=total_price,
+                quantity=tokens,
+                original_price=total_price,
+                payment_item_type=PaymentItemType.TOKENS,
+            ).save()
+
+            promo_code_form = PromoCodeForm({"payment_id": payment.id})
+
+            return render(
+                request,
+                "registration_payment_preview.html",
+                {
+                    "payment": payment,
+                    "promo_code_form": promo_code_form,
+                    "purchase_type": purchase_type,
+                },
+            )
         else:
             return redirect("profile-my")
 
@@ -242,6 +283,29 @@ class PaymentPreview(views.APIView):
                             valid_promo_code.save()
 
                             break
+                        if payment_plan.payment_item_type in [PaymentItemType.TOKENS]:
+                            token_settings = TokenSettings.load()
+                            valid_promo_code = PromoCode.objects.get(code=promo_code)
+                            payment_plan.promo_code = valid_promo_code
+                            payment_plan.save()
+                            token_price = (
+                                token_settings.special_price
+                                if user.is_eligible_to_discount()
+                                else token_settings.regular_price
+                            )
+                            total_price = payment_plan.quantity * token_price
+                            payment.amount -= total_price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment.save()
+                            payment_plan.price = total_price - total_price * Decimal(
+                                valid_promo_code.percent_discount / 100
+                            )
+                            payment_plan.save()
+                            promo_code_error = False
+                            promo_code_success = True
+                            valid_promo_code.last_entry_at = datetime.now()
+                            valid_promo_code.save()
                         else:
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
                             payment_plan.promo_code = valid_promo_code
