@@ -33,7 +33,7 @@
         <div class="col-md-12 col-xxl-8">
             <form method="post" class="user-purchase-plan">
                 {% csrf_token %}
-                <div class="row justify-content-center">
+                <div class="row justify-content-center radio-square-wrapper not-actual-radio">
                     <div class="col-12 col-md-6 col-xl-4 my-4">
                         <div class="radio-square btn">
                             <h3>{% translate 'Žetoni' %}</h3>
@@ -49,7 +49,7 @@
                             <ul>
                                 <li>{% translate 'Kupite lahko največ 10 žetonov na enkrat.' %}</li>
                             </ul>
-                            <div class="tokens-input">
+                            <div class="tokens-input form-field-wrapper">
                                 <label for="id_token_quantity">{% translate 'Število žetonov' %}:</label>
                                 <input type="number" name="token_quantity" id="id_token_quantity" min="1" max="10" value="1" required="" class="form-control input-tokens" />
                             </div>
