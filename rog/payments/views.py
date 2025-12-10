@@ -595,6 +595,8 @@ class ActivatePackage(views.APIView):
         create_prima_user_if_not_exists(user, payment_plan.payment.id)
         if plan.prima_group_id:
             prima_api.addUserToSubscriptionGroup(user.prima_id, plan.prima_group_id)
+            user.prima_group_id = plan.prima_group_id
+            user.save()
         tokens = plan.tokens
         if tokens > 0:
             prima_api.addTokensToUserBalance(user.prima_id, tokens)

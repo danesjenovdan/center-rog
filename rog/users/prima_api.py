@@ -274,5 +274,20 @@ class PrimaApi(object):
                 "UsrID": user_id,
                 "LstID": group_id,
             }
+            data, message = self.primaRequest(payload)
+
+        return data, message
+    
+    def removeUserFromSubscriptionGroup(self, user_id, group_id):
+        """
+        Adds user to subscription group.
+
+        """
+        payload = {
+            "Request": "DeleteUsersList",
+            "UsrID": user_id,
+            "LstID": group_id,
+        }
+        data, message = self.primaRequest(payload)
 
         return data, message

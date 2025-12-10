@@ -8,7 +8,7 @@ from django.utils import timezone
 
 
 class Command(BaseCommand):
-    help = "One per day reset of prima groups for members and subscriptions"
+    help = "Fix prima data for new feature tokens and groups"
 
     def handle(self, *args, **options):
         prima_api = PrimaApi()
@@ -20,6 +20,8 @@ class Command(BaseCommand):
         for active_membership in active_memberships:
             user = active_membership.user
             prima_api.addUserToSubscriptionGroup(user.prima_id, 100)
+            user.prima_group_id = 100
+            user.save()
 
         # Set groups and tokens for all active payment plans
         active_subscriptions = PaymentPlanEvent.objects.filter(
@@ -31,4 +33,6 @@ class Command(BaseCommand):
             plan = active_payment.plan
             prima_api.addUserToSubscriptionGroup(user.prima_id, plan.prima_group_id)
             prima_api.addTokensToUserBalance(user.prima_id, plan.tokens)
+            user.prima_group_id = plan.prima_group_id
+            user.save()
 
