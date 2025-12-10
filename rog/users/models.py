@@ -224,9 +224,11 @@ class User(AbstractUser, Timestampable):
         max_num=10,
         verbose_name=_("Galerija"),
     )
-
     saved_in_pantheon = models.BooleanField(
         default=False, help_text=_("Ali je oseba že shranjena v Pantheonu?")
+    )
+    prima_group_id = models.IntegerField(
+        null=True, blank=True, verbose_name="Group ID which is assigned in Prima"
     )
 
     objects = UserManager()
