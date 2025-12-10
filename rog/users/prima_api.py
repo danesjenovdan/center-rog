@@ -291,3 +291,31 @@ class PrimaApi(object):
         data, message = self.primaRequest(payload)
 
         return data, message
+
+    def readUserSubscriptionGroups(self, user_id):
+        """
+        Returns all subscription groups.
+        """
+
+        payload = {
+            "Request": "ReadUsersList",
+            "Range": "UsrID",
+            "UsrID": user_id,
+        }
+
+        data, message = self.primaRequest(payload)
+
+        return data, message
+    
+    def readUserBalanceTokens(self, user_id):
+        """
+        Returns user balance tokens.
+        """
+        payload = {
+            "Request": "ReadUserBalances",
+            "Range": "UsrID",
+            "UsrID": user_id,
+
+        }
+        data, message = self.primaRequest(payload)
+        return data, message
