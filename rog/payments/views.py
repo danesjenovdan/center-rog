@@ -566,10 +566,24 @@ class ActivatePackage(views.APIView):
             if last_payment_plan and last_payment_plan.valid_to
             else timezone.now()
         )
+    
         new_subscription_valid_to = subscription_valid_to + timedelta(days=plan.duration)
         last_active_membership = user.get_last_active_membership()
-        if (not last_active_membership) or (new_subscription_valid_to > last_active_membership.valid_to):
+        need_to_extend_membership = (not last_active_membership) or (new_subscription_valid_to > last_active_membership.valid_to)
+        if need_to_extend_membership and not plan.extend_membership:
             return redirect("profile-extend-membership")
+        
+        if plan.extend_membership:
+            if last_active_membership.valid_to < valid_to:
+                membership = Membership(
+                    valid_from=last_active_membership.valid_to,
+                    valid_to=valid_to,
+                    type=last_active_membership.type,
+                    active=True,
+                    user=user,
+                    extended_by=plan
+                )
+                membership.save()
         
         last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
         valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
