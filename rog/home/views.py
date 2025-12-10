@@ -176,6 +176,35 @@ class PurchasePlanView(TemplateView):
             print("Form ni valid")
 
         return render(request, self.template_name, {"form": form})
+    
+
+@method_decorator(login_required, name="dispatch")
+class PurchaseTokensView(TemplateView):
+    template_name = "registration/user_purchase_tokens.html"
+
+    def get(self, request, *args, **kwargs):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+
+        return render(request, self.template_name, {"user": current_user})
+
+    def post(self, request):
+        current_user = request.user
+
+        if not current_user.email_confirmed:
+            return redirect("registration-email-confirmation")
+        
+        request_data = request.POST
+        tokens = request_data.get("token_quantity")
+
+        if tokens:
+            return redirect(f"/placilo?&purchase_type=tokens&tokens={tokens}")
+        else:
+            print("Form ni valid")
+
+        return render(request, self.template_name, {"user": current_user})
 
 
 @method_decorator(login_required, name="dispatch")
