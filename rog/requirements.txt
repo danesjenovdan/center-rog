@@ -51,3 +51,4 @@ Wand==0.6.11
 webencodings==0.5.1
 Willow==1.8.0
 xmltodict==0.13.0
+ipython

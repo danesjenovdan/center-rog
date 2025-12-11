@@ -43,6 +43,30 @@ class PaymentItemType(models.TextChoices):
     UPORABNINA = "uporabnina", _("Uporabnina")
     EVENT = "event", _("Dogodek")
     TRAINING = "training", _("Usposabljanje")
+    TOKENS = "tokens", _("Žetoni")
+
+
+class TokenSettings(models.Model):
+    regular_price = models.DecimalField(decimal_places=2, max_digits=10, verbose_name=_("Cena žetona"), default=8.00)
+    special_price = models.DecimalField(decimal_places=2, max_digits=10, verbose_name=_("Posebna cena žetona (študente in upokojence)"), default=8.00)
+    max_purchase_quantity = models.IntegerField(verbose_name=_("Maksimalno število žetonov na nakup"), default=10)
+
+    class Meta:
+        verbose_name = _("Nastavitve žetonov")
+        verbose_name_plural = _("Nastavitve žetonov")
+
+    def __str__(self):
+        return str(_("Nastavitve žetonov"))
+
+    def load():
+        obj, created = TokenSettings.objects.get_or_create(id=1)
+        return obj
+    
+    panels = [
+        FieldPanel("regular_price"),
+        FieldPanel("special_price"),
+        FieldPanel("max_purchase_quantity"),
+    ]
 
 
 class ActiveAtQuerySet(models.QuerySet):
@@ -169,6 +193,11 @@ class Plan(Timestampable):
         default=False,
         help_text=_("Should this plan extend the membership if needed?")
     )
+    prima_group_id = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text=_("Prima subscription group id associated with this plan")
+    )
 
     def __str__(self):
         return f"{self.name}"
@@ -200,6 +229,7 @@ class Plan(Timestampable):
         FieldPanel("year_token_limit"),
         FieldPanel("workshops"),
         FieldPanel("pantheon_ident_id"),
+        FieldPanel("prima_group_id"),
         FieldPanel("payment_item_type"),
         FieldPanel("extend_membership"),
     ]
@@ -243,6 +273,7 @@ class PaymentPlanEvent(models.Model):
 
     plan_name = models.CharField(max_length=100, verbose_name=_("Ime paketa na dan nakupa"), help_text=_("Npr. letna uporabnina"),)
     original_price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    quantity = models.IntegerField(default=1)
     price = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     promo_code = models.ForeignKey(
         "PromoCode",
@@ -337,6 +368,7 @@ class Payment(Timestampable):
     invoice_number = models.CharField(max_length=100, null=True, blank=True)
     membership = models.ForeignKey('users.Membership', null=True, blank=True, on_delete=models.SET_NULL)
     redirect_after_success = models.CharField(max_length=256, null=True, blank=True, help_text="Where to redirect after success")
+    tokens_added_to_wallet_at = models.DateTimeField(null=True, blank=True, help_text="When tokens have been successfully added to user's wallet after payment")
     panels = [
         FieldPanel("user"),
         FieldPanel("ujp_id"),
