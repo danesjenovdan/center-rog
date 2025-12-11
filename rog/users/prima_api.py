@@ -259,7 +259,7 @@ class PrimaApi(object):
 
         payload = {
             "Request": "CreateUsersList",
-            "UsrID": user_id,
+            "UsrID1": user_id,
             "LstID": group_id,
         }
 
@@ -271,7 +271,7 @@ class PrimaApi(object):
             group_id = group.value
             payload = {
                 "Request": "DeleteUsersList",
-                "UsrID": user_id,
+                "UsrID1": user_id,
                 "LstID": group_id,
             }
             data, message = self.primaRequest(payload)
