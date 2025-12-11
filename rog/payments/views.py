@@ -600,6 +600,9 @@ class ActivatePackage(views.APIView):
         tokens = plan.tokens
         if tokens > 0:
             prima_api.addTokensToUserBalance(user.prima_id, tokens)
+            payment = payment_plan.payment
+            payment.tokens_added_to_wallet_at = timezone.now()
+            payment.save()
 
         # always set uporabnina dates on prima from now since there could be an active plan already
         valid_from_prima = timezone.now()
