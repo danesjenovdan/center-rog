@@ -408,28 +408,36 @@ form {
             }
         }
 
-        input {
-            position: absolute;
-            clip: rect(0, 0, 0, 0);
-            pointer-events: none;
-        }
+        &:not(.not-actual-radio) {
+            input {
+                position: absolute;
+                clip: rect(0, 0, 0, 0);
+                pointer-events: none;
+            }
 
-        input + .btn {
-            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
-        }
+            input + .btn {
+                transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out;
+            }
 
-        input:checked + .btn {
-            color: #fff;
-            background-color: $cs-dark-gray;
+            input:checked + .btn {
+                color: #fff;
+                background-color: $cs-dark-gray;
 
-            hr {
-                border-color: #fff;
+                hr {
+                    border-color: #fff;
+                }
+            }
+
+            input:focus-visible + .btn {
+                border-color: $cs-focus-green;
+                outline: 1.5px solid $cs-focus-green;
             }
         }
 
-        input:focus-visible + .btn {
-            border-color: $cs-focus-green;
-            outline: 1.5px solid $cs-focus-green;
+        &.not-actual-radio {
+            .form-field-wrapper {
+                margin-bottom: 0;
+            }
         }
     }
 }

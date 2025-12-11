@@ -82,6 +82,12 @@ def finish_payment(payment):
             scope.set_extra("payment", payment.id)
             capture_message(msg, 'fatal')
 
+    if item := payment.payment_plans.filter(payment_item_type=PaymentItemType.TOKENS).first():
+        create_prima_user_if_not_exists(user, payment.id)
+        prima_api.addTokensToUserBalance(user.prima_id, item.quantity)
+        payment.tokens_added_to_wallet_at = timezone.now()
+        payment.save()
+
     # set valid_to if plan is subscription
     items = []
     for payment_plan in payment.payment_plans.all():

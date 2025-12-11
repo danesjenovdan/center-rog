@@ -25,6 +25,7 @@ from home.views import (
     RegistrationMembershipView,
     RegistrationInformationView,
     RegistrationProfileView,
+    PurchaseTokensView,
     # RegistrationPaymentView,
     # RegistrationSuccessView,
 )
@@ -111,6 +112,7 @@ urlpatterns = urlpatterns + i18n_patterns(
     path("profil/uredi/", EditProfileView.as_view(), name="profile-edit"),
     path("profil/isci/", SearchProfileView.as_view(), name="profile-search"),
     path("profil/nakup/", PurchasePlanView.as_view(), name="profile-purchase-plan"),
+    path("profil/nakup-zetonov/", PurchaseTokensView.as_view(), name="profile-purchase-tokens"),
     path(
         "profil/clanstvo/",
         PurchaseMembershipView.as_view(),
