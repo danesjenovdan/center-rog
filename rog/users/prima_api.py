@@ -268,11 +268,10 @@ class PrimaApi(object):
         for group in PrimaApi.SubscriptionGroupsEnum:
             if group.value == group_id:
                 continue
-            group_id = group.value
             payload = {
                 "Request": "DeleteUsersList",
                 "UsrID1": user_id,
-                "LstID": group_id,
+                "LstID": group.value,
             }
             data, message = self.primaRequest(payload)
 
