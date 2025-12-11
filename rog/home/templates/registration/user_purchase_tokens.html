@@ -39,19 +39,21 @@
                             <h3>{% translate 'Žetoni' %}</h3>
                             <p><small class="mb-0">{% translate 'cena' %}</small></p>
                             {% if user.is_eligible_to_discount %}
-                            <p class="price">fix 5€</p>
+                            <p class="price">{{ token_settings.special_price }}€</p>
                             {% else %}
-                            <p class="price">fix 10€</p>
+                            <p class="price">{{ token_settings.regular_price }}€</p>
                             {% endif %}
                             <hr />
                             <p class="small">{% translate 'Nakup žetonov za laboratorije' %}</p>
                             <hr />
                             <ul>
-                                <li>{% translate 'Kupite lahko največ 10 žetonov na enkrat.' %}</li>
+                                {% with num_tokens=token_settings.max_tokens %} 
+                                    <li>{% translate 'Kupite lahko največ' %} {{ num_tokens }} {% translate 'žetonov na enkrat.' %}</li>
+                                {% endwith %}
                             </ul>
                             <div class="tokens-input form-field-wrapper">
                                 <label for="id_token_quantity">{% translate 'Število žetonov' %}:</label>
-                                <input type="number" name="token_quantity" id="id_token_quantity" min="1" max="10" value="1" required="" class="form-control input-tokens" />
+                                <input type="number" name="token_quantity" id="id_token_quantity" min="1" max="{{ token_settings.max_purchase_quantity }}" value="1" required="" class="form-control input-tokens" />
                             </div>
                         </div>
                     </div>
