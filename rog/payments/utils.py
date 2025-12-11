@@ -81,15 +81,8 @@ def finish_payment(payment):
             scope.set_extra("membership", membership.id)
             scope.set_extra("payment", payment.id)
             capture_message(msg, 'fatal')
-    if item := payment.items.filter(payment_item_type=PaymentItemType.UPORABNINA).first():
-        # add tokens to user's prima balance
-        if item.plan.tokens > 0:
-            create_prima_user_if_not_exists(user, payment.id)
-            prima_api.addTokensToUserBalance(user.prima_id, item.quantity)
-            payment.tokens_added_to_wallet_at = timezone.now()
-            payment.save()
-              
-    if item := payment.items.filter(payment_item_type=PaymentItemType.TOKENS).first():
+
+    if item := payment.payment_plans.filter(payment_item_type=PaymentItemType.TOKENS).first():
         create_prima_user_if_not_exists(user, payment.id)
         prima_api.addTokensToUserBalance(user.prima_id, item.quantity)
         payment.tokens_added_to_wallet_at = timezone.now()
