@@ -27,7 +27,7 @@ from users.prima_api import PrimaApi
 from users.tokens import get_token_for_user
 from home.email_utils import send_email, id_generator
 
-from payments.models import Plan
+from payments.models import Plan, TokenSettings
 from events.models import EventRegistration
 
 prima_api = PrimaApi()
@@ -184,14 +184,16 @@ class PurchaseTokensView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         current_user = request.user
+        token_settings = TokenSettings.load()
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
 
-        return render(request, self.template_name, {"user": current_user})
+        return render(request, self.template_name, {"user": current_user, "token_settings": token_settings})
 
     def post(self, request):
         current_user = request.user
+        token_settings = TokenSettings.load()
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
@@ -204,7 +206,7 @@ class PurchaseTokensView(TemplateView):
         else:
             print("Form ni valid")
 
-        return render(request, self.template_name, {"user": current_user})
+        return render(request, self.template_name, {"user": current_user,  "token_settings": token_settings})
 
 
 @method_decorator(login_required, name="dispatch")
