@@ -573,6 +573,13 @@ class ActivatePackage(views.APIView):
         if need_to_extend_membership and not plan.extend_membership:
             return redirect("profile-extend-membership")
         
+        last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
+        valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
+        valid_to = valid_from + timedelta(days=payment_plan.plan.duration)
+        payment_plan.valid_to = valid_to
+        payment_plan.valid_from = valid_from
+        payment_plan.save()
+
         if plan.extend_membership:
             if last_active_membership.valid_to < valid_to:
                 membership = Membership(
@@ -584,13 +591,6 @@ class ActivatePackage(views.APIView):
                     extended_by=plan
                 )
                 membership.save()
-        
-        last_payment_plan = user.payments.get_last_active_subscription_payment_plan()
-        valid_from = last_payment_plan.valid_to if last_payment_plan and last_payment_plan.valid_to else timezone.now()
-        valid_to = valid_from + timedelta(days=payment_plan.plan.duration)
-        payment_plan.valid_to = valid_to
-        payment_plan.valid_from = valid_from
-        payment_plan.save()
 
         create_prima_user_if_not_exists(user, payment_plan.payment.id)
         if plan.prima_group_id:
