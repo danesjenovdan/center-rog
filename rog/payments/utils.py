@@ -14,7 +14,7 @@ prima_api = PrimaApi()
 
 def create_prima_user_if_not_exists(user, payment_id):
     if not user.prima_id:
-        data, message = prima_api.createUser(user.email)
+        data, message = prima_api.createUser(user.email, user.first_name, user.last_name)
         if data:
             prima_id = data["UsrID"]
             user.prima_id = prima_id
