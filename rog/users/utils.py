@@ -11,7 +11,7 @@ def set_names_to_prima_users():
     )
     for user in users:
         data, msg = prima_api.readUsers(user_id=user.prima_id)
-        if "user" in data.keys():
+        if not "user" in data.keys():
             continue
         if not "@UsrName" in data["user"].keys():
             prima_api.updateUserName(
@@ -41,7 +41,7 @@ def count_prima_users_without_names():
     )
     for user in users:
         data, msg = prima_api.readUsers(user_id=user.prima_id)
-        if "user" in data.keys():
+        if not "user" in data.keys():
             continue
         if not '@UsrName' in data["user"].keys():
             i+=1
