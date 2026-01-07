@@ -123,7 +123,7 @@ class PrimaApi(object):
 
         return data, message
 
-    def createUser(self, email):
+    def createUser(self, email, first_name="", last_name=""):
         """
         Create user in Prima system.
         """
@@ -132,8 +132,8 @@ class PrimaApi(object):
 
         payload = {
             "Request": "CreateUser",
-            # 'UsrName': name,
-            # 'UsrLastName': lastname,
+            "UsrName": first_name,
+            "UsrLastName": last_name,
             "UsrAccessLevel": "5",  # UsrAccessLevel=5 pomeni omejen dostop do requestov
             "UsrLoginName": email,
             "UsrEMail": email,
@@ -170,6 +170,22 @@ class PrimaApi(object):
             "UsrLastName": last_name,
             "UsrValidFrom": valid_from,
             "UsrValidTo": valid_to,
+        }
+
+        data, message = self.primaRequest(payload)
+
+        return data, message
+    
+    def updateUserName(self, user_id, name, last_name):
+        """
+        Update user's name and last name.
+        """
+
+        payload = {
+            "Request": "UpdateUser",
+            "UsrID": user_id,
+            "UsrName": name,
+            "UsrLastName": last_name,
         }
 
         data, message = self.primaRequest(payload)
