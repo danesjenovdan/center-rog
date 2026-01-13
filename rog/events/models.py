@@ -120,14 +120,20 @@ class EventPageManager(PageManager):
                         event_registrations__registration_finished=True,
                         event_registrations__event_registration_children__isnull=True,
                     ),
+                    distinct=True,
                 ),
                 booked_children=Count(
                     "event_registrations__event_registration_children",
                     filter=Q(event_registrations__registration_finished=True),
+                    distinct=True,
                 ),
                 booked_extra_people=Count(
                     "event_registrations__event_registration_extra_people",
-                    filter=Q(event_registrations__registration_finished=True),
+                    filter=Q(
+                        event_registrations__registration_finished=True,
+                        event_registrations__event_registration_children__isnull=True,
+                    ),
+                    distinct=True,
                 ),
             )
             .annotate(
