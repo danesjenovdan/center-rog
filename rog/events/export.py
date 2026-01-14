@@ -33,9 +33,34 @@ class ExportButtonHelper(ButtonHelper):
             "title": text,
         }
 
+    def export_report_button(self, classnames_add=None, classnames_exclude=None):
+        if classnames_add is None:
+            classnames_add = []
+        if classnames_exclude is None:
+            classnames_exclude = []
+
+        classnames = self.export_button_classnames + classnames_add
+        cn = self.finalise_classname(classnames, classnames_exclude)
+        text = _("Export Report to CSV")
+
+        return {
+            "url": self.url_helper.get_action_url(
+                "export_report", query_params=self.request.GET
+            ),
+            "label": text,
+            "classname": cn,
+            "title": text,
+        }
+
 
 class ExportAdminURLHelper(AdminURLHelper):
-    non_object_specific_actions = ("create", "choose_parent", "index", "export")
+    non_object_specific_actions = (
+        "create",
+        "choose_parent",
+        "index",
+        "export",
+        "export_report",
+    )
 
     def get_action_url(self, action, *args, **kwargs):
         query_params = kwargs.pop("query_params", None)
@@ -65,13 +90,14 @@ class ExportEventRegistrationView(IndexView):
         data = []
         questions_count = []
         registrations = self.queryset.filter(registration_finished=True)
-        registrations = registrations.select_related(
-            "user",
-            "event"
-        ).prefetch_related(
-            "event_registration_children",
-            "event_registration_extra_people",
-        ).order_by("event__start_day", "event__start_time")
+        registrations = (
+            registrations.select_related("user", "event")
+            .prefetch_related(
+                "event_registration_children",
+                "event_registration_extra_people",
+            )
+            .order_by("event__start_day", "event__start_time")
+        )
         for registration in registrations:
             data.append(
                 {
@@ -90,7 +116,9 @@ class ExportEventRegistrationView(IndexView):
                     "allow_photos": registration.allow_photos,
                     "gender": "",
                     "birth_date": (
-                        registration.user.birth_date.isoformat() if registration.user.birth_date else ""
+                        registration.user.birth_date.isoformat()
+                        if registration.user.birth_date
+                        else ""
                     ),
                 }
             )
@@ -101,9 +129,13 @@ class ExportEventRegistrationView(IndexView):
             for index, item in enumerate(question_answers):
                 if item.question:
                     if item.answer_file:
-                        last_entry[f"question {index}"] = f"{item.question} -> {item.answer_file.url}"
+                        last_entry[f"question {index}"] = (
+                            f"{item.question} -> {item.answer_file.url}"
+                        )
                     else:
-                        last_entry[f"question {index}"] = f"{item.question} -> {item.answer}"
+                        last_entry[f"question {index}"] = (
+                            f"{item.question} -> {item.answer}"
+                        )
 
             for child in registration.event_registration_children.all():
                 data.append(
@@ -148,7 +180,7 @@ class ExportEventRegistrationView(IndexView):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
-        q_fields = [f"question {i}" for i in range(max(questions_count)+1)]
+        q_fields = [f"question {i}" for i in range(max(questions_count) + 1)]
         try:
             fields = list(data[0].keys()) + q_fields
             writer = csv.DictWriter(response, fieldnames=fields)
@@ -165,10 +197,108 @@ class ExportEventRegistrationView(IndexView):
         return self.export_csv()
 
 
+class ExportReportView(IndexView):
+    model_admin = None
+
+    def export_csv(self):
+        from events.models import EventPage
+        
+        data = []
+        registrations = self.queryset.filter(registration_finished=True)
+        registrations = (
+            registrations.select_related("user", "event")
+            .prefetch_related(
+                "event_registration_children",
+                "event_registration_extra_people",
+                "event__categories",
+                "event__labs",
+            )
+            .order_by("event__start_day", "event__start_time")
+        )
+
+        event_ids = set(registrations.values_list("event_id", flat=True))
+        
+        events_with_annotations = {
+            event.id: event 
+            for event in EventPage.objects.live().filter(id__in=event_ids).prefetch_related("categories", "labs")
+        }
+
+        events_data = {}
+        for registration in registrations:
+            event_key = registration.event.id
+            if event_key not in events_data:
+                event = registration.event
+                event_annotated = events_with_annotations.get(event_key)
+                
+                categories = ", ".join([cat.name for cat in event.categories.all()])
+                
+                labs = ", ".join([lab.title for lab in event.labs.all()])
+                
+                if event_annotated:
+                    free_places = event_annotated.get_free_places()
+                    booked_count = getattr(event_annotated, "booked_count", None)
+                    if event.number_of_places == 0:
+                        free_places = "unlimited"
+                else:
+                    free_places = "N/A"
+                    booked_count = "N/A"
+                
+                events_data[event_key] = {
+                    "id": event.id,
+                    "categories": categories,
+                    "start_day": event.start_day,
+                    "price": event.price,
+                    "number_of_places": (
+                        event.number_of_places
+                        if event.number_of_places > 0
+                        else "unlimited"
+                    ),
+                    "lab": labs,
+                    "free_places": free_places,
+                    "booked_users": booked_count,
+                    "event_url": event.full_url,
+                    "is_live": event.live,
+                }
+
+        data = list(events_data.values())
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="event_report.csv"'},
+        )
+
+        if not data:
+            return response
+
+        fields = [
+            "id",
+            "categories",
+            "start_day",
+            "price",
+            "number_of_places",
+            "lab",
+            "free_places",
+            "booked_users",
+            "event_url",
+            "is_live",
+        ]
+        writer = csv.DictWriter(response, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(data)
+
+        return response
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        super().dispatch(request, *args, **kwargs)
+        return self.export_csv()
+
+
 class ExportModelAdminMixin(object):
     button_helper_class = ExportButtonHelper
     url_helper_class = ExportAdminURLHelper
     export_view_class = ExportEventRegistrationView
+    export_report_view_class = ExportReportView
 
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()
@@ -177,6 +307,11 @@ class ExportModelAdminMixin(object):
                 self.url_helper.get_action_url_pattern("export"),
                 self.export_view_class.as_view(model_admin=self),
                 name=self.url_helper.get_action_url_name("export"),
+            ),
+            path(
+                self.url_helper.get_action_url_pattern("export_report"),
+                self.export_report_view_class.as_view(model_admin=self),
+                name=self.url_helper.get_action_url_name("export_report"),
             ),
         )
         return urls
