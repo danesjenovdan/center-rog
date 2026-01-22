@@ -446,6 +446,8 @@ class PaymentDataXML(views.APIView):
         for pp in payment.payment_plans.all():
             if pp.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                 sifra = payment.payment_plans.first().event_registration.event.id
+            elif pp.payment_item_type == PaymentItemType.TOKENS:
+                sifra = 1 # TODO define token product id for UJP
             else:
                 sifra = pp.plan.id
             items = (
