@@ -306,6 +306,8 @@ class PaymentPlanEvent(models.Model):
                 return self.event_registration.event.categories.first().pantheon_ident
             else:
                 return "DOGODKI"
+        if self.payment_item_type == PaymentItemType.TOKENS:
+            return "TOKEN"
         return self.plan.get_pantheon_ident_id()
 
 
