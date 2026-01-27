@@ -180,7 +180,7 @@ class ExportEventRegistrationView(IndexView):
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="export.csv"'},
         )
-        q_fields = [f"question {i}" for i in range(max(questions_count) + 1)]
+        q_fields = [f"question {i}" for i in range(max(questions_count, default=0) + 1)]
         try:
             fields = list(data[0].keys()) + q_fields
             writer = csv.DictWriter(response, fieldnames=fields)
