@@ -16,7 +16,7 @@ class Command(BaseCommand):
         active_memberships = Membership.objects.filter(
             valid_to__gte=timezone.now(),
             active=True,
-        ).select_related("user", "plan")
+        )
         for active_membership in active_memberships:
             user = active_membership.user
             prima_api.addUserToSubscriptionGroup(user.prima_id, 100)
