@@ -20,7 +20,7 @@
     </div>
 
     <div class="row">
-        <div class="col-12 col-lg-4 mb-40">
+        <div class="profile-box-col mb-40">
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
                 <div>
                     <p class="mb-1">{% translate 'tip članstva' %}</p>
@@ -44,8 +44,8 @@
             </section>
         </div>
 
-        <div class="col-12 col-lg-4 mb-40">
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+        <div class="profile-box-col profile-box-col-middle mb-40">
+            <section class="color-scheme-light-blue d-flex flex-row justify-content-between wallet">
                 <div>
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
                     {% if user.get_last_active_subscription_payment_plan %}
@@ -71,22 +71,25 @@
                     </p>
                     {% endif %}
                 </div>
-                {% if unused_subscriptions %}
-                    {% with unused_subscriptions|first as unused_subscription %}
+                <div class="d-flex flex-column justify-content-between">
                     <div>
-                        <a href="{% url 'activate-package' unused_subscription.id %}" class="secondary-button button-medium">{% translate 'aktiviraj paket' %} {{ unused_subscription.plan_name }}</a>
+                        {% if unused_subscriptions %}
+                        {% with unused_subscriptions|first as unused_subscription %}
+                        <a href="{% url 'activate-package' unused_subscription.id %}" class="secondary-button button-medium w-100">{% translate 'aktiviraj paket' %} {{ unused_subscription.plan_name }}</a>
+                        {% endwith %}
+                        {% else %}
+                        <a href="#" class="secondary-button button-medium w-100 disabled">{% translate 'aktiviraj paket' %}</a>
+                        {% endif %}
                     </div>
-                    {% endwith %}
-                {% else %}
-                <div>
-                    <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium">{% translate 'izberi paket' %}</a>
+                    <div>
+                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium w-100">{% translate 'izberi paket' %}</a>
+                    </div>
                 </div>
-                {% endif %}
             </section>
         </div>
 
-        <div class="col-12 col-lg-4 mb-40">
-            <section class="color-scheme-light-blue d-flex flex-column justify-content-between wallet">
+        <div class="profile-box-col mb-40">
+            <section class="color-scheme-light-blue d-flex flex-column justify-content-between links">
                 <div>
                     <p class="mb-1">
                         <a class="link" href="{% url 'history' %}">

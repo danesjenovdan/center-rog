@@ -2857,6 +2857,31 @@ section.image-embed {
             @include font-size-xs();
         }
 
+        .profile-box-col {
+            flex-basis: 27%;
+
+            @include media-breakpoint-down(xl) {
+                flex-basis: 50%;
+            }
+
+            @include media-breakpoint-down(lg) {
+                flex-basis: 100%;
+            }
+
+            &.profile-box-col-middle {
+                flex-basis: 46%;
+
+                @include media-breakpoint-down(xl) {
+                    flex-basis: 100%;
+                    order: 1;
+                }
+
+                @include media-breakpoint-down(lg) {
+                    order: 0;
+                }
+            }
+        }
+
         section {
             padding: 15px;
             height: 100%;
