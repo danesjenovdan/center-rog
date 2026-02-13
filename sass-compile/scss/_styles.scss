@@ -2879,6 +2879,15 @@ section.image-embed {
                 @include media-breakpoint-down(lg) {
                     order: 0;
                 }
+
+                .wallet-col {
+                    width: 50%;
+                    max-width: 200px;
+
+                    @include media-breakpoint-down(md) {
+                        width: 100%;
+                    }
+                }
             }
         }
 

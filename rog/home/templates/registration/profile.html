@@ -45,8 +45,8 @@
         </div>
 
         <div class="profile-box-col profile-box-col-middle mb-40">
-            <section class="color-scheme-light-blue d-flex flex-row justify-content-between wallet">
-                <div>
+            <section class="color-scheme-light-blue d-flex flex-column flex-md-row justify-content-between wallet">
+                <div class="wallet-col">
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
                     {% if user.get_last_active_subscription_payment_plan %}
                     <h6>{{ user.get_last_active_subscription_payment_plan.plan_name }}</h6>
@@ -71,18 +71,18 @@
                     </p>
                     {% endif %}
                 </div>
-                <div class="d-flex flex-column justify-content-between">
+                <div class="wallet-col d-flex flex-column justify-content-between align-items-md-end">
                     <div>
                         {% if unused_subscriptions %}
                         {% with unused_subscriptions|first as unused_subscription %}
-                        <a href="{% url 'activate-package' unused_subscription.id %}" class="secondary-button button-medium w-100">{% translate 'aktiviraj paket' %} {{ unused_subscription.plan_name }}</a>
+                        <a href="{% url 'activate-package' unused_subscription.id %}" class="secondary-button button-medium mt-3 mt-md-0">{% translate 'aktiviraj paket' %} {{ unused_subscription.plan_name }}</a>
                         {% endwith %}
                         {% else %}
-                        <a href="#" class="secondary-button button-medium w-100 disabled">{% translate 'aktiviraj paket' %}</a>
+                        <a href="#" class="secondary-button button-medium mt-3 mt-md-0 disabled">{% translate 'aktiviraj paket' %}</a>
                         {% endif %}
                     </div>
                     <div>
-                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium w-100">{% translate 'kupi vstopnico ali paket' %}</a>
+                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium mt-3 mt-md-0">{% translate 'kupi vstopnico ali paket' %}</a>
                     </div>
                 </div>
             </section>
