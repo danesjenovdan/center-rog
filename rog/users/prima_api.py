@@ -19,14 +19,13 @@ class PrimaApi(object):
 
     ### REQUEST AND RESPONSE PROCESSING
 
-    def primaResponse(self, response, payload):
+    def primaResponse(self, response, payload, retry_count=0):
         """
         Parses general response from Prima server.
         Returns data, message.
         """
 
         error_message = ""
-
         if not response:
             error_message = "Error - cannot process response."
             return None, error_message
@@ -57,8 +56,13 @@ class PrimaApi(object):
             # remove token
             self.session_id = None
             # retry request
-            response = self.primaRequest(payload)
-            return self.primaResponse(response, payload)
+            retry_count += 1
+            print(retry_count)
+            if retry_count > 5:
+                error_message = "Error - Session expired. Maximum retry attempts reached."
+                return None, error_message
+            response = self.primaRequest(payload, retry_count)
+            return self.primaResponse(response, payload, retry_count)
         elif response_status == "15":  # user already exists
             data = response_data.get("data")
             return data, "User exists"
@@ -67,7 +71,7 @@ class PrimaApi(object):
             print(f"Error - {error_message}")
             return None, error_message
 
-    def primaRequest(self, payload):
+    def primaRequest(self, payload, retry_count=0):
         """
         Adds api key to request.
         """
@@ -76,7 +80,7 @@ class PrimaApi(object):
 
         response = requests.get(self.url, params=payload)
 
-        return self.primaResponse(response, payload)
+        return self.primaResponse(response, payload, retry_count)
 
     ### USERS CRUD
 
@@ -334,3 +338,22 @@ class PrimaApi(object):
         }
         data, message = self.primaRequest(payload)
         return data, message
+    
+    def getUserTokenBalance(self, user_id):
+        """
+        Returns the balance (@WltBlcBalance) for WltID = 8 (Enkratni obisk).
+        """
+        data, message = self.readUserBalances(user_id)
+        
+        if not data or message != "Success":
+            return 0, message
+        
+        balances = data.get("balance", [])
+        
+        # Find balance for WltID = 8 (Enkratni obisk)
+        for balance in balances:
+            if balance.get("@WltID") == "8":
+                balance_value = balance.get("@WltBlcBalance", "0")
+                return int(balance_value), message
+        
+        return 0, "WltID 8 not found"
