@@ -201,7 +201,7 @@ class PaymentPreview(views.APIView):
                 return redirect("profile-my")
         elif user and tokens:
             tokens = int(tokens)
-            token_settings = TokenSettings.load()
+            token_settings = TokenSettings()
             if tokens > token_settings.max_purchase_quantity:
                 tokens = token_settings.max_purchase_quantity              
             if user.is_eligible_to_discount():
@@ -284,7 +284,7 @@ class PaymentPreview(views.APIView):
 
                             break
                         if payment_plan.payment_item_type in [PaymentItemType.TOKENS]:
-                            token_settings = TokenSettings.load()
+                            token_settings = TokenSettings()
                             valid_promo_code = PromoCode.objects.get(code=promo_code)
                             payment_plan.promo_code = valid_promo_code
                             payment_plan.save()
@@ -447,7 +447,7 @@ class PaymentDataXML(views.APIView):
             if pp.payment_item_type in [PaymentItemType.EVENT, PaymentItemType.TRAINING]:
                 sifra = payment.payment_plans.first().event_registration.event.id
             elif pp.payment_item_type == PaymentItemType.TOKENS:
-                sifra = 1 # TODO define token product id for UJP
+                sifra = 1 # TODO define product code for UJP
             else:
                 sifra = pp.plan.id
             items = (
@@ -583,6 +583,10 @@ class ActivatePackage(views.APIView):
         payment_plan.save()
 
         if plan.extend_membership:
+            if not last_active_membership:
+                valid_from = timezone.now()
+            else:
+                valid_from = last_active_membership.valid_to
             if last_active_membership.valid_to < valid_to:
                 membership = Membership(
                     valid_from=last_active_membership.valid_to,
@@ -593,6 +597,9 @@ class ActivatePackage(views.APIView):
                     extended_by=plan
                 )
                 membership.save()
+                valid_from_prima_string = last_active_membership.valid_to.strftime('%Y-%m-%d %H:%M:%S')
+                valid_to_prima_string = valid_to.strftime('%Y-%m-%d %H:%M:%S')
+                prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
         create_prima_user_if_not_exists(user, payment_plan.payment.id)
         if plan.prima_group_id:
@@ -606,12 +613,12 @@ class ActivatePackage(views.APIView):
             payment.tokens_added_to_wallet_at = timezone.now()
             payment.save()
 
-        # always set uporabnina dates on prima from now since there could be an active plan already
-        valid_from_prima = timezone.now()
-        valid_to_prima = valid_to
-        valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
-        valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
-        prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
+        # # always set uporabnina dates on prima from now since there could be an active plan already
+        # valid_from_prima = timezone.now()
+        # valid_to_prima = valid_to
+        # valid_from_prima_string = valid_from_prima.strftime('%Y-%m-%d %H:%M:%S')
+        # valid_to_prima_string = valid_to_prima.strftime('%Y-%m-%d %H:%M:%S')
+        # prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
         return redirect("profile-my")
 

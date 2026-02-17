@@ -65,6 +65,11 @@ class MyProfileView(TemplateView):
             user=current_user,
             registration_finished=True,
         )
+        if current_user.prima_id:
+            token_balance, msg = prima_api.getUserTokenBalance(current_user.prima_id)
+        else:
+            token_balance = 0
+            
 
         return render(
             request,
@@ -77,6 +82,8 @@ class MyProfileView(TemplateView):
                 "location_id": location_id,
                 "group_id": group_id,
                 "event_registrations": event_registrations,
+                "token_balance": token_balance,
+                "token_msg": msg,
             },
         )
 
@@ -171,6 +178,9 @@ class PurchasePlanView(TemplateView):
         if form.is_valid():
             plan = form.cleaned_data["plans"]
 
+            if plan.custom_buy_url:
+                return redirect(plan.custom_buy_url)
+
             return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
             print("Form ni valid")
@@ -184,7 +194,7 @@ class PurchaseTokensView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         current_user = request.user
-        token_settings = TokenSettings.load()
+        token_settings = TokenSettings()
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
@@ -193,7 +203,7 @@ class PurchaseTokensView(TemplateView):
 
     def post(self, request):
         current_user = request.user
-        token_settings = TokenSettings.load()
+        token_settings = TokenSettings()
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
