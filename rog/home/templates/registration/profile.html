@@ -61,15 +61,12 @@
                         /
                         {% endif %}
                     </p>
-                    {% comment %} for testing only show tokens link when enabled with ?enable_tokens=1 {% endcomment %}
-                    {% if request.GET.enable_tokens == "1" %}
                     <p class="mb-1">
-                        <a class="link" href="{% url 'profile-purchase-tokens' %}">
-                            <span class="link-text">{% translate 'Kupi žetone' %}</span>
-                            <span class="link-icon"></span>
-                        </a>
+                        {% translate 'Število enkratnih vstopnic:' %} {{ token_balance }}
+                        {% if token_msg %}
+                        ({{ token_msg }})
+                        {% endif %}
                     </p>
-                    {% endif %}
                 </div>
                 <div class="wallet-col d-flex flex-column justify-content-between align-items-md-end">
                     <div>

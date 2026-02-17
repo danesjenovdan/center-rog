@@ -66,7 +66,7 @@ class MyProfileView(TemplateView):
             registration_finished=True,
         )
         if current_user.prima_id:
-            token_balance = prima_api.getUserTokenBalance(current_user.prima_id)
+            token_balance, msg = prima_api.getUserTokenBalance(current_user.prima_id)
         else:
             token_balance = 0
             
@@ -83,6 +83,7 @@ class MyProfileView(TemplateView):
                 "group_id": group_id,
                 "event_registrations": event_registrations,
                 "token_balance": token_balance,
+                "token_msg": msg,
             },
         )
 
