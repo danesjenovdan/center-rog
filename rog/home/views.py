@@ -324,7 +324,7 @@ class RegistrationInformationView(TemplateView):
         if not type_id or not membership_type:
             return redirect("registration")
 
-        form = RegistrationInfoForm()
+        form = RegistrationInfoForm(for_membership=membership_type.plan is not None)
 
         return render(
             request,
@@ -347,7 +347,7 @@ class RegistrationInformationView(TemplateView):
         if not type_id or not membership_type:
             return redirect("registration")
 
-        form = RegistrationInfoForm(request.POST)
+        form = RegistrationInfoForm(request.POST, for_membership=membership_type.plan is not None)
 
         if form.is_valid():
             email = form.cleaned_data["email"].lower()
@@ -409,24 +409,25 @@ class RegistrationInformationView(TemplateView):
             else:
                 new_membership = None
 
-            # prepare valid from and to dates
-            valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
-            valid_to = valid_from
-            # update PRIMA user
-            data, message = prima_api.updateUser(
-                user_id=user.prima_id,
-                name=user.first_name,
-                last_name=user.last_name,
-                valid_from=valid_from,
-                valid_to=valid_to,
-            )
+            # # prepare valid from and to dates
+            # valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
+            # valid_to = valid_from
+            # # update PRIMA user
+            # data, message = prima_api.updateUser(
+            #     user_id=user.prima_id,
+            #     name=user.first_name,
+            #     last_name=user.last_name,
+            #     valid_from=valid_from,
+            #     valid_to=valid_to,
+            # )
 
             # nastavi podatke za redirect nazaj po konfirmaciji
             extra_query = ""
+            next = request.GET.get("next", None)
             if new_membership:
                 extra_query += f"&membership={new_membership.id}"
-            next = request.GET.get("next", None)
-            if next:
+                extra_query += f"&next=registration-profile"
+            elif next:
                 extra_query += f"&next={next}"
 
             # tukaj pošljemo mail za potrditev računa
@@ -451,7 +452,7 @@ class RegistrationInformationView(TemplateView):
 
             login(request, user)
 
-            return redirect("registration-email-confirmation")
+            return redirect(reverse("registration-email-confirmation") + f"?id={membership_type.id}")
         else:
             return render(
                 request,
@@ -467,19 +468,27 @@ class RegistrationInformationView(TemplateView):
 class RegistrationMailConfirmationView(View):
     def get(self, request):
         user = request.user
+        type_id = request.GET.get("id", None)
+        if type_id:
+            try:
+                membership_type = MembershipType.objects.get(id=type_id)
+            except MembershipType.DoesNotExist:
+                membership_type = None
 
         if user.email_confirmed:
             membership = request.GET.get("membership", None)
             next_page = request.GET.get("next", None)
 
-            payment_needed = user.most_recent_membership_is_billable
-            if membership and payment_needed:
-                if payment_needed:
-                    plan_id = user.memberships.last().type.plan.id
-                    url = f"/placilo?plan_id={plan_id}&purchase_type=registration&membership={membership}"
-                    if next_page:
-                        url += f"&next={next_page}"
-                    return redirect(url)
+            last_membership = user.memberships.last()
+            if last_membership:
+                payment_needed = user.most_recent_membership_is_billable
+                if membership and payment_needed:
+                    if payment_needed:
+                        plan_id = last_membership.type.plan.id
+                        url = f"/placilo?plan_id={plan_id}&purchase_type=registration&membership={membership}"
+                        if next_page:
+                            url += f"&next={next_page}"
+                        return redirect(url)
 
             if next_page:
                 return redirect(next_page)
@@ -489,6 +498,10 @@ class RegistrationMailConfirmationView(View):
         return render(
             request,
             "registration/registration_mail_confirmation.html",
+            context={
+                "registration_step": 2,
+                "membership_type": membership_type,
+            },
         )
 
 
@@ -507,7 +520,9 @@ class RegistrationProfileView(View):
             "registration/registration_4_profile.html",
             context={
                 "form": form,
-                "registration_step": 3,
+                "registration_step": 4,
+                # this page is only for memberships so just fake that it has a plan for progress dots
+                "membership_type": {"plan": True},
                 "payment_needed": payment_needed,
                 "next_page": next_page,
             },

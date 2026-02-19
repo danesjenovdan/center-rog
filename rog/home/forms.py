@@ -294,6 +294,13 @@ class RegistrationInfoForm(forms.ModelForm):
 
         return legal_person_tax_number
 
+    def __init__(self, *args, **kwargs):
+        self.for_membership = kwargs.pop("for_membership", False)
+        super().__init__(*args, **kwargs)
+        if self.for_membership:
+            self.fields["gender"].widget.attrs["required"] = "required"
+            self.fields["address_1"].widget.attrs["required"] = "required"
+
     class Meta:
         model = User
         fields = [
