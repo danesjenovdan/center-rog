@@ -20,10 +20,9 @@ from home.views import (
     UserProfileView,
     PurchasePlanView,
     PurchaseMembershipView,
-    RegistrationView,
-    RegistrationMailConfirmationView,
-    RegistrationMembershipView,
+    RegistrationChooseTypeView,
     RegistrationInformationView,
+    RegistrationMailConfirmationView,
     RegistrationProfileView,
     PurchaseTokensView,
     # RegistrationPaymentView,
@@ -86,22 +85,23 @@ urlpatterns = urlpatterns + i18n_patterns(
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
-    path("registracija/", RegistrationView.as_view(), name="registration"),
+    # new registration flow
     path(
-        "registracija/potrditev",
-        RegistrationMailConfirmationView.as_view(),
-        name="registration-email-confirmation",
-    ),
-    path(
-        "registracija/clanarina",
-        RegistrationMembershipView.as_view(),
-        name="registration-membership",
+        "registracija/",
+        RegistrationChooseTypeView.as_view(),
+        name="registration",
     ),
     path(
         "registracija/podatki",
         RegistrationInformationView.as_view(),
         name="registration-information",
     ),
+    path(
+        "registracija/potrditev",
+        RegistrationMailConfirmationView.as_view(),
+        name="registration-email-confirmation",
+    ),
+    # end new registration flow
     path(
         "registracija/profil",
         RegistrationProfileView.as_view(),

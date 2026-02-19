@@ -20,11 +20,11 @@
         <div class="col-12">
             {% if purchase_type == "registration" %}
             <div class="registration-progress">
-                <div class="point done"><span>{% translate 'začetek registracije' %}</span></div>
                 <div class="point done"><span>{% translate 'izbira članstva' %}</span></div>
                 <div class="point done"><span>{% translate 'osnovni podatki' %}</span></div>
-                <div class="point done"><span>{% translate 'osebni profil' %}</span></div>
+                <div class="point done"><span>{% translate 'potrditev e‑naslova' %}</span></div>
                 <div class="point active"><span>{% translate 'plačilo' %}</span></div>
+                <div class="point"><span>{% translate 'osebni profil' %}</span></div>
             </div>
             {% elif purchase_type == "plan" %}
             <div class="registration-progress">

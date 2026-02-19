@@ -14,9 +14,8 @@ from datetime import datetime, date, time, timedelta
 from dateutil.relativedelta import relativedelta
 
 from home.forms import (
-    RegisterForm,
+    RegistrationInfoForm,
     RegistrationMembershipForm,
-    RegistrationInformationForm,
     EditProfileForm,
     UserInterestsForm,
     PurchasePlanForm,
@@ -186,7 +185,7 @@ class PurchasePlanView(TemplateView):
             print("Form ni valid")
 
         return render(request, self.template_name, {"form": form})
-    
+
 
 @method_decorator(login_required, name="dispatch")
 class PurchaseTokensView(TemplateView):
@@ -207,7 +206,7 @@ class PurchaseTokensView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         request_data = request.POST
         tokens = request_data.get("token_quantity")
 
@@ -290,13 +289,65 @@ class PurchaseMembershipView(TemplateView):
             )
 
 
-class RegistrationView(View):
-    def get(self, request):
-        form = RegisterForm()
-        return render(request, "registration/registration.html", context={"form": form})
+class RegistrationChooseTypeView(TemplateView):
+    template_name = "registration/registration_choose_type.html"
 
-    def post(self, request):
-        form = RegisterForm(request.POST)
+    def get(self, request, *args, **kwargs):
+        next_page = request.GET.get("next", None)
+
+        membership_types = MembershipType.objects.all().order_by(
+            F("plan__price").desc(nulls_last=None)
+        )
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "registration_step": 0,
+                "next_page": next_page,
+                "membership_types": membership_types,
+            },
+        )
+
+
+class RegistrationInformationView(TemplateView):
+    template_name = "registration/registration_information.html"
+
+    def get(self, request, *args, **kwargs):
+        type_id = request.GET.get("id", None)
+        if type_id:
+            try:
+                membership_type = MembershipType.objects.get(id=type_id)
+            except MembershipType.DoesNotExist:
+                membership_type = None
+
+        if not type_id or not membership_type:
+            return redirect("registration")
+
+        form = RegistrationInfoForm(for_membership=membership_type.plan is not None)
+
+        return render(
+            request,
+            self.template_name,
+            context={
+                "registration_step": 1,
+                "membership_type": membership_type,
+                "form": form,
+            },
+        )
+
+    def post(self, request, *args, **kwargs):
+        type_id = request.GET.get("id", None)
+        if type_id:
+            try:
+                membership_type = MembershipType.objects.get(id=type_id)
+            except MembershipType.DoesNotExist:
+                membership_type = None
+
+        if not type_id or not membership_type:
+            return redirect("registration")
+
+        form = RegistrationInfoForm(request.POST, for_membership=membership_type.plan is not None)
 
         if form.is_valid():
             email = form.cleaned_data["email"].lower()
@@ -308,137 +359,11 @@ class RegistrationView(View):
                 is_active=True,  # TODO: spremeni is_active na False, ko bo treba nekoč še potrditveni mail poslat
             )
 
-            # tukaj pošljemo mail za potrditev računa
-            # najprej naredimo ConfirmEmail objekt in generiramo ključ
-            not_unique = True
-            while not_unique:
-                key_gen = id_generator(size=32)
-                not_unique = ConfirmEmail.objects.filter(key=key_gen)
-            confirm_email = ConfirmEmail(user=user, key=key_gen)
-            confirm_email.save()
-            # potem pošljemo mail
-            next_page = request.GET.get("next", None)
-            if next_page:
-                next_page = f"&next={next_page}"
-            else:
-                next_page = ""
-            send_email(
-                user.email,
-                "emails/email_confirmation.html",
-                "Center Rog – potrditev e-naslova // e-mail confirmation",
-                {
-                    "key": confirm_email.key,
-                    "next_page": next_page
-                },
-            )
-
-            login(request, user)
-
-            return redirect("registration-email-confirmation")
-        else:
-            return render(
-                request, "registration/registration.html", context={"form": form}
-            )
-
-
-class RegistrationMailConfirmationView(View):
-    def get(self, request):
-
-        return render(
-            request,
-            "registration/registration_mail_confirmation.html",
-        )
-
-
-@method_decorator(login_required, name="dispatch")
-class RegistrationMembershipView(View):
-    def get(self, request):
-        user = request.user
-        membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=None)
-        )
-        # TODO: prefill form če memberhsip že obstaja
-        form = RegistrationMembershipForm()
-        return render(
-            request,
-            "registration/registration_2_membership.html",
-            context={
-                "form": form,
-                "registration_step": 1,
-                "membership_types": membership_types,
-            },
-        )
-
-    def post(self, request):
-        user = request.user
-        membership_types = MembershipType.objects.all().order_by(
-            F("plan__price").desc(nulls_last=None)
-        )
-
-        form = RegistrationMembershipForm(request.POST)
-
-        next_page = request.GET.get("next", None)
-        if next_page:
-            next_page = f"next={next_page}"
-        else:
-            next_page = ""
-
-        if form.is_valid():
-            membership_type = form.cleaned_data["type"]
-            today = datetime.now()
-            one_year_from_now = today + timedelta(days=365)
-            if membership_type.plan:
-                new_membership = Membership(
-                    valid_from=today,
-                    valid_to=one_year_from_now,
-                    type=membership_type,
-                    active=False,
-                    user=user,
-                )
-                new_membership.save()
-                membership_query = f"?membership={new_membership.id}&{next_page}"
-            else:
-                membership_query = f"?{next_page }"
-            url = reverse("registration-information")
-            return redirect(f"{url}{membership_query}")
-        else:
-            return render(
-                request,
-                "registration/registration_2_membership.html",
-                context={
-                    "form": form,
-                    "registration_step": 1,
-                    "membership_types": membership_types,
-                },
-            )
-
-
-@method_decorator(login_required, name="dispatch")
-class RegistrationInformationView(View):
-    def get(self, request):
-        user = request.user
-        membership = request.GET.get("membership", None)
-
-        form = RegistrationInformationForm(instance=user, membership=membership)
-        return render(
-            request,
-            "registration/registration_3_information.html",
-            context={"form": form, "registration_step": 2},
-        )
-
-    def post(self, request):
-        user = request.user
-        form = RegistrationInformationForm(request.POST)
-
-        next_page = request.GET.get("next", None)
-
-        if form.is_valid():
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.address_1 = form.cleaned_data["address_1"]
             user.address_2 = form.cleaned_data["address_2"]
             user.birth_date = form.cleaned_data["birth_date"]
-            user.allow_marketing = form.cleaned_data["allow_marketing"]
 
             gender = form.cleaned_data["gender"]
             user.gender = gender
@@ -470,36 +395,114 @@ class RegistrationInformationView(View):
 
             user.save()
 
-            if next_page:
-                next_page = f"next={next_page}"
+            today = datetime.now()
+            one_year_from_now = today + timedelta(days=365)
+            if membership_type.plan:
+                new_membership = Membership(
+                    valid_from=today,
+                    valid_to=one_year_from_now,
+                    type=membership_type,
+                    active=False,
+                    user=user,
+                )
+                new_membership.save()
             else:
-                next_page = ""
+                new_membership = None
 
-            membership = form.cleaned_data["membership"]
-            if membership:
-                membership_query = f"?membership={membership}&{next_page}"
-            else:
-                membership_query = f"?{next_page}"
+            # # prepare valid from and to dates
+            # valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
+            # valid_to = valid_from
+            # # update PRIMA user
+            # data, message = prima_api.updateUser(
+            #     user_id=user.prima_id,
+            #     name=user.first_name,
+            #     last_name=user.last_name,
+            #     valid_from=valid_from,
+            #     valid_to=valid_to,
+            # )
 
-            # prepare valid from and to dates
-            valid_from = datetime.now().strftime('%Y-%m-%d') + ' 00:00:00'
-            valid_to = valid_from
-            # update PRIMA user
-            data, message = prima_api.updateUser(
-                user_id=user.prima_id,
-                name=user.first_name,
-                last_name=user.last_name,
-                valid_from=valid_from,
-                valid_to=valid_to,
+            # nastavi podatke za redirect nazaj po konfirmaciji
+            extra_query = ""
+            next = request.GET.get("next", None)
+            if new_membership:
+                extra_query += f"&membership={new_membership.id}"
+                extra_query += f"&next=registration-profile"
+            elif next:
+                extra_query += f"&next={next}"
+
+            # tukaj pošljemo mail za potrditev računa
+            # najprej naredimo ConfirmEmail objekt in generiramo ključ
+            not_unique = True
+            while not_unique:
+                key_gen = id_generator(size=32)
+                not_unique = ConfirmEmail.objects.filter(key=key_gen)
+            confirm_email = ConfirmEmail(user=user, key=key_gen)
+            confirm_email.save()
+
+            # potem pošljemo mail
+            send_email(
+                user.email,
+                "emails/email_confirmation.html",
+                "Center Rog – potrditev e-naslova // e-mail confirmation",
+                {
+                    "key": confirm_email.key,
+                    "extra_query": extra_query
+                },
             )
-            url = reverse("registration-profile")
-            return redirect(f"{url}{membership_query}")
+
+            login(request, user)
+
+            return redirect(reverse("registration-email-confirmation") + f"?id={membership_type.id}")
         else:
             return render(
                 request,
-                "registration/registration_3_information.html",
-                context={"form": form, "registration_step": 2},
+                self.template_name,
+                context={
+                    "registration_step": 1,
+                    "membership_type": membership_type,
+                    "form": form,
+                },
             )
+
+
+class RegistrationMailConfirmationView(View):
+    def get(self, request):
+        user = request.user
+        type_id = request.GET.get("id", None)
+        if type_id:
+            try:
+                membership_type = MembershipType.objects.get(id=type_id)
+            except MembershipType.DoesNotExist:
+                membership_type = None
+
+        if user.email_confirmed:
+            membership = request.GET.get("membership", None)
+            next_page = request.GET.get("next", None)
+
+            last_membership = user.memberships.last()
+            if last_membership:
+                payment_needed = user.most_recent_membership_is_billable
+                if membership and payment_needed:
+                    if payment_needed:
+                        plan_id = last_membership.type.plan.id
+                        url = f"/placilo?plan_id={plan_id}&purchase_type=registration&membership={membership}"
+                        if next_page:
+                            url += f"&next={next_page}"
+                        return redirect(url)
+
+            if next_page:
+                return redirect(next_page)
+
+            return redirect("profile-my")
+
+        return render(
+            request,
+            "registration/registration_mail_confirmation.html",
+            context={
+                "registration_step": 2,
+                "membership_type": membership_type,
+            },
+        )
 
 
 @method_decorator(login_required, name="dispatch")
@@ -517,7 +520,9 @@ class RegistrationProfileView(View):
             "registration/registration_4_profile.html",
             context={
                 "form": form,
-                "registration_step": 3,
+                "registration_step": 4,
+                # this page is only for memberships so just fake that it has a plan for progress dots
+                "membership_type": {"plan": True},
                 "payment_needed": payment_needed,
                 "next_page": next_page,
             },
@@ -619,7 +624,7 @@ class EditProfileView(View):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
-        
+
         next_page = request.GET.get("next", None)
 
         form = EditProfileForm(request.POST, request.FILES)
@@ -670,21 +675,3 @@ class EditProfileView(View):
             return render(
                 request, "registration/edit_profile.html", context={"form": form}
             )
-
-
-# @method_decorator(login_required, name='dispatch')
-# class RegistrationPaymentView(View):
-
-#     def get(self, request):
-#         user = request.user
-
-#         # TODO: payment logika
-
-#         return render(request, "registration/registration_5_payment.html", context={ "user": user })
-
-
-# @method_decorator(login_required, name='dispatch')
-# class RegistrationSuccessView(View):
-
-#     def get(self, request):
-#         return render(request, "registration/registration_6_success.html")

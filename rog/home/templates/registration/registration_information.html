@@ -1,0 +1,175 @@
+{% extends "registration/registration_wrapper.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate 'Registracija' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block form_title %}
+<h1>{% translate 'Registracija' %}</h1>
+<h2>{% translate 'Izpolni podatke:' %}</h2>
+{% endblock form_title %}
+
+{% block extra_js %}
+<script>
+    const legal_person_checkbox = document.getElementById("id_legal_person_receipt");
+    const legal_information_wrapper = document.getElementById("legal-information-wrapper");
+    const legal_person_tax_number = document.getElementById("id_legal_person_tax_number");
+
+    if (legal_person_checkbox && legal_information_wrapper) {
+        // make sure it has corrent class on load
+        if (legal_person_checkbox.checked) {
+            legal_information_wrapper.classList.remove("hide");
+            legal_person_tax_number.required = true;
+        } else {
+            legal_information_wrapper.classList.add("hide");
+            legal_person_tax_number.required = false;
+        }
+
+        // add listener
+        legal_person_checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                legal_information_wrapper.classList.remove("hide");
+            } else {
+                legal_information_wrapper.classList.add("hide");
+            }
+        });
+    }
+
+    const gender_radios = document.querySelectorAll("#id_gender input");
+    const other_gender_wrapper = document.getElementById("other-gender-wrapper");
+
+    if (gender_radios && other_gender_wrapper) {
+        // make sure it has corrent class on load
+        const checked_radio = Array.from(gender_radios).filter(r => r.checked)[0];
+        if (checked_radio && checked_radio.value === "O") {
+            other_gender_wrapper.classList.remove("hide");
+        } else {
+            other_gender_wrapper.classList.add("hide");
+        }
+
+        gender_radios.forEach((radio) => {
+            radio.addEventListener("change", function() {
+                if (this.value === "O") {
+                    other_gender_wrapper.classList.remove("hide");
+                } else {
+                    other_gender_wrapper.classList.add("hide");
+                }
+            });
+        });
+    }
+</script>
+{% endblock %}
+
+{% block form_block %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-field-wrapper">
+        {{ form.first_name.label_tag }} {{ form.first_name }}
+        {% if form.first_name.errors %}
+        <p class="error">{{ form.first_name.errors }}</p>
+        {% endif %}
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.last_name.label_tag }} {{ form.last_name }}
+        {% if form.last_name.errors %}
+        <p class="error">{{ form.last_name.errors }}</p>
+        {% endif %}
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.birth_date.label_tag }} {{ form.birth_date }}
+        {% if form.birth_date.errors %}
+        <p class="error">{{ form.birth_date.errors }}</p>
+        {% endif %}
+    </div>
+    {% if membership_type.plan.is_subscription %}
+    <div class="registration-gender-row">
+        <div class="form-field-wrapper rog-radios">
+            {{ form.gender.label_tag }} {{ form.gender }}
+            {% if form.gender.errors %}
+            <p class="error">{{ form.gender.errors }}</p>
+            {% endif %}
+        </div>
+        <div class="form-field-wrapper hide" id="other-gender-wrapper">
+            {{ form.gender_other.label_tag }} {{ form.gender_other }}
+            {% if form.gender_other.errors %}
+            <p class="error">{{ form.gender_other.errors }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.address_1.label_tag }} {{ form.address_1 }}
+        {% if form.address_1.errors %}
+        <p class="error">{{ form.address_1.errors }}</p>
+        {% endif %}
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.address_2.label_tag }} {{ form.address_2 }}
+        {% if form.address_2.errors %}
+        <p class="error">{{ form.address_2.errors }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+    <div class="form-field-wrapper">
+        {{ form.email.label_tag }} {{ form.email }}
+        {% if form.email.errors %}
+        <p class="error">{{ form.email.errors }}</p>
+        {% endif %}
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.password.label_tag }} {{ form.password }}
+        {% if form.password.errors %}
+        <p class="error">{{ form.password.errors }}</p>
+        {% endif %}
+    </div>
+    <div class="form-field-wrapper">
+        {{ form.password_check.label_tag }} {{ form.password_check }}
+        {% if form.password_check.errors %}
+        <p class="error">{{ form.password_check.errors }}</p>
+        {% endif %}
+    </div>
+    {% if membership_type.plan.is_subscription %}
+    <div class="form-field-wrapper one-line rog-check">
+        {{ form.legal_person_receipt.errors }}
+        {{ form.legal_person_receipt }} {{ form.legal_person_receipt.label_tag }}
+    </div>
+    <div id="legal-information-wrapper" class="hide">
+        <div class="form-field-wrapper">
+            {{ form.legal_person_name.label_tag }} {{ form.legal_person_name }}
+            {% if form.legal_person_name.errors %}
+            <p class="error">{{ form.legal_person_name.errors }}</p>
+            {% endif %}
+        </div>
+        <div class="form-field-wrapper">
+            {{ form.legal_person_address_1.label_tag }} {{ form.legal_person_address_1 }}
+            {% if form.legal_person_address_1.errors %}
+            <p class="error">{{ form.legal_person_address_1.errors }}</p>
+            {% endif %}
+        </div>
+        <div class="form-field-wrapper">
+            {{ form.legal_person_address_2.label_tag }} {{ form.legal_person_address_2 }}
+            {% if form.legal_person_address_2.errors %}
+            <p class="error">{{ form.legal_person_address_2.errors }}</p>
+            {% endif %}
+        </div>
+        <div class="form-field-wrapper">
+            {{ form.legal_person_tax_number.label_tag }} {{ form.legal_person_tax_number }}
+            {% if form.legal_person_tax_number.errors %}
+            <p class="error">{{ form.legal_person_tax_number.errors }}</p>
+            {% endif %}
+        </div>
+        <div class="form-field-wrapper one-line rog-check">
+            {{ form.legal_person_vat.errors }}
+            {{ form.legal_person_vat }} {{ form.legal_person_vat.label_tag }}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="d-flex justify-content-end my-4">
+        <button type="submit" class="secondary-button button-medium">{% translate 'naprej' %}</button>
+    </div>
+</form>
+
+{% endblock form_block %}
