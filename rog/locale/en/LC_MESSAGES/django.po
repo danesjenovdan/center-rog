@@ -1324,6 +1324,8 @@ msgid ""
 "Ne velja za delovne postaje, za katere je potrebna odobritev s strani laba. "
 "Dodatne informacije najdeš ob rezervaciji delovne postaje."
 msgstr ""
+"You can book a workstation from 7 days up to 1 hour before your visit. "
+"This does not apply to workstations that need lab approval. You’ll see more details during booking."
 
 #: home/templates/home/blocks/plans_section.html:46
 #: home/templates/registration/user_purchase_plan.html:65
@@ -1332,6 +1334,8 @@ msgid ""
 "href=\"https://center-rog.si/cenik/\">cenik</a>). Osnovni potrošni material "
 "pa je vključen v ceno."
 msgstr ""
+"You can bring your own materials or buy them at the Made in Rog shop (<a "
+"href=\"https://center-rog.si/cenik/\">cenik</a>). Basic consumables are included in the price."
 
 #: home/templates/home/blocks/plans_section.html:47
 #: home/templates/registration/user_purchase_plan.html:66
@@ -1341,16 +1345,19 @@ msgid ""
 "enkratno vstopnico. Dodatne informacije najdeš ob rezervaciji delovne "
 "postaje."
 msgstr ""
+"Some workstations that use more consumable materials have a limit on the number of visits. "
+If you reach this limit, you can buy extra visits with a single-entry ticket while your package is "
+"still valid. You’ll see more details during booking.
 
 #: home/templates/home/blocks/plans_section.html:48
 #: home/templates/registration/user_purchase_plan.html:67
 msgid "Imetnikom paketov je na voljo garderobna omarica."
-msgstr ""
+msgstr "Lockers are available for all package holders."
 
 #: home/templates/home/blocks/plans_section.html:49
 #: home/templates/registration/user_purchase_plan.html:68
 msgid "V ceno mesečnega in celoletnega paketa je vključena uporaba skladišča."
-msgstr ""
+msgstr "Monthly and Yearly packages also include use of the common storage space."
 
 #: home/templates/home/includes/cookie_notice.html:13
 msgid "Ali se strinjate z uporabo piškotkov?"
