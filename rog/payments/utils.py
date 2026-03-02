@@ -72,6 +72,9 @@ def finish_payment(payment):
         membership.valid_to = valid_to
         membership.active = True
         membership.save()
+        valid_from_prima_string = valid_from.strftime('%Y-%m-%d %H:%M:%S')
+        valid_to_prima_string = valid_to.strftime('%Y-%m-%d %H:%M:%S')
+        prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
     elif membership_fee or membership:
         # send error to sentry

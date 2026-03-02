@@ -254,6 +254,7 @@ class EventPage(BasePage):
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
+        related_name="workshop_events",
         verbose_name=_("Dogodek je usposabljanje"),
     )
     show_see_more_section = models.BooleanField(

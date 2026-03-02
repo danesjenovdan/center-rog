@@ -1,0 +1,86 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+    <div class="nice-padding">
+        <h1>{{ title }}</h1>
+        
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="query_string" value="{{ query_string }}">
+            
+            {% if registrations %}
+                <table class="listing">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" id="select-all" />
+                            </th>
+                            <th>{% trans "Uporabnik" %}</th>
+                            <th>{% trans "Ime/Priimek" %}</th>
+                            <th>{% trans "Dogodek" %}</th>
+                            <th>{% trans "Usposabljanje" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="registration_ids" value="{{ registration.id }}" class="row-checkbox" />
+                                </td>
+                                <td>{{ registration.user.email }}</td>
+                                <td>{{ registration.name }} {{ registration.surname }}</td>
+                                <td>{{ registration.event.title }}</td>
+                                <td>
+                                    {% if registration.event.event_is_workshop %}
+                                        <strong>{{ registration.event.event_is_workshop.name }}</strong>
+                                    {% else %}
+                                        <em>{% trans "Ni označeno" %}</em>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                <div class="actions">
+                    <button type="submit" class="button default">
+                        {% trans "Dodaj usposabljanje izbranim" %}
+                    </button>
+                    <a href="{% url 'wagtailadmin_home' %}" class="button is-secondary">
+                        {% trans "Prekliči" %}
+                    </a>
+                </div>
+            {% else %}
+                <p>{% trans "Ni zaključenih prijav na dogodke." %}</p>
+                <a href="{% url 'wagtailadmin_home' %}" class="button is-secondary">
+                    {% trans "Nazaj" %}
+                </a>
+            {% endif %}
+        </form>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('select-all');
+            const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+            
+            selectAllCheckbox.addEventListener('change', function() {
+                rowCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            rowCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(rowCheckboxes).every(cb => cb.checked);
+                    const someChecked = Array.from(rowCheckboxes).some(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                    selectAllCheckbox.indeterminate = someChecked && !allChecked;
+                });
+            });
+        });
+    </script>
+{% endblock %}
+

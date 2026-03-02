@@ -19,15 +19,23 @@
 
         <div class="col-md-10 col-xxl-6">
 
+            {% if registration_step != None %}
+            {% if membership_type.plan %}
             <div class="registration-progress">
-                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>{% translate 'začetek registracije' %}</span></div>
-                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'izbira članstva' %}</span></div>
-                <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>{% translate 'osnovni podatki' %}</span></div>
-                <div class="point {% if registration_step == 3 %} active{% elif registration_step > 3 %} done{% endif %}"><span>{% translate 'osebni profil' %}</span></div>
-                {% if user.is_authenticated and user.most_recent_membership_is_billable %}
-                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 4 %} done{% endif %}"><span>{% translate 'plačilo' %}</span></div>
-                {% endif %}
+                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>{% translate 'izbira članstva' %}</span></div>
+                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'osnovni podatki' %}</span></div>
+                <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>{% translate 'potrditev e‑naslova' %}</span></div>
+                <div class="point {% if registration_step == 3 %} active{% elif registration_step > 3 %} done{% endif %}"><span>{% translate 'plačilo' %}</span></div>
+                <div class="point {% if registration_step == 4 %} active{% elif registration_step > 4 %} done{% endif %}"><span>{% translate 'osebni profil' %}</span></div>
             </div>
+            {% else %}
+            <div class="registration-progress">
+                <div class="point {% if not registration_step %} active{% elif registration_step > 0 %} done{% endif %}"><span>{% translate 'izbira članstva' %}</span></div>
+                <div class="point {% if registration_step == 1 %} active{% elif registration_step > 1 %} done{% endif %}"><span>{% translate 'osnovni podatki' %}</span></div>
+                <div class="point {% if registration_step == 2 %} active{% elif registration_step > 2 %} done{% endif %}"><span>{% translate 'potrditev e‑naslova' %}</span></div>
+            </div>
+            {% endif %}
+            {% endif %}
 
             {% block form_title %}
             {% endblock form_title %}

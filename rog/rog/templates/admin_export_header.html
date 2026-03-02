@@ -1,7 +1,14 @@
 {% extends "modeladmin/index.html" %}
 
+{% load i18n %}
+
 {% block header_extra %}
     {% include 'modeladmin/includes/button.html' with button=view.button_helper.export_button %}
     {% include 'modeladmin/includes/button.html' with button=view.button_helper.export_report_button %}
+    <a href="{% url 'grant_ability' %}?{{ request.GET.urlencode }}" class="button">
+        {% trans "Dodaj usposabljanje" %}
+    </a>
     {{ block.super }}{% comment %}Display the original buttons {% endcomment %}
 {% endblock %}
+
+
