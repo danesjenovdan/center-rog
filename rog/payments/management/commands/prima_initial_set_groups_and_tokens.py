@@ -32,9 +32,9 @@ class Command(BaseCommand):
         active_subscriptions = PaymentPlanEvent.objects.filter(
             valid_to__gte=timezone.now(),
             plan__prima_group_id__isnull=False,
-        ).select_related("user", "plan")
+        )
         for active_payment in active_subscriptions:
-            user = active_payment.user
+            user = active_payment.payment.user
             plan = active_payment.plan
             prima_api.addUserToSubscriptionGroup(user.prima_id, plan.prima_group_id)
             prima_api.addTokensToUserBalance(user.prima_id, plan.tokens)
