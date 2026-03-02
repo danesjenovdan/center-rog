@@ -22,14 +22,19 @@ class Command(BaseCommand):
             prima_api.addUserToSubscriptionGroup(user.prima_id, 100)
             user.prima_group_id = 100
             user.save()
+            if active_membership.valid_from:
+                valid_from = active_membership.valid_from
+            else:
+                valid_from = timezone.now()
+            prima_api.setPrimaDates(user.prima_id, valid_from, active_membership.valid_to)
 
         # Set groups and tokens for all active payment plans
         active_subscriptions = PaymentPlanEvent.objects.filter(
             valid_to__gte=timezone.now(),
             plan__prima_group_id__isnull=False,
-        ).select_related("user", "plan")
+        )
         for active_payment in active_subscriptions:
-            user = active_payment.user
+            user = active_payment.payment.user
             plan = active_payment.plan
             prima_api.addUserToSubscriptionGroup(user.prima_id, plan.prima_group_id)
             prima_api.addTokensToUserBalance(user.prima_id, plan.tokens)

@@ -25,9 +25,6 @@
             </div>
 
             <h1>{% translate 'Izberi število žetonov' %}:</h1>
-
-            <p>{% translate 'Z nakupom dodatnih žetonov lahko obiskuješ delavnice in dogodke v našem centru, po tem ko porabiš svoje žetone iz uporabniškega paketa.' %}</p>
-
         </div>
 
         <div class="col-md-12 col-xxl-8">
@@ -43,8 +40,6 @@
                             {% else %}
                             <p class="price">{{ token_settings.regular_price }}€</p>
                             {% endif %}
-                            <hr />
-                            <p class="small">{% translate 'Nakup žetonov za laboratorije' %}</p>
                             <hr />
                             <ul>
                                 {% with num_tokens=token_settings.max_tokens %} 

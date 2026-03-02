@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-13 11:27+0100\n"
+"POT-Creation-Date: 2026-03-02 13:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,47 +25,47 @@ msgstr ""
 msgid "Export Report to CSV"
 msgstr ""
 
-#: events/forms.py:111 events/models.py:685
+#: events/forms.py:111 events/models.py:686
 msgid "Ime otroka"
 msgstr ""
 
-#: events/forms.py:116 events/models.py:686
+#: events/forms.py:116 events/models.py:687
 msgid "Priimek otroka"
 msgstr ""
 
-#: events/forms.py:121 events/models.py:688
+#: events/forms.py:121 events/models.py:689
 msgid "Telefonska številka zakonitega skrbnika"
 msgstr ""
 
-#: events/forms.py:126 home/forms.py:142
+#: events/forms.py:126 home/forms.py:187
 msgid "Datum rojstva"
 msgstr "Date of birth"
 
-#: events/forms.py:134 events/forms.py:144 home/forms.py:148 home/forms.py:158
+#: events/forms.py:134 events/forms.py:144 home/forms.py:193 home/forms.py:203
 msgid "Spol"
 msgstr "Gender"
 
-#: events/forms.py:136 home/forms.py:150
+#: events/forms.py:136 home/forms.py:195
 msgid "ženski"
 msgstr "Female"
 
-#: events/forms.py:136 home/forms.py:150
+#: events/forms.py:136 home/forms.py:195
 msgid "moški"
 msgstr "Male"
 
-#: events/forms.py:136 home/forms.py:150
+#: events/forms.py:136 home/forms.py:195
 msgid "drugo"
 msgstr "Other"
 
-#: events/forms.py:141 home/forms.py:155
+#: events/forms.py:141 home/forms.py:201
 msgid "izpolni"
 msgstr "Complete"
 
-#: events/forms.py:166 events/models.py:708
+#: events/forms.py:166 events/models.py:709
 msgid "Ime osebe"
 msgstr "First name"
 
-#: events/forms.py:171 events/models.py:709
+#: events/forms.py:171 events/models.py:710
 msgid "Priimek osebe"
 msgstr "Last name"
 
@@ -73,7 +73,7 @@ msgstr "Last name"
 msgid "Ime kategorije"
 msgstr "Category name"
 
-#: events/models.py:55 home/forms.py:261 home/models/base_pages.py:140
+#: events/models.py:55 home/forms.py:99 home/models/base_pages.py:140
 #: home/models/base_pages.py:172 home/models/pages.py:148
 #: home/models/pages.py:356 payments/models.py:124
 msgid "Opis"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Izbirno vprašanje (več odgovorov)"
 msgstr ""
 
-#: events/models.py:164 events/models.py:583
+#: events/models.py:164 events/models.py:584
 msgid "Datoteka"
 msgstr ""
 
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Tip vprašanja"
 msgstr ""
 
-#: events/models.py:181 events/models.py:572
+#: events/models.py:181 events/models.py:573
 msgid "Besedilo vprašanja"
 msgstr ""
 
@@ -153,7 +153,7 @@ msgstr ""
 msgid "Dodatno vprašanje ob prijavi na dogodek"
 msgstr ""
 
-#: events/models.py:215 events/models.py:342
+#: events/models.py:215 events/models.py:343
 msgid "Dodatna vprašanja ob prijavi na dogodek"
 msgstr ""
 
@@ -202,179 +202,179 @@ msgstr "Application link (if empty, button is hidden)"
 msgid "Opomba"
 msgstr "Notes"
 
-#: events/models.py:257
+#: events/models.py:258
 msgid "Dogodek je usposabljanje"
 msgstr "This event is a training course"
 
-#: events/models.py:260 events/models.py:450 events/models.py:481
+#: events/models.py:261 events/models.py:451 events/models.py:482
 #: home/models/base_pages.py:246 home/models/module_pages.py:60
 #: home/models/pages.py:245 home/models/pages.py:407 news/models.py:82
 #: news/models.py:112
 msgid "Pokaži več"
 msgstr "Show more"
 
-#: events/models.py:264 payments/models.py:123
+#: events/models.py:265 payments/models.py:123
 msgid "Cena"
 msgstr "Price"
 
-#: events/models.py:267
+#: events/models.py:268
 msgid "Cena za nečlane"
 msgstr "The price for non-members"
 
-#: events/models.py:269
+#: events/models.py:270
 msgid "Število mest"
 msgstr ""
 
-#: events/models.py:271
+#: events/models.py:272
 msgid "Kontaktni email"
 msgstr ""
 
-#: events/models.py:274 home/models/blocks.py:332 home/models/pages.py:298
+#: events/models.py:275 home/models/blocks.py:332 home/models/pages.py:298
 #: home/models/pages.py:614 home/models/pages.py:615
 msgid "Laboratoriji"
 msgstr "Laboratories"
 
-#: events/models.py:278
+#: events/models.py:279
 msgid "Brez prijave"
 msgstr ""
 
-#: events/models.py:279
+#: events/models.py:280
 msgid "Če je označeno, je dogodek brez prijave."
 msgstr "If marked, the event is without registration."
 
-#: events/models.py:283
+#: events/models.py:284
 msgid "Dogodek je za otroke"
 msgstr ""
 
-#: events/models.py:284
+#: events/models.py:285
 msgid "Prijava na dogodek zahteva vpis vsaj enega otroka"
 msgstr ""
 
-#: events/models.py:288
+#: events/models.py:289
 msgid "Dovoljena prijava dodatnih oseb"
 msgstr ""
 
-#: events/models.py:289
+#: events/models.py:290
 msgid "Pri prijavi na dogodek ja omogoča prijavo dodatnih oseb"
 msgstr ""
 
-#: events/models.py:293
+#: events/models.py:294
 msgid "Dogodek samo za člane"
 msgstr ""
 
-#: events/models.py:294
+#: events/models.py:295
 msgid "Za prijavo na dogodek mora biti uporabnik član"
 msgstr ""
 
-#: events/models.py:301
+#: events/models.py:302
 msgid "Zahtevan plan"
 msgstr ""
 
-#: events/models.py:302
+#: events/models.py:303
 msgid "Za prijavo na dogodek mora uporabnik imeti aktiven ta plan"
 msgstr ""
 
-#: events/models.py:310
+#: events/models.py:311
 msgid "Kopiraj dodatna vprašanja iz drugega dogodka"
 msgstr ""
 
-#: events/models.py:312
+#: events/models.py:313
 msgid ""
 "Če izberete dogodek in shranite se bodo vprašanja skopirala iz drugega "
 "dogodka in se dodala na seznam dodatnih vprašanj."
 msgstr ""
 
-#: events/models.py:444 home/models/blocks.py:302 payments/models.py:44
-#: payments/models.py:588
+#: events/models.py:445 events/templates/events/grant_ability_form.html:22
+#: home/models/blocks.py:302 payments/models.py:44 payments/models.py:588
 msgid "Dogodek"
 msgstr "Event"
 
-#: events/models.py:445 home/models/blocks.py:303
+#: events/models.py:446 home/models/blocks.py:303
 msgid "Dogodki"
 msgstr "Events"
 
-#: events/models.py:475
+#: events/models.py:476
 msgid "Arhiv programa"
 msgstr "Program archive"
 
-#: events/models.py:476
+#: events/models.py:477
 msgid "Arhivi programov"
 msgstr "Program archives"
 
-#: events/models.py:560
+#: events/models.py:561
 msgid "Program"
 msgstr "Program"
 
-#: events/models.py:561
+#: events/models.py:562
 msgid "Programi"
 msgstr "Programs"
 
-#: events/models.py:577
+#: events/models.py:578
 msgid "Odgovor"
 msgstr ""
 
-#: events/models.py:596
+#: events/models.py:597
 msgid "Odgovor na dodatno vprašanje ob prijavi na dogodek"
 msgstr ""
 
-#: events/models.py:597 events/models.py:660
+#: events/models.py:598 events/models.py:661
 msgid "Odgovori na dodatna vprašanja ob prijavi na dogodek"
 msgstr ""
 
-#: events/models.py:612 home/forms.py:134 home/models/blocks.py:476
+#: events/models.py:613 home/forms.py:177 home/models/blocks.py:476
 #: home/models/settings.py:101
 msgid "Ime"
 msgstr "Name"
 
-#: events/models.py:613 home/forms.py:138
+#: events/models.py:614 home/forms.py:182
 msgid "Priimek"
 msgstr "Surname"
 
-#: events/models.py:614 home/models/base_pages.py:187
+#: events/models.py:615 home/models/base_pages.py:187
 #: home/models/settings.py:119
 msgid "Telefonska številka"
 msgstr "Phone number"
 
-#: events/models.py:616
+#: events/models.py:617
 msgid "Na dogodek prijavljam otroka"
 msgstr "I am registering a child for the event"
 
-#: events/models.py:619
+#: events/models.py:620
 msgid "[NI VEČ UPORABLJENO] Oviranosti (naštej)"
 msgstr ""
 
-#: events/models.py:622
+#: events/models.py:623
 msgid "[NI VEČ UPORABLJENO] Alergije (naštej)"
 msgstr ""
 
-#: events/models.py:625
+#: events/models.py:626
 msgid "[NI VEČ UPORABLJENO] Strinjam se z zavrnitvijo odgovornosti"
 msgstr ""
 
-#: events/models.py:629
+#: events/models.py:630
 msgid "[NI VEČ UPORABLJENO] Dovoljujem fotografiranje in snemanje"
 msgstr ""
 
-#: events/models.py:633
+#: events/models.py:634
 msgid "Prijava na dogodek je zaključena"
 msgstr "Event registration is closed"
 
-#: events/models.py:665
+#: events/models.py:666
 msgid "Prijavljeni otroci"
 msgstr ""
 
-#: events/models.py:666
+#: events/models.py:667
 msgid "Dodatne osebe"
 msgstr ""
 
-#: events/models.py:674 events/templates/events/event_registration_1.html:4
+#: events/models.py:675 events/templates/events/event_registration_1.html:4
 #: events/templates/events/event_registration_2.html:4
 #: events/templates/events/event_registration_failed.html:4
 #: events/templates/events/event_registration_wrapper.html:4
 msgid "Prijava na dogodek"
 msgstr ""
 
-#: events/models.py:675
+#: events/models.py:676
 msgid "Dogodki - prijave"
 msgstr ""
 
@@ -459,9 +459,10 @@ msgstr "Add one more child"
 #: home/templates/registration/registration.html:39
 #: home/templates/registration/registration_2_membership.html:45
 #: home/templates/registration/registration_3_information.html:215
+#: home/templates/registration/registration_information.html:171
 #: home/templates/registration/user_purchase_membership.html:61
 #: home/templates/registration/user_purchase_plan.html:72
-#: home/templates/registration/user_purchase_tokens.html:63
+#: home/templates/registration/user_purchase_tokens.html:58
 #: payments/templates/registration_payment_preview.html:90
 msgid "naprej"
 msgstr "Next"
@@ -491,16 +492,55 @@ msgstr "additional"
 #: home/templates/registration/user_purchase_membership.html:24
 #: home/templates/registration/user_purchase_plan.html:24
 #: home/templates/registration/user_purchase_tokens.html:24
-#: payments/templates/payment_success.html:25
+#: payments/templates/payment_success.html:24
 #: payments/templates/payment_success.html:30
 #: payments/templates/payment_success.html:35
 #: payments/templates/payment_success.html:41
-#: payments/templates/registration_payment_preview.html:27
+#: payments/templates/registration_payment_preview.html:26
 #: payments/templates/registration_payment_preview.html:32
 #: payments/templates/registration_payment_preview.html:37
 #: payments/templates/registration_payment_preview.html:43
 msgid "plačilo"
 msgstr "payment"
+
+#: events/templates/events/grant_ability_form.html:20
+#, fuzzy
+#| msgid "Uporabniško ime"
+msgid "Uporabnik"
+msgstr "Username"
+
+#: events/templates/events/grant_ability_form.html:21
+#, fuzzy
+#| msgid "Priimek"
+msgid "Ime/Priimek"
+msgstr "Surname"
+
+#: events/templates/events/grant_ability_form.html:23
+#: home/templates/registration/profile.html:173 payments/models.py:45
+msgid "Usposabljanje"
+msgstr "Training course"
+
+#: events/templates/events/grant_ability_form.html:39
+msgid "Ni označeno"
+msgstr ""
+
+#: events/templates/events/grant_ability_form.html:49
+#, fuzzy
+#| msgid "Dogodek je usposabljanje"
+msgid "Dodaj usposabljanje izbranim"
+msgstr "This event is a training course"
+
+#: events/templates/events/grant_ability_form.html:52
+msgid "Prekliči"
+msgstr ""
+
+#: events/templates/events/grant_ability_form.html:56
+msgid "Ni zaključenih prijav na dogodke."
+msgstr ""
+
+#: events/templates/events/grant_ability_form.html:58
+msgid "Nazaj"
+msgstr ""
 
 #: events/templates/events/includes/card.html:9
 #: home/templates/home/residence_archive_list_page.html:11
@@ -536,100 +576,104 @@ msgstr "This field cannot be empty."
 msgid "Na voljo ni dovolj prostih mest."
 msgstr "Not enough available spots."
 
-#: events/wagtail_hooks.py:22
+#: events/wagtail_hooks.py:23
 msgid "Trenutni in prihodni dogodki"
 msgstr "Current and upcoming events"
 
-#: events/wagtail_hooks.py:119
+#: events/wagtail_hooks.py:136
 msgid "Število otrok"
 msgstr "Number of children"
 
-#: events/wagtail_hooks.py:120
+#: events/wagtail_hooks.py:137
 msgid "Število dodatnih oseb"
 msgstr "Number of additional persons"
 
-#: home/forms.py:32
-msgid "elektronski naslov"
-msgstr "Email address"
+#: events/wagtail_hooks.py:162
+#, fuzzy
+#| msgid "Usposabljanje je opravljeno!"
+msgid "Usposabljanje je bilo dodano {} udeležencem."
+msgstr "Training course is finished!"
 
-#: home/forms.py:36
-msgid "prijavi me na novičnik"
-msgstr "Sign me up for the newsletter"
+#: events/wagtail_hooks.py:210
+#, fuzzy
+#| msgid "Dogodek je usposabljanje"
+msgid "Dodaj usposabljanje udeležencem"
+msgstr "This event is a training course"
 
-#: home/forms.py:42
-msgid "geslo (vsaj 8 znakov, vsaj ena številka)"
-msgstr "Password (at least 8 characters and one number)"
-
-#: home/forms.py:47
-msgid "ponovi geslo"
-msgstr "Repeat password"
-
-#: home/forms.py:57
-msgid "Geslo mora biti dolgo vsaj 8 znakov."
-msgstr "Password must be at least 8 characters long"
-
-#: home/forms.py:59
-msgid "Geslo mora vsebovati vsaj eno številko."
-msgstr "Password must contain at least one number"
-
-#: home/forms.py:62 home/forms.py:63
-msgid "Gesli se ne ujemata."
-msgstr "Passwords do not match"
-
-#: home/forms.py:161 home/forms.py:182
-msgid "Naslov 1"
-msgstr "Address 1"
-
-#: home/forms.py:165 home/forms.py:188
-msgid "Naslov 2 (neobvezno)"
-msgstr "Address 2 (not required)"
-
-#: home/forms.py:170
-msgid "potrebujem račun za pravno osebo"
-msgstr "I need a bill for a legal entity"
-
-#: home/forms.py:176
-msgid "Naziv pravne osebe"
-msgstr "Legal entity name"
-
-#: home/forms.py:194
-msgid "Davčna številka"
-msgstr "Tax ID number"
-
-#: home/forms.py:199
-msgid "sem zavezanec za DDV"
-msgstr "I am a VAT taxpayer"
-
-#: home/forms.py:204
-msgid ""
-"Želim, da mi pošiljate informacije o programu in drugih aktivnostih Centra "
-"Rog."
-msgstr ""
-"I would like you to send me information about the program and other "
-"activities of the Rog Center."
-
-#: home/forms.py:218
-msgid "Pravna oseba mora vnesti davčno številko!"
-msgstr "The legal entity must enter a tax identification number!"
-
-#: home/forms.py:249
+#: home/forms.py:87
 msgid ""
 "Spodnje informacije so lahko javne in vidne drugim uporabnikom centra Rog"
 msgstr ""
 "The following information can be public and visible to other users of Center "
 "Rog"
 
-#: home/forms.py:255
+#: home/forms.py:93
 msgid "Uporabniško ime"
 msgstr "Username"
 
-#: home/forms.py:266 home/forms.py:271 home/forms.py:276
+#: home/forms.py:104 home/forms.py:109 home/forms.py:114
 msgid "Dodaj povezavo do svoje spletne strani ali profila na družabnem omrežju"
 msgstr "Add link to your webpage or social media profile"
 
-#: home/forms.py:281
+#: home/forms.py:119
 msgid "Kontakt"
 msgstr "Contact"
+
+#: home/forms.py:207 home/forms.py:246
+msgid "Naslov 1"
+msgstr "Address 1"
+
+#: home/forms.py:212 home/forms.py:252
+msgid "Naslov 2 (neobvezno)"
+msgstr "Address 2 (not required)"
+
+#: home/forms.py:217
+msgid "elektronski naslov"
+msgstr "Email address"
+
+#: home/forms.py:223
+msgid "geslo (vsaj 8 znakov, vsaj ena številka)"
+msgstr "Password (at least 8 characters and one number)"
+
+#: home/forms.py:229
+msgid "ponovi geslo"
+msgstr "Repeat password"
+
+#: home/forms.py:234
+msgid "potrebujem račun za pravno osebo"
+msgstr "I need a bill for a legal entity"
+
+#: home/forms.py:240
+msgid "Naziv pravne osebe"
+msgstr "Legal entity name"
+
+#: home/forms.py:258
+msgid "Davčna številka"
+msgstr "Tax ID number"
+
+#: home/forms.py:263
+msgid "sem zavezanec za DDV"
+msgstr "I am a VAT taxpayer"
+
+#: home/forms.py:268
+msgid "prijavi me na novičnik"
+msgstr "Sign me up for the newsletter"
+
+#: home/forms.py:279
+msgid "Geslo mora biti dolgo vsaj 8 znakov."
+msgstr "Password must be at least 8 characters long"
+
+#: home/forms.py:281
+msgid "Geslo mora vsebovati vsaj eno številko."
+msgstr "Password must contain at least one number"
+
+#: home/forms.py:284 home/forms.py:285
+msgid "Gesli se ne ujemata."
+msgstr "Passwords do not match"
+
+#: home/forms.py:293
+msgid "Pravna oseba mora vnesti davčno številko!"
+msgstr "The legal entity must enter a tax identification number!"
 
 #: home/models/base_pages.py:122 home/models/base_pages.py:308
 #: home/models/module_pages.py:26 home/models/module_pages.py:68
@@ -1311,9 +1355,10 @@ msgstr "email"
 #: home/templates/home/blocks/memberships_section.html:24
 #: home/templates/home/blocks/plans_section.html:24
 #: home/templates/registration/registration_2_membership.html:29
+#: home/templates/registration/registration_choose_type.html:21
 #: home/templates/registration/user_purchase_membership.html:45
 #: home/templates/registration/user_purchase_plan.html:43
-#: home/templates/registration/user_purchase_tokens.html:40
+#: home/templates/registration/user_purchase_tokens.html:37
 msgid "cena"
 msgstr "price"
 
@@ -1324,8 +1369,9 @@ msgid ""
 "Ne velja za delovne postaje, za katere je potrebna odobritev s strani laba. "
 "Dodatne informacije najdeš ob rezervaciji delovne postaje."
 msgstr ""
-"You can book a workstation from 7 days up to 1 hour before your visit. "
-"This does not apply to workstations that need lab approval. You’ll see more details during booking."
+"You can book a workstation from 7 days up to 1 hour before your visit. This "
+"does not apply to workstations that need lab approval. You’ll see more "
+"details during booking."
 
 #: home/templates/home/blocks/plans_section.html:46
 #: home/templates/registration/user_purchase_plan.html:65
@@ -1335,7 +1381,8 @@ msgid ""
 "pa je vključen v ceno."
 msgstr ""
 "You can bring your own materials or buy them at the Made in Rog shop (<a "
-"href=\"https://center-rog.si/cenik/\">cenik</a>). Basic consumables are included in the price."
+"href=\"https://center-rog.si/cenik/\">cenik</a>). Basic consumables are "
+"included in the price."
 
 #: home/templates/home/blocks/plans_section.html:47
 #: home/templates/registration/user_purchase_plan.html:66
@@ -1345,9 +1392,10 @@ msgid ""
 "enkratno vstopnico. Dodatne informacije najdeš ob rezervaciji delovne "
 "postaje."
 msgstr ""
-"Some workstations that use more consumable materials have a limit on the number of visits. "
-If you reach this limit, you can buy extra visits with a single-entry ticket while your package is "
-"still valid. You’ll see more details during booking.
+"Some workstations that use more consumable materials have a limit on the "
+"number of visits. If you reach this limit, you can buy extra visits with a "
+"single-entry ticket while your package is still valid. You’ll see more "
+"details during booking."
 
 #: home/templates/home/blocks/plans_section.html:48
 #: home/templates/registration/user_purchase_plan.html:67
@@ -1357,7 +1405,8 @@ msgstr "Lockers are available for all package holders."
 #: home/templates/home/blocks/plans_section.html:49
 #: home/templates/registration/user_purchase_plan.html:68
 msgid "V ceno mesečnega in celoletnega paketa je vključena uporaba skladišča."
-msgstr "Monthly and Yearly packages also include use of the common storage space."
+msgstr ""
+"Monthly and Yearly packages also include use of the common storage space."
 
 #: home/templates/home/includes/cookie_notice.html:13
 msgid "Ali se strinjate z uporabo piškotkov?"
@@ -1649,67 +1698,69 @@ msgstr "leased user package"
 msgid "veljavnost paketa do:"
 msgstr "package is valid until:"
 
-#: home/templates/registration/profile.html:69
-msgid "Kupi žetone"
-msgstr ""
+#: home/templates/registration/profile.html:65
+#, fuzzy
+#| msgid "enkratna vstopnica"
+msgid "Število enkratnih vstopnic:"
+msgstr "single-entry ticket"
 
-#: home/templates/registration/profile.html:79
-#: home/templates/registration/profile.html:82
+#: home/templates/registration/profile.html:72
+#: home/templates/registration/profile.html:75
 msgid "aktiviraj paket"
 msgstr "activate package"
 
-#: home/templates/registration/profile.html:86
+#: home/templates/registration/profile.html:79
 msgid "kupi vstopnico ali paket"
 msgstr "buy entry ticket or user package"
 
-#: home/templates/registration/profile.html:97
+#: home/templates/registration/profile.html:90
 msgid "pretekla poraba"
 msgstr "past usage"
 
-#: home/templates/registration/profile.html:103
+#: home/templates/registration/profile.html:96
 msgid "uredi profil"
 msgstr "edit profile"
 
-#: home/templates/registration/profile.html:109
+#: home/templates/registration/profile.html:102
 msgid "poglej svoj profil"
 msgstr "view your profile"
 
-#: home/templates/registration/profile.html:115
+#: home/templates/registration/profile.html:108
 msgid "drugi člani"
 msgstr "other members"
 
-#: home/templates/registration/profile.html:123
+#: home/templates/registration/profile.html:116
 msgid "odjava"
 msgstr "sign out"
 
-#: home/templates/registration/profile.html:132
+#: home/templates/registration/profile.html:125
 msgid "participativni proračun"
 msgstr ""
 
-#: home/templates/registration/profile.html:143
+#: home/templates/registration/profile.html:136
 msgid "tvoji prihajajoči dogodki"
 msgstr "your upcoming events"
 
-#: home/templates/registration/profile.html:150
+#: home/templates/registration/profile.html:143
 msgid "za urejanje prijave kontaktiraj"
 msgstr "For application edits, please contact"
 
-#: home/templates/registration/profile.html:167
+#: home/templates/registration/profile.html:160
 msgid "rezerviraj termin"
 msgstr ""
 
-#: home/templates/registration/profile.html:177
+#: home/templates/registration/profile.html:170
 msgid "nabor opravljenih usposabljanj"
 msgstr "set of completed training courses"
-
-#: home/templates/registration/profile.html:180 payments/models.py:45
-msgid "Usposabljanje"
-msgstr "Training course"
 
 #: home/templates/registration/registration.html:4
 #: home/templates/registration/registration_2_membership.html:4
 #: home/templates/registration/registration_3_information.html:4
 #: home/templates/registration/registration_4_profile.html:4
+#: home/templates/registration/registration_choose_type.html:4
+#: home/templates/registration/registration_choose_type.html:9
+#: home/templates/registration/registration_information.html:4
+#: home/templates/registration/registration_information.html:9
 #: home/templates/registration/registration_mail_confirmation.html:4
 #: home/templates/registration/registration_wrapper.html:4
 msgid "Registracija"
@@ -1728,10 +1779,12 @@ msgid "Registracija še ni zaključena, nadaljujte spodaj:"
 msgstr "Registration is not yet complete, please continue below:"
 
 #: home/templates/registration/registration_2_membership.html:14
+#: home/templates/registration/registration_choose_type.html:10
 msgid "Izberi tip članstva:"
 msgstr "Choose membership type"
 
 #: home/templates/registration/registration_3_information.html:61
+#: home/templates/registration/registration_information.html:10
 msgid "Izpolni podatke:"
 msgstr "Fill in information"
 
@@ -1763,27 +1816,30 @@ msgstr "Didn’t receive the message?"
 msgid "Kliknite tukaj za ponovno pošiljanje"
 msgstr "Click here to resend"
 
-#: home/templates/registration/registration_wrapper.html:23
+#: home/templates/registration/registration_wrapper.html:25
+#: home/templates/registration/registration_wrapper.html:33
 #: payments/templates/payment_success.html:21
 #: payments/templates/registration_payment_preview.html:23
-msgid "začetek registracije"
-msgstr "start of registration"
-
-#: home/templates/registration/registration_wrapper.html:24
-#: payments/templates/payment_success.html:22
-#: payments/templates/registration_payment_preview.html:24
 msgid "izbira članstva"
 msgstr "membership selection"
 
-#: home/templates/registration/registration_wrapper.html:25
-#: payments/templates/payment_success.html:23
-#: payments/templates/registration_payment_preview.html:25
+#: home/templates/registration/registration_wrapper.html:26
+#: home/templates/registration/registration_wrapper.html:34
+#: payments/templates/payment_success.html:22
+#: payments/templates/registration_payment_preview.html:24
 msgid "osnovni podatki"
 msgstr "basic data"
 
-#: home/templates/registration/registration_wrapper.html:26
-#: payments/templates/payment_success.html:24
-#: payments/templates/registration_payment_preview.html:26
+#: home/templates/registration/registration_wrapper.html:27
+#: home/templates/registration/registration_wrapper.html:35
+#: payments/templates/payment_success.html:23
+#: payments/templates/registration_payment_preview.html:25
+msgid "potrditev e‑naslova"
+msgstr ""
+
+#: home/templates/registration/registration_wrapper.html:29
+#: payments/templates/payment_success.html:25
+#: payments/templates/registration_payment_preview.html:27
 msgid "osebni profil"
 msgstr "personal profile"
 
@@ -1872,40 +1928,30 @@ msgstr ""
 
 #: home/templates/registration/user_purchase_tokens.html:23
 msgid "izbira žetonov"
-msgstr ""
+msgstr "single-entry ticket"
 
 #: home/templates/registration/user_purchase_tokens.html:27
 msgid "Izberi število žetonov"
-msgstr ""
+msgstr "Select the number of single-entry tickets"
 
-#: home/templates/registration/user_purchase_tokens.html:29
-msgid ""
-"Z nakupom dodatnih žetonov lahko obiskuješ delavnice in dogodke v našem "
-"centru, po tem ko porabiš svoje žetone iz uporabniškega paketa."
-msgstr ""
-
-#: home/templates/registration/user_purchase_tokens.html:39
+#: home/templates/registration/user_purchase_tokens.html:36
 #: payments/models.py:46
 msgid "Žetoni"
-msgstr ""
+msgstr "single-entry ticket"
 
-#: home/templates/registration/user_purchase_tokens.html:47
-msgid "Nakup žetonov za laboratorije"
-msgstr ""
-
-#: home/templates/registration/user_purchase_tokens.html:51
+#: home/templates/registration/user_purchase_tokens.html:46
 msgid "Kupite lahko največ"
-msgstr ""
+msgstr "You can purchase a maximum of "
 
-#: home/templates/registration/user_purchase_tokens.html:51
+#: home/templates/registration/user_purchase_tokens.html:46
 msgid "žetonov na enkrat."
-msgstr ""
+msgstr "single-entry tickets at a time."
 
-#: home/templates/registration/user_purchase_tokens.html:55
+#: home/templates/registration/user_purchase_tokens.html:50
 msgid "Število žetonov"
-msgstr ""
+msgstr "Number of single-entry tickets"
 
-#: home/views.py:549 home/views.py:644
+#: home/views.py:555 home/views.py:650
 msgid "Uporabniško ime že obstaja."
 msgstr "Username already exists"
 
@@ -2225,6 +2271,12 @@ msgstr ""
 msgid "Plačilo je bilo že sprocesirano."
 msgstr ""
 
+#: rog/templates/admin_export_header.html:9
+#, fuzzy
+#| msgid "Dogodek je usposabljanje"
+msgid "Dodaj usposabljanje"
+msgstr "This event is a training course"
+
 #: users/forms.py:11 users/forms.py:21
 msgid "Prima ID"
 msgstr "Prima ID"
@@ -2296,6 +2348,16 @@ msgstr ""
 #: users/wagtail_hooks.py:54
 msgid "Export for Mailchimp"
 msgstr ""
+
+#~ msgid ""
+#~ "Želim, da mi pošiljate informacije o programu in drugih aktivnostih "
+#~ "Centra Rog."
+#~ msgstr ""
+#~ "I would like you to send me information about the program and other "
+#~ "activities of the Rog Center."
+
+#~ msgid "začetek registracije"
+#~ msgstr "start of registration"
 
 #~ msgid "izberi paket"
 #~ msgstr "choose user package"

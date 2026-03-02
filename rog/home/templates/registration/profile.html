@@ -63,9 +63,6 @@
                     </p>
                     <p class="mb-1">
                         {% translate 'Število enkratnih vstopnic:' %} {{ token_balance }}
-                        {% if token_msg %}
-                        ({{ token_msg }})
-                        {% endif %}
                     </p>
                 </div>
                 <div class="wallet-col d-flex flex-column justify-content-between align-items-md-end">
@@ -79,7 +76,7 @@
                         {% endif %}
                     </div>
                     <div>
-                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium mt-3 mt-md-0">{% translate 'kupi vstopnico ali paket' %}</a>
+                        <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium mt-3 mt-md-0"><span style="white-space: nowrap;">{% translate 'kupi vstopnico ali paket' %}</span></a>
                     </div>
                 </div>
             </section>
