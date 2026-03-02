@@ -1346,7 +1346,7 @@ msgid ""
 "postaje."
 msgstr ""
 "Some workstations that use more consumable materials have a limit on the number of visits. "
-If you reach this limit, you can buy extra visits with a single-entry ticket while your package is "
+"If you reach this limit, you can buy extra visits with a single-entry ticket while your package is "
 "still valid. You’ll see more details during booking.
 
 #: home/templates/home/blocks/plans_section.html:48
