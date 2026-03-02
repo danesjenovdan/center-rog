@@ -43,7 +43,7 @@
                             <hr />
                             <ul>
                                 {% with num_tokens=token_settings.max_tokens %} 
-                                    <li>{% translate 'Kupite lahko največ' %} {{ num_tokens }} {% translate 'žetonov na enkrat.' %}</li>
+                                    <li>{% translate 'Kupite lahko največ' %} {{ token_settings.max_purchase_quantity }} {% translate 'žetonov na enkrat.' %}</li>
                                 {% endwith %}
                             </ul>
                             <div class="tokens-input form-field-wrapper">
