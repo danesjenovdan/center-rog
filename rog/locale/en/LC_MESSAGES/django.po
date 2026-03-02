@@ -1699,10 +1699,8 @@ msgid "veljavnost paketa do:"
 msgstr "package is valid until:"
 
 #: home/templates/registration/profile.html:65
-#, fuzzy
-#| msgid "enkratna vstopnica"
 msgid "Število enkratnih vstopnic:"
-msgstr "single-entry ticket"
+msgstr "Number of single-entry tickets"
 
 #: home/templates/registration/profile.html:72
 #: home/templates/registration/profile.html:75
