@@ -1,19 +1,19 @@
 {% extends 'emails/base.html' %}
 {% block body %}
     <p>
-        Živijo, 
+        Živijo,
     </p>
     <p>
         Prosim, potrdi svoj e-naslov na spodnji povezavi:
     </p>
     <p>
-        <a href="{{ BASE_URL }}/users/confirm-user?key={{ key }}{{ next_page }}">{{ BASE_URL }}/users/confirm-user?key={{ key }}</a>
+        <a href="{{ BASE_URL }}/users/confirm-user?key={{ key }}{{ extra_query }}">{{ BASE_URL }}/users/confirm-user?key={{ key }}</a>
     </p>
     <p>
         Pozdrave iz Centra Rog,
     </p>
     <p>
-        Ekipa Centra Rog 
+        Ekipa Centra Rog
     </p>
     <p>
         To sporočilo je bilo poslano samodejno. Prosimo, da nanj ne odgovarjaš. V primeru težav se obrni na <a href="mailto:info@center-rog.si">info@center-rog.si</a>.
@@ -30,7 +30,7 @@
         Please, confirm you e-mail via this link:
     </p>
     <p>
-        <a href="{{ BASE_URL }}/users/confirm-user?key={{ key }}{{ next_page }}">{{ BASE_URL }}/users/confirm-user?key={{ key }}</a>
+        <a href="{{ BASE_URL }}/users/confirm-user?key={{ key }}{{ extra_query }}">{{ BASE_URL }}/users/confirm-user?key={{ key }}</a>
     </p>
     <p>
         Kind regards from Center Rog!

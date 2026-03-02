@@ -1,0 +1,35 @@
+{% extends "registration/registration_wrapper.html" %}
+{% load i18n static %}
+
+{% block title %}{% translate 'Registracija' %}{% endblock %}
+
+{% block body_class %}template-register{% endblock %}
+
+{% block form_title %}
+<h1>{% translate 'Registracija' %}</h1>
+<h2>{% translate 'Izberi tip članstva:' %}</h2>
+{% endblock form_title %}
+
+{% block form_block %}
+
+<form class="user-purchase-plan">
+    <div class="row justify-content-center radio-square-wrapper">
+        {% for membership_type in membership_types %}
+        <div class="col-12 col-md-6 mb-4">
+            <a href="{% url 'registration-information' %}?id={{ membership_type.id }}{% if next_page %}&amp;next={{ next_page }}{% endif %}" class="radio-square btn">
+                <h4>{{ membership_type.name }}</h4>
+                <p><small class="mb-0">{% translate 'cena' %}</small></p>
+                <p class="price">{{ membership_type.price }}€</p>
+                <hr />
+                <ul>
+                    {% for specification in membership_type.related_specifications.all %}
+                    <li>{{ specification }}</li>
+                    {% endfor %}
+                </ul>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</form>
+
+{% endblock form_block %}

@@ -150,18 +150,8 @@ class PromoCodeAdmin(ExportModelAdminMixin, ModelAdmin):
         if limit > 0:
             return f"{uses}/{limit}"
         return f"{uses}/∞"
-    
-
-class TokenSettingsAdmin(ModelAdmin):
-    model = TokenSettings
-    menu_icon = "cog"
-    menu_order = 217
-    add_to_settings_menu = True
-    add_to_admin_menu = False
-    list_display = ["__str__", "regular_price", "special_price", "max_purchase_quantity"]
 
 
 modeladmin_register(PlanAdmin)
 modeladmin_register(PaymentAdmin)
 modeladmin_register(PromoCodeAdmin)
-modeladmin_register(TokenSettingsAdmin)

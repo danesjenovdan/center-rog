@@ -119,13 +119,16 @@ class ResendConfirmationMailView(View):
 
 class ConfirmUserView(View):
     def get(self, request):
+        membership = request.GET.get("membership", None)
         key = request.GET.get("key", None)
         next = request.GET.get("next", None)
+
+        query = "?confirmed=1"
+        if membership:
+            query += f"&membership={membership}"
         if next:
-            query = f"?next={next}"
-        else:
-            query = ""
-        print("key confirm user", key)
+            query += f"&next={next}"
+
         confirm_email = get_object_or_404(ConfirmEmail, key=key)
         user = confirm_email.user
         user.email_confirmed = True
@@ -137,7 +140,8 @@ class ConfirmUserView(View):
             "Center Rog – vaša registracija je uspela // your registration was successful",
             {},
         )
-        return redirect(reverse('registration-membership') + query)
+
+        return redirect(reverse('registration-email-confirmation') + query)
 
 
 class ExportMarketningUsersView(View):
