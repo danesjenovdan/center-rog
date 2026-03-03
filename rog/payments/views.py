@@ -217,7 +217,7 @@ class PaymentPreview(views.APIView):
             payment.amount = total_price
             payment.original_amount = total_price
             payment.save()
-            plan_name = _("Žeton: ") + str(tokens) + "X"
+            plan_name = _("Žetoni") + ": " + str(tokens) + "X"
             PaymentPlanEvent(
                 plan_name=plan_name,
                 payment=payment,
