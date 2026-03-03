@@ -176,11 +176,17 @@ class PurchasePlanView(TemplateView):
 
         if form.is_valid():
             plan = form.cleaned_data["plans"]
+            # get language code for redirect url
+            language_code = request.LANGUAGE_CODE
+            if language_code != "sl":
+                language_code = f"/{language_code}"
+            else:                
+                language_code = ""
 
             if plan.custom_buy_url:
-                return redirect(plan.custom_buy_url)
+                return redirect(f"{language_code}{plan.custom_buy_url}")
 
-            return redirect(f"/placilo?plan_id={plan.id}&purchase_type=plan")
+            return redirect(f"{language_code}/placilo?plan_id={plan.id}&purchase_type=plan")
         else:
             print("Form ni valid")
 
@@ -211,7 +217,14 @@ class PurchaseTokensView(TemplateView):
         tokens = request_data.get("token_quantity")
 
         if tokens:
-            return redirect(f"/placilo?&purchase_type=tokens&tokens={tokens}")
+            # get language code for redirect url
+            language_code = request.LANGUAGE_CODE
+            if language_code != "sl":
+                language_code = f"/{language_code}"
+            else:
+                language_code = ""
+
+            return redirect(f"{language_code}/placilo?&purchase_type=tokens&tokens={tokens}")
         else:
             print("Form ni valid")
 
