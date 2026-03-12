@@ -401,8 +401,8 @@ class WorkingStationPage(BasePage):
     prima_location_id = models.IntegerField(
         null=True, blank=True, verbose_name=_("Prima location id")
     )
-    prima_group_id = models.IntegerField(
-        null=True, blank=True, verbose_name=_("Prima group id")
+    prima_group_id = models.CharField(
+        max_length=10, null=True, blank=True, verbose_name=_("Prima group id")
     )
     show_see_more_section = models.BooleanField(default=True, verbose_name=_("Pokaži več"))
 
