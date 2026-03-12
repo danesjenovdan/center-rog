@@ -58,7 +58,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"User {user.email} set to group {correct_group_id}")
                 else:
                     # Odstrani iz trenutne skupine
-                    prima_api.removeUserFromSubscriptionGroup(user.prima_id, user.prima_group_id)
+                    prima_api.removeUserFromGroup(user.prima_id, user.prima_group_id)
                     user.prima_group_id = None
                     user.save()
                     self.stdout.write(f"User {user.email} removed from group (no active membership/subscription)")
