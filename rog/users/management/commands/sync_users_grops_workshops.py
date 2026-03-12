@@ -16,7 +16,7 @@ class Command(BaseCommand):
         for user in users:
             data, message = prima_api.readUserGroups(user.prima_id)
             if message == "Success":
-                data_list = data["UsersList"]
+                data_list = data.get("UsersList", [])
                 if isinstance(data_list, dict):
                     data_list = [data_list]  # Convert to list if it's a single dict
                 for group in data_list:

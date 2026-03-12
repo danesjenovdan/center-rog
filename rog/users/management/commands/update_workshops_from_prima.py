@@ -24,4 +24,3 @@ class Command(BaseCommand):
                         prima_id=group_id,
                         defaults={"name": group_name},
                     )
-
