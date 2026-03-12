@@ -6,9 +6,11 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 
 class Workshop(models.Model):
     name = models.TextField(verbose_name=_("Ime usposabljanja"))
+    prima_id = models.CharField(verbose_name=_("Prima ID"), max_length=255)
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("prima_id"),
     ]
 
     def __str__(self):

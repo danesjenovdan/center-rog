@@ -9,9 +9,9 @@ from django.conf import settings
 
 class PrimaApi(object):
     class SubscriptionGroupsEnum(Enum):
-        MEMBER = 100
-        MONTHLY = 101
-        YEARLY = 102
+        MEMBER = "100"
+        MONTHLY = "101"
+        YEARLY = "102"
 
     def __init__(self, api_key=settings.PRIMA_API_KEY, url=settings.PRIMA_URL):
         self.api_key = api_key
@@ -271,10 +271,9 @@ class PrimaApi(object):
 
         return data, message
 
-    def addUserToSubscriptionGroup(self, user_id, group_id):
+    def addUserToGroup(self, user_id, group_id):
         """
-        Adds user to subscription group.
-
+        Adds user to group.
         """
 
         payload = {
@@ -285,35 +284,39 @@ class PrimaApi(object):
 
         data, message = self.primaRequest(payload)
 
-        for group in PrimaApi.SubscriptionGroupsEnum:
-            if group.value == group_id:
-                continue
-            payload = {
-                "Request": "DeleteUsersList",
-                "UsrID1": user_id,
-                "LstID": group.value,
-            }
-            data, message = self.primaRequest(payload)
-
         return data, message
     
-    def removeUserFromSubscriptionGroup(self, user_id, group_id):
+    def removeUserFromGroup(self, user_id, group_id):
         """
-        Adds user to subscription group.
+        Removes user from subscription group.
 
         """
         payload = {
             "Request": "DeleteUsersList",
-            "UsrID": user_id,
+            "UsrID1": user_id,
             "LstID": group_id,
         }
         data, message = self.primaRequest(payload)
 
         return data, message
-
-    def readUserSubscriptionGroups(self, user_id):
+    
+    def addUserToSubscriptionGroup(self, user_id, group_id):
         """
-        Returns all subscription groups.
+        Adds user to subscription group.
+
+        """
+        data, message = self.addUserToGroup(user_id, group_id)
+
+        for group in PrimaApi.SubscriptionGroupsEnum:
+            if group.value == group_id:
+                continue
+            data, message = self.removeUserFromGroup(user_id, group.value)
+
+        return data, message
+
+    def readUserGroups(self, user_id):
+        """
+        Returns all groups.
         """
 
         payload = {
@@ -357,3 +360,17 @@ class PrimaApi(object):
                 return int(balance_value), message
         
         return 0, "WltID 8 not found"
+
+    def getPrimaGroups(self):
+        """
+        Returns all subscription groups.
+        """
+
+        payload = {
+            "Request": "ReadList",
+            "Range": "All",
+        }
+
+        data, message = self.primaRequest(payload)
+
+        return data, message
