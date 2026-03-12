@@ -24,7 +24,7 @@ class Tool(Orderable, ClusterableModel):
         Workshop, null=True, blank=True, on_delete=models.SET_NULL, related_name="+", verbose_name=_("Zahteva usposabljanje?"))
     more_information_link = models.URLField(null=True, blank=True, verbose_name=_("Povezava za več informacij"))
     prima_location_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima location id"))
-    prima_group_id = models.IntegerField(null=True, blank=True, verbose_name=_("Prima group id"))
+    prima_group_id = models.CharField(max_length=10, null=True, blank=True, verbose_name=_("Prima group id"))
 
     panels = [
         FieldPanel("name"),

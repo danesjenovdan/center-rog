@@ -199,7 +199,8 @@ class Plan(Timestampable):
     extend_membership = models.BooleanField(
         default=False, help_text=_("Should this plan extend the membership if needed?")
     )
-    prima_group_id = models.IntegerField(
+    prima_group_id = models.CharField(
+        max_length=10,
         null=True,
         blank=True,
         help_text=_("Prima subscription group id associated with this plan"),

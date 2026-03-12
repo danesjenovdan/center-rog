@@ -19,8 +19,8 @@ class Command(BaseCommand):
         )
         for active_membership in active_memberships:
             user = active_membership.user
-            prima_api.addUserToSubscriptionGroup(user.prima_id, 100)
-            user.prima_group_id = 100
+            prima_api.addUserToSubscriptionGroup(user.prima_id, "100")
+            user.prima_group_id = "100"
             user.save()
             if active_membership.valid_from:
                 valid_from = active_membership.valid_from

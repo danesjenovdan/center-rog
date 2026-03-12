@@ -1,5 +1,5 @@
 from users.models import User, Membership
-from payments.models import PaymentPlanEvent
+from payments.models import PaymentPlanEvent, PaymentItemType
 from users.prima_api import PrimaApi
 
 from django.core.management.base import BaseCommand
@@ -25,9 +25,9 @@ class Command(BaseCommand):
             
             # Preveri aktivno uporabnino (group 101 ali 102)
             active_subscription = PaymentPlanEvent.objects.filter(
-                user=user,
+                payment__user=user,
                 valid_to__gte=timezone.now(),
-                plan__event_payment_item_type=PaymentPlanEvent.PaymentItemType.UPORABNINA,
+                payment_item_type=PaymentItemType.UPORABNINA,
             ).order_by('-valid_to').first()  # trenutno aktivna uporabnina
             
             correct_group_id = None
@@ -58,7 +58,7 @@ class Command(BaseCommand):
                     self.stdout.write(f"User {user.email} set to group {correct_group_id}")
                 else:
                     # Odstrani iz trenutne skupine
-                    prima_api.removeUserFromSubscriptionGroup(user.prima_id, user.prima_group_id)
+                    prima_api.removeUserFromGroup(user.prima_id, user.prima_group_id)
                     user.prima_group_id = None
                     user.save()
                     self.stdout.write(f"User {user.email} removed from group (no active membership/subscription)")
