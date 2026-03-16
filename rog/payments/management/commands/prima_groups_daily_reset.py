@@ -43,7 +43,7 @@ class Command(BaseCommand):
                     correct_group_id = None
             # 2. Če ima samo članarino brez uporabnine
             elif active_membership:
-                correct_group_id = 100
+                correct_group_id = "100"
             # 3. Če nima nič -> odstrani iz skupine
             else:
                 correct_group_id = None
