@@ -5,6 +5,7 @@ from wagtail.users.forms import UserEditForm, UserCreationForm
 
 from home.models import Workshop
 from users.models import UserInterest
+from payments.models import PaymentPlanEvent, PaymentItemType
 
 
 class CustomUserEditForm(UserEditForm):
@@ -14,7 +15,16 @@ class CustomUserEditForm(UserEditForm):
 
     @property
     def memberships(self):
-        return self.instance.memberships.all()
+        return self.instance.memberships.filter(active=True).order_by('-valid_to')
+    
+    @property
+    def subscriptions(self):
+        subscription = PaymentPlanEvent.objects.filter(
+            payment__user=self.instance,
+            valid_to__isnull=False,
+            payment_item_type=PaymentItemType.UPORABNINA,
+        ).order_by('-valid_to')
+        return subscription
 
 
 class CustomUserCreationForm(UserCreationForm):
