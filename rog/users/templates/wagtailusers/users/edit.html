@@ -34,6 +34,31 @@
         </div>
       </div>
     </li>
+    <h2>Uporabnine</h2>
+    <li>
+      <div class="w-field__wrapper">
+        <div class="w-field">
+          <div class="w-field__input">
+            <table class="c-memberships-table">
+              <tr>
+                <th>Ime</th>
+                <th>Veljavno od</th>
+                <th>Veljavno do</th>
+                <th>Je aktivno?</th>
+              </tr>
+              {% for subscription in form.subscriptions %}
+              <tr>
+                <td> {{ subscription.plan_name }} </td>
+                <td> {{ subscription.valid_from }} </td>
+                <td> {{ subscription.valid_to }} </td>
+                <td> {{ subscription.active }} </td>
+              </tr>
+              {% endfor %}
+          </table>
+          </div>
+        </div>
+      </div>
+    </li>
     <h2>Pravna oseba</h2>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_receipt %}</li>
     <li>{% include "wagtailadmin/shared/field.html" with field=form.legal_person_name %}</li>
