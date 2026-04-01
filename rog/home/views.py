@@ -180,7 +180,7 @@ class PurchasePlanView(TemplateView):
             language_code = request.LANGUAGE_CODE
             if language_code != "sl":
                 language_code = f"/{language_code}"
-            else:                
+            else:
                 language_code = ""
 
             if plan.custom_buy_url:
@@ -482,13 +482,15 @@ class RegistrationMailConfirmationView(View):
     def get(self, request):
         user = request.user
         type_id = request.GET.get("id", None)
+        membership_type = None
+
         if type_id:
             try:
                 membership_type = MembershipType.objects.get(id=type_id)
             except MembershipType.DoesNotExist:
-                membership_type = None
+                pass
 
-        if user.email_confirmed:
+        if user.is_authenticated and user.email_confirmed:
             membership = request.GET.get("membership", None)
             next_page = request.GET.get("next", None)
 
