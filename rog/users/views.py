@@ -98,6 +98,11 @@ class DeleteGalleryView(View):
 class ResendConfirmationMailView(View):
     def get(self, request):
         user = request.user
+        if not user.is_authenticated:
+            return redirect("login")
+        if user.email_confirmed:
+            return redirect("profile-my")
+
         # tukaj pošljemo mail za potrditev računa
         # najprej naredimo ConfirmEmail objekt in generiramo ključ
         not_unique = True
