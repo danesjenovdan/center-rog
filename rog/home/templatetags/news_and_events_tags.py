@@ -25,7 +25,8 @@ def with_up_to_15_upcoming_events(field):
         EventPage.objects.live()
         .exclude(id__in=event_ids)
         .filter(start_day__gte=today)
-        .select_related("hero_image").prefetch_related("categories")
+        .select_related("hero_image")
+        .prefetch_related("categories")
         .order_by("start_day", "start_time")[:num_other_events]
     )
 
@@ -85,3 +86,10 @@ def with_up_to_15_random_studios(field):
         studios.append(studio)
 
     return studios
+
+
+@register.filter
+def map_slugs(values):
+    if values is None:
+        return []
+    return [value.slug for value in values]
