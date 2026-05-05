@@ -7,9 +7,12 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from collections import defaultdict
+
 from home import models
 from home.email_utils import send_email, id_generator
 from users.models import ConfirmEmail, User
+from events.models import EventRegistration
 from .tokens import get_email_for_token, get_token_for_user
 
 import csv
@@ -172,4 +175,49 @@ class ExportMarketningUsersView(View):
         writer.writeheader()
         writer.writerows(data)
 
+        return response
+
+
+class ExportMarketningUsersLabsView(View):
+    def get(self, request):
+        if not request.user.is_superuser:
+            return HttpResponse(status=403)
+        
+        users = defaultdict(set)
+        data = []
+
+        event_registrations = EventRegistration.objects.filter(
+            registration_finished=True,
+            user__allow_marketing=True
+        ).select_related(
+            "user", "event",
+        ).prefetch_related(
+            "user__workshops_attended",
+            "event__labs",
+        ).order_by('user__id').distinct()
+
+        for event_registration in event_registrations:
+            for lab in event_registration.event.labs.all():
+                if lab:
+                    users[event_registration.user].add(lab.title)
+
+
+        for user in users:
+            data.append({
+                'email': user.email,
+                'name': user.first_name,
+                'workshops_attended': ", ".join([workshop.name for workshop in user.workshops_attended.all()]),
+                'labs': ", ".join(users[user]),
+            })
+
+        response = HttpResponse(
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="export.csv"'},
+        )
+        try:
+            writer = csv.DictWriter(response, fieldnames=data[0].keys(), dialect='excel-tab', delimiter=';')
+        except IndexError:
+            return response
+        writer.writeheader()
+        writer.writerows(data)
         return response
