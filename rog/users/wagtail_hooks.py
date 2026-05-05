@@ -5,7 +5,7 @@ from django.urls import path, reverse
 from django.utils.translation import gettext_lazy as _
 
 from .models import BookingToken, MembershipType, UserInterest, MembershipTypeSpecification
-from .views import ExportMarketningUsersView
+from .views import ExportMarketningUsersView, ExportMarketningUsersLabsView
 
 
 class BookingTokenAdmin(ModelAdmin):
@@ -43,15 +43,21 @@ class MembershipTypeSpecificationAdmin(ModelAdmin):
 
 
 @hooks.register('register_admin_urls')
-def register_calendar_url():
+def register_export_urls():
     return [
         path('mailchimp_export/', ExportMarketningUsersView.as_view(), name='mailchimp_export'),
+        path('mailchimp_export_labs/', ExportMarketningUsersLabsView.as_view(), name='mailchimp_export_labs'),
     ]
 
 
 @hooks.register('register_admin_menu_item')
-def register_calendar_menu_item():
+def register_export_menu_item():
     return MenuItem(_('Export for Mailchimp'), reverse('mailchimp_export'), icon_name='download')
+
+
+@hooks.register('register_admin_menu_item')
+def register_export_labs_menu_item():
+    return MenuItem(_('Export User Labs for Mailchimp'), reverse('mailchimp_export_labs'), icon_name='download')
 
 
 # modeladmin_register(BookingTokenAdmin)
