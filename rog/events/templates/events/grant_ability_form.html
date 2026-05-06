@@ -33,11 +33,17 @@
                                 <td>{{ registration.name }} {{ registration.surname }}</td>
                                 <td>{{ registration.event.title }}</td>
                                 <td>
-                                    {% if registration.event.event_is_workshop %}
-                                        <strong>{{ registration.event.event_is_workshop.name }}</strong>
+                                    {% with workshops=registration.event.event_is_workshop.all %}
+                                    {% if workshops %}
+                                        <strong>
+                                            {% for workshop in workshops %}
+                                                {{ workshop.name }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </strong>
                                     {% else %}
                                         <em>{% trans "Ni označeno" %}</em>
                                     {% endif %}
+                                    {% endwith %}
                                 </td>
                             </tr>
                         {% endfor %}
