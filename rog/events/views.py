@@ -326,7 +326,11 @@ class EventRegistrationAdditionalView(View):
                     "type": item.type,
                     "question": item.question,
                     "required": item.required,
-                    "choices": [c["value"] for c in item.choices.raw_data] if item.choices else [],
+                    "choices": (
+                        [c["value"] for c in item.choices.raw_data]
+                        if item.choices
+                        else []
+                    ),
                     "initial": (
                         None
                         if item.question not in extra_questions_answers
@@ -459,35 +463,48 @@ class EventRegistrationAdditionalView(View):
                 return redirect("profile-my")
 
 
-def event_list(request):
+def event_list(request, archived=False):
     sort_by_palces = request.GET.get("places", False)
     sort_by_booked = request.GET.get("booked", False)
     sort_by_day = request.GET.get("day", False)
     q = request.GET.get("q", None)
 
-    future_events = EventPage.objects.filter(
-        without_registrations=False, start_day__gte=datetime.now().date()
-    )
+    if archived:
+        events = EventPage.objects.filter(
+            without_registrations=False, start_day__lt=datetime.now().date()
+        )
+        if not sort_by_palces and not sort_by_booked and not sort_by_day:
+            events = events.order_by("-start_day")
+    else:
+        events = EventPage.objects.filter(
+            without_registrations=False, start_day__gte=datetime.now().date()
+        )
     if q:
-        future_events = future_events.filter(title__icontains=q)
+        events = events.filter(title__icontains=q)
 
     if sort_by_palces:
         order_by = "places"
         order = "" if int(sort_by_palces) > 0 else "-"
-        future_events = future_events.order_by(f"{order}number_of_places")
+        events = events.order_by(f"{order}number_of_places")
     elif sort_by_booked:
         order_by = "booked"
         order = "" if int(sort_by_booked) > 0 else "-"
-        future_events = future_events.order_by(f"{order}booked_count")
+        events = events.order_by(f"{order}booked_count")
     elif sort_by_day:
         order_by = "day"
         order = "" if int(sort_by_day) > 0 else "-"
-        future_events = future_events.order_by(f"{order}start_day")
+        events = events.order_by(f"{order}start_day")
     else:
         order_by = ""
         order = ""
+
     return render(
         request,
         "event_list_admin.html",
-        {"events": future_events, "order_by_key": order_by, "order": order},
+        {
+            "events": events[:100] if archived else events,
+            "order_by_key": order_by,
+            "order": order,
+            "title": _("Prihajajoči dogodki") if not archived else _("Arhiv dogodkov"),
+        },
     )
