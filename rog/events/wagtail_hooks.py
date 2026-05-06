@@ -149,14 +149,13 @@ def grant_event_ability_form_view(request):
         for registration_id in registration_ids:
             try:
                 registration = EventRegistration.objects.get(id=registration_id)
-                print("Workshop", registration.event.event_is_workshop)
-                if registration.event.event_is_workshop:
-                    registration.user.workshops_attended.add(
-                        registration.event.event_is_workshop
-                    )
-                    prima_api.addUserToGroup(
-                        registration.user.prima_id, registration.event.event_is_workshop.prima_id
-                    )
+                workshops = registration.event.event_is_workshop.all()
+                if workshops.exists():
+                    registration.user.workshops_attended.add(*workshops)
+                    for workshop in workshops:
+                        prima_api.addUserToGroup(
+                            registration.user.prima_id, workshop.prima_id
+                        )
                     updated_count += 1
             except EventRegistration.DoesNotExist:
                 print(f"Registration with id {registration_id} does not exist.")
@@ -175,8 +174,10 @@ def grant_event_ability_form_view(request):
             return redirect("/admin/events/eventregistration/")
 
     # GET request - show form
-    registrations = EventRegistration.objects.select_related("event", "user").filter(
-        registration_finished=True
+    registrations = (
+        EventRegistration.objects.select_related("event", "user")
+        .prefetch_related("event__event_is_workshop")
+        .filter(registration_finished=True)
     )
 
     # Apply filters from query string (same filters as EventRegistrationAdmin)
@@ -223,6 +224,7 @@ def grant_event_ability_form_view(request):
 def register_eventlist_url():
     return [
         path("event_list/", event_list, name="event_list"),
+        path("event_archive_list/", event_list, {"archived": True}, name="event_archive_list"),
         path("grant_ability/", grant_event_ability_form_view, name="grant_ability"),
     ]
 
@@ -230,6 +232,11 @@ def register_eventlist_url():
 @hooks.register("register_admin_menu_item")
 def register_calendar_menu_item():
     return MenuItem("Prihajajoči dogodki", reverse("event_list"), icon_name="date")
+
+
+@hooks.register("register_admin_menu_item")
+def register_archive_menu_item():
+    return MenuItem("Arhiv dogodkov", reverse("event_archive_list"), icon_name="date")
 
 
 modeladmin_register(EventCategoryAdmin)

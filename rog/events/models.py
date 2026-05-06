@@ -249,11 +249,9 @@ class EventPage(BasePage):
         blank=True, verbose_name=_("Povezava za prijavo (če je prazno, se gumb skrije)")
     )
     notice = models.CharField(max_length=45, blank=True, verbose_name=_("Opomba"))
-    event_is_workshop = models.ForeignKey(
+    event_is_workshop = ParentalManyToManyField(
         Workshop,
-        null=True,
         blank=True,
-        on_delete=models.SET_NULL,
         related_name="workshop_events",
         verbose_name=_("Dogodek je usposabljanje"),
     )
@@ -327,7 +325,7 @@ class EventPage(BasePage):
         FieldPanel("location"),
         FieldPanel("apply_url"),
         FieldPanel("notice"),
-        FieldPanel("event_is_workshop"),
+        FieldPanel("event_is_workshop", widget=forms.CheckboxSelectMultiple),
         FieldPanel("show_see_more_section"),
         FieldPanel("price"),
         FieldPanel("price_for_non_member"),
