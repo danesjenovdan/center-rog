@@ -10,14 +10,11 @@ from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail.admin.menu import MenuItem
 from wagtail import hooks
 from wagtail_rangefilter.filters import DateRangeFilter
-from users.prima_api import PrimaApi
 
 from .models import EventPage, EventCategory, EventRegistration
 from .views import event_list
 from .export import ExportModelAdminMixin
 from payments.models import PaymentPlanEvent
-
-prima_api = PrimaApi()
 
 class RelevantEventsListFilter(SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -152,10 +149,6 @@ def grant_event_ability_form_view(request):
                 workshops = registration.event.event_is_workshop.all()
                 if workshops.exists():
                     registration.user.workshops_attended.add(*workshops)
-                    for workshop in workshops:
-                        prima_api.addUserToGroup(
-                            registration.user.prima_id, workshop.prima_id
-                        )
                     updated_count += 1
             except EventRegistration.DoesNotExist:
                 print(f"Registration with id {registration_id} does not exist.")
