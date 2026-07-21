@@ -1,17 +1,34 @@
 
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: enable-cors
+spec:
+  headers:
+    accessControlAllowOriginList:
+      - "https://center-rog.si"
+      - "https://www.center-rog.si"
+    accessControlAllowMethods:
+      - GET
+      - POST
+      - PUT
+      - OPTIONS
+    accessControlAllowHeaders:
+      - "*"
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: rog
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    nginx.ingress.kubernetes.io/proxy-body-size: 10m
+    #nginx.ingress.kubernetes.io/proxy-body-size: 10m
     # for more ciphers
-    nginx.ingress.kubernetes.io/ssl-ciphers: "ALL:!aNULL:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP"
+    #nginx.ingress.kubernetes.io/ssl-ciphers: "ALL:!aNULL:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP"
     # nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "false"
     # nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - center-rog.si
@@ -19,7 +36,7 @@ spec:
       secretName: rog-wagtail-tls
   rules:
     - host: center-rog.si
-      http:
+      http: &http_paths
         paths:
           - path: /
             pathType: Prefix
@@ -29,15 +46,7 @@ spec:
                 port:
                   number: 8000
     - host: www.center-rog.si
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: rog
-                port:
-                  number: 8000
+      http: *http_paths
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -45,13 +54,9 @@ metadata:
   name: rog-nginx
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "*" # TODO
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: 10m
+    traefik.ingress.kubernetes.io/router.middlewares: rog-enable-cors@kubernetescrd
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - files.center-rog.si
