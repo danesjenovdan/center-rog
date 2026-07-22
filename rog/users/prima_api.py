@@ -180,6 +180,21 @@ class PrimaApi(object):
 
         return data, message
     
+    def updateUserCompany(self, user_id, company):
+        """
+        Update user's company.
+        """
+
+        payload = {
+            "Request": "UpdateUser",
+            "UsrID": user_id,
+            "UsrCompany": company,
+        }
+
+        data, message = self.primaRequest(payload)
+
+        return data, message
+    
     def updateUserName(self, user_id, name, last_name):
         """
         Update user's name and last name.
@@ -239,17 +254,6 @@ class PrimaApi(object):
         """
 
         payload = {"Request": "ReadUserBalances", "Range": "UsrID", "UsrID": user_id}
-
-        data, message = self.primaRequest(payload)
-
-        return data, message
-
-    def updateUserBalance(self, user_id):
-        """
-        TODO
-        """
-
-        payload = {"Request": "UpdateUserBalance", "UsrID": user_id}
 
         data, message = self.primaRequest(payload)
 

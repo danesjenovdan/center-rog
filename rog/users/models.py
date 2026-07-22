@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, Panel
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -19,7 +19,9 @@ from wagtailautocomplete.edit_handlers import AutocompletePanel
 from home.models import Workshop
 from payments.models import Plan, PaymentPlanEvent, PaymentItemType
 from payments.pantheon import create_subject
+from payments.utils import create_prima_user_if_not_exists
 from behaviours.models import Timestampable
+
 
 from datetime import datetime
 import random
@@ -368,6 +370,24 @@ class User(AbstractUser, Timestampable):
             timestamp,
         )
 
+    def on_organization_changed(self, old_organization, new_organization):
+        create_prima_user_if_not_exists(self, None)
+        if new_organization:
+            owner = new_organization.owner
+            if owner != self:
+                # if user is not owner of the organization, we need to add owners tokens to the user
+                self.refresh_from_db()
+                data, message = prima_api.readUserBalances(owner.prima_id)
+                balances = data.get("balance", [])
+                
+                # Find balance for WltID = 8 (Enkratni obisk)
+                for balance in balances:
+                    if balance.get("@WltID") == "8":
+                        tokens = balance.get("@WltBlcBalance", "0")
+                        prima_api.addTokensToUserBalance(self.prima_id, tokens)
+
+        prima_api.updateUserCompany(self.prima_id, f"organization_{new_organization.id}" if new_organization else None)
+
 
 class BookingToken(models.Model):
     email = models.EmailField(unique=True)
@@ -390,6 +410,19 @@ class ConfirmEmail(Timestampable):
     class Meta:
         verbose_name = _("Confirm email")
         verbose_name_plural = _("Confirm emails")
+
+
+class OrganizationMembersPanel(Panel):
+    class BoundPanel(Panel.BoundPanel):
+        template_name = "users/panels/organization_members_panel.html"
+
+        def get_context_data(self, parent_context=None):
+            context = super().get_context_data(parent_context)
+            if self.instance and self.instance.pk:
+                context["members"] = self.instance.users.all().order_by("email")
+            else:
+                context["members"] = []
+            return context
 
 
 class Organization(models.Model):
@@ -417,6 +450,7 @@ class Organization(models.Model):
         FieldPanel("tax_number"),
         FieldPanel("vat"),
         AutocompletePanel("owner"),
+        OrganizationMembersPanel(),
     ]
 
     class Meta:

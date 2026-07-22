@@ -1,0 +1,15 @@
+{% load i18n %}
+<section class="w-panel">
+    <h2 class="w-panel__heading">{% trans "Clani organizacije" %}</h2>
+    <div class="w-panel__content">
+        {% if members %}
+            <ul>
+                {% for member in members %}
+                    <li>{{ member.email }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            -
+        {% endif %}
+    </div>
+</section>
