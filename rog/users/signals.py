@@ -1,6 +1,6 @@
 import logging
 
-from django.db.models.signals import m2m_changed, pre_save
+from django.db.models.signals import m2m_changed, pre_save, post_save
 from django.dispatch import receiver
 from django.db import transaction
 
@@ -72,13 +72,18 @@ def user_organization_changed(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Organization)
-def sync_organization_owner_to_user(sender, instance, **kwargs):
+def cache_previous_organization_owner(sender, instance, **kwargs):
     if not instance.pk:
-        old_owner_id = None
+        instance._old_owner_id = None
     else:
-        old_owner_id = (
+        instance._old_owner_id = (
             sender.objects.filter(pk=instance.pk).values_list("owner_id", flat=True).first()
         )
+
+
+@receiver(post_save, sender=Organization)
+def sync_organization_owner_to_user(sender, instance, **kwargs):
+    old_owner_id = getattr(instance, "_old_owner_id", None)
 
     new_owner_id = instance.owner_id
 
@@ -95,7 +100,7 @@ def sync_organization_owner_to_user(sender, instance, **kwargs):
         # Assign this organization to new owner.
         if new_owner_id:
             User.objects.filter(pk=new_owner_id).exclude(organization_id=instance.pk).update(
-                organization=instance
+                organization_id=instance.pk
             )
 
     transaction.on_commit(_after_commit)
