@@ -1,7 +1,6 @@
 from django.utils import timezone
 
-from .models import Payment, PromoCode, Token, PaymentPlanEvent, PaymentItemType
-from users.models import Membership, MembershipType
+from .models import Payment, Token, PaymentPlanEvent, PaymentItemType
 from home.email_utils import send_email
 
 from datetime import datetime, timedelta
