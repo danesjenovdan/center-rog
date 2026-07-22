@@ -150,6 +150,9 @@ class PurchasePlanView(TemplateView):
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
 
+        if current_user.organization:
+            return redirect("profile-part-of-organization")
+
         form = PurchasePlanForm()
         membership_plans = MembershipType.objects.filter(
             plan__isnull=False
@@ -165,6 +168,9 @@ class PurchasePlanView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
+
+        if current_user.organization:
+            return redirect("profile-part-of-organization")
 
         form = PurchasePlanForm(request.POST)
         membership_plans = MembershipType.objects.filter(
@@ -204,6 +210,9 @@ class PurchaseTokensView(TemplateView):
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
 
+        if current_user.organization:
+            return redirect("profile-part-of-organization")
+
         return render(request, self.template_name, {"user": current_user, "token_settings": token_settings})
 
     def post(self, request):
@@ -212,6 +221,9 @@ class PurchaseTokensView(TemplateView):
 
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
+
+        if current_user.organization:
+            return redirect("profile-part-of-organization")
 
         request_data = request.POST
         tokens = request_data.get("token_quantity")
@@ -241,6 +253,9 @@ class PurchaseMembershipView(TemplateView):
         if not current_user.email_confirmed:
             return redirect("registration-email-confirmation")
 
+        if current_user.organization:
+            return redirect("profile-part-of-organization")
+
         form = RegistrationMembershipForm()
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=None)
@@ -266,6 +281,9 @@ class PurchaseMembershipView(TemplateView):
 
         if not user.email_confirmed:
             return redirect("registration-email-confirmation")
+
+        if user.organization:
+            return redirect("profile-part-of-organization")
 
         membership_types = MembershipType.objects.all().order_by(
             F("plan__price").desc(nulls_last=None)
@@ -516,6 +534,22 @@ class RegistrationMailConfirmationView(View):
             context={
                 "registration_step": 2,
                 "membership_type": membership_type,
+            },
+        )
+
+
+class ProfilePartOfOrganizationView(View):
+    def get(self, request):
+        user = request.user
+
+        if not user.organization:
+            return redirect("profile-my")
+
+        return render(
+            request,
+            "registration/profile_part_of_organization.html",
+            context={
+                "organization": user.organization,
             },
         )
 

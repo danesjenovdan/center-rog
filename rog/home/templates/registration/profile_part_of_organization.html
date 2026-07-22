@@ -1,0 +1,12 @@
+{% extends "registration/registration_wrapper.html" %}
+{% load static i18n %}
+
+{% block title %}{% translate 'Profil' %}{% endblock %}
+
+{% block body_class %}template-profile-part-of-organization{% endblock %}
+
+{% block form_title %}
+<h1>{% translate 'Ta uporabniški račun je del poslovnega paketa.' %}</h1>
+<h2>{{ organization.name }}</h2>
+<p>{% translate 'Za nakupe ali podaljšanje poslovnega paketa se obrnite na administratorja organizacije.' %}</p>
+{% endblock form_title %}
