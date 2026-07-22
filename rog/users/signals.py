@@ -60,6 +60,7 @@ def user_organization_changed(sender, instance, **kwargs):
         return
 
     def _after_commit():
+        print("After commit: user organization changed, updating Prima")
         old_org = (
             Organization.objects.filter(pk=old_org_id).first() if old_org_id else None
         )
@@ -93,14 +94,18 @@ def sync_organization_owner_to_user(sender, instance, **kwargs):
     def _after_commit():
         # Remove organization from previous owner only if it still points to this org.
         if old_owner_id:
-            User.objects.filter(pk=old_owner_id, organization_id=instance.pk).update(
-                organization=None
-            )
+            user = User.objects.filter(pk=old_owner_id, organization_id=instance.pk).first()
+            if user:
+                print("Organization owner changed, removing user organization in Prima")
+                user.organization_id = None
+                user.save()
 
         # Assign this organization to new owner.
         if new_owner_id:
-            User.objects.filter(pk=new_owner_id).exclude(organization_id=instance.pk).update(
-                organization_id=instance.pk
-            )
+            user = User.objects.filter(pk=new_owner_id).exclude(organization_id=instance.pk).first()
+            if user:
+                print("Organization owner changed, updating user organization in Prima")
+                user.organization_id = instance.pk
+                user.save()
 
     transaction.on_commit(_after_commit)

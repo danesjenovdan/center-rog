@@ -387,7 +387,7 @@ class User(AbstractUser, Timestampable):
                     if balance.get("@WltID") == "8":
                         tokens = balance.get("@WltBlcBalance", "0")
                         prima_api.addTokensToUserBalance(self.prima_id, tokens)
-
+        print("Updating user organization in Prima")
         prima_api.updateUserCompany(self.prima_id, f"organization_{new_organization.id}" if new_organization else None)
 
 
