@@ -4,7 +4,7 @@ from wagtail.admin.menu import MenuItem
 from django.urls import path, reverse
 from django.utils.translation import gettext_lazy as _
 
-from .models import BookingToken, MembershipType, UserInterest, MembershipTypeSpecification
+from .models import BookingToken, MembershipType, UserInterest, MembershipTypeSpecification, Organization
 from .views import ExportMarketningUsersView, ExportMarketningUsersLabsView
 
 
@@ -42,6 +42,14 @@ class MembershipTypeSpecificationAdmin(ModelAdmin):
     add_to_admin_menu = False
 
 
+class OrganizationAdmin(ModelAdmin):
+    model = Organization
+    menu_icon = 'pilcrow'
+    menu_order = 200
+    add_to_settings_menu = True
+    add_to_admin_menu = False
+
+
 @hooks.register('register_admin_urls')
 def register_export_urls():
     return [
@@ -64,3 +72,4 @@ def register_export_labs_menu_item():
 modeladmin_register(MembershipTypeAdmin)
 modeladmin_register(UserInterestAdmin)
 modeladmin_register(MembershipTypeSpecificationAdmin)
+modeladmin_register(OrganizationAdmin)
