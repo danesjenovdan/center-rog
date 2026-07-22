@@ -192,6 +192,7 @@ WAGTAIL_USER_CUSTOM_FIELDS = [
     "gender",
     "gender_other",
     "gallery",
+    "organization",
 ]
 
 
