@@ -170,7 +170,7 @@ class User(AbstractUser, Timestampable):
     allow_marketing = models.BooleanField(
         default=False, verbose_name="Allow e-mail marketning?"
     )
-    prima_id = models.IntegerField(null=True)
+    prima_id = models.IntegerField(null=True, blank=True, verbose_name="Prima ID")
     address_1 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 1")
     address_2 = models.CharField(max_length=200, blank=True, verbose_name="Naslov 2")
     legal_person_receipt = models.BooleanField(
