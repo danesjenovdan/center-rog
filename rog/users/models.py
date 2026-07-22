@@ -14,6 +14,7 @@ from modelcluster.models import ClusterableModel
 
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from home.models import Workshop
 from payments.models import Plan, PaymentPlanEvent, PaymentItemType
@@ -26,7 +27,6 @@ import uuid
 import re
 import sentry_sdk
 from users.prima_api import PrimaApi
-
 
 prima_api = PrimaApi()
 
@@ -228,7 +228,18 @@ class User(AbstractUser, Timestampable):
         default=False, help_text=_("Ali je oseba že shranjena v Pantheonu?")
     )
     prima_group_id = models.CharField(
-        max_length=10, null=True, blank=True, verbose_name="Group ID which is assigned in Prima"
+        max_length=10,
+        null=True,
+        blank=True,
+        verbose_name="Group ID which is assigned in Prima",
+    )
+    organization = models.ForeignKey(
+        "Organization",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users",
+        verbose_name=_("Organizacija"),
     )
 
     objects = UserManager()
@@ -331,7 +342,11 @@ class User(AbstractUser, Timestampable):
                     self.saved_in_pantheon = True
                     super().save(*args, **kwargs)
                 elif response and response.status_code == 500:
-                    if response.json().get("Message", "").startswith("subject already exists"):
+                    if (
+                        response.json()
+                        .get("Message", "")
+                        .startswith("subject already exists")
+                    ):
                         self.saved_in_pantheon = True
                         super().save(*args, **kwargs)
                 elif response:
@@ -375,3 +390,35 @@ class ConfirmEmail(Timestampable):
     class Meta:
         verbose_name = _("Confirm email")
         verbose_name_plural = _("Confirm emails")
+
+
+class Organization(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="organizations",
+        verbose_name=_("Vodja organizacije"),
+    )
+    name = models.CharField(max_length=200, verbose_name=_("Naziv organizacije"))
+    address_1 = models.CharField(max_length=200, blank=True, verbose_name=_("Naslov 1"))
+    address_2 = models.CharField(max_length=200, blank=True, verbose_name=_("Naslov 2"))
+    tax_number = models.CharField(
+        max_length=200, blank=True, verbose_name=_("Davčna številka")
+    )
+    vat = models.BooleanField(default=False, verbose_name=_("Zavezanec za DDV"))
+
+    def __str__(self):
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("address_1"),
+        FieldPanel("address_2"),
+        FieldPanel("tax_number"),
+        FieldPanel("vat"),
+        AutocompletePanel("owner"),
+    ]
+
+    class Meta:
+        verbose_name = _("Organizacija")
+        verbose_name_plural = _("Organizacije")
