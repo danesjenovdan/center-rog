@@ -7,18 +7,21 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 from wagtail.models import Orderable
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, Panel
 
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images.blocks import ImageChooserBlock
+from wagtailautocomplete.edit_handlers import AutocompletePanel
 
 from home.models import Workshop
 from payments.models import Plan, PaymentPlanEvent, PaymentItemType
 from payments.pantheon import create_subject
+from payments.utils import create_prima_user_if_not_exists
 from behaviours.models import Timestampable
+
 
 from datetime import datetime
 import random
@@ -26,7 +29,6 @@ import uuid
 import re
 import sentry_sdk
 from users.prima_api import PrimaApi
-
 
 prima_api = PrimaApi()
 
@@ -228,7 +230,18 @@ class User(AbstractUser, Timestampable):
         default=False, help_text=_("Ali je oseba že shranjena v Pantheonu?")
     )
     prima_group_id = models.CharField(
-        max_length=10, null=True, blank=True, verbose_name="Group ID which is assigned in Prima"
+        max_length=10,
+        null=True,
+        blank=True,
+        verbose_name="Group ID which is assigned in Prima",
+    )
+    organization = models.ForeignKey(
+        "Organization",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users",
+        verbose_name=_("Organizacija"),
     )
 
     objects = UserManager()
@@ -331,7 +344,11 @@ class User(AbstractUser, Timestampable):
                     self.saved_in_pantheon = True
                     super().save(*args, **kwargs)
                 elif response and response.status_code == 500:
-                    if response.json().get("Message", "").startswith("subject already exists"):
+                    if (
+                        response.json()
+                        .get("Message", "")
+                        .startswith("subject already exists")
+                    ):
                         self.saved_in_pantheon = True
                         super().save(*args, **kwargs)
                 elif response:
@@ -352,6 +369,24 @@ class User(AbstractUser, Timestampable):
             datetime.now(),
             timestamp,
         )
+
+    def on_organization_changed(self, old_organization, new_organization):
+        create_prima_user_if_not_exists(self, None)
+        if new_organization:
+            owner = new_organization.owner
+            if owner != self:
+                # if user is not owner of the organization, we need to add owners tokens to the user
+                self.refresh_from_db()
+                data, message = prima_api.readUserBalances(owner.prima_id)
+                balances = data.get("balance", [])
+                
+                # Find balance for WltID = 8 (Enkratni obisk)
+                for balance in balances:
+                    if balance.get("@WltID") == "8":
+                        tokens = balance.get("@WltBlcBalance", "0")
+                        prima_api.addTokensToUserBalance(self.prima_id, tokens)
+
+        prima_api.updateUserCompany(self.prima_id, f"organization_{new_organization.id}" if new_organization else None)
 
 
 class BookingToken(models.Model):
@@ -375,3 +410,49 @@ class ConfirmEmail(Timestampable):
     class Meta:
         verbose_name = _("Confirm email")
         verbose_name_plural = _("Confirm emails")
+
+
+class OrganizationMembersPanel(Panel):
+    class BoundPanel(Panel.BoundPanel):
+        template_name = "users/panels/organization_members_panel.html"
+
+        def get_context_data(self, parent_context=None):
+            context = super().get_context_data(parent_context)
+            if self.instance and self.instance.pk:
+                context["members"] = self.instance.users.all().order_by("email")
+            else:
+                context["members"] = []
+            return context
+
+
+class Organization(models.Model):
+    owner = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="organizations",
+        verbose_name=_("Vodja organizacije"),
+    )
+    name = models.CharField(max_length=200, verbose_name=_("Naziv organizacije"))
+    address_1 = models.CharField(max_length=200, blank=True, verbose_name=_("Naslov 1"))
+    address_2 = models.CharField(max_length=200, blank=True, verbose_name=_("Naslov 2"))
+    tax_number = models.CharField(
+        max_length=200, blank=True, verbose_name=_("Davčna številka")
+    )
+    vat = models.BooleanField(default=False, verbose_name=_("Zavezanec za DDV"))
+
+    def __str__(self):
+        return self.name
+
+    panels = [
+        FieldPanel("name"),
+        FieldPanel("address_1"),
+        FieldPanel("address_2"),
+        FieldPanel("tax_number"),
+        FieldPanel("vat"),
+        AutocompletePanel("owner"),
+        OrganizationMembersPanel(),
+    ]
+
+    class Meta:
+        verbose_name = _("Organizacija")
+        verbose_name_plural = _("Organizacije")
