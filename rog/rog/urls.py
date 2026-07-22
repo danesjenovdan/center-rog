@@ -24,6 +24,7 @@ from home.views import (
     RegistrationInformationView,
     RegistrationMailConfirmationView,
     RegistrationProfileView,
+    ProfilePartOfOrganizationView,
     PurchaseTokensView,
     # RegistrationPaymentView,
     # RegistrationSuccessView,
@@ -102,6 +103,13 @@ urlpatterns = urlpatterns + i18n_patterns(
         name="registration-email-confirmation",
     ),
     # end new registration flow
+    # show that user is part of an organization (block purchase, etc.)
+    path(
+        "profil/del-organizacije",
+        ProfilePartOfOrganizationView.as_view(),
+        name="profile-part-of-organization",
+    ),
+    #
     path(
         "registracija/profil",
         RegistrationProfileView.as_view(),

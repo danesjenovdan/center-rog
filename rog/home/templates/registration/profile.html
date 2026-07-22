@@ -24,11 +24,17 @@
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between membership">
                 <div>
                     <p class="mb-1">{% translate 'tip članstva' %}</p>
-                    {% if user.membership %}
-                    <h6>{{ user.membership.type }}</h6>
+                    {% if not user.organization %}
+                        {% if user.membership %}
+                        <h6>{{ user.membership.type }}</h6>
+                        {% else %}
+                        <h6>{% translate 'Gost' %}</h6>
+                        {% endif %}
                     {% else %}
-                    <h6>{% translate 'Gost' %}</h6>
+                    <h6>{% translate 'Poslovni paket' %}</h6>
                     {% endif %}
+
+                    {% if not user.organization %}
                     <p class="subtitle">
                         {% translate 'veljavnost članarine do:' %} <br />
                         {% if user.membership and user.membership.type and user.membership.type.plan %}
@@ -37,15 +43,19 @@
                         /
                         {% endif %}
                     </p>
+                    {% endif %}
                 </div>
+                {% if not user.organization %}
                 <div>
                     <a href="{% url 'profile-purchase-membership' %}" class="secondary-button button-medium">{% translate 'uredi članstvo' %}</a>
                 </div>
+                {% endif %}
             </section>
         </div>
 
         <div class="profile-box-col profile-box-col-middle mb-40">
             <section class="color-scheme-light-blue d-flex flex-column flex-md-row justify-content-between wallet">
+                {% if not user.organization %}
                 <div class="wallet-col">
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
                     {% if user.get_last_active_subscription_payment_plan %}
@@ -79,18 +89,21 @@
                         <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium mt-3 mt-md-0"><span style="white-space: nowrap;">{% translate 'kupi vstopnico ali paket' %}</span></a>
                     </div>
                 </div>
+                {% endif %}
             </section>
         </div>
 
         <div class="profile-box-col mb-40">
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between links">
                 <div>
+                    {% if not user.organization %}
                     <p class="mb-1">
                         <a class="link" href="{% url 'history' %}">
                             <span class="link-text">{% translate 'pretekla poraba' %}</span>
                             <span class="link-icon"></span>
                         </a>
                     </p>
+                    {% endif %}
                     <p class="mb-1">
                         <a class="link" href="{% url 'profile-edit' %}">
                             <span class="link-text">{% translate 'uredi profil' %}</span>
