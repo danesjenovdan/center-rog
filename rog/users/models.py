@@ -371,6 +371,8 @@ class User(AbstractUser, Timestampable):
         )
 
     def on_organization_changed(self, old_organization, new_organization):
+        if old_organization == new_organization:
+            return
         create_prima_user_if_not_exists(self, None)
         if new_organization:
             owner = new_organization.owner
