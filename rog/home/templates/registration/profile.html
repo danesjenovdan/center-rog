@@ -53,9 +53,9 @@
             </section>
         </div>
 
-        {% if not user.organization %}
         <div class="profile-box-col profile-box-col-middle mb-40">
             <section class="color-scheme-light-blue d-flex flex-column flex-md-row justify-content-between wallet">
+                {% if not user.organization %}
                 <div class="wallet-col">
                     <p class="mb-1">{% translate 'zakupljen paket uporabnine' %}</p>
                     {% if user.get_last_active_subscription_payment_plan %}
@@ -89,9 +89,9 @@
                         <a href="{% url 'profile-purchase-plan' %}" class="secondary-button button-medium mt-3 mt-md-0"><span style="white-space: nowrap;">{% translate 'kupi vstopnico ali paket' %}</span></a>
                     </div>
                 </div>
+                {% endif %}
             </section>
         </div>
-        {% endif %}
 
         <div class="profile-box-col mb-40">
             <section class="color-scheme-light-blue d-flex flex-column justify-content-between links">
