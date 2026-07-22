@@ -5,7 +5,7 @@
         {% if members %}
             <ul>
                 {% for member in members %}
-                    <li>{{ member.email }}</li>
+                    <li><a href="{% url 'wagtailusers_users:edit' member.pk %}">{{ member.email }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}
