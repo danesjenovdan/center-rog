@@ -371,6 +371,10 @@ class User(AbstractUser, Timestampable):
         )
 
     def on_organization_changed(self, old_organization, new_organization):
+        """
+        This method is called when the user's organization is changed.
+        It updates the user's organization in Prima and adds the owner's tokens to the user's balance if necessary
+        """
         if old_organization == new_organization:
             return
         create_prima_user_if_not_exists(self, None)
@@ -382,13 +386,25 @@ class User(AbstractUser, Timestampable):
                 data, message = prima_api.readUserBalances(owner.prima_id)
                 balances = data.get("balance", [])
                 
-                # Find balance for WltID = 8 (Enkratni obisk)
+                # Update the user's balance with the owner's tokens for each wallet
                 for balance in balances:
-                    if balance.get("@WltID") == "8":
-                        tokens = balance.get("@WltBlcBalance", "0")
-                        prima_api.addTokensToUserBalance(self.prima_id, tokens)
-        print("Updating user organization in Prima")
-        prima_api.updateUserCompany(self.prima_id, f"organization_{new_organization.id}" if new_organization else "")
+                    wallet_id = balance.get("@WltID")
+                    tokens = balance.get("@WltBlcBalance", "0")
+                    prima_api.addTokensToUserBalance(self.prima_id, tokens, wallet_id=wallet_id, mode="blc")
+            print("Updating user organization in Prima")
+            prima_api.updateUserCompany(self.prima_id, f"organization_{new_organization.id}" if new_organization else "")
+        if old_organization and not new_organization:
+            """
+            When user is removed from organization, we need to remove all tokens from the user and update the organization in Prima
+            """
+            print("Removing user organization in Prima")
+            prima_api.updateUserCompany(self.prima_id, "")
+            data, message = prima_api.readUserBalances(self.prima_id)
+            balances = data.get("balance", [])
+            for balance in balances:
+                wallet_id = balance.get("@WltID")
+                prima_api.addTokensToUserBalance(self.prima_id, "0", wallet_id=wallet_id, mode="blc")
+
 
 
 class BookingToken(models.Model):

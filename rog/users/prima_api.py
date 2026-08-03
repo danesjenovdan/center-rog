@@ -243,11 +243,11 @@ class PrimaApi(object):
         """
         Returns user balance data:
         data = { 'balance': [
-            {'@WltID': '1', '@WltTitle': 'Ure za CNC'},
-            {'@WltID': '2', '@WltTitle': 'Ure za Stroje'},
-            {'@WltID': '4', '@WltTitle': 'Ure za laser'},
-            {'@WltID': '5', '@WltTitle': 'Digitalni tiskalnik za tekstil'},
-            {'@WltID': '6', '@WltTitle': '3D printer za keramiko'}
+            {'@WltID': '1', '@WltTitle': 'Ure za CNC', '@WltBlcBalance': '30', '@UsrName': 'Sistem'},
+            {'@WltID': '2', '@WltTitle': 'Ure za Stroje', '@WltBlcBalance': '30', '@UsrName': 'Sistem'},
+            {'@WltID': '4', '@WltTitle': 'Ure za laser', '@WltBlcBalance': '30', '@UsrName': 'Sistem'},
+            {'@WltID': '5', '@WltTitle': 'Digitalni tiskalnik za tekstil', '@WltBlcBalance': '30', '@UsrName': 'Sistem'},
+            {'@WltID': '6', '@WltTitle': '3D printer za keramiko', '@WltBlcBalance': '30', '@UsrName': 'Sistem'}
             ]
         },
         message = 'Success'
@@ -259,16 +259,21 @@ class PrimaApi(object):
 
         return data, message
 
-    def addTokensToUserBalance(self, user_id, tokens):
+    def addTokensToUserBalance(self, user_id, tokens, wallet_id=8, mode="add"):
         """
         Adds tokens to user balance for WltID = 8 (Enkratni obisk).
         """
 
+        if mode == "add":
+            balance_mode = "AddBalance"
+        else:
+            balance_mode = "WltBlcBalance"
+
         payload = {
             "Request": "UpdateUserBalance",
             "UsrID": user_id,
-            "WltID": 8,  # WltID Enkratni obisk = 8
-            "AddBalance": tokens,
+            "WltID": wallet_id,  # WltID Enkratni obisk = 8
+            balance_mode: tokens,
         }
 
         data, message = self.primaRequest(payload)
