@@ -48,6 +48,11 @@ class OrganizationAdmin(ModelAdmin):
     menu_order = 200
     add_to_settings_menu = True
     add_to_admin_menu = False
+    list_display = ('prima_organization_code', 'package_valid_to', '__str__')
+    list_display_add_buttons = '__str__'
+
+    def prima_organization_code(self, instance):
+        return f"organization_{instance.pk}"
 
 
 @hooks.register('register_admin_urls')
