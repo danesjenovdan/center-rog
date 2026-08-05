@@ -456,6 +456,9 @@ class Organization(models.Model):
     tax_number = models.CharField(
         max_length=200, blank=True, verbose_name=_("Davčna številka")
     )
+    package_valid_to = models.DateField(
+        help_text=_("When the plan expires"), null=True, blank=True
+    )
     vat = models.BooleanField(default=False, verbose_name=_("Zavezanec za DDV"))
 
     def __str__(self):
@@ -467,6 +470,7 @@ class Organization(models.Model):
         FieldPanel("address_2"),
         FieldPanel("tax_number"),
         FieldPanel("vat"),
+        FieldPanel("package_valid_to"),
         AutocompletePanel("owner"),
         OrganizationMembersPanel(),
     ]
