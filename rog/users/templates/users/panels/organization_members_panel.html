@@ -1,6 +1,7 @@
 {% load i18n %}
 <section class="w-panel">
-    <h2 class="w-panel__heading">{% trans "Clani organizacije" %}</h2>
+    <h2 class="w-panel__heading">{% trans "Člani organizacije" %}</h2>
+    <h3>{% trans "Ime na primi:" %} organization_{{ self.instance.pk }}</h3>
     <div class="w-panel__content">
         {% if members %}
             <ul>
