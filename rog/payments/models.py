@@ -473,7 +473,7 @@ class Payment(Timestampable):
         verbose_name_plural = _("Naročila")
 
     def __str__(self):
-        return f"{self.user} - {self.amount} - {self.created_at}"
+        return f"{self.user} - {self.amount} - {self.created_at} - {self.id}"
 
     def history_name(self):
         payment_plan = self.payment_plans.first()
