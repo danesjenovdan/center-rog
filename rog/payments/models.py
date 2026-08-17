@@ -473,7 +473,7 @@ class Payment(Timestampable):
         verbose_name_plural = _("Naročila")
 
     def __str__(self):
-        return f"{self.user} - {self.amount} - {self.created_at}"
+        return f"{self.user} - {self.amount} - {self.created_at} - {self.id}"
 
     def history_name(self):
         payment_plan = self.payment_plans.first()
@@ -501,13 +501,17 @@ class Payment(Timestampable):
                         self.save()
                     else:
                         sentry_sdk.capture_message(
-                            f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}"
+                            f"Error creating move on pantheon for payment id: {self.id} with response {response.content}"
                         )
-                else:
+                elif response:
                     sentry_sdk.capture_message(
-                        f"Error creating monve on pantheon for payment id: {self.id} with response {response.content}"
+                        f"Error creating move on pantheon for payment id: {self.id} with response {response.content}"
                     )
                     print(self.id, response.json())
+                else:
+                    sentry_sdk.capture_message(
+                        f"Error creating move on pantheon for payment id: {self.id} with no response"
+                    )
             except Exception as e:
                 sentry_sdk.capture_exception(e)
 
