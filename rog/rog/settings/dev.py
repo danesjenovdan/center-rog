@@ -50,3 +50,17 @@ DEFAULT_LOGGING["filters"]["request_filter"] = {
 }
 DEFAULT_LOGGING["handlers"]["console"]["filters"] = ["request_filter"]
 DEFAULT_LOGGING["handlers"]["django.server"]["filters"] = ["request_filter"]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
