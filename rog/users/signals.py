@@ -1,4 +1,5 @@
 import logging
+import sentry_sdk
 
 from django.db.models.signals import m2m_changed, pre_save, post_save
 from django.dispatch import receiver
@@ -35,12 +36,14 @@ def sync_user_workshops_attended_to_prima(
                 workshop.pk,
             )
             prima_api.addUserToGroup(user.prima_id, workshop.prima_id)
-        except Exception:
+        except Exception as e:
+            # TODO - filter exceptions to those that are excepteble
             logger.exception(
                 "Failed to sync workshops_attended change for user %s and workshop %s to Prima",
                 user.pk,
                 workshop.pk,
             )
+            sentry_sdk.capture_exception(e)
 
 
 @receiver(pre_save, sender=User)
