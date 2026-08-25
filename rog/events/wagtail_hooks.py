@@ -8,7 +8,10 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_protect
 from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail.admin.menu import MenuItem
+from wagtail.admin.utils import get_valid_next_url_from_request
+from wagtail.admin import messages as wagtail_messages
 from wagtail import hooks
+from wagtail.models import Page
 from wagtail_rangefilter.filters import DateRangeFilter
 
 from .models import EventPage, EventCategory, EventRegistration
@@ -134,6 +137,55 @@ class EventRegistrationAdmin(ExportModelAdminMixin, ModelAdmin):
 
     get_children_count.__name__ = str(_("Število otrok"))
     get_extra_people_count.__name__ = str(_("Število dodatnih oseb"))
+
+
+def _get_blocking_event_pages(pages):
+    """Return EventPages among `pages` (and their descendants) that have a
+    registration referenced by a PaymentPlanEvent, i.e. cannot be deleted
+    because of a protected FK chain (EventRegistration -> PaymentPlanEvent)."""
+    page_ids = set()
+    for page in pages:
+        page_ids.add(page.id)
+        page_ids.update(page.get_descendants().values_list("id", flat=True))
+
+    return EventPage.objects.filter(
+        id__in=page_ids, event_registrations__payment_plans__isnull=False
+    ).distinct()
+
+
+@hooks.register("before_delete_page")
+def confirm_event_page_delete(request, page):
+    blocking_events = _get_blocking_event_pages([page])
+    if blocking_events:
+        wagtail_messages.error(
+            request,
+            _(
+                "Dogodka '{}' ni mogoče izbrisati, ker ima udeležence s plačili. "
+            ).format(blocking_events.first().title),
+        )
+        next_url = get_valid_next_url_from_request(request)
+        if next_url:
+            return redirect(next_url)
+        return redirect("wagtailadmin_explore", page.get_parent().id)
+
+
+@hooks.register("before_bulk_action")
+def confirm_event_bulk_delete(request, action_type, objects, action_class_instance):
+    if action_type != "delete":
+        return
+    if not objects or not isinstance(objects[0], Page):
+        return
+
+    blocking_events = _get_blocking_event_pages(objects)
+    if blocking_events:
+        titles = ", ".join(blocking_events.values_list("title", flat=True))
+        wagtail_messages.error(
+            request,
+            _(
+                "Naslednjih dogodkov ni mogoče izbrisati, ker imajo udeležence s plačili: {}. "
+            ).format(titles),
+        )
+        return redirect(action_class_instance.next_url)
 
 
 @csrf_protect
