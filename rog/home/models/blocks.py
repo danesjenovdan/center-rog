@@ -76,7 +76,7 @@ class BulletinBoardBlock(blocks.StructBlock):
         if value["news"] is not None:
             context["news"] = [value["news"]]
         else:
-            news = NewsPage.objects.live().select_related("thumbnail", "hero_image").prefetch_related("categories").order_by("-first_published_at")[:1]
+            news = NewsPage.objects.live().select_related("thumbnail", "hero_image").prefetch_related("category").order_by("-first_published_at")[:1]
             context["news"] = news
         # link to news
         context["news_list"] = NewsListPage.objects.live().first()
