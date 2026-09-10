@@ -27,6 +27,9 @@ metadata:
     #nginx.ingress.kubernetes.io/ssl-ciphers: "ALL:!aNULL:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP"
     # nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "false"
     # nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: |
+      traefik-redirect-to-https@kubernetescrd,
+      traefik-plugin-blockuseragent-2@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
