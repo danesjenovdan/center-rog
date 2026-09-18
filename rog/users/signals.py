@@ -17,9 +17,15 @@ prima_api = PrimaApi()
 def sync_user_workshops_attended_to_prima(
     sender, instance, action, reverse, model, pk_set, **kwargs
 ):
-    if action != "post_add" or not pk_set:
+    logger.info(
+        f"m2m_changed signal triggered for user workshops_attended: instance={instance.pk}, action={action}, pk_set={pk_set}, model={model}, reverse={reverse}"
+    )
+    if action != "post_add":
         return
 
+    logger.info(
+        f"Syncing user workshops_attended to Prima for user: {instance.pk}, Action: {action}, Pk_set: {pk_set}",
+    )
     user = instance
     if not user.prima_id:
         return
@@ -81,7 +87,9 @@ def cache_previous_organization_owner(sender, instance, **kwargs):
         instance._old_owner_id = None
     else:
         instance._old_owner_id = (
-            sender.objects.filter(pk=instance.pk).values_list("owner_id", flat=True).first()
+            sender.objects.filter(pk=instance.pk)
+            .values_list("owner_id", flat=True)
+            .first()
         )
 
 
@@ -97,7 +105,9 @@ def sync_organization_owner_to_user(sender, instance, **kwargs):
     def _after_commit():
         # Remove organization from previous owner only if it still points to this org.
         if old_owner_id:
-            user = User.objects.filter(pk=old_owner_id, organization_id=instance.pk).first()
+            user = User.objects.filter(
+                pk=old_owner_id, organization_id=instance.pk
+            ).first()
             if user:
                 print("Organization owner changed, removing user organization in Prima")
                 user.organization_id = None
@@ -105,7 +115,11 @@ def sync_organization_owner_to_user(sender, instance, **kwargs):
 
         # Assign this organization to new owner.
         if new_owner_id:
-            user = User.objects.filter(pk=new_owner_id).exclude(organization_id=instance.pk).first()
+            user = (
+                User.objects.filter(pk=new_owner_id)
+                .exclude(organization_id=instance.pk)
+                .first()
+            )
             if user:
                 print("Organization owner changed, updating user organization in Prima")
                 user.organization_id = instance.pk
