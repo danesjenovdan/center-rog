@@ -17,6 +17,9 @@ prima_api = PrimaApi()
 def sync_user_workshops_attended_to_prima(
     sender, instance, action, reverse, model, pk_set, **kwargs
 ):
+    logger.info(
+        f"m2m_changed signal triggered for user workshops_attended: instance={instance.pk}, action={action}, pk_set={pk_set}, model={model}, reverse={reverse}"
+    )
     if action != "post_add":
         return
 
