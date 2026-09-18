@@ -17,7 +17,7 @@ prima_api = PrimaApi()
 def sync_user_workshops_attended_to_prima(
     sender, instance, action, reverse, model, pk_set, **kwargs
 ):
-    if action != "post_add" or not pk_set:
+    if action != "post_add":
         return
 
     user = instance
