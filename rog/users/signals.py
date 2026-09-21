@@ -20,36 +20,62 @@ def sync_user_workshops_attended_to_prima(
     logger.info(
         f"m2m_changed signal triggered for user workshops_attended: instance={instance.pk}, action={action}, pk_set={pk_set}, model={model}, reverse={reverse}"
     )
-    if action != "post_add":
-        return
+    if action == "post_add":
+        logger.info(
+            f"Syncing user workshops_attended to Prima for user: {instance.pk}, Action: {action}, Pk_set: {pk_set}",
+        )
+        user = instance
+        if not user.prima_id:
+            return
 
-    logger.info(
-        f"Syncing user workshops_attended to Prima for user: {instance.pk}, Action: {action}, Pk_set: {pk_set}",
-    )
-    user = instance
-    if not user.prima_id:
-        return
+        workshops = model.objects.filter(pk__in=pk_set).only("id", "prima_id")
+        for workshop in workshops:
+            if not workshop.prima_id:
+                continue
 
-    workshops = model.objects.filter(pk__in=pk_set).only("id", "prima_id")
-    for workshop in workshops:
-        if not workshop.prima_id:
-            continue
+            try:
+                logger.info(
+                    "Syncing workshops_attended change for user %s and workshop %s to Prima",
+                    user.pk,
+                    workshop.pk,
+                )
+                prima_api.addUserToGroup(user.prima_id, workshop.prima_id)
+            except Exception as e:
+                # TODO - filter exceptions to those that are excepteble
+                logger.exception(
+                    "Failed to sync workshops_attended change for user %s and workshop %s to Prima",
+                    user.pk,
+                    workshop.pk,
+                )
+                sentry_sdk.capture_exception(e)
+    elif action == "post_remove":
+        logger.info(
+            f"Removing user workshops_attended from Prima for user: {instance.pk}, Action: {action}, Pk_set: {pk_set}",
+        )
+        user = instance
+        if not user.prima_id:
+            return
 
-        try:
-            logger.info(
-                "Syncing workshops_attended change for user %s and workshop %s to Prima",
-                user.pk,
-                workshop.pk,
-            )
-            prima_api.addUserToGroup(user.prima_id, workshop.prima_id)
-        except Exception as e:
-            # TODO - filter exceptions to those that are excepteble
-            logger.exception(
-                "Failed to sync workshops_attended change for user %s and workshop %s to Prima",
-                user.pk,
-                workshop.pk,
-            )
-            sentry_sdk.capture_exception(e)
+        workshops = model.objects.filter(pk__in=pk_set).only("id", "prima_id")
+        for workshop in workshops:
+            if not workshop.prima_id:
+                continue
+
+            try:
+                logger.info(
+                    "Removing workshops_attended change for user %s and workshop %s from Prima",
+                    user.pk,
+                    workshop.pk,
+                )
+                prima_api.removeUserFromGroup(user.prima_id, workshop.prima_id)
+            except Exception as e:
+                # TODO - filter exceptions to those that are excepteble
+                logger.exception(
+                    "Failed to remove workshops_attended change for user %s and workshop %s from Prima",
+                    user.pk,
+                    workshop.pk,
+                )
+                sentry_sdk.capture_exception(e)
 
 
 @receiver(pre_save, sender=User)
