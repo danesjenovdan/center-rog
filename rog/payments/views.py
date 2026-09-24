@@ -27,6 +27,10 @@ from users.prima_api import PrimaApi
 
 from sentry_sdk import capture_message, push_scope
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 prima_api = PrimaApi()
 
@@ -643,11 +647,18 @@ class PaymentSuccess(views.APIView):
                 capture_message(f"Payment {payment.id} is not SUCCESSED and free_order is True. Investigete it!", 'fatal')
                 return render(request, "payment_failed.html", {"status": _("Napaka pri plačilu.")})
 
-        # check if referer exists and is valid
-        referer = request.META.get('HTTP_REFERER')
-        if not free_order and not (referer and referer.startswith(settings.PAYMENT_BASE_URL)):
-            capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
-            return render(request, "payment_failed.html", {'status': 'Napaka pri plačilu'})
+        # already SUCCESS means this is a page refresh, not the original UJP redirect - skip referer check
+        already_processed = payment.status == Payment.Status.SUCCESS
+        if not free_order and not already_processed:
+            referer = request.META.get('HTTP_REFERER')
+            if referer and not referer.startswith(settings.PAYMENT_BASE_URL):
+                capture_message(f'Payment referer is not valid {settings.PAYMENT_BASE_URL} != {referer}. Payment id {payment.id} Investigate it!', 'fatal')
+                return render(request, "payment_failed.html", {'status': 'Napaka pri plačilu'})
+            elif not referer:
+                # some browsers/privacy settings omit Referer; UUID check below remains the real safeguard
+                # skip send warning for missing referer
+                #capture_message(f'Payment referer missing for payment {payment.id}.', 'warning')
+                logger.warning(f'Payment referer missing for payment {payment.id}.')                
 
         print(args)
         if "registration" in args:
