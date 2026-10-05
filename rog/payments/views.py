@@ -591,17 +591,21 @@ class ActivatePackage(views.APIView):
                 valid_from = timezone.now()
             else:
                 valid_from = last_active_membership.valid_to
-            if last_active_membership.valid_to < valid_to:
+            if need_to_extend_membership:
                 membership = Membership(
-                    valid_from=last_active_membership.valid_to,
+                    valid_from=valid_from,
                     valid_to=valid_to,
-                    type=last_active_membership.type,
+                    type_id=2, # Yearly membership
                     active=True,
                     user=user,
                     extended_by=plan
                 )
                 membership.save()
-                valid_from_prima_string = last_active_membership.valid_to.strftime('%Y-%m-%d %H:%M:%S')
+                if last_active_membership:
+                    prima_valid_from = last_active_membership.valid_to
+                else:
+                    prima_valid_from = timezone.now()
+                valid_from_prima_string = prima_valid_from.strftime('%Y-%m-%d %H:%M:%S')
                 valid_to_prima_string = valid_to.strftime('%Y-%m-%d %H:%M:%S')
                 prima_api.setPrimaDates(user.prima_id, valid_from_prima_string, valid_to_prima_string)
 
