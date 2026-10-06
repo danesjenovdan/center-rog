@@ -4,7 +4,7 @@ from django.db.models import F, Q
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, Http404
 from django.views import View
 from django.views.generic import TemplateView
 from django.contrib.auth import get_user_model
@@ -346,6 +346,11 @@ class RegistrationInformationView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         type_id = request.GET.get("id", None)
+        try:
+            type_id = int(type_id)
+        except ValueError:
+            raise Http404
+
         if type_id:
             try:
                 membership_type = MembershipType.objects.get(id=type_id)
