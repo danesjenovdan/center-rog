@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.conf import settings
 from django.utils import timezone
@@ -385,6 +385,10 @@ class Pay(views.APIView):
     def post(self, request):
         data = request.data
         payment_id = data.get("id", 0)
+        try:
+            payment_id = int(payment_id)
+        except ValueError:
+            raise Http404
         purchase_type = data.get("purchase_type", "error")
         payment = get_object_or_404(Payment, id=payment_id)
 
