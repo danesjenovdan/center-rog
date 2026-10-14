@@ -1,0 +1,53 @@
+{% load wagtailcore_tags i18n random_numbers %}
+
+{% random_int 0 9999 as random_suffix %}
+<div class="newsletter-container newsletter-{{ random_suffix }}">
+    <div class="newsletter-header">
+        <div class="title">{% translate 'Prijavi se na naš novičnik' %}</div>
+        <div class="rog-radios d-flex mb-2 newsletter-lang-radios">
+            <div class="me-3">
+                <label for="squalo-lang-{{ random_suffix }}-sl">
+                    <input type="radio" name="squalo-lang-{{ random_suffix }}" id="squalo-lang-{{ random_suffix }}-sl" value="sl" checked>
+                    Slovenščina
+                </label>
+            </div>
+            <div class="">
+                <label for="squalo-lang-{{ random_suffix }}-en">
+                    <input type="radio" name="squalo-lang-{{ random_suffix }}" id="squalo-lang-{{ random_suffix }}-en" value="en">
+                    English
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="squalo-newsletters">
+        <div class="squalo-newsletter squalo-sl">
+            <!-- SqualoMail.com Subscription Form -->
+            <div id="sqm_form_15"></div>
+            <script type="application/javascript" src="https://2267.squalomail.net/forms/15/subscribe.js?v=1" async></script>
+        </div>
+        <div class="squalo-newsletter squalo-en" style="display: none;" inert>
+            <!-- SqualoMail.com Subscription Form -->
+            <div id="sqm_form_16"></div>
+            <script type="application/javascript" src="https://2267.squalomail.net/forms/16/subscribe.js?v=1" async></script>
+        </div>
+    </div>
+    <script>
+        const newsletterContainer = document.querySelector('.newsletter-container.newsletter-{{ random_suffix }}');
+        const langRadios = newsletterContainer.querySelectorAll('.newsletter-lang-radios input[name="squalo-lang-{{ random_suffix }}"]');
+        const newsletters = newsletterContainer.querySelectorAll('.squalo-newsletter');
+
+        langRadios.forEach(radio => {
+            radio.addEventListener('change', () => {
+                newsletters.forEach(newsletter => {
+                    if (newsletter.classList.contains(`squalo-${radio.value}`)) {
+                        newsletter.style.display = '';
+                        newsletter.removeAttribute('inert');
+                    } else {
+                        newsletter.style.display = 'none';
+                        newsletter.setAttribute('inert', '');
+                    }
+                });
+            });
+        });
+    </script>
+</div>
