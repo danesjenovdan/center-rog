@@ -8,6 +8,7 @@ from django.db import transaction
 from users.prima_api import PrimaApi
 
 from .models import User, Organization
+from payments.utils import create_prima_user_if_not_exists
 
 logger = logging.getLogger(__name__)
 prima_api = PrimaApi()
@@ -26,7 +27,8 @@ def sync_user_workshops_attended_to_prima(
         )
         user = instance
         if not user.prima_id:
-            return
+            create_prima_user_if_not_exists(user, 0)
+            user.refresh_from_db()
 
         workshops = model.objects.filter(pk__in=pk_set).only("id", "prima_id")
         for workshop in workshops:
