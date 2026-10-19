@@ -12,7 +12,7 @@ class CustomUserEditForm(UserEditForm):
     prima_id = forms.IntegerField(required=False, label=_("Prima ID"))
     workshops_attended = forms.ModelMultipleChoiceField(required=False, queryset=Workshop.objects, widget=forms.CheckboxSelectMultiple, label=_("Opravljena usposabljanja"))
     interests = forms.ModelMultipleChoiceField(required=False, queryset=UserInterest.objects, widget=forms.CheckboxSelectMultiple, label=_("Kategorije zanimanj"))
-    birth_date = forms.DateField(required=False, label=_("Datum rojstva"), widget=forms.DateInput(attrs={'type': 'date'}))
+    birth_date = forms.DateField(required=False, label=_("Datum rojstva"), widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}))
 
     @property
     def memberships(self):
@@ -32,4 +32,4 @@ class CustomUserCreationForm(UserCreationForm):
     prima_id = forms.IntegerField(required=False, label=_("Prima ID"))
     workshops_attended = forms.ModelMultipleChoiceField(required=False, queryset=Workshop.objects, widget=forms.CheckboxSelectMultiple, label=_("Opravljena usposabljanja"))
     interests = forms.ModelMultipleChoiceField(required=False, queryset=UserInterest.objects, widget=forms.CheckboxSelectMultiple, label=_("Kategorije zanimanj"))
-    birth_date = forms.DateField(required=False, label=_("Datum rojstva"), widget=forms.DateInput(attrs={'type': 'date'}))
+    birth_date = forms.DateField(required=False, label=_("Datum rojstva"), widget=forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}))
