@@ -61,7 +61,7 @@ RUN dpkg -i wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 RUN rm wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 
 # Install the application server.
-RUN pip install "gunicorn==21.2.0"
+RUN pip install "gunicorn==26.2.0"
 
 # Install the project requirements.
 COPY ./rog/requirements.txt /
