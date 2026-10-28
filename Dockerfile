@@ -20,7 +20,7 @@ RUN npm run css
 # ---
 # wagtail image
 # ---
-FROM python:3.14-slim-bookworm
+FROM python:3.14-slim-trixie
 
 # Add user that will be used in the container.
 RUN useradd wagtail
@@ -48,7 +48,6 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     zlib1g-dev \
     libwebp-dev \
     libmagickwand-dev \
-    wkhtmltopdf \
     xfonts-75dpi \
     xfonts-base \
     ttf-mscorefonts-installer \
