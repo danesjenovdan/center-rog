@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.search_promotions",
     "wagtail.embeds",
     "wagtail.sites",
-    "wagtail.users",
+    "rog.apps.CustomUsersAppConfig",
     "wagtail.snippets",
     "wagtail.documents",
     "wagtail.images",
@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.postgres",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -165,35 +166,6 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
 
 # User settings
 AUTH_USER_MODEL = 'users.User'
-WAGTAIL_USER_EDIT_FORM = 'users.forms.CustomUserEditForm'
-WAGTAIL_USER_CREATION_FORM = 'users.forms.CustomUserCreationForm'
-WAGTAIL_USER_CUSTOM_FIELDS = [
-    "prima_id",
-    "email_confirmed",
-    "allow_marketing",
-    "address_1",
-    "address_2",
-    "legal_person_receipt",
-    "legal_person_name",
-    "legal_person_address_1",
-    "legal_person_address_2",
-    "legal_person_tax_number",
-    "legal_person_vat",
-    "public_profile",
-    "public_username",
-    "description",
-    "link_1",
-    "link_2",
-    "link_3",
-    "contact",
-    "workshops_attended",
-    "interests",
-    "birth_date",
-    "gender",
-    "gender_other",
-    "gallery",
-    "organization",
-]
 
 
 # Static files (CSS, JavaScript, Images)
