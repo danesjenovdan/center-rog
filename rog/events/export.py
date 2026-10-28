@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
-from django.urls import path
+from django.urls import re_path
 from django.http import HttpResponse
 
 import csv
@@ -303,12 +303,12 @@ class ExportModelAdminMixin(object):
     def get_admin_urls_for_registration(self):
         urls = super().get_admin_urls_for_registration()
         urls += (
-            path(
+            re_path(
                 self.url_helper.get_action_url_pattern("export"),
                 self.export_view_class.as_view(model_admin=self),
                 name=self.url_helper.get_action_url_name("export"),
             ),
-            path(
+            re_path(
                 self.url_helper.get_action_url_pattern("export_report"),
                 self.export_report_view_class.as_view(model_admin=self),
                 name=self.url_helper.get_action_url_name("export_report"),

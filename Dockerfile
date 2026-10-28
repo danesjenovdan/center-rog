@@ -20,7 +20,7 @@ RUN npm run css
 # ---
 # wagtail image
 # ---
-FROM python:3.11.5-slim-bookworm
+FROM python:3.14-slim-trixie
 
 # Add user that will be used in the container.
 RUN useradd wagtail
@@ -48,7 +48,6 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     zlib1g-dev \
     libwebp-dev \
     libmagickwand-dev \
-    wkhtmltopdf \
     xfonts-75dpi \
     xfonts-base \
     ttf-mscorefonts-installer \
@@ -62,7 +61,7 @@ RUN dpkg -i wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 RUN rm wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 
 # Install the application server.
-RUN pip install "gunicorn==21.2.0"
+RUN pip install "gunicorn==26.2.0"
 
 # Install the project requirements.
 COPY ./rog/requirements.txt /
