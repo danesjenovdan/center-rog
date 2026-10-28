@@ -1,5 +1,5 @@
-# Use an official Python runtime based on Debian 12 "bookworm" as a parent image.
-FROM python:3.14-slim-bookworm
+# Use an official Python runtime based on Debian 13 "trixie" as a parent image.
+FROM python:3.14-slim-trixie
 
 # Add user that will be used in the container.
 RUN useradd wagtail
@@ -27,7 +27,6 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     zlib1g-dev \
     libwebp-dev \
     libmagickwand-dev \
-    wkhtmltopdf \
     xfonts-75dpi \
     xfonts-base \
     ttf-mscorefonts-installer \
@@ -35,7 +34,7 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     xvfb \
  && rm -rf /var/lib/apt/lists/*
 
-# Install wkhtmltopdf from deb package (patched version)
+# Install wkhtmltopdf from deb package (patched version). Bookworm version is latest build version but it worked on trixie as well.
 RUN wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 RUN dpkg -i wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
 RUN rm wkhtmltox_0.12.6.1-3.bookworm_amd64.deb
