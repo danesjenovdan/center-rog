@@ -20,7 +20,7 @@ RUN npm run css
 # ---
 # wagtail image
 # ---
-FROM python:3.11.5-slim-bookworm
+FROM python:3.14-slim-bookworm
 
 # Add user that will be used in the container.
 RUN useradd wagtail
