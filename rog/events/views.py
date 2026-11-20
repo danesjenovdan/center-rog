@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views import View
+from django.conf import settings
 from events.forms import (
     EventRegisterAdditionalForm,
     EventRegisterPersonForm,
@@ -19,6 +20,7 @@ from events.models import (
     EventRegistrationChild,
     EventRegistrationExtraPerson,
 )
+from home.email_utils import send_email
 
 
 @method_decorator(login_required, name="dispatch")
@@ -458,6 +460,14 @@ class EventRegistrationAdditionalView(View):
                     context={"registration_step": 4},
                 )
             else:
+                # send email for free event
+                send_email(
+                    current_user.email,
+                    "emails/free_event.html",
+                    f"Center Rog – uspešna prijava na dogodek // successful sign-up to the event",
+                    {"program_url": f"{settings.CSRF_TRUSTED_ORIGINS[0]}{event.get_url()}"},
+                )
+
                 event_registration.registration_finished = True
                 event_registration.save()
                 return redirect("profile-my")
